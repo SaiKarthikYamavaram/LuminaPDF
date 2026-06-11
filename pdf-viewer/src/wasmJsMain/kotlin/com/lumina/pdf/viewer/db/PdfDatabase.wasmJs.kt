@@ -26,12 +26,39 @@ class WasmJsPdfDatabase : PdfDatabase {
         )
     }
 
-    override fun saveNotes(documentId: String, notesJson: String) {
-        window.localStorage.setItem("${documentId}_notes", notesJson)
+    override fun insertNote(note: DbNote) {
+        window.localStorage.setItem("${note.documentId}_note_${note.id}", "${note.page}|${note.timestamp}|${note.text}")
     }
 
-    override fun getNotes(documentId: String): String? {
-        return window.localStorage.getItem("${documentId}_notes")
+    override fun getNotes(documentId: String): List<DbNote> {
+        val list = mutableListOf<DbNote>()
+        val length = window.localStorage.length
+        for (i in 0 until length) {
+            val key = window.localStorage.key(i) ?: continue
+            if (key.startsWith("${documentId}_note_")) {
+                val value = window.localStorage.getItem(key) ?: continue
+                val parts = value.split("|", limit = 3)
+                if (parts.size == 3) {
+                    val page = parts[0].toIntOrNull() ?: 0
+                    val timestamp = parts[1].toLongOrNull() ?: 0L
+                    val text = parts[2]
+                    val noteId = key.removePrefix("${documentId}_note_")
+                    list.add(DbNote(noteId, documentId, page, text, timestamp))
+                }
+            }
+        }
+        return list.sortedByDescending { it.timestamp }
+    }
+
+    override fun deleteNote(noteId: String) {
+        val length = window.localStorage.length
+        for (i in 0 until length) {
+            val key = window.localStorage.key(i) ?: continue
+            if (key.endsWith("_note_$noteId")) {
+                window.localStorage.removeItem(key)
+                break
+            }
+        }
     }
 
     override fun saveHighlights(documentId: String, highlightsJson: String) {
@@ -47,3 +74,7 @@ class WasmJsPdfDatabase : PdfDatabase {
 actual fun rememberPdfDatabase(): PdfDatabase {
     return remember { WasmJsPdfDatabase() }
 }
+
+private fun jsDateNow(): Double = js("Date.now()")
+
+actual fun getCurrentTimeMillis(): Long = jsDateNow().toLong()

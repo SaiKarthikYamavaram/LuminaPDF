@@ -41,12 +41,24 @@ class JvmPdfDatabase : PdfDatabase {
         )
     }
 
-    override fun saveNotes(documentId: String, notesJson: String) {
-        // Future implementation
+    override fun insertNote(note: DbNote) {
+        queries.insertNote(note.id, note.documentId, note.page.toLong(), note.text, note.timestamp)
     }
 
-    override fun getNotes(documentId: String): String? {
-        return null
+    override fun getNotes(documentId: String): List<DbNote> {
+        return queries.getNotes(documentId).executeAsList().map {
+            DbNote(
+                id = it.id,
+                documentId = it.documentId,
+                page = it.page.toInt(),
+                text = it.noteText,
+                timestamp = it.timestamp
+            )
+        }
+    }
+
+    override fun deleteNote(noteId: String) {
+        queries.deleteNote(noteId)
     }
 
     override fun saveHighlights(documentId: String, highlightsJson: String) {
@@ -62,3 +74,5 @@ class JvmPdfDatabase : PdfDatabase {
 actual fun rememberPdfDatabase(): PdfDatabase {
     return remember { JvmPdfDatabase() }
 }
+
+actual fun getCurrentTimeMillis(): Long = System.currentTimeMillis()

@@ -39,6 +39,9 @@ insertNote:
 INSERT OR REPLACE INTO PdfNote (id, documentId, page, noteText, timestamp)
 VALUES (?, ?, ?, ?, ?);
 
+deleteNote:
+DELETE FROM PdfNote WHERE id = ?;
+
 getHighlights:
 SELECT * FROM PdfHighlight WHERE documentId = ? ORDER BY timestamp DESC;
 

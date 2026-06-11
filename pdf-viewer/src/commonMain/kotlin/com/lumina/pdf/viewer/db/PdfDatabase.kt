@@ -9,13 +9,21 @@ data class PdfOffset(
     val scrollY: Float
 )
 
+data class DbNote(
+    val id: String,
+    val documentId: String,
+    val page: Int,
+    val text: String,
+    val timestamp: Long
+)
+
 interface PdfDatabase {
     fun saveOffset(documentId: String, offset: PdfOffset)
     fun getOffset(documentId: String): PdfOffset?
     
-    // Future expansion hooks for notes and highlights
-    fun saveNotes(documentId: String, notesJson: String)
-    fun getNotes(documentId: String): String?
+    fun insertNote(note: DbNote)
+    fun getNotes(documentId: String): List<DbNote>
+    fun deleteNote(noteId: String)
     
     fun saveHighlights(documentId: String, highlightsJson: String)
     fun getHighlights(documentId: String): String?
@@ -23,3 +31,5 @@ interface PdfDatabase {
 
 @Composable
 expect fun rememberPdfDatabase(): PdfDatabase
+
+expect fun getCurrentTimeMillis(): Long

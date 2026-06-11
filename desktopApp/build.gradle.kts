@@ -20,9 +20,20 @@ compose.desktop {
         mainClass = "com.lumina.pdf.MainKt"
 
         nativeDistributions {
-            targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
-            packageName = "com.lumina.pdf"
-            packageVersion = "1.0.0"
+            targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb, TargetFormat.Exe)
+            packageName = "Lumina"
+            packageVersion = "1.0.1"
+
+            modules("java.sql", "java.naming", "java.instrument", "jdk.unsupported")
+
+            windows {
+                shortcut = true
+                menu = true
+            }
+
+            buildTypes.release.proguard {
+                isEnabled.set(false)
+            }
         }
     }
 }

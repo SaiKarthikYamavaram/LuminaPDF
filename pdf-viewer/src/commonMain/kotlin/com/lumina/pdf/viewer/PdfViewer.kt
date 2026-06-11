@@ -203,6 +203,28 @@ fun MenuIcon(color: Color, modifier: Modifier = Modifier) {
 }
 
 @Composable
+fun NoteIcon(color: Color, modifier: Modifier = Modifier) {
+    Canvas(modifier = modifier.size(20.dp)) {
+        val w = size.width
+        val h = size.height
+        val stroke = 2.dp.toPx()
+        val path = Path().apply {
+            moveTo(w * 0.15f, h * 0.15f)
+            lineTo(w * 0.6f, h * 0.15f)
+            lineTo(w * 0.85f, h * 0.4f)
+            lineTo(w * 0.85f, h * 0.85f)
+            lineTo(w * 0.15f, h * 0.85f)
+            close()
+            // Folded corner
+            moveTo(w * 0.6f, h * 0.15f)
+            lineTo(w * 0.6f, h * 0.4f)
+            lineTo(w * 0.85f, h * 0.4f)
+        }
+        drawPath(path = path, color = color, style = androidx.compose.ui.graphics.drawscope.Stroke(width = stroke))
+    }
+}
+
+@Composable
 fun TopBar(
     zoomPercent: Int,
     onZoomIn: () -> Unit,
@@ -220,6 +242,8 @@ fun TopBar(
     onPrevMatch: () -> Unit,
     isOutlineActive: Boolean,
     onOutlineActiveChange: (Boolean) -> Unit,
+    isNotesActive: Boolean,
+    onNotesActiveChange: (Boolean) -> Unit,
     onClose: (() -> Unit)? = null,
     modifier: Modifier = Modifier
 ) {
@@ -356,6 +380,19 @@ fun TopBar(
                 ) {
                     MenuIcon(
                         color = if (isOutlineActive) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface,
+                        modifier = Modifier.size(16.dp)
+                    )
+                }
+
+                Spacer(modifier = Modifier.width(4.dp))
+
+                // Notes toggle button
+                IconButton(
+                    onClick = { onNotesActiveChange(!isNotesActive) },
+                    modifier = Modifier.size(32.dp)
+                ) {
+                    NoteIcon(
+                        color = if (isNotesActive) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface,
                         modifier = Modifier.size(16.dp)
                     )
                 }
@@ -532,6 +569,22 @@ fun PdfViewer(
     // Outline states
     var isOutlineOpen by remember { mutableStateOf(false) }
     var outlineItems by remember { mutableStateOf<List<OutlineItem>>(emptyList()) }
+
+    // Notes states
+    var isNotesOpen by remember { mutableStateOf(false) }
+    val notes = remember { mutableStateListOf<DbNote>() }
+
+    // Fetch notes on document load
+    LaunchedEffect(document, documentId) {
+        if (documentId != null) {
+            notes.clear()
+            try {
+                notes.addAll(db.getNotes(documentId))
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
+    }
 
     // Fetch outline on document load
     LaunchedEffect(document) {
@@ -1093,7 +1146,15 @@ fun PdfViewer(
                 }
             },
             isOutlineActive = isOutlineOpen,
-            onOutlineActiveChange = { isOutlineOpen = it },
+            onOutlineActiveChange = { 
+                isOutlineOpen = it 
+                if (it) isNotesOpen = false
+            },
+            isNotesActive = isNotesOpen,
+            onNotesActiveChange = { 
+                isNotesOpen = it 
+                if (it) isOutlineOpen = false
+            },
             onClose = onClose,
             modifier = Modifier.align(Alignment.TopCenter)
         )
@@ -1309,6 +1370,201 @@ fun PdfViewer(
                                             style = MaterialTheme.typography.labelSmall,
                                             color = MaterialTheme.colorScheme.primary,
                                             fontWeight = FontWeight.Bold
+                                        )
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        // 5. Slide-out Notes Panel (Right side)
+        AnimatedVisibility(
+            visible = isNotesOpen,
+            enter = androidx.compose.animation.slideInHorizontally(
+                initialOffsetX = { it }
+            ),
+            exit = androidx.compose.animation.slideOutHorizontally(
+                targetOffsetX = { it }
+            ),
+            modifier = Modifier
+                .align(Alignment.TopEnd)
+                .padding(top = topBarHeight)
+                .width(280.dp)
+                .fillMaxHeight()
+        ) {
+            Surface(
+                color = MaterialTheme.colorScheme.surface.copy(alpha = 0.95f),
+                tonalElevation = 8.dp,
+                shadowElevation = 8.dp,
+                modifier = Modifier.fillMaxSize()
+            ) {
+                var newNoteText by remember { mutableStateOf("") }
+                var showCurrentPageOnly by remember { mutableStateOf(true) }
+
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(16.dp)
+                ) {
+                    // Header row
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(bottom = 12.dp)
+                    ) {
+                        Text(
+                            text = "Notes & Annotations",
+                            style = MaterialTheme.typography.titleMedium,
+                            fontWeight = FontWeight.Bold,
+                            color = MaterialTheme.colorScheme.onSurface,
+                            modifier = Modifier.weight(1f)
+                        )
+                        IconButton(
+                            onClick = { isNotesOpen = false },
+                            modifier = Modifier.size(24.dp)
+                        ) {
+                            CloseIcon(
+                                color = MaterialTheme.colorScheme.onSurface,
+                                modifier = Modifier.size(14.dp)
+                            )
+                        }
+                    }
+
+                    // Page filter selector
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(bottom = 12.dp),
+                        horizontalArrangement = Arrangement.spacedBy(8.dp)
+                    ) {
+                        TextButton(
+                            onClick = { showCurrentPageOnly = true },
+                            colors = ButtonDefaults.textButtonColors(
+                                contentColor = if (showCurrentPageOnly) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
+                            ),
+                            modifier = Modifier.weight(1f)
+                        ) {
+                            Text("Page ${state.currentPage + 1}", fontWeight = if (showCurrentPageOnly) FontWeight.Bold else FontWeight.Normal, style = MaterialTheme.typography.labelMedium)
+                        }
+                        TextButton(
+                            onClick = { showCurrentPageOnly = false },
+                            colors = ButtonDefaults.textButtonColors(
+                                contentColor = if (!showCurrentPageOnly) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
+                            ),
+                            modifier = Modifier.weight(1f)
+                        ) {
+                            Text("All Pages", fontWeight = if (!showCurrentPageOnly) FontWeight.Bold else FontWeight.Normal, style = MaterialTheme.typography.labelMedium)
+                        }
+                    }
+
+                    // Add note textfield & button
+                    Column(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(bottom = 16.dp),
+                        verticalArrangement = Arrangement.spacedBy(8.dp)
+                    ) {
+                        OutlinedTextField(
+                            value = newNoteText,
+                            onValueChange = { newNoteText = it },
+                            placeholder = { Text("Write a note...", style = MaterialTheme.typography.bodyMedium) },
+                            textStyle = MaterialTheme.typography.bodyMedium,
+                            modifier = Modifier.fillMaxWidth().height(80.dp),
+                            maxLines = 3
+                        )
+                        Button(
+                            onClick = {
+                                if (newNoteText.isNotBlank() && documentId != null) {
+                                    val note = DbNote(
+                                        id = (0..10000000).random().toString(),
+                                        documentId = documentId,
+                                        page = state.currentPage,
+                                        text = newNoteText.trim(),
+                                        timestamp = getCurrentTimeMillis()
+                                    )
+                                    db.insertNote(note)
+                                    notes.add(0, note)
+                                    newNoteText = ""
+                                }
+                            },
+                            modifier = Modifier.fillMaxWidth(),
+                            enabled = newNoteText.isNotBlank()
+                        ) {
+                            Text("Add Note", style = MaterialTheme.typography.labelMedium, fontWeight = FontWeight.Bold)
+                        }
+                    }
+
+                    // Notes list
+                    val filteredNotes = remember(notes, showCurrentPageOnly, state.currentPage) {
+                        if (showCurrentPageOnly) {
+                            notes.filter { it.page == state.currentPage }
+                        } else {
+                            notes.sortedBy { it.page }
+                        }
+                    }
+
+                    if (filteredNotes.isEmpty()) {
+                        Box(
+                            modifier = Modifier.weight(1f).fillMaxWidth(),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Text(
+                                text = if (showCurrentPageOnly) "No notes on this page" else "No notes in document",
+                                style = MaterialTheme.typography.bodyMedium,
+                                color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f),
+                                textAlign = TextAlign.Center
+                            )
+                        }
+                    } else {
+                        androidx.compose.foundation.lazy.LazyColumn(
+                            verticalArrangement = Arrangement.spacedBy(10.dp),
+                            modifier = Modifier.weight(1f).fillMaxWidth()
+                        ) {
+                            items(filteredNotes.size) { index ->
+                                val note = filteredNotes[index]
+                                Card(
+                                    colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.04f)),
+                                    modifier = Modifier.fillMaxWidth()
+                                ) {
+                                    Column(
+                                        modifier = Modifier.padding(10.dp)
+                                    ) {
+                                        Row(
+                                            verticalAlignment = Alignment.CenterVertically,
+                                            modifier = Modifier.fillMaxWidth()
+                                        ) {
+                                            Text(
+                                                text = "Page ${note.page + 1}",
+                                                style = MaterialTheme.typography.labelSmall,
+                                                fontWeight = FontWeight.Bold,
+                                                color = MaterialTheme.colorScheme.primary,
+                                                modifier = Modifier
+                                                    .clickable { jumpToPage(note.page) }
+                                                    .padding(vertical = 2.dp)
+                                            )
+                                            Spacer(modifier = Modifier.weight(1f))
+                                            IconButton(
+                                                onClick = {
+                                                    db.deleteNote(note.id)
+                                                    notes.remove(note)
+                                                },
+                                                modifier = Modifier.size(20.dp)
+                                            ) {
+                                                CloseIcon(
+                                                    color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.4f),
+                                                    modifier = Modifier.size(10.dp)
+                                                )
+                                            }
+                                        }
+                                        Spacer(modifier = Modifier.height(4.dp))
+                                        Text(
+                                            text = note.text,
+                                            style = MaterialTheme.typography.bodyMedium,
+                                            color = MaterialTheme.colorScheme.onSurface
                                         )
                                     }
                                 }
