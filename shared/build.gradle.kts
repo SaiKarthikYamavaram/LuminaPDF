@@ -51,6 +51,9 @@ kotlin {
             implementation(libs.compose.uiToolingPreview)
         }
         commonMain.dependencies {
+            implementation(project(":pdf-core"))
+            implementation(project(":pdf-renderer"))
+            implementation(project(":pdf-viewer"))
             implementation(libs.compose.runtime)
             implementation(libs.compose.foundation)
             implementation(libs.compose.material3)
