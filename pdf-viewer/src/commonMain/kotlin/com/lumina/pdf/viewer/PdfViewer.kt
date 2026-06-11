@@ -142,6 +142,19 @@ fun CloseIcon(color: Color, modifier: Modifier = Modifier) {
 }
 
 @Composable
+fun ArrowBackIcon(color: Color, modifier: Modifier = Modifier) {
+    Canvas(modifier = modifier.size(20.dp)) {
+        val stroke = 2.dp.toPx()
+        val cx = size.width / 2f
+        val cy = size.height / 2f
+        val len = size.minDimension * 0.25f
+        drawLine(color = color, start = Offset(cx - len, cy), end = Offset(cx + len, cy), strokeWidth = stroke)
+        drawLine(color = color, start = Offset(cx - len, cy), end = Offset(cx - len + len * 0.7f, cy - len * 0.7f), strokeWidth = stroke)
+        drawLine(color = color, start = Offset(cx - len, cy), end = Offset(cx - len + len * 0.7f, cy + len * 0.7f), strokeWidth = stroke)
+    }
+}
+
+@Composable
 fun ChevronUpIcon(color: Color, modifier: Modifier = Modifier) {
     Canvas(modifier = modifier.size(20.dp)) {
         val stroke = 2.dp.toPx()
@@ -206,6 +219,7 @@ fun TopBar(
     onPrevMatch: () -> Unit,
     isOutlineActive: Boolean,
     onOutlineActiveChange: (Boolean) -> Unit,
+    onClose: (() -> Unit)? = null,
     modifier: Modifier = Modifier
 ) {
     val searchFocusRequester = remember { FocusRequester() }
@@ -324,6 +338,16 @@ fun TopBar(
                     }
                 }
             } else {
+                if (onClose != null) {
+                    IconButton(
+                        onClick = onClose,
+                        modifier = Modifier.size(32.dp)
+                    ) {
+                        ArrowBackIcon(color = MaterialTheme.colorScheme.onSurface, modifier = Modifier.size(16.dp))
+                    }
+                    Spacer(modifier = Modifier.width(4.dp))
+                }
+
                 // Outline toggle button (Hamburger menu at the far left)
                 IconButton(
                     onClick = { onOutlineActiveChange(!isOutlineActive) },
@@ -464,6 +488,7 @@ fun PdfViewer(
     document: PdfDocument,
     state: PdfViewerState = remember { PdfViewerState() },
     config: PdfViewerConfig = PdfViewerConfig(),
+    onClose: (() -> Unit)? = null,
     modifier: Modifier = Modifier
 ) {
     val coroutineScope = rememberCoroutineScope()
@@ -1020,6 +1045,7 @@ fun PdfViewer(
             },
             isOutlineActive = isOutlineOpen,
             onOutlineActiveChange = { isOutlineOpen = it },
+            onClose = onClose,
             modifier = Modifier.align(Alignment.TopCenter)
         )
 
