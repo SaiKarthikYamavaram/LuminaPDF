@@ -39,6 +39,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import com.lumina.pdf.core.*
+import com.lumina.pdf.viewer.db.*
 import kotlinx.coroutines.launch
 import kotlin.math.cos
 import kotlin.math.sin
@@ -486,12 +487,14 @@ fun clampScrollOffset(
 @Composable
 fun PdfViewer(
     document: PdfDocument,
+    documentId: String? = null,
     state: PdfViewerState = remember { PdfViewerState() },
     config: PdfViewerConfig = PdfViewerConfig(),
     onClose: (() -> Unit)? = null,
     modifier: Modifier = Modifier
 ) {
     val coroutineScope = rememberCoroutineScope()
+    val db = rememberPdfDatabase()
     var viewSize by remember { mutableStateOf(IntSize.Zero) }
     var pageCount by remember { mutableStateOf(0) }
     
@@ -699,13 +702,59 @@ fun PdfViewer(
     // Set initial zoom once sizes are known
     LaunchedEffect(viewSize, pageCount) {
         if (viewSize.width > 0 && viewSize.height > 0 && pageCount > 0 && !isInitialZoomSet) {
-            val fitZoom = getFitZoom()
-            state.zoom = fitZoom
-            state.scrollOffset = clampScrollOffset(
-                Offset.Zero, fitZoom, viewSize.width.toFloat(), viewSize.height.toFloat(),
-                viewSize.width.toFloat() * 1.4f, pageCount, spacingPx, topPaddingPx, bottomPaddingPx, marginPx
-            )
+            var restored = false
+            if (documentId != null) {
+                val saved = db.getOffset(documentId)
+                if (saved != null) {
+                    state.currentPage = saved.page
+                    state.zoom = saved.zoom
+                    state.scrollOffset = clampScrollOffset(
+                        Offset(saved.scrollX, saved.scrollY),
+                        saved.zoom,
+                        viewSize.width.toFloat(),
+                        viewSize.height.toFloat(),
+                        viewSize.width.toFloat() * 1.4f,
+                        pageCount,
+                        spacingPx,
+                        topPaddingPx,
+                        bottomPaddingPx,
+                        marginPx
+                    )
+                    restored = true
+                }
+            }
+            if (!restored) {
+                val fitZoom = getFitZoom()
+                state.zoom = fitZoom
+                state.scrollOffset = clampScrollOffset(
+                    Offset.Zero, fitZoom, viewSize.width.toFloat(), viewSize.height.toFloat(),
+                    viewSize.width.toFloat() * 1.4f, pageCount, spacingPx, topPaddingPx, bottomPaddingPx, marginPx
+                )
+            }
             isInitialZoomSet = true
+        }
+    }
+
+    // Save state when page, zoom, or offset changes (debounced)
+    LaunchedEffect(documentId, state.currentPage, state.zoom, state.scrollOffset) {
+        if (documentId == null || !isInitialZoomSet) return@LaunchedEffect
+        // Debounce saves to prevent high frequency SQLite writes
+        kotlinx.coroutines.delay(1000)
+        db.saveOffset(
+            documentId,
+            PdfOffset(state.currentPage, state.zoom, state.scrollOffset.x, state.scrollOffset.y)
+        )
+    }
+
+    // Save state synchronously when viewer is closed or disposed
+    DisposableEffect(documentId) {
+        onDispose {
+            if (documentId != null && isInitialZoomSet) {
+                db.saveOffset(
+                    documentId,
+                    PdfOffset(state.currentPage, state.zoom, state.scrollOffset.x, state.scrollOffset.y)
+                )
+            }
         }
     }
 

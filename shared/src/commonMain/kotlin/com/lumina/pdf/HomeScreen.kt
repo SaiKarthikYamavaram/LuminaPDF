@@ -368,6 +368,18 @@ fun SyncCheckIcon(color: Color, modifier: Modifier = Modifier) {
     }
 }
 
+@Composable
+fun CloseIcon(color: Color, modifier: Modifier = Modifier) {
+    Canvas(modifier = modifier.size(20.dp)) {
+        val stroke = 2.dp.toPx()
+        val len = size.minDimension * 0.25f
+        val cx = size.width / 2f
+        val cy = size.height / 2f
+        drawLine(color = color, start = Offset(cx - len, cy - len), end = Offset(cx + len, cy + len), strokeWidth = stroke)
+        drawLine(color = color, start = Offset(cx - len, cy + len), end = Offset(cx + len, cy - len), strokeWidth = stroke)
+    }
+}
+
 // --- Hoverable Item Wrapper ---
 @Composable
 fun HoverableItem(
@@ -557,6 +569,7 @@ fun MockDocumentThumbnail(name: String, modifier: Modifier = Modifier) {
 fun HomeScreen(
     recentFiles: List<RecentFile>,
     onOpenFile: (RecentFile) -> Unit,
+    onRemoveFile: (RecentFile) -> Unit,
     onTriggerFilePicker: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -1191,20 +1204,22 @@ fun HomeScreen(
                                 val isList = viewMode == "List"
                                 val isGrid = viewMode == "Grid"
                                 
-                                IconButton(
-                                    onClick = { viewMode = "List" },
+                                Box(
                                     modifier = Modifier
                                         .size(24.dp)
                                         .background(if (isList) Color(0xFF333333) else Color.Transparent, RoundedCornerShape(3.dp))
+                                        .clickable { viewMode = "List" },
+                                    contentAlignment = Alignment.Center
                                 ) {
                                     ListIcon(color = if (isList) Color.White else textSecondary)
                                 }
                                 
-                                IconButton(
-                                    onClick = { viewMode = "Grid" },
+                                Box(
                                     modifier = Modifier
                                         .size(24.dp)
                                         .background(if (isGrid) Color(0xFF333333) else Color.Transparent, RoundedCornerShape(3.dp))
+                                        .clickable { viewMode = "Grid" },
+                                    contentAlignment = Alignment.Center
                                 ) {
                                     GridIcon(color = if (isGrid) Color.White else textSecondary)
                                 }
@@ -1245,6 +1260,7 @@ fun HomeScreen(
                                                     GridItemCard(
                                                         fileItem = fileItem,
                                                         onClick = { onOpenFile(fileItem) },
+                                                        onRemove = { onRemoveFile(fileItem) },
                                                         textPrimary = textPrimary,
                                                         textSecondary = textSecondary
                                                     )
@@ -1286,6 +1302,7 @@ fun HomeScreen(
                                     ListItemRow(
                                         fileItem = fileItem,
                                         onClick = { onOpenFile(fileItem) },
+                                        onRemove = { onRemoveFile(fileItem) },
                                         textPrimary = textPrimary,
                                         textSecondary = textSecondary
                                     )
@@ -1304,6 +1321,7 @@ fun HomeScreen(
 fun GridItemCard(
     fileItem: RecentFile,
     onClick: () -> Unit,
+    onRemove: () -> Unit,
     textPrimary: Color,
     textSecondary: Color,
     modifier: Modifier = Modifier
@@ -1389,6 +1407,21 @@ fun GridItemCard(
                             .padding(8.dp)
                     )
                 }
+
+                if (isHovered) {
+                    Box(
+                        modifier = Modifier
+                            .align(Alignment.TopEnd)
+                            .padding(8.dp)
+                            .size(20.dp)
+                            .clip(CircleShape)
+                            .background(Color.Black.copy(alpha = 0.6f))
+                            .clickable { onRemove() },
+                        contentAlignment = Alignment.Center
+                    ) {
+                        CloseIcon(color = Color.White, modifier = Modifier.size(10.dp))
+                    }
+                }
             }
 
             // Text section
@@ -1421,6 +1454,7 @@ fun GridItemCard(
 fun ListItemRow(
     fileItem: RecentFile,
     onClick: () -> Unit,
+    onRemove: () -> Unit,
     textPrimary: Color,
     textSecondary: Color,
     modifier: Modifier = Modifier
@@ -1492,8 +1526,21 @@ fun ListItemRow(
                 modifier = Modifier.width(32.dp),
                 contentAlignment = Alignment.Center
             ) {
-                if (fileItem.isSample || fileItem.fileBytes != null) {
-                    SyncCheckIcon(color = Color(0xFF0F9D58))
+                if (isHovered) {
+                    Box(
+                        modifier = Modifier
+                            .size(20.dp)
+                            .clip(CircleShape)
+                            .background(Color.White.copy(alpha = 0.1f))
+                            .clickable { onRemove() },
+                        contentAlignment = Alignment.Center
+                    ) {
+                        CloseIcon(color = textSecondary, modifier = Modifier.size(10.dp))
+                    }
+                } else {
+                    if (fileItem.isSample || fileItem.fileBytes != null) {
+                        SyncCheckIcon(color = Color(0xFF0F9D58))
+                    }
                 }
             }
         }

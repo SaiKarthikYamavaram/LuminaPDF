@@ -89,12 +89,7 @@ fun App() {
                 e.printStackTrace()
             }
             
-            recentFiles.add(RecentFile("mock_2", "Vendor_Agreement.pdf", "5 minutes ago", "4.8 MB"))
-            recentFiles.add(RecentFile("mock_3", "Annual_Report_Q3.pdf", "3 minutes ago", "8.4 MB"))
-            recentFiles.add(RecentFile("mock_4", "Product_Manual_v2.pdf", "5 minutes ago", "14.2 MB"))
-            recentFiles.add(RecentFile("mock_5", "Team_Meeting_Agendas.pdf", "3 minutes ago", "2.1 MB"))
-            recentFiles.add(RecentFile("mock_6", "Creative_Brief.pdf", "5 minutes ago", "1.8 MB"))
-            recentFiles.add(RecentFile("mock_7", "Event_Schedule.pdf", "5 minutes ago", "3.6 MB"))
+            // No dummy mock files added here
         }
 
         val filePicker = remember { FilePicker() }
@@ -145,6 +140,7 @@ fun App() {
         if (currentDocument != null) {
             PdfViewer(
                 document = currentDocument!!,
+                documentId = currentDocumentName,
                 onClose = {
                     currentDocument?.close()
                     currentDocument = null
@@ -166,6 +162,9 @@ fun App() {
                             error = e.message ?: "Error opening file"
                         }
                     }
+                },
+                onRemoveFile = { recentFile ->
+                    recentFiles.remove(recentFile)
                 },
                 onTriggerFilePicker = pickFile,
                 modifier = Modifier.fillMaxSize()

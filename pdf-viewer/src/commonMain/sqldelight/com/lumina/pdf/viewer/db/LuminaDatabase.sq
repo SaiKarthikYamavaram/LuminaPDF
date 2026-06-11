@@ -1,0 +1,47 @@
+CREATE TABLE PdfViewState (
+    documentId TEXT NOT NULL PRIMARY KEY,
+    page INTEGER NOT NULL,
+    zoom REAL NOT NULL,
+    scrollX REAL NOT NULL,
+    scrollY REAL NOT NULL
+);
+
+CREATE TABLE PdfNote (
+    id TEXT NOT NULL PRIMARY KEY,
+    documentId TEXT NOT NULL,
+    page INTEGER NOT NULL,
+    noteText TEXT NOT NULL,
+    timestamp INTEGER NOT NULL
+);
+
+CREATE TABLE PdfHighlight (
+    id TEXT NOT NULL PRIMARY KEY,
+    documentId TEXT NOT NULL,
+    page INTEGER NOT NULL,
+    rectsText TEXT NOT NULL,
+    color TEXT NOT NULL,
+    timestamp INTEGER NOT NULL
+);
+
+-- Queries
+saveOffset:
+INSERT OR REPLACE INTO PdfViewState (documentId, page, zoom, scrollX, scrollY)
+VALUES (?, ?, ?, ?, ?);
+
+getOffset:
+SELECT * FROM PdfViewState WHERE documentId = ?;
+
+-- Future placeholders
+getNotes:
+SELECT * FROM PdfNote WHERE documentId = ? ORDER BY timestamp DESC;
+
+insertNote:
+INSERT OR REPLACE INTO PdfNote (id, documentId, page, noteText, timestamp)
+VALUES (?, ?, ?, ?, ?);
+
+getHighlights:
+SELECT * FROM PdfHighlight WHERE documentId = ? ORDER BY timestamp DESC;
+
+insertHighlight:
+INSERT OR REPLACE INTO PdfHighlight (id, documentId, page, rectsText, color, timestamp)
+VALUES (?, ?, ?, ?, ?, ?);
