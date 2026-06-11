@@ -6,8 +6,10 @@ import androidx.compose.animation.fadeOut
 import androidx.compose.animation.scaleIn
 import androidx.compose.animation.scaleOut
 import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.background
 import androidx.compose.foundation.focusable
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.gestures.detectDragGestures
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.gestures.detectTransformGestures
@@ -172,6 +174,21 @@ fun ChevronDownIcon(color: Color, modifier: Modifier = Modifier) {
 }
 
 @Composable
+fun MenuIcon(color: Color, modifier: Modifier = Modifier) {
+    Canvas(modifier = modifier.size(20.dp)) {
+        val w = size.width
+        val h = size.height
+        val startX = w * 0.15f
+        val endX = w * 0.85f
+        
+        val strokeWidth = 2.dp.toPx()
+        drawLine(color = color, start = Offset(startX, h * 0.25f), end = Offset(endX, h * 0.25f), strokeWidth = strokeWidth)
+        drawLine(color = color, start = Offset(startX, h * 0.50f), end = Offset(endX, h * 0.50f), strokeWidth = strokeWidth)
+        drawLine(color = color, start = Offset(startX, h * 0.75f), end = Offset(endX, h * 0.75f), strokeWidth = strokeWidth)
+    }
+}
+
+@Composable
 fun TopBar(
     zoomPercent: Int,
     onZoomIn: () -> Unit,
@@ -187,6 +204,8 @@ fun TopBar(
     totalMatches: Int,
     onNextMatch: () -> Unit,
     onPrevMatch: () -> Unit,
+    isOutlineActive: Boolean,
+    onOutlineActiveChange: (Boolean) -> Unit,
     modifier: Modifier = Modifier
 ) {
     val searchFocusRequester = remember { FocusRequester() }
@@ -305,6 +324,19 @@ fun TopBar(
                     }
                 }
             } else {
+                // Outline toggle button (Hamburger menu at the far left)
+                IconButton(
+                    onClick = { onOutlineActiveChange(!isOutlineActive) },
+                    modifier = Modifier.size(32.dp)
+                ) {
+                    MenuIcon(
+                        color = if (isOutlineActive) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface,
+                        modifier = Modifier.size(16.dp)
+                    )
+                }
+
+                Spacer(modifier = Modifier.width(4.dp))
+
                 Text(
                     text = "LuminaPDF",
                     style = MaterialTheme.typography.titleSmall,
@@ -449,12 +481,16 @@ fun PdfViewer(
     val focusRequester = remember { FocusRequester() }
     val density = LocalDensity.current
 
+    val systemDarkTheme = isSystemInDarkTheme()
+
     // Internal night mode state synchronized with config and top bar
-    var localNightMode by remember { mutableStateOf(config.nightMode) }
+    var localNightMode by remember(config.nightMode, systemDarkTheme) {
+        mutableStateOf(config.nightMode ?: systemDarkTheme)
+    }
     
-    // Sync localNightMode when config changes
-    LaunchedEffect(config.nightMode) {
-        localNightMode = config.nightMode
+    // Sync localNightMode when config or system theme changes
+    LaunchedEffect(config.nightMode, systemDarkTheme) {
+        localNightMode = config.nightMode ?: systemDarkTheme
     }
 
     var isInitialZoomSet by remember { mutableStateOf(false) }
@@ -464,6 +500,46 @@ fun PdfViewer(
     val bottomPaddingPx = with(density) { 24.dp.toPx() }
     val marginPx = with(density) { 16.dp.toPx() }
     val spacingPx = with(density) { maxOf(config.pageSpacing, 24.dp).toPx() }
+
+    // Outline states
+    var isOutlineOpen by remember { mutableStateOf(false) }
+    var outlineItems by remember { mutableStateOf<List<OutlineItem>>(emptyList()) }
+
+    // Fetch outline on document load
+    LaunchedEffect(document) {
+        try {
+            outlineItems = document.getOutline()
+        } catch (e: Exception) {
+            outlineItems = emptyList()
+        }
+    }
+
+    // Scroll directly to a selected page
+    fun jumpToPage(pageIndex: Int) {
+        if (viewSize.width == 0 || viewSize.height == 0) return
+        val estimatedPageHeight = viewSize.width.toFloat() * 1.4f
+        val pageTop = pageIndex * (estimatedPageHeight + spacingPx)
+        
+        val targetScrollY = topPaddingPx - pageTop * state.zoom
+        val targetScrollX = if (viewSize.width * state.zoom <= viewSize.width) {
+            (viewSize.width - viewSize.width * state.zoom) / 2f
+        } else {
+            state.scrollOffset.x
+        }
+        
+        state.scrollOffset = clampScrollOffset(
+            Offset(targetScrollX, targetScrollY),
+            state.zoom,
+            viewSize.width.toFloat(),
+            viewSize.height.toFloat(),
+            estimatedPageHeight,
+            pageCount,
+            spacingPx,
+            topPaddingPx,
+            bottomPaddingPx,
+            marginPx
+        )
+    }
 
     // Search states
     var isSearchActive by remember { mutableStateOf(false) }
@@ -942,6 +1018,8 @@ fun PdfViewer(
                     currentMatchIndex = (currentMatchIndex - 1 + allMatchesList.size) % allMatchesList.size
                 }
             },
+            isOutlineActive = isOutlineOpen,
+            onOutlineActiveChange = { isOutlineOpen = it },
             modifier = Modifier.align(Alignment.TopCenter)
         )
 
@@ -1034,6 +1112,133 @@ fun PdfViewer(
                             color = MaterialTheme.colorScheme.onPrimaryContainer,
                             modifier = Modifier.padding(horizontal = 10.dp, vertical = 6.dp)
                         )
+                    }
+                }
+            }
+        }
+
+        // 4. Slide-out Table of Contents Panel
+        AnimatedVisibility(
+            visible = isOutlineOpen,
+            enter = androidx.compose.animation.slideInHorizontally(
+                initialOffsetX = { -it }
+            ),
+            exit = androidx.compose.animation.slideOutHorizontally(
+                targetOffsetX = { -it }
+            ),
+            modifier = Modifier
+                .align(Alignment.TopStart)
+                .padding(top = topBarHeight)
+                .width(240.dp)
+                .fillMaxHeight()
+        ) {
+            Surface(
+                color = MaterialTheme.colorScheme.surface.copy(alpha = 0.95f),
+                tonalElevation = 8.dp,
+                shadowElevation = 8.dp,
+                modifier = Modifier.fillMaxSize()
+            ) {
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(16.dp)
+                ) {
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(bottom = 12.dp)
+                    ) {
+                        Text(
+                            text = "Table of Contents",
+                            style = MaterialTheme.typography.titleMedium,
+                            fontWeight = FontWeight.Bold,
+                            color = MaterialTheme.colorScheme.onSurface,
+                            modifier = Modifier.weight(1f)
+                        )
+                        IconButton(
+                            onClick = { isOutlineOpen = false },
+                            modifier = Modifier.size(24.dp)
+                        ) {
+                            CloseIcon(
+                                color = MaterialTheme.colorScheme.onSurface,
+                                modifier = Modifier.size(14.dp)
+                            )
+                        }
+                    }
+                    
+                    if (outlineItems.isEmpty()) {
+                        Box(
+                            modifier = Modifier.fillMaxSize(),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Text(
+                                text = "No Outline Available",
+                                style = MaterialTheme.typography.bodyMedium,
+                                color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f)
+                            )
+                        }
+                    } else {
+                        val flatList = remember(outlineItems) {
+                            val list = mutableListOf<Pair<OutlineItem, Int>>()
+                            fun flatten(items: List<OutlineItem>, depth: Int) {
+                                for (item in items) {
+                                    list.add(Pair(item, depth))
+                                    flatten(item.children, depth + 1)
+                                }
+                            }
+                            flatten(outlineItems, 0)
+                            list
+                        }
+
+                        androidx.compose.foundation.lazy.LazyColumn(
+                            verticalArrangement = Arrangement.spacedBy(4.dp),
+                            modifier = Modifier.fillMaxSize()
+                        ) {
+                            items(flatList.size) { index ->
+                                val (item, depth) = flatList[index]
+                                Row(
+                                    verticalAlignment = Alignment.CenterVertically,
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .background(
+                                            color = Color.Transparent,
+                                            shape = RoundedCornerShape(4.dp)
+                                        )
+                                        .then(
+                                            if (item.pageNumber >= 0) {
+                                                Modifier.clickable {
+                                                    jumpToPage(item.pageNumber)
+                                                    isOutlineOpen = false
+                                                }
+                                            } else Modifier
+                                        )
+                                        .padding(
+                                            start = (depth * 16).dp + 8.dp,
+                                            end = 8.dp,
+                                            top = 8.dp,
+                                            bottom = 8.dp
+                                        )
+                                ) {
+                                    Text(
+                                        text = item.title,
+                                        style = MaterialTheme.typography.bodyMedium.copy(
+                                            fontWeight = if (depth == 0) FontWeight.Bold else FontWeight.Normal
+                                        ),
+                                        color = if (item.pageNumber >= 0) MaterialTheme.colorScheme.onSurface else MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f)
+                                    )
+                                    if (item.pageNumber >= 0) {
+                                        Spacer(modifier = Modifier.weight(1f))
+                                        Text(
+                                            text = "${item.pageNumber + 1}",
+                                            style = MaterialTheme.typography.labelSmall,
+                                            color = MaterialTheme.colorScheme.primary,
+                                            fontWeight = FontWeight.Bold
+                                        )
+                                    }
+                                }
+                            }
+                        }
                     }
                 }
             }
