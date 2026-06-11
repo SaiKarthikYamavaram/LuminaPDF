@@ -19,6 +19,11 @@ interface PdfDocument {
         page: Int
     ): String
 
+    suspend fun searchText(
+        page: Int,
+        query: String
+    ): List<PdfRect>
+
     suspend fun getOutline(): List<OutlineItem>
 
     fun close()

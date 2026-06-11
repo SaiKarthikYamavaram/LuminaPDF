@@ -52,6 +52,10 @@ class AndroidPdfDocument(
         return ""
     }
 
+    override suspend fun searchText(page: Int, query: String): List<PdfRect> {
+        return emptyList()
+    }
+
     override suspend fun getOutline(): List<OutlineItem> {
         return emptyList()
     }

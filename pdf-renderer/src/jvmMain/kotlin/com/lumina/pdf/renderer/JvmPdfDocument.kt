@@ -44,12 +44,119 @@ class JvmPdfDocument(private val document: PDDocument) : PdfDocument {
         stripper.getText(document)
     }
 
+    override suspend fun searchText(page: Int, query: String): List<PdfRect> = withContext(Dispatchers.IO) {
+        if (query.isEmpty()) return@withContext emptyList()
+        val pdPage = document.getPage(page)
+        val cropBox = pdPage.cropBox
+        val pageWidth = cropBox.width
+        val pageHeight = cropBox.height
+        
+        val locator = PDFTextLocator(query)
+        locator.startPage = page + 1
+        locator.endPage = page + 1
+        locator.getText(document)
+        locator.findMatches(pageWidth, pageHeight)
+        locator.matches
+    }
+
     override suspend fun getOutline(): List<OutlineItem> = withContext(Dispatchers.IO) {
-        // Simplify for Phase 1
-        emptyList()
+        val outline = document.documentCatalog.documentOutline ?: return@withContext emptyList()
+        val result = mutableListOf<OutlineItem>()
+        var current = outline.firstChild
+        while (current != null) {
+            val mapped = mapOutlineItem(current)
+            if (mapped != null) {
+                result.add(mapped)
+            }
+            current = current.nextSibling
+        }
+        result
+    }
+
+    private fun mapOutlineItem(item: org.apache.pdfbox.pdmodel.interactive.documentnavigation.outline.PDOutlineItem): OutlineItem? {
+        val title = item.title ?: ""
+        var pageIndex = -1
+        try {
+            val destination = item.destination
+            if (destination != null) {
+                val page = item.findDestinationPage(document)
+                if (page != null) {
+                    pageIndex = document.pages.indexOf(page)
+                }
+            } else {
+                val action = item.action
+                if (action is org.apache.pdfbox.pdmodel.interactive.action.PDActionGoTo) {
+                    val pageDest = action.destination
+                    if (pageDest is org.apache.pdfbox.pdmodel.interactive.documentnavigation.destination.PDPageDestination) {
+                        val pdPage = pageDest.page
+                        if (pdPage != null) {
+                            pageIndex = document.pages.indexOf(pdPage)
+                        }
+                    }
+                }
+            }
+        } catch (e: Exception) {
+            // Ignore target page resolution errors
+        }
+
+        val children = mutableListOf<OutlineItem>()
+        var child = item.firstChild
+        while (child != null) {
+            val mappedChild = mapOutlineItem(child)
+            if (mappedChild != null) {
+                children.add(mappedChild)
+            }
+            child = child.nextSibling
+        }
+
+        if (title.isNotEmpty()) {
+            return OutlineItem(title, pageIndex, children)
+        }
+        return null
     }
 
     override fun close() {
         document.close()
+    }
+}
+
+class PDFTextLocator(
+    private val query: String
+) : PDFTextStripper() {
+    val matches = mutableListOf<PdfRect>()
+    private val characters = mutableListOf<org.apache.pdfbox.text.TextPosition>()
+
+    init {
+        sortByPosition = true
+    }
+
+    override fun writeString(text: String?, textPositions: MutableList<org.apache.pdfbox.text.TextPosition>?) {
+        if (text != null && textPositions != null) {
+            characters.addAll(textPositions)
+        }
+    }
+
+    fun findMatches(pageWidth: Float, pageHeight: Float) {
+        val text = characters.map { it.unicode }.joinToString("")
+        var index = text.indexOf(query, ignoreCase = true)
+        while (index != -1) {
+            val matchedPositions = characters.subList(index, index + query.length)
+            if (matchedPositions.isNotEmpty()) {
+                val minX = matchedPositions.minOf { it.xDirAdj }
+                val maxX = matchedPositions.maxOf { it.xDirAdj + it.widthDirAdj }
+                val minY = matchedPositions.minOf { it.yDirAdj - it.heightDir }
+                val maxY = matchedPositions.maxOf { it.yDirAdj }
+                
+                matches.add(
+                    PdfRect(
+                        left = minX / pageWidth,
+                        top = minY / pageHeight,
+                        right = maxX / pageWidth,
+                        bottom = maxY / pageHeight
+                    )
+                )
+            }
+            index = text.indexOf(query, index + 1, ignoreCase = true)
+        }
     }
 }

@@ -107,6 +107,71 @@ fun MoonIcon(color: Color, modifier: Modifier = Modifier) {
 }
 
 @Composable
+fun SearchIcon(color: Color, modifier: Modifier = Modifier) {
+    Canvas(modifier = modifier.size(20.dp)) {
+        val stroke = 2.dp.toPx()
+        val r = size.minDimension / 4f
+        val cx = size.width * 0.45f
+        val cy = size.height * 0.45f
+        drawCircle(
+            color = color,
+            radius = r,
+            center = Offset(cx, cy),
+            style = androidx.compose.ui.graphics.drawscope.Stroke(width = stroke)
+        )
+        val startX = (cx + r * cos(PI/4)).toFloat()
+        val startY = (cy + r * sin(PI/4)).toFloat()
+        val endX = size.width * 0.8f
+        val endY = size.height * 0.8f
+        drawLine(color = color, start = Offset(startX, startY), end = Offset(endX, endY), strokeWidth = stroke)
+    }
+}
+
+@Composable
+fun CloseIcon(color: Color, modifier: Modifier = Modifier) {
+    Canvas(modifier = modifier.size(20.dp)) {
+        val stroke = 2.dp.toPx()
+        val len = size.minDimension * 0.25f
+        val cx = size.width / 2f
+        val cy = size.height / 2f
+        drawLine(color = color, start = Offset(cx - len, cy - len), end = Offset(cx + len, cy + len), strokeWidth = stroke)
+        drawLine(color = color, start = Offset(cx - len, cy + len), end = Offset(cx + len, cy - len), strokeWidth = stroke)
+    }
+}
+
+@Composable
+fun ChevronUpIcon(color: Color, modifier: Modifier = Modifier) {
+    Canvas(modifier = modifier.size(20.dp)) {
+        val stroke = 2.dp.toPx()
+        val cx = size.width / 2f
+        val cy = size.height / 2f
+        val len = size.minDimension * 0.2f
+        val path = Path().apply {
+            moveTo(cx - len, cy + len / 2f)
+            lineTo(cx, cy - len / 2f)
+            lineTo(cx + len, cy + len / 2f)
+        }
+        drawPath(path = path, color = color, style = androidx.compose.ui.graphics.drawscope.Stroke(width = stroke))
+    }
+}
+
+@Composable
+fun ChevronDownIcon(color: Color, modifier: Modifier = Modifier) {
+    Canvas(modifier = modifier.size(20.dp)) {
+        val stroke = 2.dp.toPx()
+        val cx = size.width / 2f
+        val cy = size.height / 2f
+        val len = size.minDimension * 0.2f
+        val path = Path().apply {
+            moveTo(cx - len, cy - len / 2f)
+            lineTo(cx, cy + len / 2f)
+            lineTo(cx + len, cy - len / 2f)
+        }
+        drawPath(path = path, color = color, style = androidx.compose.ui.graphics.drawscope.Stroke(width = stroke))
+    }
+}
+
+@Composable
 fun TopBar(
     zoomPercent: Int,
     onZoomIn: () -> Unit,
@@ -114,8 +179,25 @@ fun TopBar(
     onFitPage: () -> Unit,
     nightMode: Boolean,
     onToggleNightMode: () -> Unit,
+    isSearchActive: Boolean,
+    onSearchActiveChange: (Boolean) -> Unit,
+    searchQuery: String,
+    onSearchQueryChange: (String) -> Unit,
+    currentMatchIndex: Int,
+    totalMatches: Int,
+    onNextMatch: () -> Unit,
+    onPrevMatch: () -> Unit,
     modifier: Modifier = Modifier
 ) {
+    val searchFocusRequester = remember { FocusRequester() }
+
+    LaunchedEffect(isSearchActive) {
+        if (isSearchActive) {
+            kotlinx.coroutines.delay(100)
+            searchFocusRequester.requestFocus()
+        }
+    }
+
     Surface(
         color = MaterialTheme.colorScheme.surface.copy(alpha = 0.90f),
         tonalElevation = 4.dp,
@@ -130,13 +212,118 @@ fun TopBar(
                 .fillMaxSize()
                 .padding(horizontal = 12.dp)
         ) {
-            Text(
-                text = "LuminaPDF",
-                style = MaterialTheme.typography.titleSmall,
-                fontWeight = FontWeight.ExtraBold,
-                color = MaterialTheme.colorScheme.primary,
-                modifier = Modifier.weight(1f)
-            )
+            if (isSearchActive) {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier.weight(1f),
+                    horizontalArrangement = Arrangement.spacedBy(4.dp)
+                ) {
+                    SearchIcon(color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f), modifier = Modifier.size(16.dp))
+                    
+                    androidx.compose.foundation.text.BasicTextField(
+                        value = searchQuery,
+                        onValueChange = onSearchQueryChange,
+                        singleLine = true,
+                        textStyle = MaterialTheme.typography.bodyMedium.copy(
+                            color = MaterialTheme.colorScheme.onSurface
+                        ),
+                        cursorBrush = androidx.compose.ui.graphics.SolidColor(MaterialTheme.colorScheme.primary),
+                        modifier = Modifier
+                            .focusRequester(searchFocusRequester)
+                            .onKeyEvent { keyEvent ->
+                                if (keyEvent.type == KeyEventType.KeyDown && keyEvent.key == Key.Escape) {
+                                    onSearchActiveChange(false)
+                                    onSearchQueryChange("")
+                                    true
+                                } else false
+                            }
+                            .weight(1f)
+                            .height(28.dp)
+                            .background(
+                                color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.06f),
+                                shape = RoundedCornerShape(4.dp)
+                            )
+                            .padding(horizontal = 8.dp, vertical = 4.dp),
+                        decorationBox = { innerTextField ->
+                            Box(contentAlignment = Alignment.CenterStart) {
+                                if (searchQuery.isEmpty()) {
+                                    Text(
+                                        text = "Search...",
+                                        style = MaterialTheme.typography.bodyMedium,
+                                        color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.4f)
+                                    )
+                                }
+                                innerTextField()
+                            }
+                        }
+                    )
+                    
+                    if (searchQuery.isNotEmpty()) {
+                        val matchText = if (totalMatches > 0) {
+                            "${currentMatchIndex + 1} / $totalMatches"
+                        } else {
+                            "0 / 0"
+                        }
+                        Text(
+                            text = matchText,
+                            style = MaterialTheme.typography.labelMedium,
+                            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f),
+                            modifier = Modifier.padding(horizontal = 4.dp)
+                        )
+                    }
+                    
+                    IconButton(
+                        onClick = onPrevMatch,
+                        enabled = totalMatches > 0,
+                        modifier = Modifier.size(28.dp)
+                    ) {
+                        ChevronUpIcon(
+                            color = if (totalMatches > 0) MaterialTheme.colorScheme.onSurface else MaterialTheme.colorScheme.onSurface.copy(alpha = 0.3f),
+                            modifier = Modifier.size(16.dp)
+                        )
+                    }
+
+                    IconButton(
+                        onClick = onNextMatch,
+                        enabled = totalMatches > 0,
+                        modifier = Modifier.size(28.dp)
+                    ) {
+                        ChevronDownIcon(
+                            color = if (totalMatches > 0) MaterialTheme.colorScheme.onSurface else MaterialTheme.colorScheme.onSurface.copy(alpha = 0.3f),
+                            modifier = Modifier.size(16.dp)
+                        )
+                    }
+                    
+                    IconButton(
+                        onClick = {
+                            onSearchActiveChange(false)
+                            onSearchQueryChange("")
+                        },
+                        modifier = Modifier.size(28.dp)
+                    ) {
+                        CloseIcon(color = MaterialTheme.colorScheme.onSurface, modifier = Modifier.size(16.dp))
+                    }
+                }
+            } else {
+                Text(
+                    text = "LuminaPDF",
+                    style = MaterialTheme.typography.titleSmall,
+                    fontWeight = FontWeight.ExtraBold,
+                    color = MaterialTheme.colorScheme.primary,
+                    modifier = Modifier.weight(1f)
+                )
+
+                IconButton(
+                    onClick = { onSearchActiveChange(true) },
+                    modifier = Modifier.size(32.dp)
+                ) {
+                    SearchIcon(color = MaterialTheme.colorScheme.onSurface, modifier = Modifier.size(16.dp))
+                }
+                
+                Spacer(modifier = Modifier.width(4.dp))
+            }
+
+            Spacer(modifier = Modifier.width(8.dp))
 
             // Zoom controls
             Row(
@@ -277,6 +464,114 @@ fun PdfViewer(
     val bottomPaddingPx = with(density) { 24.dp.toPx() }
     val marginPx = with(density) { 16.dp.toPx() }
     val spacingPx = with(density) { maxOf(config.pageSpacing, 24.dp).toPx() }
+
+    // Search states
+    var isSearchActive by remember { mutableStateOf(false) }
+    var searchQuery by remember { mutableStateOf("") }
+    var debouncedSearchQuery by remember { mutableStateOf("") }
+    val searchMatches = remember { mutableStateMapOf<Int, List<PdfRect>>() }
+    var currentMatchIndex by remember { mutableStateOf(-1) }
+
+    // Debounce search query updates to make search smooth and non-blocking
+    LaunchedEffect(searchQuery) {
+        if (searchQuery.isEmpty()) {
+            debouncedSearchQuery = ""
+        } else {
+            kotlinx.coroutines.delay(300)
+            debouncedSearchQuery = searchQuery
+        }
+    }
+
+    // Flattened matches for navigation, re-evaluating whenever searchMatches updates
+    val allMatchesList = remember {
+        derivedStateOf {
+            val list = mutableListOf<Pair<Int, PdfRect>>()
+            for (page in 0 until pageCount) {
+                val pageMatches = searchMatches[page]
+                if (pageMatches != null) {
+                    for (match in pageMatches) {
+                        list.add(Pair(page, match))
+                    }
+                }
+            }
+            list
+        }
+    }.value
+
+    // Centering navigation logic
+    fun centerMatch(pageIndex: Int, rect: PdfRect) {
+        if (viewSize.width == 0 || viewSize.height == 0) return
+        val estimatedPageHeight = viewSize.width.toFloat() * 1.4f
+        val pageTop = pageIndex * (estimatedPageHeight + spacingPx)
+        
+        val matchTopScaled = (pageTop + rect.top * estimatedPageHeight) * state.zoom
+        val matchHeightScaled = (rect.bottom - rect.top) * estimatedPageHeight * state.zoom
+        val matchCenterScaled = matchTopScaled + matchHeightScaled / 2f
+        
+        val targetScrollY = (viewSize.height / 2f) - matchCenterScaled
+        
+        val pageWidthScaled = viewSize.width.toFloat() * state.zoom
+        val matchLeftScaled = rect.left * pageWidthScaled
+        val matchWidthScaled = (rect.right - rect.left) * pageWidthScaled
+        val matchCenterHorizontalScaled = matchLeftScaled + matchWidthScaled / 2f
+        val targetScrollX = (viewSize.width / 2f) - matchCenterHorizontalScaled
+        
+        state.scrollOffset = clampScrollOffset(
+            Offset(targetScrollX, targetScrollY),
+            state.zoom,
+            viewSize.width.toFloat(),
+            viewSize.height.toFloat(),
+            estimatedPageHeight,
+            pageCount,
+            spacingPx,
+            topPaddingPx,
+            bottomPaddingPx,
+            marginPx
+        )
+    }
+
+    // Scroll to active match when currentMatchIndex changes
+    LaunchedEffect(currentMatchIndex) {
+        if (currentMatchIndex in allMatchesList.indices) {
+            val (page, rect) = allMatchesList[currentMatchIndex]
+            centerMatch(page, rect)
+        }
+    }
+
+    // Clamp currentMatchIndex when matches list changes
+    LaunchedEffect(allMatchesList) {
+        if (allMatchesList.isEmpty()) {
+            currentMatchIndex = -1
+        } else if (currentMatchIndex >= allMatchesList.size || currentMatchIndex < 0) {
+            currentMatchIndex = 0
+        }
+    }
+
+    // Perform text search page by page
+    LaunchedEffect(debouncedSearchQuery, pageCount, document) {
+        if (debouncedSearchQuery.isEmpty()) {
+            searchMatches.clear()
+            currentMatchIndex = -1
+            return@LaunchedEffect
+        }
+        
+        searchMatches.clear()
+        for (page in 0 until pageCount) {
+            kotlinx.coroutines.yield()
+            try {
+                val results = document.searchText(page, debouncedSearchQuery)
+                if (results.isNotEmpty()) {
+                    searchMatches[page] = results
+                }
+            } catch (e: Exception) {
+                // Ignore search errors on single pages
+            }
+        }
+        
+        if (allMatchesList.isNotEmpty() && currentMatchIndex == -1) {
+            currentMatchIndex = 0
+        }
+    }
 
     LaunchedEffect(document) {
         pageCount = document.pageCount()
@@ -461,6 +756,13 @@ fun PdfViewer(
                                 true
                             } else false
                         }
+                        Key.Escape -> {
+                            if (isSearchActive) {
+                                isSearchActive = false
+                                searchQuery = ""
+                                true
+                            } else false
+                        }
                         else -> false
                     }
                 } else false
@@ -569,6 +871,37 @@ fun PdfViewer(
                                 }
                             }
                         }
+
+                        // Draw highlights
+                        val pageMatches = searchMatches[page]
+                        if (pageMatches != null) {
+                            for (rect in pageMatches) {
+                                val isActive = if (currentMatchIndex in allMatchesList.indices) {
+                                    val activeMatch = allMatchesList[currentMatchIndex]
+                                    activeMatch.first == page && activeMatch.second == rect
+                                } else false
+                                
+                                val highlightColor = if (isActive) {
+                                    Color(0xFFFF9800).copy(alpha = 0.5f) // Orange for active
+                                } else {
+                                    Color(0xFFFFEB3B).copy(alpha = 0.4f) // Yellow for inactive
+                                }
+                                
+                                val paddingX = 3.dp.toPx()
+                                val paddingY = 2.dp.toPx()
+                                val x = rect.left * size.width - paddingX
+                                val y = pageTop + rect.top * estimatedPageHeight - paddingY
+                                val w = (rect.right - rect.left) * size.width + 2 * paddingX
+                                val h = (rect.bottom - rect.top) * estimatedPageHeight + 2 * paddingY
+                                
+                                drawRoundRect(
+                                    color = highlightColor,
+                                    topLeft = Offset(x, y),
+                                    size = androidx.compose.ui.geometry.Size(w, h),
+                                    cornerRadius = androidx.compose.ui.geometry.CornerRadius(3.dp.toPx(), 3.dp.toPx())
+                                )
+                            }
+                        }
                     }
                 }
             }
@@ -593,6 +926,22 @@ fun PdfViewer(
             },
             nightMode = localNightMode,
             onToggleNightMode = { localNightMode = !localNightMode },
+            isSearchActive = isSearchActive,
+            onSearchActiveChange = { isSearchActive = it },
+            searchQuery = searchQuery,
+            onSearchQueryChange = { searchQuery = it },
+            currentMatchIndex = currentMatchIndex,
+            totalMatches = allMatchesList.size,
+            onNextMatch = {
+                if (allMatchesList.isNotEmpty()) {
+                    currentMatchIndex = (currentMatchIndex + 1) % allMatchesList.size
+                }
+            },
+            onPrevMatch = {
+                if (allMatchesList.isNotEmpty()) {
+                    currentMatchIndex = (currentMatchIndex - 1 + allMatchesList.size) % allMatchesList.size
+                }
+            },
             modifier = Modifier.align(Alignment.TopCenter)
         )
 
