@@ -1223,6 +1223,10 @@ fun PdfViewer(
 
                 // Render scrollbar track and thumb
                 var isDraggingScrollbar by remember { mutableStateOf(false) }
+                val currentRatioState = rememberUpdatedState(currentRatio)
+                val maxTravelState = rememberUpdatedState(maxTravel)
+                val scrollRangeState = rememberUpdatedState(scrollRange)
+                val topPaddingState = rememberUpdatedState(topPaddingPx)
 
                 Box(
                     modifier = Modifier
@@ -1230,15 +1234,19 @@ fun PdfViewer(
                         .padding(top = topBarHeight, bottom = 16.dp, end = 4.dp)
                         .width(20.dp)
                         .fillMaxHeight()
-                        .pointerInput(maxTravel, scrollRange) {
+                        .pointerInput(Unit) {
                             detectDragGestures(
                                 onDragStart = { isDraggingScrollbar = true },
                                 onDragEnd = { isDraggingScrollbar = false },
                                 onDragCancel = { isDraggingScrollbar = false },
                                 onDrag = { change, dragAmount ->
                                     change.consume()
-                                    val newRatio = ((currentRatio * maxTravel + dragAmount.y) / maxTravel).coerceIn(0f, 1f)
-                                    val newScrollOffsetY = topPaddingPx - newRatio * scrollRange
+                                    val currentRatioVal = currentRatioState.value
+                                    val maxTravelVal = maxTravelState.value
+                                    val scrollRangeVal = scrollRangeState.value
+                                    val topPaddingVal = topPaddingState.value
+                                    val newRatio = ((currentRatioVal * maxTravelVal + dragAmount.y) / maxTravelVal).coerceIn(0f, 1f)
+                                    val newScrollOffsetY = topPaddingVal - newRatio * scrollRangeVal
                                     state.scrollOffset = state.scrollOffset.copy(y = newScrollOffsetY)
                                 }
                             )
