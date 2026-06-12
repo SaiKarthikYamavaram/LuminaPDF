@@ -857,6 +857,9 @@ fun PdfViewer(
         val estimatedPageHeight = viewSize.width.toFloat() * 1.4f
         val visibleList = mutableListOf<Int>()
         var firstVisible = -1
+        var bestPage = -1
+        var minDistance = Float.MAX_VALUE
+        val viewportCenter = viewSize.height / 2f
         for (page in 0 until pageCount) {
             val yStart = state.scrollOffset.y + page * (estimatedPageHeight + spacingPx) * state.zoom
             val yEnd = yStart + estimatedPageHeight * state.zoom
@@ -865,12 +868,19 @@ fun PdfViewer(
                 if (firstVisible == -1) {
                     firstVisible = page
                 }
+                
+                val pageCenter = (yStart + yEnd) / 2f
+                val distance = kotlin.math.abs(pageCenter - viewportCenter)
+                if (distance < minDistance) {
+                    minDistance = distance
+                    bestPage = page
+                }
             }
         }
         
         state.visiblePages = visibleList
-        if (firstVisible != -1) {
-            state.currentPage = firstVisible
+        if (bestPage != -1) {
+            state.currentPage = bestPage
         }
 
         // 1. Request Thumbnails
@@ -1145,9 +1155,21 @@ fun PdfViewer(
             onFitPage = {
                 val fitZoom = getFitZoom()
                 state.zoom = fitZoom
+                val estimatedPageHeight = viewSize.width.toFloat() * 1.4f
+                val pageTop = state.currentPage * (estimatedPageHeight + spacingPx)
+                val targetScrollY = topPaddingPx - pageTop * fitZoom
+                val targetScrollX = (viewSize.width - viewSize.width * fitZoom) / 2f
                 state.scrollOffset = clampScrollOffset(
-                    Offset.Zero, fitZoom, viewSize.width.toFloat(), viewSize.height.toFloat(),
-                    viewSize.width.toFloat() * 1.4f, pageCount, spacingPx, topPaddingPx, bottomPaddingPx, marginPx
+                    Offset(targetScrollX, targetScrollY),
+                    fitZoom,
+                    viewSize.width.toFloat(),
+                    viewSize.height.toFloat(),
+                    estimatedPageHeight,
+                    pageCount,
+                    spacingPx,
+                    topPaddingPx,
+                    bottomPaddingPx,
+                    marginPx
                 )
             },
             nightMode = localNightMode,
