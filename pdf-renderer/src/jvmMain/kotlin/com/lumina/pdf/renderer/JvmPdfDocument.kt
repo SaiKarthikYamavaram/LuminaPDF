@@ -77,20 +77,33 @@ class JvmPdfDocument(private val document: PDDocument) : PdfDocument {
         val title = item.title ?: ""
         var pageIndex = -1
         try {
-            val destination = item.destination
-            if (destination != null) {
-                val page = item.findDestinationPage(document)
-                if (page != null) {
-                    pageIndex = document.pages.indexOf(page)
-                }
-            } else {
-                val action = item.action
-                if (action is org.apache.pdfbox.pdmodel.interactive.action.PDActionGoTo) {
-                    val pageDest = action.destination
-                    if (pageDest is org.apache.pdfbox.pdmodel.interactive.documentnavigation.destination.PDPageDestination) {
-                        val pdPage = pageDest.page
-                        if (pdPage != null) {
-                            pageIndex = document.pages.indexOf(pdPage)
+            val page = item.findDestinationPage(document)
+            if (page != null) {
+                pageIndex = document.pages.indexOf(page)
+            }
+            
+            if (pageIndex < 0) {
+                val dest = item.destination ?: (item.action as? org.apache.pdfbox.pdmodel.interactive.action.PDActionGoTo)?.destination
+                if (dest != null) {
+                    val resolvedDest = if (dest is org.apache.pdfbox.pdmodel.interactive.documentnavigation.destination.PDNamedDestination) {
+                        try {
+                            document.documentCatalog.findNamedDestinationPage(dest)
+                        } catch (e: Exception) {
+                            null
+                        }
+                    } else {
+                        dest as? org.apache.pdfbox.pdmodel.interactive.documentnavigation.destination.PDPageDestination
+                    }
+                    
+                    if (resolvedDest != null) {
+                        val pageNum = resolvedDest.retrievePageNumber()
+                        if (pageNum >= 0) {
+                            pageIndex = pageNum
+                        } else {
+                            val pdPage = resolvedDest.page
+                            if (pdPage != null) {
+                                pageIndex = document.pages.indexOf(pdPage)
+                            }
                         }
                     }
                 }
