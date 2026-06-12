@@ -92,37 +92,44 @@ fun App() {
             // No dummy mock files added here
         }
 
-        val filePicker = remember { FilePicker() }
-        val pickFile = filePicker.register { bytes, name ->
-            val newFile = RecentFile(
-                id = name + "_" + (0..1000000).random().toString(),
-                name = name,
-                lastOpened = "Just now",
-                size = formatSize(bytes.size),
-                fileBytes = bytes
-            )
-            recentFiles.add(0, newFile)
-            
-            scope.launch {
-                try {
-                    val factory = PdfDocumentFactory()
-                    currentDocument = factory.open(bytes)
-                    currentDocumentName = name
-                    
-                    // Render thumbnail in background
-                    val doc = factory.open(bytes)
-                    val bitmap = doc.renderPage(0, 180, 240)
-                    val idx = recentFiles.indexOfFirst { it.id == newFile.id }
-                    if (idx != -1) {
-                        recentFiles[idx] = recentFiles[idx].copy(thumbnail = bitmap.asImageBitmap())
+        val pickFileLauncher = io.github.vinceglb.filekit.compose.rememberFilePickerLauncher(
+            type = io.github.vinceglb.filekit.core.PickerType.File(extensions = listOf("pdf")),
+            title = "Select PDF File"
+        ) { platformFile ->
+            if (platformFile != null) {
+                scope.launch {
+                    try {
+                        val bytes = platformFile.readBytes()
+                        val name = platformFile.name
+                        val newFile = RecentFile(
+                            id = name + "_" + (0..1000000).random().toString(),
+                            name = name,
+                            lastOpened = "Just now",
+                            size = formatSize(bytes.size),
+                            fileBytes = bytes
+                        )
+                        recentFiles.add(0, newFile)
+                        
+                        val factory = PdfDocumentFactory()
+                        currentDocument = factory.open(bytes)
+                        currentDocumentName = name
+                        
+                        // Render thumbnail in background
+                        val doc = factory.open(bytes)
+                        val bitmap = doc.renderPage(0, 180, 240)
+                        val idx = recentFiles.indexOfFirst { it.id == newFile.id }
+                        if (idx != -1) {
+                            recentFiles[idx] = recentFiles[idx].copy(thumbnail = bitmap.asImageBitmap())
+                        }
+                        doc.close()
+                    } catch (e: Exception) {
+                        e.printStackTrace()
+                        error = e.message ?: "Error opening file"
                     }
-                    doc.close()
-                } catch (e: Exception) {
-                    e.printStackTrace()
-                    error = e.message ?: "Error opening file"
                 }
             }
         }
+        val pickFile: () -> Unit = { pickFileLauncher.launch() }
 
         if (error != null) {
             AlertDialog(
