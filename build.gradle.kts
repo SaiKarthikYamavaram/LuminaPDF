@@ -8,4 +8,15 @@ plugins {
     alias(libs.plugins.kotlinJvm) apply false
     alias(libs.plugins.kotlinMultiplatform) apply false
     alias(libs.plugins.sqldelight) apply false
+    alias(libs.plugins.dokka)
+}
+
+subprojects {
+    apply(plugin = "org.jetbrains.dokka")
+    
+    configure<org.jetbrains.dokka.gradle.DokkaExtension> {
+        dokkaSourceSets.configureEach {
+            includes.from(rootProject.file("docs/packages.md"))
+        }
+    }
 }

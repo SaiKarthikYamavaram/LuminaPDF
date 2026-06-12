@@ -1,13 +1,18 @@
-# Graph Report - .  (2026-06-12)
+# Graph Report - LuminaPDF  (2026-06-12)
 
 ## Corpus Check
-- 90 files · ~50,206 words
+- 77 files · ~50,419 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 422 nodes · 634 edges · 55 communities (34 shown, 21 thin omitted)
-- Extraction: 96% EXTRACTED · 4% INFERRED · 0% AMBIGUOUS · INFERRED: 24 edges (avg confidence: 0.8)
+- 500 nodes · 707 edges · 61 communities (37 shown, 24 thin omitted)
+- Extraction: 97% EXTRACTED · 3% INFERRED · 0% AMBIGUOUS · INFERRED: 24 edges (avg confidence: 0.8)
 - Token cost: 0 input · 0 output
+
+## Graph Freshness
+- Built from commit: `4fa4a335`
+- Run `git rev-parse HEAD` and compare to check if the graph is stale.
+- Run `graphify update .` after code changes (no API cost).
 
 ## Community Hubs (Navigation)
 - [[_COMMUNITY_Offset|Offset]]
@@ -53,6 +58,12 @@
 - [[_COMMUNITY_Core Outlineitem|Core Outlineitem]]
 - [[_COMMUNITY_Viewer Pdfviewerconfig|Viewer Pdfviewerconfig]]
 - [[_COMMUNITY_Viewer Pdfviewerstate|Viewer Pdfviewerstate]]
+- [[_COMMUNITY_Community 55|Community 55]]
+- [[_COMMUNITY_Community 56|Community 56]]
+- [[_COMMUNITY_Community 57|Community 57]]
+- [[_COMMUNITY_Community 58|Community 58]]
+- [[_COMMUNITY_Community 59|Community 59]]
+- [[_COMMUNITY_Community 60|Community 60]]
 
 ## God Nodes (most connected - your core abstractions)
 1. `HomeScreen()` - 24 edges
@@ -81,23 +92,23 @@
 ## Import Cycles
 - None detected.
 
-## Communities (55 total, 21 thin omitted)
+## Communities (61 total, 24 thin omitted)
 
 ### Community 0 - "Offset"
-Cohesion: 0.19
-Nodes (33): Offset, App(), formatSize(), AcrobatPdfIcon(), CloseIcon(), CloudIcon(), FolderIcon(), GiftIcon() (+25 more)
+Cohesion: 0.25
+Nodes (29): Offset, AcrobatPdfIcon(), CloseIcon(), CloudIcon(), FolderIcon(), GiftIcon(), GridIcon(), GridItemCard() (+21 more)
 
 ### Community 1 - "Mutablelist"
 Cohesion: 0.09
-Nodes (19): MutableList, org, Int, Float, Int, List, OutlineItem, PdfBitmap (+11 more)
+Nodes (18): MutableList, org, Int, Float, Int, List, OutlineItem, PdfBitmap (+10 more)
 
 ### Community 2 - "Pdf Viewer Src Commonmain"
 Cohesion: 0.20
 Nodes (25): Boolean, Color, Float, Int, Modifier, PdfDocument, String, Unit (+17 more)
 
 ### Community 3 - "Pdf Renderer Src Androidmain"
-Cohesion: 0.12
-Nodes (13): Int, Float, Int, List, OutlineItem, PdfBitmap, PdfRect, String (+5 more)
+Cohesion: 0.11
+Nodes (14): Int, Float, Int, List, OutlineItem, PdfBitmap, PdfRect, String (+6 more)
 
 ### Community 4 - "Pdf Platform"
 Cohesion: 0.12
@@ -120,16 +131,16 @@ Cohesion: 0.18
 Nodes (9): AndroidPdfDatabase, getCurrentTimeMillis(), rememberPdfDatabase(), DbNote, List, Long, PdfOffset, SqlDriver (+1 more)
 
 ### Community 9 - "Db Pdfdatabase Ios"
-Cohesion: 0.18
-Nodes (9): getCurrentTimeMillis(), IosPdfDatabase, rememberPdfDatabase(), DbNote, List, Long, PdfOffset, SqlDriver (+1 more)
+Cohesion: 0.10
+Nodes (17): DbNote, getCurrentTimeMillis(), getCurrentTimeMillis(), IosPdfDatabase, rememberPdfDatabase(), PdfDatabase, PdfOffset, rememberPdfDatabase() (+9 more)
 
 ### Community 10 - "Core Pdfdocument"
 Cohesion: 0.19
 Nodes (8): PdfDocument, Float, Int, List, OutlineItem, PdfBitmap, PdfRect, String
 
 ### Community 11 - "Db Pdfdatabase"
-Cohesion: 0.21
-Nodes (8): DbNote, getCurrentTimeMillis(), PdfDatabase, PdfOffset, rememberPdfDatabase(), List, Long, String
+Cohesion: 0.04
+Nodes (47): Android, Annotation Architecture, Cache Architecture, Compose Rendering Strategy, Continuous Scroll, Core Design Principle, Desktop, Final Recommendation (+39 more)
 
 ### Community 12 - "Db Pdfdatabase Js"
 Cohesion: 0.19
@@ -171,25 +182,37 @@ Nodes (3): ByteArray, PdfDocument, PdfDocumentFactory
 Cohesion: 0.50
 Nodes (3): App, iOSApp, Scene
 
+### Community 55 - "Community 55"
+Cohesion: 0.13
+Nodes (15): 1. `:pdf-core`, 2. `:pdf-renderer`, 3. `:pdf-viewer`, 4. `:pdf-annotations` (Optional), 5. `:pdf-search` (Optional), 6. `:sample-app`, Android, Desktop (JVM) (+7 more)
+
+### Community 56 - "Community 56"
+Cohesion: 0.25
+Nodes (7): Module pdf-core, Module pdf-renderer, Module pdf-viewer, Package com.lumina.pdf.core, Package com.lumina.pdf.renderer, Package com.lumina.pdf.viewer, Package com.lumina.pdf.viewer.db
+
+### Community 57 - "Community 57"
+Cohesion: 0.50
+Nodes (4): App(), formatSize(), Int, String
+
 ## Knowledge Gaps
-- **75 isolated node(s):** `Bundle`, `Scene`, `OutlineItem`, `Int`, `Float` (+70 more)
+- **134 isolated node(s):** `Bundle`, `Scene`, `OutlineItem`, `Int`, `Float` (+129 more)
   These have ≤1 connection - possible missing edges or undocumented components.
-- **21 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
+- **24 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
-- **Why does `PdfDatabase` connect `Db Pdfdatabase` to `Db Pdfdatabase Jvm`, `Db Pdfdatabase Wasmjs`, `Db Pdfdatabase Android`, `Db Pdfdatabase Ios`, `Db Pdfdatabase Js`?**
-  _High betweenness centrality (0.050) - this node is a cross-community bridge._
-- **Why does `PdfViewer()` connect `Pdf Viewer Src Commonmain` to `Offset`, `Core Lrumemorycache`, `Core Renderqueue`?**
-  _High betweenness centrality (0.028) - this node is a cross-community bridge._
+- **Why does `PdfDatabase` connect `Db Pdfdatabase Ios` to `Db Pdfdatabase Android`, `Db Pdfdatabase Js`, `Db Pdfdatabase Jvm`, `Db Pdfdatabase Wasmjs`?**
+  _High betweenness centrality (0.035) - this node is a cross-community bridge._
+- **Why does `PdfViewer()` connect `Pdf Viewer Src Commonmain` to `Offset`, `Community 57`, `Core Lrumemorycache`, `Core Renderqueue`?**
+  _High betweenness centrality (0.020) - this node is a cross-community bridge._
 - **Why does `LruMemoryCache` connect `Core Lrumemorycache` to `Pdf Viewer Src Commonmain`?**
-  _High betweenness centrality (0.019) - this node is a cross-community bridge._
+  _High betweenness centrality (0.013) - this node is a cross-community bridge._
 - **Are the 10 inferred relationships involving `Offset` (e.g. with `CloseIcon()` and `GiftIcon()`) actually correct?**
   _`Offset` has 10 INFERRED edges - model-reasoned connections that need verification._
 - **What connects `Bundle`, `Scene`, `OutlineItem` to the rest of the system?**
-  _75 weakly-connected nodes found - possible documentation gaps or missing edges._
+  _134 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `Mutablelist` be split into smaller, more focused modules?**
-  _Cohesion score 0.09090909090909091 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.0946969696969697 - nodes in this community are weakly interconnected._
 - **Should `Pdf Renderer Src Androidmain` be split into smaller, more focused modules?**
-  _Cohesion score 0.11666666666666667 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.11076923076923077 - nodes in this community are weakly interconnected._

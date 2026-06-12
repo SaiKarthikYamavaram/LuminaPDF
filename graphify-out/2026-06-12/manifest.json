@@ -1,0 +1,452 @@
+{
+  "C:\\Users\\ysaik\\AndroidStudioProjects\\LuminaPDF\\androidApp\\build.gradle.kts": {
+    "mtime": 1781149021.8832617,
+    "ast_hash": "5498da641472ce93643c4799dc471f14",
+    "semantic_hash": "5498da641472ce93643c4799dc471f14"
+  },
+  "C:\\Users\\ysaik\\AndroidStudioProjects\\LuminaPDF\\androidApp\\src\\main\\kotlin\\com\\lumina\\pdf\\MainActivity.kt": {
+    "mtime": 1781149021.898764,
+    "ast_hash": "e1af3a84716ee43144c2a6f5ba870a9d",
+    "semantic_hash": "e1af3a84716ee43144c2a6f5ba870a9d"
+  },
+  "C:\\Users\\ysaik\\AndroidStudioProjects\\LuminaPDF\\build.gradle.kts": {
+    "mtime": 1781198605.4577208,
+    "ast_hash": "3449366a2c4cda1388304c4416b3d3a2",
+    "semantic_hash": "3449366a2c4cda1388304c4416b3d3a2"
+  },
+  "C:\\Users\\ysaik\\AndroidStudioProjects\\LuminaPDF\\desktopApp\\build.gradle.kts": {
+    "mtime": 1781205985.2709045,
+    "ast_hash": "c2db3f3b19754f6cd225ffaf6626c6b9",
+    "semantic_hash": "c2db3f3b19754f6cd225ffaf6626c6b9"
+  },
+  "C:\\Users\\ysaik\\AndroidStudioProjects\\LuminaPDF\\desktopApp\\src\\main\\kotlin\\com\\lumina\\pdf\\main.kt": {
+    "mtime": 1781152703.406892,
+    "ast_hash": "3fa18ce58fa562600b5d43aff4bff868",
+    "semantic_hash": "3fa18ce58fa562600b5d43aff4bff868"
+  },
+  "C:\\Users\\ysaik\\AndroidStudioProjects\\LuminaPDF\\gradlew": {
+    "mtime": 1781149021.996675,
+    "ast_hash": "780b1d3e23a3b82154795f73df943a14",
+    "semantic_hash": "780b1d3e23a3b82154795f73df943a14"
+  },
+  "C:\\Users\\ysaik\\AndroidStudioProjects\\LuminaPDF\\iosApp\\iosApp\\Assets.xcassets\\AccentColor.colorset\\Contents.json": {
+    "mtime": 1781149022.0157921,
+    "ast_hash": "88cd26db3e6a44fc46b1d81444089bbc",
+    "semantic_hash": "88cd26db3e6a44fc46b1d81444089bbc"
+  },
+  "C:\\Users\\ysaik\\AndroidStudioProjects\\LuminaPDF\\iosApp\\iosApp\\Assets.xcassets\\AppIcon.appiconset\\Contents.json": {
+    "mtime": 1781149022.0187957,
+    "ast_hash": "807b26573e0d8b35fa8fea89f5fc713e",
+    "semantic_hash": "807b26573e0d8b35fa8fea89f5fc713e"
+  },
+  "C:\\Users\\ysaik\\AndroidStudioProjects\\LuminaPDF\\iosApp\\iosApp\\Assets.xcassets\\Contents.json": {
+    "mtime": 1781149022.025351,
+    "ast_hash": "afeb3bfa4cfb0884ca431ffe27a35432",
+    "semantic_hash": "afeb3bfa4cfb0884ca431ffe27a35432"
+  },
+  "C:\\Users\\ysaik\\AndroidStudioProjects\\LuminaPDF\\iosApp\\iosApp\\ContentView.swift": {
+    "mtime": 1781149022.0268614,
+    "ast_hash": "7af742fb4730c3d49e27c73cf94d131c",
+    "semantic_hash": "7af742fb4730c3d49e27c73cf94d131c"
+  },
+  "C:\\Users\\ysaik\\AndroidStudioProjects\\LuminaPDF\\iosApp\\iosApp\\Preview Content\\Preview Assets.xcassets\\Contents.json": {
+    "mtime": 1781149022.0343788,
+    "ast_hash": "afeb3bfa4cfb0884ca431ffe27a35432",
+    "semantic_hash": "afeb3bfa4cfb0884ca431ffe27a35432"
+  },
+  "C:\\Users\\ysaik\\AndroidStudioProjects\\LuminaPDF\\iosApp\\iosApp\\iOSApp.swift": {
+    "mtime": 1781149022.0364108,
+    "ast_hash": "f6a01e7c9aa7a979c4ef926df57fe088",
+    "semantic_hash": "f6a01e7c9aa7a979c4ef926df57fe088"
+  },
+  "C:\\Users\\ysaik\\AndroidStudioProjects\\LuminaPDF\\pdf-core\\build.gradle.kts": {
+    "mtime": 1781168864.8272624,
+    "ast_hash": "67f3476c358f6241f68fca2d5cf88a3c",
+    "semantic_hash": "67f3476c358f6241f68fca2d5cf88a3c"
+  },
+  "C:\\Users\\ysaik\\AndroidStudioProjects\\LuminaPDF\\pdf-core\\src\\commonMain\\kotlin\\com\\lumina\\pdf\\core\\LruMemoryCache.kt": {
+    "mtime": 1781170117.0445316,
+    "ast_hash": "5914b38c470f6bce302a7fec88e11aa9",
+    "semantic_hash": "5914b38c470f6bce302a7fec88e11aa9"
+  },
+  "C:\\Users\\ysaik\\AndroidStudioProjects\\LuminaPDF\\pdf-core\\src\\commonMain\\kotlin\\com\\lumina\\pdf\\core\\OutlineItem.kt": {
+    "mtime": 1781168481.4097342,
+    "ast_hash": "335a574330966c7d092f2674b1183156",
+    "semantic_hash": "335a574330966c7d092f2674b1183156"
+  },
+  "C:\\Users\\ysaik\\AndroidStudioProjects\\LuminaPDF\\pdf-core\\src\\commonMain\\kotlin\\com\\lumina\\pdf\\core\\PdfBitmap.kt": {
+    "mtime": 1781168473.066659,
+    "ast_hash": "2004526ae3292afb4b5d7d99fbac89d3",
+    "semantic_hash": "2004526ae3292afb4b5d7d99fbac89d3"
+  },
+  "C:\\Users\\ysaik\\AndroidStudioProjects\\LuminaPDF\\pdf-core\\src\\commonMain\\kotlin\\com\\lumina\\pdf\\core\\PdfCache.kt": {
+    "mtime": 1781168499.4216857,
+    "ast_hash": "82a3bbbeca3db8464ea90a31a2c8b59e",
+    "semantic_hash": "82a3bbbeca3db8464ea90a31a2c8b59e"
+  },
+  "C:\\Users\\ysaik\\AndroidStudioProjects\\LuminaPDF\\pdf-core\\src\\commonMain\\kotlin\\com\\lumina\\pdf\\core\\PdfDocument.kt": {
+    "mtime": 1781179377.2728114,
+    "ast_hash": "2833ce76f056459ab56f39eeeb6cc460",
+    "semantic_hash": "2833ce76f056459ab56f39eeeb6cc460"
+  },
+  "C:\\Users\\ysaik\\AndroidStudioProjects\\LuminaPDF\\pdf-core\\src\\commonMain\\kotlin\\com\\lumina\\pdf\\core\\PdfRect.kt": {
+    "mtime": 1781168462.547951,
+    "ast_hash": "62fd14a633447b6f3db63dead230b9b2",
+    "semantic_hash": "62fd14a633447b6f3db63dead230b9b2"
+  },
+  "C:\\Users\\ysaik\\AndroidStudioProjects\\LuminaPDF\\pdf-core\\src\\commonMain\\kotlin\\com\\lumina\\pdf\\core\\RenderQueue.kt": {
+    "mtime": 1781170131.3901567,
+    "ast_hash": "097d2ed4550cda9dbb4d799b1db39945",
+    "semantic_hash": "097d2ed4550cda9dbb4d799b1db39945"
+  },
+  "C:\\Users\\ysaik\\AndroidStudioProjects\\LuminaPDF\\pdf-renderer\\build.gradle.kts": {
+    "mtime": 1781168874.6029012,
+    "ast_hash": "ed934a90c738083d68759fd4a0608f88",
+    "semantic_hash": "ed934a90c738083d68759fd4a0608f88"
+  },
+  "C:\\Users\\ysaik\\AndroidStudioProjects\\LuminaPDF\\pdf-renderer\\src\\androidMain\\kotlin\\com\\lumina\\pdf\\renderer\\AndroidPdfBitmap.kt": {
+    "mtime": 1781168614.6325152,
+    "ast_hash": "4c61ceeded47ab50f99ed505fca92f3a",
+    "semantic_hash": "4c61ceeded47ab50f99ed505fca92f3a"
+  },
+  "C:\\Users\\ysaik\\AndroidStudioProjects\\LuminaPDF\\pdf-renderer\\src\\androidMain\\kotlin\\com\\lumina\\pdf\\renderer\\AndroidPdfDocument.kt": {
+    "mtime": 1781197863.0774088,
+    "ast_hash": "05ffff7f41af62f863ec150e76e62cc5",
+    "semantic_hash": "05ffff7f41af62f863ec150e76e62cc5"
+  },
+  "C:\\Users\\ysaik\\AndroidStudioProjects\\LuminaPDF\\pdf-renderer\\src\\androidMain\\kotlin\\com\\lumina\\pdf\\renderer\\PdfDocumentFactory.android.kt": {
+    "mtime": 1781168603.209692,
+    "ast_hash": "91139d74ba84057ba45de01b5303afb7",
+    "semantic_hash": "91139d74ba84057ba45de01b5303afb7"
+  },
+  "C:\\Users\\ysaik\\AndroidStudioProjects\\LuminaPDF\\pdf-renderer\\src\\commonMain\\kotlin\\com\\lumina\\pdf\\renderer\\PdfDocumentFactory.kt": {
+    "mtime": 1781168559.193074,
+    "ast_hash": "c7f4c629217bb66cbf307a86be0876dc",
+    "semantic_hash": "c7f4c629217bb66cbf307a86be0876dc"
+  },
+  "C:\\Users\\ysaik\\AndroidStudioProjects\\LuminaPDF\\pdf-renderer\\src\\iosMain\\kotlin\\com\\lumina\\pdf\\renderer\\PdfDocumentFactory.ios.kt": {
+    "mtime": 1781168640.6439283,
+    "ast_hash": "edf9319bc7f6252f2888e0d150e7d967",
+    "semantic_hash": "edf9319bc7f6252f2888e0d150e7d967"
+  },
+  "C:\\Users\\ysaik\\AndroidStudioProjects\\LuminaPDF\\pdf-renderer\\src\\jsMain\\kotlin\\com\\lumina\\pdf\\renderer\\PdfDocumentFactory.js.kt": {
+    "mtime": 1781168892.892601,
+    "ast_hash": "d781173b72ec7abc21b30c58d61187d1",
+    "semantic_hash": "d781173b72ec7abc21b30c58d61187d1"
+  },
+  "C:\\Users\\ysaik\\AndroidStudioProjects\\LuminaPDF\\pdf-renderer\\src\\jvmMain\\kotlin\\com\\lumina\\pdf\\renderer\\JvmPdfBitmap.kt": {
+    "mtime": 1781168579.7401621,
+    "ast_hash": "064d6ceb88c45a8ae02d3ede646e78fe",
+    "semantic_hash": "064d6ceb88c45a8ae02d3ede646e78fe"
+  },
+  "C:\\Users\\ysaik\\AndroidStudioProjects\\LuminaPDF\\pdf-renderer\\src\\jvmMain\\kotlin\\com\\lumina\\pdf\\renderer\\JvmPdfDocument.kt": {
+    "mtime": 1781248891.290128,
+    "ast_hash": "26ba05d2cdb0dd2f9188f2fb658f9131",
+    "semantic_hash": "26ba05d2cdb0dd2f9188f2fb658f9131"
+  },
+  "C:\\Users\\ysaik\\AndroidStudioProjects\\LuminaPDF\\pdf-renderer\\src\\jvmMain\\kotlin\\com\\lumina\\pdf\\renderer\\PdfDocumentFactory.jvm.kt": {
+    "mtime": 1781169200.8477101,
+    "ast_hash": "1a8dd0c97b36cc32ff3dac7efbdc8872",
+    "semantic_hash": "1a8dd0c97b36cc32ff3dac7efbdc8872"
+  },
+  "C:\\Users\\ysaik\\AndroidStudioProjects\\LuminaPDF\\pdf-renderer\\src\\wasmJsMain\\kotlin\\com\\lumina\\pdf\\renderer\\PdfDocumentFactory.wasmJs.kt": {
+    "mtime": 1781168902.1468854,
+    "ast_hash": "f03fe1f72447669ff00c2af8bede5f1a",
+    "semantic_hash": "f03fe1f72447669ff00c2af8bede5f1a"
+  },
+  "C:\\Users\\ysaik\\AndroidStudioProjects\\LuminaPDF\\pdf-viewer\\build.gradle.kts": {
+    "mtime": 1781198822.2128153,
+    "ast_hash": "b5d83979abc3cb21a52f10904d37b6bb",
+    "semantic_hash": "b5d83979abc3cb21a52f10904d37b6bb"
+  },
+  "C:\\Users\\ysaik\\AndroidStudioProjects\\LuminaPDF\\pdf-viewer\\src\\androidMain\\kotlin\\com\\lumina\\pdf\\viewer\\PdfBitmapExtensions.android.kt": {
+    "mtime": 1781168690.9045942,
+    "ast_hash": "d68d571aa0f03ed9debc4aa00ffdb7f9",
+    "semantic_hash": "d68d571aa0f03ed9debc4aa00ffdb7f9"
+  },
+  "C:\\Users\\ysaik\\AndroidStudioProjects\\LuminaPDF\\pdf-viewer\\src\\androidMain\\kotlin\\com\\lumina\\pdf\\viewer\\db\\PdfDatabase.android.kt": {
+    "mtime": 1781201526.7439594,
+    "ast_hash": "201ed76377a8c356f7cfe895b6c1a416",
+    "semantic_hash": "201ed76377a8c356f7cfe895b6c1a416"
+  },
+  "C:\\Users\\ysaik\\AndroidStudioProjects\\LuminaPDF\\pdf-viewer\\src\\commonMain\\kotlin\\com\\lumina\\pdf\\viewer\\PdfBitmapExtensions.kt": {
+    "mtime": 1781168681.1436567,
+    "ast_hash": "2d5bce23abf3aa323e5f7ab30f02ff9f",
+    "semantic_hash": "2d5bce23abf3aa323e5f7ab30f02ff9f"
+  },
+  "C:\\Users\\ysaik\\AndroidStudioProjects\\LuminaPDF\\pdf-viewer\\src\\commonMain\\kotlin\\com\\lumina\\pdf\\viewer\\PdfViewer.kt": {
+    "mtime": 1781201615.0394652,
+    "ast_hash": "304c81d655055ca2ab8cb1bfb75e7c79",
+    "semantic_hash": "304c81d655055ca2ab8cb1bfb75e7c79"
+  },
+  "C:\\Users\\ysaik\\AndroidStudioProjects\\LuminaPDF\\pdf-viewer\\src\\commonMain\\kotlin\\com\\lumina\\pdf\\viewer\\PdfViewerConfig.kt": {
+    "mtime": 1781183458.690235,
+    "ast_hash": "2a2d51b6976cd1e585042e4391fb0072",
+    "semantic_hash": "2a2d51b6976cd1e585042e4391fb0072"
+  },
+  "C:\\Users\\ysaik\\AndroidStudioProjects\\LuminaPDF\\pdf-viewer\\src\\commonMain\\kotlin\\com\\lumina\\pdf\\viewer\\PdfViewerState.kt": {
+    "mtime": 1781168660.0854506,
+    "ast_hash": "dad70d8c40a682b9dfe94fdab8da552e",
+    "semantic_hash": "dad70d8c40a682b9dfe94fdab8da552e"
+  },
+  "C:\\Users\\ysaik\\AndroidStudioProjects\\LuminaPDF\\pdf-viewer\\src\\commonMain\\kotlin\\com\\lumina\\pdf\\viewer\\db\\PdfDatabase.kt": {
+    "mtime": 1781201517.3549955,
+    "ast_hash": "2b9b8d12379fdc60977bf0589018be7e",
+    "semantic_hash": "2b9b8d12379fdc60977bf0589018be7e"
+  },
+  "C:\\Users\\ysaik\\AndroidStudioProjects\\LuminaPDF\\pdf-viewer\\src\\iosMain\\kotlin\\com\\lumina\\pdf\\viewer\\PdfBitmapExtensions.ios.kt": {
+    "mtime": 1781168710.801553,
+    "ast_hash": "9170d6792f2df9c27d05f2b3b4163a26",
+    "semantic_hash": "9170d6792f2df9c27d05f2b3b4163a26"
+  },
+  "C:\\Users\\ysaik\\AndroidStudioProjects\\LuminaPDF\\pdf-viewer\\src\\iosMain\\kotlin\\com\\lumina\\pdf\\viewer\\db\\PdfDatabase.ios.kt": {
+    "mtime": 1781204089.0758088,
+    "ast_hash": "305b5ae090347fe5809650f46e6c9fcc",
+    "semantic_hash": "305b5ae090347fe5809650f46e6c9fcc"
+  },
+  "C:\\Users\\ysaik\\AndroidStudioProjects\\LuminaPDF\\pdf-viewer\\src\\jsMain\\kotlin\\com\\lumina\\pdf\\viewer\\PdfBitmapExtensions.js.kt": {
+    "mtime": 1781168910.7574725,
+    "ast_hash": "cf4752782c9d3154e943e6374e1a8a73",
+    "semantic_hash": "cf4752782c9d3154e943e6374e1a8a73"
+  },
+  "C:\\Users\\ysaik\\AndroidStudioProjects\\LuminaPDF\\pdf-viewer\\src\\jsMain\\kotlin\\com\\lumina\\pdf\\viewer\\db\\PdfDatabase.js.kt": {
+    "mtime": 1781201555.7714145,
+    "ast_hash": "78c5d77c90c009f32ca3bab2198cbe67",
+    "semantic_hash": "78c5d77c90c009f32ca3bab2198cbe67"
+  },
+  "C:\\Users\\ysaik\\AndroidStudioProjects\\LuminaPDF\\pdf-viewer\\src\\jvmMain\\kotlin\\com\\lumina\\pdf\\viewer\\PdfBitmapExtensions.jvm.kt": {
+    "mtime": 1781168701.4047353,
+    "ast_hash": "0187e9501bc3127cffb80cf02f68c82b",
+    "semantic_hash": "0187e9501bc3127cffb80cf02f68c82b"
+  },
+  "C:\\Users\\ysaik\\AndroidStudioProjects\\LuminaPDF\\pdf-viewer\\src\\jvmMain\\kotlin\\com\\lumina\\pdf\\viewer\\db\\PdfDatabase.jvm.kt": {
+    "mtime": 1781201532.932368,
+    "ast_hash": "488a7d2601bc8a1f459b0323aed63cfe",
+    "semantic_hash": "488a7d2601bc8a1f459b0323aed63cfe"
+  },
+  "C:\\Users\\ysaik\\AndroidStudioProjects\\LuminaPDF\\pdf-viewer\\src\\wasmJsMain\\kotlin\\com\\lumina\\pdf\\viewer\\PdfBitmapExtensions.wasmJs.kt": {
+    "mtime": 1781168919.472085,
+    "ast_hash": "7b96bfa66b6623202764b3f4fc2e1633",
+    "semantic_hash": "7b96bfa66b6623202764b3f4fc2e1633"
+  },
+  "C:\\Users\\ysaik\\AndroidStudioProjects\\LuminaPDF\\pdf-viewer\\src\\wasmJsMain\\kotlin\\com\\lumina\\pdf\\viewer\\db\\PdfDatabase.wasmJs.kt": {
+    "mtime": 1781203119.9074872,
+    "ast_hash": "dc98ac72aaf557f3e6569391f05a7d10",
+    "semantic_hash": "dc98ac72aaf557f3e6569391f05a7d10"
+  },
+  "C:\\Users\\ysaik\\AndroidStudioProjects\\LuminaPDF\\settings.gradle.kts": {
+    "mtime": 1781168375.0709205,
+    "ast_hash": "eeb7235e052be29627d044d4db2dd811",
+    "semantic_hash": "eeb7235e052be29627d044d4db2dd811"
+  },
+  "C:\\Users\\ysaik\\AndroidStudioProjects\\LuminaPDF\\shared\\build.gradle.kts": {
+    "mtime": 1781184417.6727245,
+    "ast_hash": "bb03a0652838a056929bf62d688db286",
+    "semantic_hash": "bb03a0652838a056929bf62d688db286"
+  },
+  "C:\\Users\\ysaik\\AndroidStudioProjects\\LuminaPDF\\shared\\src\\androidHostTest\\kotlin\\com\\lumina\\pdf\\SharedLogicAndroidHostTest.kt": {
+    "mtime": 1781149022.0594833,
+    "ast_hash": "4daaa7db697640c5488ba1813e5abab1",
+    "semantic_hash": "4daaa7db697640c5488ba1813e5abab1"
+  },
+  "C:\\Users\\ysaik\\AndroidStudioProjects\\LuminaPDF\\shared\\src\\androidMain\\kotlin\\com\\lumina\\pdf\\FilePicker.android.kt": {
+    "mtime": 1781184445.9660192,
+    "ast_hash": "447db19665347061170dc86d234229f0",
+    "semantic_hash": "447db19665347061170dc86d234229f0"
+  },
+  "C:\\Users\\ysaik\\AndroidStudioProjects\\LuminaPDF\\shared\\src\\androidMain\\kotlin\\com\\lumina\\pdf\\Platform.android.kt": {
+    "mtime": 1781149022.0710053,
+    "ast_hash": "30b4456515cab36bec9b4377d5c59850",
+    "semantic_hash": "30b4456515cab36bec9b4377d5c59850"
+  },
+  "C:\\Users\\ysaik\\AndroidStudioProjects\\LuminaPDF\\shared\\src\\commonMain\\kotlin\\com\\lumina\\pdf\\App.kt": {
+    "mtime": 1781199767.1637423,
+    "ast_hash": "0c77af6969a4f021a28076db099968a8",
+    "semantic_hash": "0c77af6969a4f021a28076db099968a8"
+  },
+  "C:\\Users\\ysaik\\AndroidStudioProjects\\LuminaPDF\\shared\\src\\commonMain\\kotlin\\com\\lumina\\pdf\\FilePicker.kt": {
+    "mtime": 1781184427.5282488,
+    "ast_hash": "1adb3d217076934c76d445908a799a67",
+    "semantic_hash": "1adb3d217076934c76d445908a799a67"
+  },
+  "C:\\Users\\ysaik\\AndroidStudioProjects\\LuminaPDF\\shared\\src\\commonMain\\kotlin\\com\\lumina\\pdf\\Greeting.kt": {
+    "mtime": 1781149022.092075,
+    "ast_hash": "68db16062ccca71ca182a8c28cbd648b",
+    "semantic_hash": "68db16062ccca71ca182a8c28cbd648b"
+  },
+  "C:\\Users\\ysaik\\AndroidStudioProjects\\LuminaPDF\\shared\\src\\commonMain\\kotlin\\com\\lumina\\pdf\\GreetingUtil.kt": {
+    "mtime": 1781149022.0945773,
+    "ast_hash": "bd2f7b8c1426439b555b05df32b6f002",
+    "semantic_hash": "bd2f7b8c1426439b555b05df32b6f002"
+  },
+  "C:\\Users\\ysaik\\AndroidStudioProjects\\LuminaPDF\\shared\\src\\commonMain\\kotlin\\com\\lumina\\pdf\\HomeScreen.kt": {
+    "mtime": 1781199760.420042,
+    "ast_hash": "a6e1c37c76be188381cd53614397c0d7",
+    "semantic_hash": "a6e1c37c76be188381cd53614397c0d7"
+  },
+  "C:\\Users\\ysaik\\AndroidStudioProjects\\LuminaPDF\\shared\\src\\commonMain\\kotlin\\com\\lumina\\pdf\\Platform.kt": {
+    "mtime": 1781149022.0966008,
+    "ast_hash": "5f2d316e784874a9e3d4d604eeafb7d5",
+    "semantic_hash": "5f2d316e784874a9e3d4d604eeafb7d5"
+  },
+  "C:\\Users\\ysaik\\AndroidStudioProjects\\LuminaPDF\\shared\\src\\commonTest\\kotlin\\com\\lumina\\pdf\\SharedCommonTest.kt": {
+    "mtime": 1781149022.1081285,
+    "ast_hash": "61b64a68a63258a3666dd6133a02d03f",
+    "semantic_hash": "61b64a68a63258a3666dd6133a02d03f"
+  },
+  "C:\\Users\\ysaik\\AndroidStudioProjects\\LuminaPDF\\shared\\src\\iosMain\\kotlin\\com\\lumina\\pdf\\FilePicker.ios.kt": {
+    "mtime": 1781184459.3769357,
+    "ast_hash": "d63dacfb093fefc66d109769c0a01c24",
+    "semantic_hash": "d63dacfb093fefc66d109769c0a01c24"
+  },
+  "C:\\Users\\ysaik\\AndroidStudioProjects\\LuminaPDF\\shared\\src\\iosMain\\kotlin\\com\\lumina\\pdf\\MainViewController.kt": {
+    "mtime": 1781149022.1196773,
+    "ast_hash": "133c032aa4385c16689cf057e91240a8",
+    "semantic_hash": "133c032aa4385c16689cf057e91240a8"
+  },
+  "C:\\Users\\ysaik\\AndroidStudioProjects\\LuminaPDF\\shared\\src\\iosMain\\kotlin\\com\\lumina\\pdf\\Platform.ios.kt": {
+    "mtime": 1781149022.121677,
+    "ast_hash": "ca420adfc4a4fee32cdfa82d9f158b0b",
+    "semantic_hash": "ca420adfc4a4fee32cdfa82d9f158b0b"
+  },
+  "C:\\Users\\ysaik\\AndroidStudioProjects\\LuminaPDF\\shared\\src\\iosTest\\kotlin\\com\\lumina\\pdf\\SharedLogicIOSTest.kt": {
+    "mtime": 1781149022.1337302,
+    "ast_hash": "ab44d1e87927dad47f6c7471af1d7b7e",
+    "semantic_hash": "ab44d1e87927dad47f6c7471af1d7b7e"
+  },
+  "C:\\Users\\ysaik\\AndroidStudioProjects\\LuminaPDF\\shared\\src\\jsMain\\kotlin\\com\\lumina\\pdf\\FilePicker.js.kt": {
+    "mtime": 1781184465.0240273,
+    "ast_hash": "d63dacfb093fefc66d109769c0a01c24",
+    "semantic_hash": "d63dacfb093fefc66d109769c0a01c24"
+  },
+  "C:\\Users\\ysaik\\AndroidStudioProjects\\LuminaPDF\\shared\\src\\jsMain\\kotlin\\com\\lumina\\pdf\\Platform.js.kt": {
+    "mtime": 1781149022.1457856,
+    "ast_hash": "0322e62ad2c1e1a383e1c9ffdb51aa9d",
+    "semantic_hash": "0322e62ad2c1e1a383e1c9ffdb51aa9d"
+  },
+  "C:\\Users\\ysaik\\AndroidStudioProjects\\LuminaPDF\\shared\\src\\jvmMain\\kotlin\\com\\lumina\\pdf\\FilePicker.jvm.kt": {
+    "mtime": 1781184438.027057,
+    "ast_hash": "f9ccad3ecfc3104c1bebdd775ce72f02",
+    "semantic_hash": "f9ccad3ecfc3104c1bebdd775ce72f02"
+  },
+  "C:\\Users\\ysaik\\AndroidStudioProjects\\LuminaPDF\\shared\\src\\jvmMain\\kotlin\\com\\lumina\\pdf\\Platform.jvm.kt": {
+    "mtime": 1781149022.1573367,
+    "ast_hash": "81984749f0c2f69f8d2a844895706027",
+    "semantic_hash": "81984749f0c2f69f8d2a844895706027"
+  },
+  "C:\\Users\\ysaik\\AndroidStudioProjects\\LuminaPDF\\shared\\src\\jvmTest\\kotlin\\com\\lumina\\pdf\\SharedLogicDesktopTest.kt": {
+    "mtime": 1781149022.168848,
+    "ast_hash": "afeba4aa9ae05d847fe9af5b01a51895",
+    "semantic_hash": "afeba4aa9ae05d847fe9af5b01a51895"
+  },
+  "C:\\Users\\ysaik\\AndroidStudioProjects\\LuminaPDF\\shared\\src\\wasmJsMain\\kotlin\\com\\lumina\\pdf\\FilePicker.wasmJs.kt": {
+    "mtime": 1781184472.5017426,
+    "ast_hash": "d63dacfb093fefc66d109769c0a01c24",
+    "semantic_hash": "d63dacfb093fefc66d109769c0a01c24"
+  },
+  "C:\\Users\\ysaik\\AndroidStudioProjects\\LuminaPDF\\shared\\src\\wasmJsMain\\kotlin\\com\\lumina\\pdf\\Platform.wasmJs.kt": {
+    "mtime": 1781149022.1794064,
+    "ast_hash": "49191348e310cdc3c8c8b1552c590a5b",
+    "semantic_hash": "49191348e310cdc3c8c8b1552c590a5b"
+  },
+  "C:\\Users\\ysaik\\AndroidStudioProjects\\LuminaPDF\\webApp\\build.gradle.kts": {
+    "mtime": 1781149022.1824074,
+    "ast_hash": "a308a34aefec577a2537a4a08324e4ec",
+    "semantic_hash": "a308a34aefec577a2537a4a08324e4ec"
+  },
+  "C:\\Users\\ysaik\\AndroidStudioProjects\\LuminaPDF\\webApp\\src\\webMain\\kotlin\\com\\lumina\\pdf\\main.kt": {
+    "mtime": 1781149022.1929193,
+    "ast_hash": "27bacea6ae9fb9aae3ea36f4ac42a43e",
+    "semantic_hash": "27bacea6ae9fb9aae3ea36f4ac42a43e"
+  },
+  "C:\\Users\\ysaik\\AndroidStudioProjects\\LuminaPDF\\.agents\\rules\\graphify.md": {
+    "mtime": 1781273554.2739892,
+    "ast_hash": "a0e4d192b9e2e17256124dbfc8e24e6a",
+    "semantic_hash": "a0e4d192b9e2e17256124dbfc8e24e6a"
+  },
+  "C:\\Users\\ysaik\\AndroidStudioProjects\\LuminaPDF\\.agents\\workflows\\graphify.md": {
+    "mtime": 1781273554.2764342,
+    "ast_hash": "637776aa6f7496d069afe7520c845c8a",
+    "semantic_hash": "637776aa6f7496d069afe7520c845c8a"
+  },
+  "C:\\Users\\ysaik\\AndroidStudioProjects\\LuminaPDF\\README.md": {
+    "mtime": 1781149021.880257,
+    "ast_hash": "a839ad7f9ede75957acac4ac36c5667c",
+    "semantic_hash": "a839ad7f9ede75957acac4ac36c5667c"
+  },
+  "C:\\Users\\ysaik\\AndroidStudioProjects\\LuminaPDF\\implementation_plan.md": {
+    "mtime": 1781168211.7066474,
+    "ast_hash": "79bc2b33fdd9de09e87dddea4e2d5b09",
+    "semantic_hash": "79bc2b33fdd9de09e87dddea4e2d5b09"
+  },
+  "C:\\Users\\ysaik\\AndroidStudioProjects\\LuminaPDF\\webApp\\src\\webMain\\resources\\index.html": {
+    "mtime": 1781149022.1964583,
+    "ast_hash": "361bc58cbf79348d65d7ae999632dbc9",
+    "semantic_hash": "361bc58cbf79348d65d7ae999632dbc9"
+  },
+  "C:\\Users\\ysaik\\AndroidStudioProjects\\LuminaPDF\\shared\\src\\commonMain\\composeResources\\files\\sample.pdf": {
+    "mtime": 1781170647.1869204,
+    "ast_hash": "2942bfabb3d05332b66eb128e0842cff",
+    "semantic_hash": "2942bfabb3d05332b66eb128e0842cff"
+  },
+  "C:\\Users\\ysaik\\AndroidStudioProjects\\LuminaPDF\\androidApp\\src\\main\\res\\mipmap-hdpi\\ic_launcher.png": {
+    "mtime": 1781149021.9208229,
+    "ast_hash": "adcaf5b958ee155708e77f23ac6b3cdb",
+    "semantic_hash": "adcaf5b958ee155708e77f23ac6b3cdb"
+  },
+  "C:\\Users\\ysaik\\AndroidStudioProjects\\LuminaPDF\\androidApp\\src\\main\\res\\mipmap-hdpi\\ic_launcher_round.png": {
+    "mtime": 1781149021.9228222,
+    "ast_hash": "698fe3c4ded44129534ed811a4024bbc",
+    "semantic_hash": "698fe3c4ded44129534ed811a4024bbc"
+  },
+  "C:\\Users\\ysaik\\AndroidStudioProjects\\LuminaPDF\\androidApp\\src\\main\\res\\mipmap-mdpi\\ic_launcher.png": {
+    "mtime": 1781149021.9289138,
+    "ast_hash": "472c3ecb86996bed8516b338935a51d0",
+    "semantic_hash": "472c3ecb86996bed8516b338935a51d0"
+  },
+  "C:\\Users\\ysaik\\AndroidStudioProjects\\LuminaPDF\\androidApp\\src\\main\\res\\mipmap-mdpi\\ic_launcher_round.png": {
+    "mtime": 1781149021.9329078,
+    "ast_hash": "f3aac23c5162c50c0a41cdd205a004a8",
+    "semantic_hash": "f3aac23c5162c50c0a41cdd205a004a8"
+  },
+  "C:\\Users\\ysaik\\AndroidStudioProjects\\LuminaPDF\\androidApp\\src\\main\\res\\mipmap-xhdpi\\ic_launcher.png": {
+    "mtime": 1781149021.937456,
+    "ast_hash": "7f108fe7b46884cf7953694e5245d021",
+    "semantic_hash": "7f108fe7b46884cf7953694e5245d021"
+  },
+  "C:\\Users\\ysaik\\AndroidStudioProjects\\LuminaPDF\\androidApp\\src\\main\\res\\mipmap-xhdpi\\ic_launcher_round.png": {
+    "mtime": 1781149021.9414527,
+    "ast_hash": "c6db0296101bf462a82b88ba6d256842",
+    "semantic_hash": "c6db0296101bf462a82b88ba6d256842"
+  },
+  "C:\\Users\\ysaik\\AndroidStudioProjects\\LuminaPDF\\androidApp\\src\\main\\res\\mipmap-xxhdpi\\ic_launcher.png": {
+    "mtime": 1781149021.9459784,
+    "ast_hash": "e8e005a4a7425340fd2ff7dab98d99b5",
+    "semantic_hash": "e8e005a4a7425340fd2ff7dab98d99b5"
+  },
+  "C:\\Users\\ysaik\\AndroidStudioProjects\\LuminaPDF\\androidApp\\src\\main\\res\\mipmap-xxhdpi\\ic_launcher_round.png": {
+    "mtime": 1781149021.948982,
+    "ast_hash": "9e3000786992bbd78c3f075df7d2d4b3",
+    "semantic_hash": "9e3000786992bbd78c3f075df7d2d4b3"
+  },
+  "C:\\Users\\ysaik\\AndroidStudioProjects\\LuminaPDF\\androidApp\\src\\main\\res\\mipmap-xxxhdpi\\ic_launcher.png": {
+    "mtime": 1781149021.9529848,
+    "ast_hash": "1e49d495a78909ab8754ec436bc39147",
+    "semantic_hash": "1e49d495a78909ab8754ec436bc39147"
+  },
+  "C:\\Users\\ysaik\\AndroidStudioProjects\\LuminaPDF\\androidApp\\src\\main\\res\\mipmap-xxxhdpi\\ic_launcher_round.png": {
+    "mtime": 1781149021.9565258,
+    "ast_hash": "5800e2a5dbde6ab1c96157767f29ef04",
+    "semantic_hash": "5800e2a5dbde6ab1c96157767f29ef04"
+  },
+  "C:\\Users\\ysaik\\AndroidStudioProjects\\LuminaPDF\\iosApp\\iosApp\\Assets.xcassets\\AppIcon.appiconset\\app-icon-1024.png": {
+    "mtime": 1781149022.0227954,
+    "ast_hash": "78fdb082bd35060897f3519e6714b3cc",
+    "semantic_hash": "78fdb082bd35060897f3519e6714b3cc"
+  },
+  "C:\\Users\\ysaik\\AndroidStudioProjects\\LuminaPDF\\shared\\src\\commonMain\\composeResources\\drawable\\suggestions_hero.png": {
+    "mtime": 1781185026.240318,
+    "ast_hash": "4864b63cd4522b2a3a867a69d98d5830",
+    "semantic_hash": "4864b63cd4522b2a3a867a69d98d5830"
+  }
+}
