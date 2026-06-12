@@ -175,8 +175,8 @@
     "semantic_hash": "2d5bce23abf3aa323e5f7ab30f02ff9f"
   },
   "pdf-viewer/src/commonMain/kotlin/com/lumina/pdf/viewer/PdfViewer.kt": {
-    "mtime": 1781280910.0952253,
-    "ast_hash": "a81b51e85a4e2c91953f64c8145bd58e",
+    "mtime": 1781282990.7949643,
+    "ast_hash": "fe55ab598783ecfced1bb0717cc068c3",
     "semantic_hash": ""
   },
   "pdf-viewer/src/commonMain/kotlin/com/lumina/pdf/viewer/PdfViewerConfig.kt": {
@@ -255,8 +255,8 @@
     "semantic_hash": "30b4456515cab36bec9b4377d5c59850"
   },
   "shared/src/commonMain/kotlin/com/lumina/pdf/App.kt": {
-    "mtime": 1781281040.8734055,
-    "ast_hash": "4013a80cf7eed2884a59a8a6bda69db1",
+    "mtime": 1781282062.7259903,
+    "ast_hash": "4c521a87f6e90be5c938d7e87e5b5342",
     "semantic_hash": ""
   },
   "shared/src/commonMain/kotlin/com/lumina/pdf/Greeting.kt": {
@@ -270,8 +270,8 @@
     "semantic_hash": "bd2f7b8c1426439b555b05df32b6f002"
   },
   "shared/src/commonMain/kotlin/com/lumina/pdf/HomeScreen.kt": {
-    "mtime": 1781281130.327173,
-    "ast_hash": "dd2b6b137b9f53bab51f19cb02760945",
+    "mtime": 1781282035.079719,
+    "ast_hash": "7cafb8dd7a9df89934ae5149331694de",
     "semantic_hash": ""
   },
   "shared/src/commonMain/kotlin/com/lumina/pdf/Platform.kt": {
@@ -440,8 +440,8 @@
     "semantic_hash": ""
   },
   "shared/src/commonMain/kotlin/com/lumina/pdf/RecentFilesStore.kt": {
-    "mtime": 1781279700.0644991,
-    "ast_hash": "6b976e0f23ad38dde962fa4dc242ba84",
+    "mtime": 1781281919.9087582,
+    "ast_hash": "ddea7eb5aea347e30056daccef8abc3f",
     "semantic_hash": ""
   },
   "shared/src/iosMain/kotlin/com/lumina/pdf/FilePersistence.ios.kt": {

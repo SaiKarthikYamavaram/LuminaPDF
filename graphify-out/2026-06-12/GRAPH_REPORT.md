@@ -1,11 +1,11 @@
 # Graph Report - LuminaPDF  (2026-06-12)
 
 ## Corpus Check
-- 79 files · ~50,161 words
+- 79 files · ~50,979 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 548 nodes · 795 edges · 63 communities (44 shown, 19 thin omitted)
+- 551 nodes · 805 edges · 63 communities (44 shown, 19 thin omitted)
 - Extraction: 97% EXTRACTED · 3% INFERRED · 0% AMBIGUOUS · INFERRED: 25 edges (avg confidence: 0.8)
 - Token cost: 0 input · 0 output
 
@@ -68,13 +68,13 @@
 - [[_COMMUNITY_Community 62|Community 62]]
 
 ## God Nodes (most connected - your core abstractions)
-1. `HomeScreen()` - 24 edges
-2. `Modifier` - 22 edges
-3. `Offset` - 21 edges
-4. `Color` - 21 edges
+1. `HomeScreen()` - 27 edges
+2. `Modifier` - 23 edges
+3. `Color` - 22 edges
+4. `Offset` - 21 edges
 5. `TopBar()` - 19 edges
 6. `PdfDatabase` - 19 edges
-7. `PdfViewer()` - 17 edges
+7. `PdfViewer()` - 18 edges
 8. `Modifier` - 13 edges
 9. `JvmPdfDatabase` - 13 edges
 10. `Platform` - 13 edges
@@ -97,15 +97,15 @@
 ## Communities (63 total, 19 thin omitted)
 
 ### Community 0 - "Offset"
-Cohesion: 0.23
-Nodes (31): com, Offset, AcrobatPdfIcon(), CloseIcon(), CloudIcon(), FolderIcon(), GiftIcon(), GridIcon() (+23 more)
+Cohesion: 0.21
+Nodes (34): com, Offset, AcrobatPdfIcon(), ArrowRightIcon(), CloseIcon(), CloudIcon(), FolderIcon(), formatRelativeTime() (+26 more)
 
 ### Community 1 - "Mutablelist"
 Cohesion: 0.09
 Nodes (19): MutableList, org, Int, Float, Int, List, OutlineItem, PdfBitmap (+11 more)
 
 ### Community 2 - "Pdf Viewer Src Commonmain"
-Cohesion: 0.20
+Cohesion: 0.21
 Nodes (25): Boolean, Color, Float, Int, Modifier, PdfDocument, String, PdfViewerConfig (+17 more)
 
 ### Community 3 - "Pdf Renderer Src Androidmain"
@@ -235,9 +235,9 @@ _Questions this graph is uniquely positioned to answer:_
 - **Why does `PdfDatabase` connect `Db Pdfdatabase Js` to `Db Pdfdatabase Android`, `Db Pdfdatabase Ios`, `Db Pdfdatabase Jvm`, `Db Pdfdatabase Wasmjs`?**
   _High betweenness centrality (0.029) - this node is a cross-community bridge._
 - **Why does `PdfViewer()` connect `Pdf Viewer Src Commonmain` to `Offset`, `Core Lrumemorycache`, `Community 62`, `Core Renderqueue`?**
-  _High betweenness centrality (0.017) - this node is a cross-community bridge._
+  _High betweenness centrality (0.018) - this node is a cross-community bridge._
 - **Why does `LruMemoryCache` connect `Core Lrumemorycache` to `Pdf Viewer Src Commonmain`?**
-  _High betweenness centrality (0.011) - this node is a cross-community bridge._
+  _High betweenness centrality (0.012) - this node is a cross-community bridge._
 - **Are the 11 inferred relationships involving `Offset` (e.g. with `CloseIcon()` and `GiftIcon()`) actually correct?**
   _`Offset` has 11 INFERRED edges - model-reasoned connections that need verification._
 - **What connects `Bundle`, `Scene`, `OutlineItem` to the rest of the system?**

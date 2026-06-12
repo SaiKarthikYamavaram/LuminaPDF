@@ -36,6 +36,7 @@ import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import com.lumina.pdf.core.*
@@ -1287,7 +1288,7 @@ fun PdfViewer(
             modifier = Modifier
                 .align(Alignment.TopStart)
                 .padding(top = topBarHeight)
-                .width(240.dp)
+                .width(320.dp)
                 .fillMaxHeight()
         ) {
             Surface(
@@ -1383,15 +1384,19 @@ fun PdfViewer(
                                         style = MaterialTheme.typography.bodyMedium.copy(
                                             fontWeight = if (depth == 0) FontWeight.Bold else FontWeight.Normal
                                         ),
-                                        color = if (item.pageNumber >= 0) MaterialTheme.colorScheme.onSurface else MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f)
+                                        color = if (item.pageNumber >= 0) MaterialTheme.colorScheme.onSurface else MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f),
+                                        modifier = Modifier.weight(1f),
+                                        maxLines = 3,
+                                        overflow = TextOverflow.Ellipsis
                                     )
                                     if (item.pageNumber >= 0) {
-                                        Spacer(modifier = Modifier.weight(1f))
+                                        Spacer(modifier = Modifier.width(16.dp))
                                         Text(
                                             text = "${item.pageNumber + 1}",
                                             style = MaterialTheme.typography.labelSmall,
                                             color = MaterialTheme.colorScheme.primary,
-                                            fontWeight = FontWeight.Bold
+                                            fontWeight = FontWeight.Bold,
+                                            textAlign = TextAlign.End
                                         )
                                     }
                                 }
