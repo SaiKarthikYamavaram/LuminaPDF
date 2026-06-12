@@ -56,40 +56,53 @@ fun App() {
         val recentFiles = remember { mutableStateListOf<RecentFile>() }
         var currentDocument by remember { mutableStateOf<PdfDocument?>(null) }
         var currentDocumentName by remember { mutableStateOf("") }
+        var initialPageToOpen by remember { mutableStateOf<Int?>(null) }
         var error by remember { mutableStateOf<String?>(null) }
         val scope = rememberCoroutineScope()
 
         LaunchedEffect(Unit) {
             try {
-                val bytes = Res.readBytes("files/sample.pdf")
-                val sampleFile = RecentFile(
-                    id = "project_overview",
-                    name = "Project_Overview.pdf",
-                    lastOpened = "2 minutes ago",
-                    size = "1.2 MB",
-                    isSample = true,
-                    fileBytes = bytes
-                )
-                recentFiles.add(sampleFile)
+                val loaded = RecentFilesStore.loadRecentFilesList()
+                recentFiles.clear()
+                if (loaded.isEmpty()) {
+                    val bytes = Res.readBytes("files/sample.pdf")
+                    val sampleFile = RecentFile(
+                        id = "project_overview",
+                        name = "Project_Overview.pdf",
+                        lastOpened = "2 minutes ago",
+                        size = "1.2 MB",
+                        isSample = true,
+                        fileBytes = bytes
+                    )
+                    recentFiles.add(sampleFile)
+                    RecentFilesStore.saveRecentFilesList(recentFiles)
+                } else {
+                    recentFiles.addAll(loaded)
+                }
                 
-                // Render thumbnail for sample PDF
-                try {
-                    val factory = PdfDocumentFactory()
-                    val doc = factory.open(bytes)
-                    val bitmap = doc.renderPage(0, 180, 240)
-                    val idx = recentFiles.indexOfFirst { it.id == "project_overview" }
-                    if (idx != -1) {
-                        recentFiles[idx] = sampleFile.copy(thumbnail = bitmap.asImageBitmap())
+                // Asynchronously render thumbnails for all loaded files
+                recentFiles.forEach { file ->
+                    scope.launch {
+                        try {
+                            val bytes = file.fileBytes ?: if (file.isSample) Res.readBytes("files/sample.pdf") else null
+                            if (bytes != null) {
+                                val factory = PdfDocumentFactory()
+                                val doc = factory.open(bytes)
+                                val bitmap = doc.renderPage(0, 180, 240)
+                                val idx = recentFiles.indexOfFirst { it.id == file.id }
+                                if (idx != -1) {
+                                    recentFiles[idx] = recentFiles[idx].copy(thumbnail = bitmap.asImageBitmap())
+                                }
+                                doc.close()
+                            }
+                        } catch (e: Exception) {
+                            e.printStackTrace()
+                        }
                     }
-                    doc.close()
-                } catch (e: Exception) {
-                    e.printStackTrace()
                 }
             } catch (e: Exception) {
                 e.printStackTrace()
             }
-            
-            // No dummy mock files added here
         }
 
         val pickFileLauncher = io.github.vinceglb.filekit.compose.rememberFilePickerLauncher(
@@ -101,23 +114,41 @@ fun App() {
                     try {
                         val bytes = platformFile.readBytes()
                         val name = platformFile.name
-                        val newFile = RecentFile(
-                            id = name + "_" + (0..1000000).random().toString(),
-                            name = name,
-                            lastOpened = "Just now",
-                            size = formatSize(bytes.size),
-                            fileBytes = bytes
-                        )
-                        recentFiles.add(0, newFile)
+                        val sizeFormatted = formatSize(bytes.size)
+                        
+                        // Check if file already exists in recents (same name and size)
+                        val existing = recentFiles.find { it.name == name && it.size == sizeFormatted }
+                        val fileToOpen = if (existing != null) {
+                            val updated = existing.copy(
+                                lastOpened = "Just now",
+                                fileBytes = bytes,
+                                inRecents = true
+                            )
+                            recentFiles.remove(existing)
+                            recentFiles.add(0, updated)
+                            updated
+                        } else {
+                            val newFile = RecentFile(
+                                id = name + "_" + bytes.size,
+                                name = name,
+                                lastOpened = "Just now",
+                                size = sizeFormatted,
+                                fileBytes = bytes
+                            )
+                            recentFiles.add(0, newFile)
+                            newFile
+                        }
+                        RecentFilesStore.saveRecentFilesList(recentFiles)
                         
                         val factory = PdfDocumentFactory()
                         currentDocument = factory.open(bytes)
-                        currentDocumentName = name
+                        currentDocumentName = fileToOpen.id
+                        initialPageToOpen = null
                         
                         // Render thumbnail in background
                         val doc = factory.open(bytes)
                         val bitmap = doc.renderPage(0, 180, 240)
-                        val idx = recentFiles.indexOfFirst { it.id == newFile.id }
+                        val idx = recentFiles.indexOfFirst { it.id == fileToOpen.id }
                         if (idx != -1) {
                             recentFiles[idx] = recentFiles[idx].copy(thumbnail = bitmap.asImageBitmap())
                         }
@@ -148,30 +179,51 @@ fun App() {
             PdfViewer(
                 document = currentDocument!!,
                 documentId = currentDocumentName,
+                initialPage = initialPageToOpen,
                 onClose = {
                     currentDocument?.close()
                     currentDocument = null
+                    initialPageToOpen = null
                 },
                 modifier = Modifier.fillMaxSize()
             )
         } else {
             HomeScreen(
                 recentFiles = recentFiles,
-                onOpenFile = { recentFile ->
+                onOpenFile = { recentFile, page ->
                     scope.launch {
                         try {
                             val bytesToOpen = recentFile.fileBytes ?: Res.readBytes("files/sample.pdf")
                             val factory = PdfDocumentFactory()
                             currentDocument = factory.open(bytesToOpen)
-                            currentDocumentName = recentFile.name
+                            currentDocumentName = recentFile.id
+                            initialPageToOpen = page
+                            
+                            // Move the opened file to the top of the list, update lastOpened, and mark inRecents = true
+                            val existing = recentFiles.find { it.id == recentFile.id }
+                            if (existing != null) {
+                                val updated = existing.copy(lastOpened = "Just now", inRecents = true)
+                                recentFiles.remove(existing)
+                                recentFiles.add(0, updated)
+                                RecentFilesStore.saveRecentFilesList(recentFiles)
+                            }
                         } catch (e: Exception) {
                             e.printStackTrace()
                             error = e.message ?: "Error opening file"
                         }
                     }
                 },
-                onRemoveFile = { recentFile ->
-                    recentFiles.remove(recentFile)
+                onRemoveFromRecents = { recentFile ->
+                    val idx = recentFiles.indexOfFirst { it.id == recentFile.id }
+                    if (idx != -1) {
+                        recentFiles[idx] = recentFiles[idx].copy(inRecents = false)
+                        RecentFilesStore.saveRecentFilesList(recentFiles)
+                    }
+                },
+                onDeleteDocument = { recentFile ->
+                    recentFiles.removeAll { it.id == recentFile.id }
+                    RecentFilesStore.deleteRecentFile(recentFile.id)
+                    RecentFilesStore.saveRecentFilesList(recentFiles)
                 },
                 onTriggerFilePicker = pickFile,
                 modifier = Modifier.fillMaxSize()

@@ -2,6 +2,7 @@ package com.lumina.pdf
 
 import androidx.compose.animation.*
 import androidx.compose.foundation.*
+import com.lumina.pdf.viewer.db.rememberPdfDatabase
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsHoveredAsState
 import androidx.compose.foundation.layout.*
@@ -36,7 +37,8 @@ data class RecentFile(
     val size: String,
     val isSample: Boolean = false,
     val fileBytes: ByteArray? = null,
-    val thumbnail: ImageBitmap? = null
+    val thumbnail: ImageBitmap? = null,
+    val inRecents: Boolean = true
 )
 
 // --- Custom Canvas Icons for Sleek, Dependency-free Rendering ---
@@ -380,6 +382,32 @@ fun CloseIcon(color: Color, modifier: Modifier = Modifier) {
     }
 }
 
+@Composable
+fun NotesIndicatorIcon(color: Color, modifier: Modifier = Modifier) {
+    Canvas(modifier = modifier.size(16.dp)) {
+        val w = size.width
+        val h = size.height
+        val stroke = 1.5.dp.toPx()
+        
+        // Chat bubble shape
+        val path = Path().apply {
+            moveTo(w * 0.15f, h * 0.15f)
+            lineTo(w * 0.85f, h * 0.15f)
+            lineTo(w * 0.85f, h * 0.65f)
+            lineTo(w * 0.5f, h * 0.65f)
+            lineTo(w * 0.3f, h * 0.85f)
+            lineTo(w * 0.3f, h * 0.65f)
+            lineTo(w * 0.15f, h * 0.65f)
+            close()
+        }
+        drawPath(path = path, color = color, style = Stroke(width = stroke, join = StrokeJoin.Round))
+        
+        // Horizontal lines inside bubble
+        drawLine(color = color, start = Offset(w * 0.32f, h * 0.35f), end = Offset(w * 0.68f, h * 0.35f), strokeWidth = stroke)
+        drawLine(color = color, start = Offset(w * 0.32f, h * 0.5f), end = Offset(w * 0.58f, h * 0.5f), strokeWidth = stroke)
+    }
+}
+
 // --- Hoverable Item Wrapper ---
 @Composable
 fun HoverableItem(
@@ -563,23 +591,75 @@ fun MockDocumentThumbnail(name: String, modifier: Modifier = Modifier) {
     }
 }
 
+@Composable
+fun ArrowRightIcon(color: Color, modifier: Modifier = Modifier) {
+    Canvas(modifier = modifier.size(16.dp)) {
+        val w = size.width
+        val h = size.height
+        val stroke = 1.5.dp.toPx()
+        val path = Path().apply {
+            moveTo(w * 0.35f, h * 0.25f)
+            lineTo(w * 0.65f, h * 0.5f)
+            lineTo(w * 0.35f, h * 0.75f)
+        }
+        drawPath(path = path, color = color, style = Stroke(width = stroke, cap = StrokeCap.Round, join = StrokeJoin.Round))
+    }
+}
+
+fun formatRelativeTime(timestamp: Long): String {
+    val diff = com.lumina.pdf.viewer.db.getCurrentTimeMillis() - timestamp
+    if (diff < 0) return "Just now"
+    val seconds = diff / 1000
+    if (seconds < 60) return "Just now"
+    val minutes = seconds / 60
+    if (minutes < 60) return "$minutes minute${if (minutes > 1) "s" else ""} ago"
+    val hours = minutes / 60
+    if (hours < 24) return "$hours hour${if (hours > 1) "s" else ""} ago"
+    val days = hours / 24
+    return "$days day${if (days > 1) "s" else ""} ago"
+}
+
 // --- Home Screen UI ---
 
 @Composable
 fun HomeScreen(
     recentFiles: List<RecentFile>,
-    onOpenFile: (RecentFile) -> Unit,
-    onRemoveFile: (RecentFile) -> Unit,
+    onOpenFile: (RecentFile, Int?) -> Unit,
+    onRemoveFromRecents: (RecentFile) -> Unit,
+    onDeleteDocument: (RecentFile) -> Unit,
     onTriggerFilePicker: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    var activeTab by remember { mutableStateOf("Home") }
+    val db = rememberPdfDatabase()
+    var activeTab by remember { mutableStateOf("Recents") }
+    
+    val notesGroupedByFile by produceState<Map<RecentFile, List<com.lumina.pdf.viewer.db.DbNote>>>(
+        initialValue = emptyMap(),
+        key1 = recentFiles.toList(),
+        key2 = activeTab
+    ) {
+        if (activeTab == "Notes") {
+            val map = mutableMapOf<RecentFile, List<com.lumina.pdf.viewer.db.DbNote>>()
+            recentFiles.forEach { file ->
+                try {
+                    val fileNotes = db.getNotes(file.id)
+                    if (fileNotes.isNotEmpty()) {
+                        map[file] = fileNotes
+                    }
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
+            }
+            value = map
+        } else {
+            value = emptyMap()
+        }
+    }
     var sortKey by remember { mutableStateOf("Recent") } // Recent, Name, Size
     var sortAscending by remember { mutableStateOf(false) }
     var filterQuery by remember { mutableStateOf("") }
     var globalSearchQuery by remember { mutableStateOf("") }
     var viewMode by remember { mutableStateOf("Grid") } // Grid, List
-    var hideSuggestions by remember { mutableStateOf(false) }
 
     val darkBg = Color(0xFF1E1E1E)
     val panelBg = Color(0xFF171717)
@@ -589,28 +669,37 @@ fun HomeScreen(
     val dividerColor = Color(0xFF2E2E2E)
 
     // Filter and Sort files
-    val filteredFiles = remember(recentFiles, filterQuery, sortKey, sortAscending) {
-        var list = recentFiles.filter { it.name.contains(filterQuery, ignoreCase = true) }
-        
-        list = when (sortKey) {
-            "Name" -> if (sortAscending) list.sortedBy { it.name.lowercase() } else list.sortedByDescending { it.name.lowercase() }
-            "Size" -> {
-                val sizeVal = { f: RecentFile ->
-                    val s = f.size.uppercase()
-                    val numeric = s.replace("[^0-9.]".toRegex(), "").toDoubleOrNull() ?: 0.0
-                    when {
-                        s.contains("GB") -> numeric * 1024 * 1024
-                        s.contains("MB") -> numeric * 1024
-                        else -> numeric
+    val filteredFiles by remember(filterQuery, globalSearchQuery, sortKey, sortAscending, activeTab) {
+        derivedStateOf {
+            var list = recentFiles.filter {
+                it.name.contains(filterQuery, ignoreCase = true) &&
+                it.name.contains(globalSearchQuery, ignoreCase = true)
+            }
+            
+            if (activeTab == "Recents") {
+                list = list.filter { it.inRecents }
+            }
+            
+            list = when (sortKey) {
+                "Name" -> if (sortAscending) list.sortedBy { it.name.lowercase() } else list.sortedByDescending { it.name.lowercase() }
+                "Size" -> {
+                    val sizeVal = { f: RecentFile ->
+                        val s = f.size.uppercase()
+                        val numeric = s.replace("[^0-9.]".toRegex(), "").toDoubleOrNull() ?: 0.0
+                        when {
+                            s.contains("GB") -> numeric * 1024 * 1024
+                            s.contains("MB") -> numeric * 1024
+                            else -> numeric
+                        }
                     }
+                    if (sortAscending) list.sortedBy(sizeVal) else list.sortedByDescending(sizeVal)
                 }
-                if (sortAscending) list.sortedBy(sizeVal) else list.sortedByDescending(sizeVal)
+                else -> {
+                    if (sortAscending) list.reversed() else list
+                }
             }
-            else -> {
-                if (sortAscending) list.reversed() else list
-            }
+            list
         }
-        list
     }
 
     Row(
@@ -624,7 +713,7 @@ fun HomeScreen(
                 .width(240.dp)
                 .fillMaxHeight()
                 .background(panelBg)
-                .padding(vertical = 12.dp, horizontal = 16.dp)
+                .padding(vertical = 16.dp, horizontal = 16.dp)
         ) {
             // Acrobat Styled Logo
             Row(
@@ -643,58 +732,49 @@ fun HomeScreen(
                 )
             }
 
-            // Blue Pill "New PDF" button
+            // Clean "Open File" button
             Button(
                 onClick = onTriggerFilePicker,
                 colors = ButtonDefaults.buttonColors(containerColor = blueAccent),
-                shape = RoundedCornerShape(20.dp),
-                contentPadding = PaddingValues(horizontal = 24.dp, vertical = 10.dp),
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(bottom = 8.dp)
-            ) {
-                Text(
-                    text = "New PDF",
-                    color = Color.White,
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 13.sp
-                )
-            }
-
-            // Outline "Open PDF" text link / ghost button
-            OutlinedButton(
-                onClick = onTriggerFilePicker,
-                border = BorderStroke(1.dp, Color(0xFF555555)),
-                colors = ButtonDefaults.outlinedButtonColors(contentColor = textPrimary),
-                shape = RoundedCornerShape(20.dp),
-                contentPadding = PaddingValues(horizontal = 24.dp, vertical = 10.dp),
+                shape = RoundedCornerShape(8.dp),
+                contentPadding = PaddingValues(horizontal = 20.dp, vertical = 10.dp),
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(bottom = 24.dp)
             ) {
-                Text(
-                    text = "Open PDF",
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 13.sp
-                )
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.Center,
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    FolderIcon(color = Color.White, modifier = Modifier.size(16.dp))
+                    Spacer(modifier = Modifier.width(8.dp))
+                    Text(
+                        text = "Open File",
+                        color = Color.White,
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 13.sp
+                    )
+                }
             }
 
-            // Sidebar Tabs
-            val tabs = listOf(
-                Pair("Home", @Composable { color: Color -> HomeIcon(color) }),
-                Pair("Learn", @Composable { color: Color -> LearnIcon(color) })
+            // Sidebar Navigation Tabs
+            val navigationItems = listOf(
+                Triple("Recents", @Composable { color: Color -> HomeIcon(color) }, "Recents"),
+                Triple("Your documents", @Composable { color: Color -> FolderIcon(color) }, "Your documents"),
+                Triple("Notes", @Composable { color: Color -> NotesIndicatorIcon(color) }, "Notes")
             )
             
-            tabs.forEach { (tabName, icon) ->
-                val isActive = activeTab == tabName
+            navigationItems.forEach { (tabName, icon, targetTab) ->
+                val isActive = activeTab == targetTab
                 HoverableItem(
-                    onClick = { activeTab = tabName },
+                    onClick = { activeTab = targetTab },
                     normalColor = if (isActive) Color(0xFF2B2B2B) else Color.Transparent,
                     hoverColor = if (isActive) Color(0xFF2B2B2B) else Color(0xFF202020),
                     shape = RoundedCornerShape(4.dp),
                     modifier = Modifier
                         .fillMaxWidth()
-                        .height(36.dp)
+                        .height(40.dp)
                         .padding(vertical = 2.dp)
                 ) {
                     Row(
@@ -714,54 +794,6 @@ fun HomeScreen(
                     }
                 }
             }
-
-            Spacer(modifier = Modifier.height(24.dp))
-
-            // DOCUMENTS section (renamed from FILES)
-            Text(
-                text = "DOCUMENTS",
-                color = textSecondary,
-                fontWeight = FontWeight.Bold,
-                fontSize = 11.sp,
-                modifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp)
-            )
-
-            val fileSections = listOf(
-                Pair("Your documents", @Composable { color: Color -> FolderIcon(color) }),
-                Pair("Shared with me", @Composable { color: Color -> PeopleIcon(color) }),
-                Pair("Adobe Document Cloud", @Composable { color: Color -> CloudIcon(color) }),
-                Pair("Deleted", @Composable { color: Color -> TrashIcon(color) })
-            )
-
-            fileSections.forEach { (sectionName, icon) ->
-                val isSelectedSection = activeTab == sectionName
-                HoverableItem(
-                    onClick = { activeTab = sectionName },
-                    normalColor = if (isSelectedSection) Color(0xFF2B2B2B) else Color.Transparent,
-                    hoverColor = if (isSelectedSection) Color(0xFF2B2B2B) else Color(0xFF202020),
-                    shape = RoundedCornerShape(4.dp),
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(36.dp)
-                        .padding(vertical = 2.dp)
-                ) {
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically,
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .padding(horizontal = 12.dp)
-                    ) {
-                        icon(if (isSelectedSection) Color.White else textSecondary)
-                        Spacer(modifier = Modifier.width(12.dp))
-                        Text(
-                            text = sectionName,
-                            color = if (isSelectedSection) Color.White else textSecondary,
-                            fontWeight = if (isSelectedSection) FontWeight.Bold else FontWeight.Medium,
-                            fontSize = 13.sp
-                        )
-                    }
-                }
-            }
         }
 
         // 2. MAIN CONTENT AREA
@@ -770,338 +802,64 @@ fun HomeScreen(
                 .weight(1f)
                 .fillMaxHeight()
         ) {
-            // TOP BAR MENU (Adobe style with menus, global search, and actions)
+            // TOP BAR with modern search box
             Row(
                 verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceBetween,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(44.dp)
+                    .height(60.dp)
                     .background(panelBg)
-                    .padding(horizontal = 16.dp)
+                    .padding(horizontal = 24.dp)
             ) {
-                // Menus (File, Edit, View, Selector, Start, Window, Help)
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(14.dp)
-                ) {
-                    val menus = listOf(
-                        "File", "Edit", "View", "Selector", "Start", "Window", "Help"
-                    )
-                    menus.forEach { menu ->
-                        var isHovered by remember { mutableStateOf(false) }
-                        Text(
-                            text = menu,
-                            color = if (isHovered) Color.White else textSecondary,
-                            fontSize = 12.sp,
-                            fontWeight = FontWeight.Medium,
-                            modifier = Modifier
-                                .clickable { }
-                                .hoverable(remember { MutableInteractionSource() })
-                                .onHover { isHovered = it }
-                        )
-                    }
-                }
-
-                // Global Search box inside the menu row itself
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
                     modifier = Modifier
-                        .width(280.dp)
-                        .height(26.dp)
-                        .background(Color(0xFF222222), RoundedCornerShape(4.dp))
-                        .border(1.dp, Color(0xFF333333), RoundedCornerShape(4.dp))
-                        .padding(horizontal = 8.dp)
+                        .fillMaxWidth()
+                        .height(38.dp)
+                        .background(Color(0xFF252525), RoundedCornerShape(8.dp))
+                        .border(1.dp, Color(0xFF333333), RoundedCornerShape(8.dp))
+                        .padding(horizontal = 12.dp)
                 ) {
-                    SearchIcon(color = textSecondary, modifier = Modifier.size(13.dp))
-                    Spacer(modifier = Modifier.width(6.dp))
+                    SearchIcon(color = textSecondary, modifier = Modifier.size(16.dp))
+                    Spacer(modifier = Modifier.width(10.dp))
                     BasicTextField(
                         value = globalSearchQuery,
                         onValueChange = { globalSearchQuery = it },
                         singleLine = true,
-                        textStyle = TextStyle(color = textPrimary, fontSize = 12.sp),
+                        textStyle = TextStyle(color = textPrimary, fontSize = 13.sp),
                         cursorBrush = SolidColor(blueAccent),
                         modifier = Modifier.weight(1f),
                         decorationBox = { innerTextField ->
                             if (globalSearchQuery.isEmpty()) {
                                 Text(
-                                    text = "Search",
+                                    text = "Search documents...",
                                     color = Color(0xFF666666),
-                                    fontSize = 12.sp
+                                    fontSize = 13.sp
                                 )
                             }
                             innerTextField()
                         }
                     )
                 }
-
-                // Action Icons (Cloud status, Notification, Profile avatar)
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(14.dp)
-                ) {
-                    IconButton(onClick = {}, modifier = Modifier.size(24.dp)) {
-                        CloudIcon(color = textSecondary, modifier = Modifier.size(16.dp))
-                    }
-                    IconButton(onClick = {}, modifier = Modifier.size(24.dp)) {
-                        GiftIcon(color = textSecondary, modifier = Modifier.size(16.dp))
-                    }
-                    Box(
-                        modifier = Modifier
-                            .size(24.dp)
-                            .clip(CircleShape)
-                            .background(Color(0xFF888888))
-                            .border(1.dp, Color(0xFF999999), CircleShape),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Text(
-                            text = "YS",
-                            color = Color.White,
-                            fontWeight = FontWeight.Bold,
-                            fontSize = 10.sp
-                        )
-                    }
-                }
             }
 
-            // Workspace Panels depending on active tab
+            // Workspace Content
             Column(
                 modifier = Modifier
                     .fillMaxSize()
                     .verticalScroll(rememberScrollState())
                     .padding(28.dp)
             ) {
-                if (activeTab == "Learn") {
-                    // --- LEARN SCREEN PANEL ---
-                    Text(
-                        text = "Learn LuminaPDF",
-                        color = Color.White,
-                        fontSize = 22.sp,
-                        fontWeight = FontWeight.ExtraBold,
-                        modifier = Modifier.padding(bottom = 16.dp)
-                    )
-                    
-                    Text(
-                        text = "Quick interactive courses and guides to speed up your PDF productivity.",
-                        color = textSecondary,
-                        fontSize = 14.sp,
-                        modifier = Modifier.padding(bottom = 24.dp)
-                    )
+                Text(
+                    text = activeTab,
+                    color = Color.White,
+                    fontSize = 22.sp,
+                    fontWeight = FontWeight.ExtraBold,
+                    modifier = Modifier.padding(bottom = 16.dp)
+                )
 
-                    val tutorials = listOf(
-                        Triple("Organize PDF pages easily", "3 min • Page Editing Basics", "Learn how to reorder, extract, insert, or delete pages in a PDF document."),
-                        Triple("Highlighting & markup structures", "5 min • Annotation Engine", "Unlock professional annotation systems: draw highlights, notes, and extract tabular data."),
-                        Triple("Platform integrations in Compose Multiplatform", "8 min • Advanced", "See how the Expect/Actual systems interface native rendering drivers in KMP.")
-                    )
-
-                    tutorials.forEach { (title, subtitle, desc) ->
-                        Card(
-                            colors = CardDefaults.cardColors(containerColor = Color(0xFF252525)),
-                            shape = RoundedCornerShape(8.dp),
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(bottom = 16.dp)
-                                .clickable { }
-                        ) {
-                            Column(
-                                modifier = Modifier.padding(18.dp)
-                            ) {
-                                Text(text = subtitle, color = Color(0xFFFF9800), fontSize = 11.sp, fontWeight = FontWeight.Bold)
-                                Spacer(modifier = Modifier.height(6.dp))
-                                Text(text = title, color = Color.White, fontSize = 16.sp, fontWeight = FontWeight.Bold)
-                                Spacer(modifier = Modifier.height(6.dp))
-                                Text(text = desc, color = textSecondary, fontSize = 13.sp)
-                            }
-                        }
-                    }
-                } else if (activeTab == "Deleted") {
-                    // --- DELETED SCREEN PANEL ---
-                    Box(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(300.dp),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                            TrashIcon(color = textSecondary, modifier = Modifier.size(48.dp))
-                            Spacer(modifier = Modifier.height(16.dp))
-                            Text(text = "No deleted files", color = textPrimary, fontWeight = FontWeight.Bold, fontSize = 16.sp)
-                            Text(text = "Files you delete will show up here.", color = textSecondary, fontSize = 13.sp)
-                        }
-                    }
-                } else if (activeTab != "Home") {
-                    // --- GENERIC MOCK TABS PANEL ---
-                    Box(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(300.dp),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                            FolderIcon(color = textSecondary, modifier = Modifier.size(48.dp))
-                            Spacer(modifier = Modifier.height(16.dp))
-                            Text(text = "Section Empty", color = textPrimary, fontWeight = FontWeight.Bold, fontSize = 16.sp)
-                            Text(text = "This directory in $activeTab has no files.", color = textSecondary, fontSize = 13.sp)
-                        }
-                    }
-                } else {
-                    // --- DEFAULT HOME SCREEN WORKSPACE ---
-                    
-                    // 2a. SUGGESTIONS HERO BANNER (CAROUSEL)
-                    if (!hideSuggestions) {
-                        Row(
-                            verticalAlignment = Alignment.CenterVertically,
-                            horizontalArrangement = Arrangement.SpaceBetween,
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(bottom = 8.dp)
-                        ) {
-                            Row(verticalAlignment = Alignment.CenterVertically) {
-                                Text(
-                                    text = "Suggestions",
-                                    color = Color.White,
-                                    fontSize = 15.sp,
-                                    fontWeight = FontWeight.Bold
-                                )
-                                Spacer(modifier = Modifier.width(6.dp))
-                                InfoIcon(color = textSecondary)
-                            }
-                            
-                            Text(
-                                text = "Hide suggestions",
-                                color = textSecondary,
-                                fontSize = 12.sp,
-                                fontWeight = FontWeight.Medium,
-                                modifier = Modifier
-                                    .clickable { hideSuggestions = true }
-                                    .hoverable(remember { MutableInteractionSource() })
-                            )
-                        }
-
-                        // Hero Banner Card
-                        Card(
-                            colors = CardDefaults.cardColors(containerColor = Color(0xFF282828)),
-                            shape = RoundedCornerShape(8.dp),
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .height(220.dp)
-                                .padding(bottom = 32.dp)
-                        ) {
-                            Row(modifier = Modifier.fillMaxSize()) {
-                                // Info pane on the left
-                                Column(
-                                    modifier = Modifier
-                                        .weight(0.55f)
-                                        .fillMaxHeight()
-                                        .padding(24.dp),
-                                    verticalArrangement = Arrangement.SpaceBetween
-                                ) {
-                                    Column {
-                                        Text(
-                                            text = "Popular now",
-                                            color = Color(0xFFFF9800),
-                                            fontWeight = FontWeight.Bold,
-                                            fontSize = 11.sp
-                                        )
-                                        Spacer(modifier = Modifier.height(8.dp))
-                                        Text(
-                                            text = "Organize your PDF pages.",
-                                            color = Color.White,
-                                            fontWeight = FontWeight.Bold,
-                                            fontSize = 18.sp
-                                        )
-                                        Spacer(modifier = Modifier.height(8.dp))
-                                        Text(
-                                            text = "Learn how to easily reorder, insert, delete, and combine pages in a PDF document.",
-                                            color = textSecondary,
-                                            fontSize = 13.sp,
-                                            maxLines = 2,
-                                            overflow = TextOverflow.Ellipsis
-                                        )
-                                    }
-                                    
-                                    Row(
-                                        verticalAlignment = Alignment.CenterVertically,
-                                        horizontalArrangement = Arrangement.spacedBy(16.dp)
-                                    ) {
-                                        OutlinedButton(
-                                            onClick = {},
-                                            border = BorderStroke(1.dp, Color.White),
-                                            shape = RoundedCornerShape(20.dp),
-                                            colors = ButtonDefaults.outlinedButtonColors(contentColor = Color.White),
-                                            contentPadding = PaddingValues(horizontal = 18.dp, vertical = 6.dp)
-                                        ) {
-                                            Text(text = "Watch tutorial", fontSize = 12.sp, fontWeight = FontWeight.Bold)
-                                        }
-                                    }
-                                }
-
-                                // Image banner on the right
-                                Box(
-                                    modifier = Modifier
-                                        .weight(0.45f)
-                                        .fillMaxHeight()
-                                        .clip(RoundedCornerShape(topEnd = 8.dp, bottomEnd = 8.dp))
-                                ) {
-                                    val heroPainter = painterResource(Res.drawable.suggestions_hero)
-                                    Image(
-                                        painter = heroPainter,
-                                        contentDescription = "Tutorial Illustration",
-                                        contentScale = ContentScale.Crop,
-                                        modifier = Modifier.fillMaxSize()
-                                    )
-                                    
-                                    // Custom carousel arrows overlay
-                                    Row(
-                                        modifier = Modifier
-                                            .fillMaxSize()
-                                            .padding(8.dp),
-                                        horizontalArrangement = Arrangement.SpaceBetween,
-                                        verticalAlignment = Alignment.CenterVertically
-                                    ) {
-                                        Box(
-                                            modifier = Modifier
-                                                .size(24.dp)
-                                                .clip(CircleShape)
-                                                .background(Color.Black.copy(alpha = 0.5f))
-                                                .clickable { },
-                                            contentAlignment = Alignment.Center
-                                        ) {
-                                            Text("<", color = Color.White, fontSize = 12.sp, fontWeight = FontWeight.Bold)
-                                        }
-                                        Box(
-                                            modifier = Modifier
-                                                .size(24.dp)
-                                                .clip(CircleShape)
-                                                .background(Color.Black.copy(alpha = 0.5f))
-                                                .clickable { },
-                                            contentAlignment = Alignment.Center
-                                        ) {
-                                            Text(">", color = Color.White, fontSize = 12.sp, fontWeight = FontWeight.Bold)
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-
-                    // 2b. RECENT FILES LIST
-                    Row(
-                        verticalAlignment = Alignment.Bottom,
-                        horizontalArrangement = Arrangement.SpaceBetween,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(bottom = 16.dp)
-                    ) {
-                        Text(
-                            text = "Recent",
-                            color = Color.White,
-                            fontSize = 20.sp,
-                            fontWeight = FontWeight.Bold
-                        )
-                    }
-
-                    // Sort & Filter Toolbar row
+                if (activeTab != "Notes") {
+                    // Toolbar Row (Filter, Sort, View mode switcher)
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.SpaceBetween,
@@ -1109,21 +867,60 @@ fun HomeScreen(
                             .fillMaxWidth()
                             .padding(bottom = 20.dp)
                     ) {
-                        // Left toolbar items: Sort dropdown & direction arrow
+                        // Filter field
                         Row(
                             verticalAlignment = Alignment.CenterVertically,
-                            horizontalArrangement = Arrangement.spacedBy(8.dp)
+                            modifier = Modifier
+                                .width(240.dp)
+                                .height(32.dp)
+                                .background(Color(0xFF252525), RoundedCornerShape(6.dp))
+                                .border(1.dp, Color(0xFF333333), RoundedCornerShape(6.dp))
+                                .padding(horizontal = 10.dp)
                         ) {
+                            Text(
+                                text = "Filter",
+                                color = textSecondary,
+                                fontSize = 12.sp,
+                                fontWeight = FontWeight.Bold,
+                                modifier = Modifier.padding(end = 6.dp)
+                            )
+                            BasicTextField(
+                                value = filterQuery,
+                                onValueChange = { filterQuery = it },
+                                singleLine = true,
+                                textStyle = TextStyle(color = textPrimary, fontSize = 12.sp),
+                                cursorBrush = SolidColor(blueAccent),
+                                modifier = Modifier.weight(1f),
+                                decorationBox = { innerTextField ->
+                                    if (filterQuery.isEmpty()) {
+                                        Text(
+                                            text = "Filter files...",
+                                            color = Color(0xFF666666),
+                                            fontSize = 12.sp
+                                        )
+                                    }
+                                    innerTextField()
+                                }
+                            )
+                        }
+
+                        // Sort options & View switcher
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.spacedBy(16.dp)
+                        ) {
+                            // Sort Dropdown
                             var showSortDropdown by remember { mutableStateOf(false) }
                             Box {
                                 TextButton(
                                     onClick = { showSortDropdown = true },
-                                    colors = ButtonDefaults.textButtonColors(contentColor = textPrimary)
+                                    colors = ButtonDefaults.textButtonColors(contentColor = textPrimary),
+                                    contentPadding = PaddingValues(horizontal = 8.dp)
                                 ) {
                                     Row(verticalAlignment = Alignment.CenterVertically) {
-                                        Text(text = "Sort  $sortKey", fontSize = 13.sp, fontWeight = FontWeight.Bold)
+                                        Text(text = "Sort: $sortKey", fontSize = 13.sp, fontWeight = FontWeight.Bold)
                                         Spacer(modifier = Modifier.width(4.dp))
-                                        Text(text = "v", fontSize = 10.sp, color = textSecondary)
+                                        Text(text = "▼", fontSize = 9.sp, color = textSecondary)
                                     }
                                 }
 
@@ -1145,60 +942,18 @@ fun HomeScreen(
                                 }
                             }
 
+                            // Sort direction toggle
                             IconButton(
                                 onClick = { sortAscending = !sortAscending },
                                 modifier = Modifier.size(28.dp)
                             ) {
                                 SortArrowIcon(isAscending = sortAscending, color = textPrimary)
                             }
-                        }
 
-                        // Right toolbar items: Filter & View Switcher
-                        Row(
-                            verticalAlignment = Alignment.CenterVertically,
-                            horizontalArrangement = Arrangement.spacedBy(16.dp)
-                        ) {
-                            // Filter input field
-                            Row(
-                                verticalAlignment = Alignment.CenterVertically,
-                                modifier = Modifier
-                                    .width(240.dp)
-                                    .height(30.dp)
-                                    .background(Color(0xFF252525), RoundedCornerShape(4.dp))
-                                    .border(1.dp, Color(0xFF3A3A3A), RoundedCornerShape(4.dp))
-                                    .padding(horizontal = 8.dp)
-                            ) {
-                                Text(
-                                    text = "Filter",
-                                    color = textSecondary,
-                                    fontSize = 12.sp,
-                                    fontWeight = FontWeight.Bold,
-                                    modifier = Modifier.padding(end = 6.dp)
-                                )
-                                BasicTextField(
-                                    value = filterQuery,
-                                    onValueChange = { filterQuery = it },
-                                    singleLine = true,
-                                    textStyle = TextStyle(color = textPrimary, fontSize = 12.sp),
-                                    cursorBrush = SolidColor(blueAccent),
-                                    modifier = Modifier.weight(1f),
-                                    decorationBox = { innerTextField ->
-                                        if (filterQuery.isEmpty()) {
-                                            Text(
-                                                text = "Filter Recent Files",
-                                                color = Color(0xFF666666),
-                                                fontSize = 12.sp
-                                            )
-                                        }
-                                        innerTextField()
-                                    }
-                                )
-                            }
-
-                            // View mode switcher: List / Grid
+                            // Segmented list/grid view switcher
                             Row(
                                 modifier = Modifier
-                                    .background(Color(0xFF252525), RoundedCornerShape(4.dp))
+                                    .background(Color(0xFF252525), RoundedCornerShape(6.dp))
                                     .padding(2.dp)
                             ) {
                                 val isList = viewMode == "List"
@@ -1206,8 +961,8 @@ fun HomeScreen(
                                 
                                 Box(
                                     modifier = Modifier
-                                        .size(24.dp)
-                                        .background(if (isList) Color(0xFF333333) else Color.Transparent, RoundedCornerShape(3.dp))
+                                        .size(26.dp)
+                                        .background(if (isList) Color(0xFF333333) else Color.Transparent, RoundedCornerShape(4.dp))
                                         .clickable { viewMode = "List" },
                                     contentAlignment = Alignment.Center
                                 ) {
@@ -1216,8 +971,8 @@ fun HomeScreen(
                                 
                                 Box(
                                     modifier = Modifier
-                                        .size(24.dp)
-                                        .background(if (isGrid) Color(0xFF333333) else Color.Transparent, RoundedCornerShape(3.dp))
+                                        .size(26.dp)
+                                        .background(if (isGrid) Color(0xFF333333) else Color.Transparent, RoundedCornerShape(4.dp))
                                         .clickable { viewMode = "Grid" },
                                     contentAlignment = Alignment.Center
                                 ) {
@@ -1226,8 +981,155 @@ fun HomeScreen(
                             }
                         }
                     }
+                }
 
-                    // Recent items Grid/List layout
+                if (activeTab == "Notes") {
+                    if (notesGroupedByFile.isEmpty()) {
+                        Box(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(300.dp),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                                NotesIndicatorIcon(color = textSecondary.copy(alpha = 0.5f), modifier = Modifier.size(48.dp))
+                                Spacer(modifier = Modifier.height(16.dp))
+                                Text(text = "No notes found in your documents", color = textSecondary, fontSize = 14.sp)
+                            }
+                        }
+                    } else {
+                        Column(
+                            verticalArrangement = Arrangement.spacedBy(20.dp),
+                            modifier = Modifier.fillMaxWidth()
+                        ) {
+                            notesGroupedByFile.forEach { (file, notesList) ->
+                                Column(
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .background(panelBg, RoundedCornerShape(12.dp))
+                                        .border(1.dp, dividerColor, RoundedCornerShape(12.dp))
+                                        .padding(16.dp)
+                                ) {
+                                    // PDF Header
+                                    Row(
+                                        verticalAlignment = Alignment.CenterVertically,
+                                        modifier = Modifier
+                                            .fillMaxWidth()
+                                            .padding(bottom = 12.dp)
+                                    ) {
+                                        Box(
+                                            modifier = Modifier
+                                                .size(36.dp, 48.dp)
+                                                .background(Color(0xFF151515), RoundedCornerShape(4.dp))
+                                                .clip(RoundedCornerShape(4.dp)),
+                                            contentAlignment = Alignment.Center
+                                        ) {
+                                            if (file.thumbnail != null) {
+                                                Image(
+                                                    bitmap = file.thumbnail,
+                                                    contentDescription = file.name,
+                                                    contentScale = ContentScale.Fit,
+                                                    modifier = Modifier.fillMaxSize().padding(2.dp)
+                                                )
+                                            } else {
+                                                AcrobatPdfIcon(modifier = Modifier.size(20.dp))
+                                            }
+                                        }
+                                        Spacer(modifier = Modifier.width(12.dp))
+                                        Column(modifier = Modifier.weight(1f)) {
+                                            Text(
+                                                text = file.name,
+                                                color = textPrimary,
+                                                fontWeight = FontWeight.Bold,
+                                                fontSize = 15.sp,
+                                                maxLines = 1,
+                                                overflow = TextOverflow.Ellipsis
+                                            )
+                                            Text(
+                                                text = "${notesList.size} annotation${if (notesList.size > 1) "s" else ""}",
+                                                color = textSecondary,
+                                                fontSize = 12.sp
+                                            )
+                                        }
+                                    }
+                                    
+                                    HorizontalDivider(color = dividerColor, modifier = Modifier.padding(vertical = 8.dp))
+                                    
+                                    // Notes list under this PDF
+                                    notesList.forEachIndexed { index, note ->
+                                        Row(
+                                            verticalAlignment = Alignment.Top,
+                                            modifier = Modifier
+                                                .fillMaxWidth()
+                                                .padding(vertical = 8.dp)
+                                        ) {
+                                            Column(
+                                                modifier = Modifier
+                                                    .weight(1f)
+                                                    .padding(end = 16.dp)
+                                            ) {
+                                                Row(
+                                                    verticalAlignment = Alignment.CenterVertically,
+                                                    modifier = Modifier.padding(bottom = 4.dp)
+                                                ) {
+                                                    Box(
+                                                        modifier = Modifier
+                                                            .background(blueAccent.copy(alpha = 0.2f), RoundedCornerShape(4.dp))
+                                                            .padding(horizontal = 6.dp, vertical = 2.dp)
+                                                    ) {
+                                                        Text(
+                                                            text = "Page ${note.page + 1}",
+                                                            color = blueAccent,
+                                                            fontWeight = FontWeight.Bold,
+                                                            fontSize = 11.sp
+                                                        )
+                                                    }
+                                                    Spacer(modifier = Modifier.width(8.dp))
+                                                    Text(
+                                                        text = formatRelativeTime(note.timestamp),
+                                                        color = textSecondary,
+                                                        fontSize = 11.sp
+                                                    )
+                                                }
+                                                Text(
+                                                    text = note.text,
+                                                    color = textPrimary,
+                                                    fontSize = 13.sp,
+                                                    lineHeight = 18.sp
+                                                )
+                                            }
+                                            
+                                            // Take to source button
+                                            Button(
+                                                onClick = { onOpenFile(file, note.page) },
+                                                colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF2E2E2E)),
+                                                shape = RoundedCornerShape(6.dp),
+                                                contentPadding = PaddingValues(horizontal = 12.dp, vertical = 6.dp),
+                                                modifier = Modifier.height(28.dp)
+                                            ) {
+                                                Row(verticalAlignment = Alignment.CenterVertically) {
+                                                    Text(
+                                                        text = "Take to source",
+                                                        color = textPrimary,
+                                                        fontSize = 11.sp,
+                                                        fontWeight = FontWeight.Bold
+                                                    )
+                                                    Spacer(modifier = Modifier.width(4.dp))
+                                                    ArrowRightIcon(color = textPrimary, modifier = Modifier.size(10.dp))
+                                                }
+                                            }
+                                        }
+                                        
+                                        if (index < notesList.size - 1) {
+                                            HorizontalDivider(color = dividerColor.copy(alpha = 0.5f), modifier = Modifier.padding(vertical = 4.dp))
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                } else {
+                    // Grid / List rendering of files
                     if (filteredFiles.isEmpty()) {
                         Box(
                             modifier = Modifier
@@ -1235,11 +1137,10 @@ fun HomeScreen(
                                 .height(160.dp),
                             contentAlignment = Alignment.Center
                         ) {
-                            Text(text = "No recent files found", color = textSecondary, fontSize = 14.sp)
+                            Text(text = "No files found", color = textSecondary, fontSize = 14.sp)
                         }
                     } else {
                         if (viewMode == "Grid") {
-                            // GRID VIEW
                             val columns = 4
                             val rows = (filteredFiles.size + columns - 1) / columns
                             
@@ -1259,8 +1160,9 @@ fun HomeScreen(
                                                 Box(modifier = Modifier.weight(1f)) {
                                                     GridItemCard(
                                                         fileItem = fileItem,
-                                                        onClick = { onOpenFile(fileItem) },
-                                                        onRemove = { onRemoveFile(fileItem) },
+                                                        db = db,
+                                                        onClick = { onOpenFile(fileItem, null) },
+                                                        onRemove = { if (activeTab == "Recents") onRemoveFromRecents(fileItem) else onDeleteDocument(fileItem) },
                                                         textPrimary = textPrimary,
                                                         textSecondary = textSecondary
                                                     )
@@ -1273,14 +1175,12 @@ fun HomeScreen(
                                 }
                             }
                         } else {
-                            // LIST VIEW
                             Column(
                                 modifier = Modifier
                                     .fillMaxWidth()
                                     .border(1.dp, dividerColor, RoundedCornerShape(4.dp))
                                     .background(Color(0xFF1D1D1D))
                             ) {
-                                // Table Header
                                 Row(
                                     verticalAlignment = Alignment.CenterVertically,
                                     modifier = Modifier
@@ -1292,7 +1192,7 @@ fun HomeScreen(
                                     Text(text = "Name", color = textSecondary, fontWeight = FontWeight.Bold, fontSize = 11.sp, modifier = Modifier.weight(1f))
                                     Text(text = "Last Opened", color = textSecondary, fontWeight = FontWeight.Bold, fontSize = 11.sp, modifier = Modifier.width(120.dp))
                                     Text(text = "Size", color = textSecondary, fontWeight = FontWeight.Bold, fontSize = 11.sp, modifier = Modifier.width(80.dp))
-                                    Spacer(modifier = Modifier.width(32.dp)) // space for cloud status
+                                    Spacer(modifier = Modifier.width(32.dp))
                                 }
 
                                 filteredFiles.forEachIndexed { i, fileItem ->
@@ -1301,8 +1201,9 @@ fun HomeScreen(
                                     }
                                     ListItemRow(
                                         fileItem = fileItem,
-                                        onClick = { onOpenFile(fileItem) },
-                                        onRemove = { onRemoveFile(fileItem) },
+                                        db = db,
+                                        onClick = { onOpenFile(fileItem, null) },
+                                        onRemove = { if (activeTab == "Recents") onRemoveFromRecents(fileItem) else onDeleteDocument(fileItem) },
                                         textPrimary = textPrimary,
                                         textSecondary = textSecondary
                                     )
@@ -1320,6 +1221,7 @@ fun HomeScreen(
 @Composable
 fun GridItemCard(
     fileItem: RecentFile,
+    db: com.lumina.pdf.viewer.db.PdfDatabase,
     onClick: () -> Unit,
     onRemove: () -> Unit,
     textPrimary: Color,
@@ -1327,6 +1229,9 @@ fun GridItemCard(
     modifier: Modifier = Modifier
 ) {
     val cardBg = Color(0xFF252525)
+    val hasNotes by produceState(initialValue = false, key1 = fileItem.id) {
+        value = db.getNotes(fileItem.id).isNotEmpty()
+    }
     
     HoverableItem(
         onClick = onClick,
@@ -1422,6 +1327,18 @@ fun GridItemCard(
                         CloseIcon(color = Color.White, modifier = Modifier.size(10.dp))
                     }
                 }
+
+                if (hasNotes) {
+                    Box(
+                        modifier = Modifier
+                            .align(Alignment.TopEnd)
+                            .padding(8.dp)
+                            .background(Color.Black.copy(alpha = 0.6f), RoundedCornerShape(4.dp))
+                            .padding(4.dp)
+                    ) {
+                        NotesIndicatorIcon(color = Color(0xFFFFC107), modifier = Modifier.size(12.dp))
+                    }
+                }
             }
 
             // Text section
@@ -1453,12 +1370,17 @@ fun GridItemCard(
 @Composable
 fun ListItemRow(
     fileItem: RecentFile,
+    db: com.lumina.pdf.viewer.db.PdfDatabase,
     onClick: () -> Unit,
     onRemove: () -> Unit,
     textPrimary: Color,
     textSecondary: Color,
     modifier: Modifier = Modifier
 ) {
+    val hasNotes by produceState(initialValue = false, key1 = fileItem.id) {
+        value = db.getNotes(fileItem.id).isNotEmpty()
+    }
+    
     HoverableItem(
         onClick = onClick,
         normalColor = Color.Transparent,
@@ -1501,8 +1423,13 @@ fun ListItemRow(
                     fontWeight = FontWeight.Bold,
                     fontSize = 13.sp,
                     maxLines = 1,
-                    overflow = TextOverflow.Ellipsis
+                    overflow = TextOverflow.Ellipsis,
+                    modifier = Modifier.weight(1f, fill = false)
                 )
+                if (hasNotes) {
+                    Spacer(modifier = Modifier.width(6.dp))
+                    NotesIndicatorIcon(color = Color(0xFFFFC107), modifier = Modifier.size(14.dp))
+                }
             }
             
             // Last Opened timestamp

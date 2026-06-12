@@ -525,6 +525,7 @@ fun clampScrollOffset(
 fun PdfViewer(
     document: PdfDocument,
     documentId: String? = null,
+    initialPage: Int? = null,
     state: PdfViewerState = remember { PdfViewerState() },
     config: PdfViewerConfig = PdfViewerConfig(),
     onClose: (() -> Unit)? = null,
@@ -756,7 +757,28 @@ fun PdfViewer(
     LaunchedEffect(viewSize, pageCount) {
         if (viewSize.width > 0 && viewSize.height > 0 && pageCount > 0 && !isInitialZoomSet) {
             var restored = false
-            if (documentId != null) {
+            if (initialPage != null) {
+                val fitZoom = getFitZoom()
+                state.zoom = fitZoom
+                val estimatedPageHeight = viewSize.width.toFloat() * 1.4f
+                val pageTop = initialPage * (estimatedPageHeight + spacingPx)
+                val targetScrollY = topPaddingPx - pageTop * fitZoom
+                val targetScrollX = (viewSize.width - viewSize.width * fitZoom) / 2f
+                state.scrollOffset = clampScrollOffset(
+                    Offset(targetScrollX, targetScrollY),
+                    fitZoom,
+                    viewSize.width.toFloat(),
+                    viewSize.height.toFloat(),
+                    estimatedPageHeight,
+                    pageCount,
+                    spacingPx,
+                    topPaddingPx,
+                    bottomPaddingPx,
+                    marginPx
+                )
+                state.currentPage = initialPage
+                restored = true
+            } else if (documentId != null) {
                 val saved = db.getOffset(documentId)
                 if (saved != null) {
                     state.currentPage = saved.page

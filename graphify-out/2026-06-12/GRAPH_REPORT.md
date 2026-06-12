@@ -1,13 +1,18 @@
-# Graph Report - .  (2026-06-12)
+# Graph Report - LuminaPDF  (2026-06-12)
 
 ## Corpus Check
-- 90 files · ~50,206 words
+- 79 files · ~50,161 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 422 nodes · 634 edges · 55 communities (34 shown, 21 thin omitted)
-- Extraction: 96% EXTRACTED · 4% INFERRED · 0% AMBIGUOUS · INFERRED: 24 edges (avg confidence: 0.8)
+- 548 nodes · 795 edges · 63 communities (44 shown, 19 thin omitted)
+- Extraction: 97% EXTRACTED · 3% INFERRED · 0% AMBIGUOUS · INFERRED: 25 edges (avg confidence: 0.8)
 - Token cost: 0 input · 0 output
+
+## Graph Freshness
+- Built from commit: `d200262e`
+- Run `git rev-parse HEAD` and compare to check if the graph is stale.
+- Run `graphify update .` after code changes (no API cost).
 
 ## Community Hubs (Navigation)
 - [[_COMMUNITY_Offset|Offset]]
@@ -53,12 +58,20 @@
 - [[_COMMUNITY_Core Outlineitem|Core Outlineitem]]
 - [[_COMMUNITY_Viewer Pdfviewerconfig|Viewer Pdfviewerconfig]]
 - [[_COMMUNITY_Viewer Pdfviewerstate|Viewer Pdfviewerstate]]
+- [[_COMMUNITY_Community 55|Community 55]]
+- [[_COMMUNITY_Community 56|Community 56]]
+- [[_COMMUNITY_Community 57|Community 57]]
+- [[_COMMUNITY_Community 58|Community 58]]
+- [[_COMMUNITY_Community 59|Community 59]]
+- [[_COMMUNITY_Community 60|Community 60]]
+- [[_COMMUNITY_Community 61|Community 61]]
+- [[_COMMUNITY_Community 62|Community 62]]
 
 ## God Nodes (most connected - your core abstractions)
 1. `HomeScreen()` - 24 edges
-2. `Modifier` - 21 edges
-3. `Offset` - 20 edges
-4. `Color` - 20 edges
+2. `Modifier` - 22 edges
+3. `Offset` - 21 edges
+4. `Color` - 21 edges
 5. `TopBar()` - 19 edges
 6. `PdfDatabase` - 19 edges
 7. `PdfViewer()` - 17 edges
@@ -81,11 +94,11 @@
 ## Import Cycles
 - None detected.
 
-## Communities (55 total, 21 thin omitted)
+## Communities (63 total, 19 thin omitted)
 
 ### Community 0 - "Offset"
-Cohesion: 0.19
-Nodes (33): Offset, App(), formatSize(), AcrobatPdfIcon(), CloseIcon(), CloudIcon(), FolderIcon(), GiftIcon() (+25 more)
+Cohesion: 0.23
+Nodes (31): com, Offset, AcrobatPdfIcon(), CloseIcon(), CloudIcon(), FolderIcon(), GiftIcon(), GridIcon() (+23 more)
 
 ### Community 1 - "Mutablelist"
 Cohesion: 0.09
@@ -93,7 +106,7 @@ Nodes (19): MutableList, org, Int, Float, Int, List, OutlineItem, PdfBitmap (+11
 
 ### Community 2 - "Pdf Viewer Src Commonmain"
 Cohesion: 0.20
-Nodes (25): Boolean, Color, Float, Int, Modifier, PdfDocument, String, Unit (+17 more)
+Nodes (25): Boolean, Color, Float, Int, Modifier, PdfDocument, String, PdfViewerConfig (+17 more)
 
 ### Community 3 - "Pdf Renderer Src Androidmain"
 Cohesion: 0.12
@@ -128,12 +141,12 @@ Cohesion: 0.19
 Nodes (8): PdfDocument, Float, Int, List, OutlineItem, PdfBitmap, PdfRect, String
 
 ### Community 11 - "Db Pdfdatabase"
-Cohesion: 0.21
-Nodes (8): DbNote, getCurrentTimeMillis(), PdfDatabase, PdfOffset, rememberPdfDatabase(), List, Long, String
+Cohesion: 0.04
+Nodes (47): Android, Annotation Architecture, Cache Architecture, Compose Rendering Strategy, Continuous Scroll, Core Design Principle, Desktop, Final Recommendation (+39 more)
 
 ### Community 12 - "Db Pdfdatabase Js"
-Cohesion: 0.19
-Nodes (8): getCurrentTimeMillis(), JsPdfDatabase, rememberPdfDatabase(), DbNote, List, Long, PdfOffset, String
+Cohesion: 0.10
+Nodes (16): DbNote, getCurrentTimeMillis(), getCurrentTimeMillis(), JsPdfDatabase, rememberPdfDatabase(), PdfDatabase, PdfOffset, rememberPdfDatabase() (+8 more)
 
 ### Community 13 - "Iosapp Contentview"
 Cohesion: 0.28
@@ -171,24 +184,64 @@ Nodes (3): ByteArray, PdfDocument, PdfDocumentFactory
 Cohesion: 0.50
 Nodes (3): App, iOSApp, Scene
 
+### Community 23 - "Pdf Filepicker"
+Cohesion: 0.30
+Nodes (4): NSData, FilePersistence, ByteArray, String
+
+### Community 24 - "Pdf Filepicker Android"
+Cohesion: 0.31
+Nodes (4): FilePersistence, ByteArray, File, String
+
+### Community 25 - "Pdf Filepicker Ios"
+Cohesion: 0.31
+Nodes (4): FilePersistence, ByteArray, File, String
+
+### Community 26 - "Pdf Filepicker Js"
+Cohesion: 0.36
+Nodes (3): FilePersistence, ByteArray, String
+
+### Community 27 - "Pdf Filepicker Jvm"
+Cohesion: 0.36
+Nodes (3): FilePersistence, ByteArray, String
+
+### Community 28 - "Pdf Filepicker Wasmjs"
+Cohesion: 0.36
+Nodes (3): FilePersistence, ByteArray, String
+
+### Community 55 - "Community 55"
+Cohesion: 0.13
+Nodes (15): 1. `:pdf-core`, 2. `:pdf-renderer`, 3. `:pdf-viewer`, 4. `:pdf-annotations` (Optional), 5. `:pdf-search` (Optional), 6. `:sample-app`, Android, Desktop (JVM) (+7 more)
+
+### Community 56 - "Community 56"
+Cohesion: 0.25
+Nodes (7): Module pdf-core, Module pdf-renderer, Module pdf-viewer, Package com.lumina.pdf.core, Package com.lumina.pdf.renderer, Package com.lumina.pdf.viewer, Package com.lumina.pdf.viewer.db
+
+### Community 57 - "Community 57"
+Cohesion: 0.32
+Nodes (4): RecentFilesStore, RecentFile, List, String
+
+### Community 62 - "Community 62"
+Cohesion: 0.50
+Nodes (4): App(), formatSize(), Int, String
+
 ## Knowledge Gaps
-- **75 isolated node(s):** `Bundle`, `Scene`, `OutlineItem`, `Int`, `Float` (+70 more)
+- **133 isolated node(s):** `Bundle`, `Scene`, `OutlineItem`, `Int`, `Float` (+128 more)
   These have ≤1 connection - possible missing edges or undocumented components.
-- **21 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
+- **19 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
-- **Why does `PdfDatabase` connect `Db Pdfdatabase` to `Db Pdfdatabase Jvm`, `Db Pdfdatabase Wasmjs`, `Db Pdfdatabase Android`, `Db Pdfdatabase Ios`, `Db Pdfdatabase Js`?**
-  _High betweenness centrality (0.050) - this node is a cross-community bridge._
-- **Why does `PdfViewer()` connect `Pdf Viewer Src Commonmain` to `Offset`, `Core Lrumemorycache`, `Core Renderqueue`?**
-  _High betweenness centrality (0.028) - this node is a cross-community bridge._
+- **Why does `PdfDatabase` connect `Db Pdfdatabase Js` to `Db Pdfdatabase Android`, `Db Pdfdatabase Ios`, `Db Pdfdatabase Jvm`, `Db Pdfdatabase Wasmjs`?**
+  _High betweenness centrality (0.029) - this node is a cross-community bridge._
+- **Why does `PdfViewer()` connect `Pdf Viewer Src Commonmain` to `Offset`, `Core Lrumemorycache`, `Community 62`, `Core Renderqueue`?**
+  _High betweenness centrality (0.017) - this node is a cross-community bridge._
 - **Why does `LruMemoryCache` connect `Core Lrumemorycache` to `Pdf Viewer Src Commonmain`?**
-  _High betweenness centrality (0.019) - this node is a cross-community bridge._
-- **Are the 10 inferred relationships involving `Offset` (e.g. with `CloseIcon()` and `GiftIcon()`) actually correct?**
-  _`Offset` has 10 INFERRED edges - model-reasoned connections that need verification._
+  _High betweenness centrality (0.011) - this node is a cross-community bridge._
+- **Are the 11 inferred relationships involving `Offset` (e.g. with `CloseIcon()` and `GiftIcon()`) actually correct?**
+  _`Offset` has 11 INFERRED edges - model-reasoned connections that need verification._
 - **What connects `Bundle`, `Scene`, `OutlineItem` to the rest of the system?**
-  _75 weakly-connected nodes found - possible documentation gaps or missing edges._
+  _133 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `Mutablelist` be split into smaller, more focused modules?**
   _Cohesion score 0.09090909090909091 - nodes in this community are weakly interconnected._
 - **Should `Pdf Renderer Src Androidmain` be split into smaller, more focused modules?**

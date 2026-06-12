@@ -5,9 +5,9 @@
     "semantic_hash": "5498da641472ce93643c4799dc471f14"
   },
   "androidApp/src/main/kotlin/com/lumina/pdf/MainActivity.kt": {
-    "mtime": 1781149021.898764,
-    "ast_hash": "e1af3a84716ee43144c2a6f5ba870a9d",
-    "semantic_hash": "e1af3a84716ee43144c2a6f5ba870a9d"
+    "mtime": 1781279704.843112,
+    "ast_hash": "61e0f0168409440dd0fe012c9d9aebf0",
+    "semantic_hash": ""
   },
   "build.gradle.kts": {
     "mtime": 1781274215.1291234,
@@ -175,9 +175,9 @@
     "semantic_hash": "2d5bce23abf3aa323e5f7ab30f02ff9f"
   },
   "pdf-viewer/src/commonMain/kotlin/com/lumina/pdf/viewer/PdfViewer.kt": {
-    "mtime": 1781201615.0394652,
-    "ast_hash": "304c81d655055ca2ab8cb1bfb75e7c79",
-    "semantic_hash": "304c81d655055ca2ab8cb1bfb75e7c79"
+    "mtime": 1781280910.0952253,
+    "ast_hash": "a81b51e85a4e2c91953f64c8145bd58e",
+    "semantic_hash": ""
   },
   "pdf-viewer/src/commonMain/kotlin/com/lumina/pdf/viewer/PdfViewerConfig.kt": {
     "mtime": 1781183458.690235,
@@ -240,19 +240,14 @@
     "semantic_hash": "eeb7235e052be29627d044d4db2dd811"
   },
   "shared/build.gradle.kts": {
-    "mtime": 1781184417.6727245,
-    "ast_hash": "bb03a0652838a056929bf62d688db286",
-    "semantic_hash": "bb03a0652838a056929bf62d688db286"
+    "mtime": 1781278780.817343,
+    "ast_hash": "0777ccc7c49b0e752e8a03d44938c76e",
+    "semantic_hash": ""
   },
   "shared/src/androidHostTest/kotlin/com/lumina/pdf/SharedLogicAndroidHostTest.kt": {
     "mtime": 1781149022.0594833,
     "ast_hash": "4daaa7db697640c5488ba1813e5abab1",
     "semantic_hash": "4daaa7db697640c5488ba1813e5abab1"
-  },
-  "shared/src/androidMain/kotlin/com/lumina/pdf/FilePicker.android.kt": {
-    "mtime": 1781184445.9660192,
-    "ast_hash": "447db19665347061170dc86d234229f0",
-    "semantic_hash": "447db19665347061170dc86d234229f0"
   },
   "shared/src/androidMain/kotlin/com/lumina/pdf/Platform.android.kt": {
     "mtime": 1781149022.0710053,
@@ -260,14 +255,9 @@
     "semantic_hash": "30b4456515cab36bec9b4377d5c59850"
   },
   "shared/src/commonMain/kotlin/com/lumina/pdf/App.kt": {
-    "mtime": 1781199767.1637423,
-    "ast_hash": "0c77af6969a4f021a28076db099968a8",
-    "semantic_hash": "0c77af6969a4f021a28076db099968a8"
-  },
-  "shared/src/commonMain/kotlin/com/lumina/pdf/FilePicker.kt": {
-    "mtime": 1781184427.5282488,
-    "ast_hash": "1adb3d217076934c76d445908a799a67",
-    "semantic_hash": "1adb3d217076934c76d445908a799a67"
+    "mtime": 1781281040.8734055,
+    "ast_hash": "4013a80cf7eed2884a59a8a6bda69db1",
+    "semantic_hash": ""
   },
   "shared/src/commonMain/kotlin/com/lumina/pdf/Greeting.kt": {
     "mtime": 1781149022.092075,
@@ -280,9 +270,9 @@
     "semantic_hash": "bd2f7b8c1426439b555b05df32b6f002"
   },
   "shared/src/commonMain/kotlin/com/lumina/pdf/HomeScreen.kt": {
-    "mtime": 1781199760.420042,
-    "ast_hash": "a6e1c37c76be188381cd53614397c0d7",
-    "semantic_hash": "a6e1c37c76be188381cd53614397c0d7"
+    "mtime": 1781281130.327173,
+    "ast_hash": "dd2b6b137b9f53bab51f19cb02760945",
+    "semantic_hash": ""
   },
   "shared/src/commonMain/kotlin/com/lumina/pdf/Platform.kt": {
     "mtime": 1781149022.0966008,
@@ -293,11 +283,6 @@
     "mtime": 1781149022.1081285,
     "ast_hash": "61b64a68a63258a3666dd6133a02d03f",
     "semantic_hash": "61b64a68a63258a3666dd6133a02d03f"
-  },
-  "shared/src/iosMain/kotlin/com/lumina/pdf/FilePicker.ios.kt": {
-    "mtime": 1781184459.3769357,
-    "ast_hash": "d63dacfb093fefc66d109769c0a01c24",
-    "semantic_hash": "d63dacfb093fefc66d109769c0a01c24"
   },
   "shared/src/iosMain/kotlin/com/lumina/pdf/MainViewController.kt": {
     "mtime": 1781149022.1196773,
@@ -314,20 +299,10 @@
     "ast_hash": "ab44d1e87927dad47f6c7471af1d7b7e",
     "semantic_hash": "ab44d1e87927dad47f6c7471af1d7b7e"
   },
-  "shared/src/jsMain/kotlin/com/lumina/pdf/FilePicker.js.kt": {
-    "mtime": 1781184465.0240273,
-    "ast_hash": "d63dacfb093fefc66d109769c0a01c24",
-    "semantic_hash": "d63dacfb093fefc66d109769c0a01c24"
-  },
   "shared/src/jsMain/kotlin/com/lumina/pdf/Platform.js.kt": {
     "mtime": 1781149022.1457856,
     "ast_hash": "0322e62ad2c1e1a383e1c9ffdb51aa9d",
     "semantic_hash": "0322e62ad2c1e1a383e1c9ffdb51aa9d"
-  },
-  "shared/src/jvmMain/kotlin/com/lumina/pdf/FilePicker.jvm.kt": {
-    "mtime": 1781184438.027057,
-    "ast_hash": "f9ccad3ecfc3104c1bebdd775ce72f02",
-    "semantic_hash": "f9ccad3ecfc3104c1bebdd775ce72f02"
   },
   "shared/src/jvmMain/kotlin/com/lumina/pdf/Platform.jvm.kt": {
     "mtime": 1781149022.1573367,
@@ -338,11 +313,6 @@
     "mtime": 1781149022.168848,
     "ast_hash": "afeba4aa9ae05d847fe9af5b01a51895",
     "semantic_hash": "afeba4aa9ae05d847fe9af5b01a51895"
-  },
-  "shared/src/wasmJsMain/kotlin/com/lumina/pdf/FilePicker.wasmJs.kt": {
-    "mtime": 1781184472.5017426,
-    "ast_hash": "d63dacfb093fefc66d109769c0a01c24",
-    "semantic_hash": "d63dacfb093fefc66d109769c0a01c24"
   },
   "shared/src/wasmJsMain/kotlin/com/lumina/pdf/Platform.wasmJs.kt": {
     "mtime": 1781149022.1794064,
@@ -452,6 +422,46 @@
   "docs/packages.md": {
     "mtime": 1781274210.8857546,
     "ast_hash": "4e1fa2073213e052225e2e29b6237857",
+    "semantic_hash": ""
+  },
+  "shared/src/androidMain/kotlin/com/lumina/pdf/AndroidContext.kt": {
+    "mtime": 1781279677.7202973,
+    "ast_hash": "c6993a917b0440f54dc7f5d792ca7dae",
+    "semantic_hash": ""
+  },
+  "shared/src/androidMain/kotlin/com/lumina/pdf/FilePersistence.android.kt": {
+    "mtime": 1781279682.7480133,
+    "ast_hash": "aa22f74ffd2f5fb6b402b6eb34cabb1e",
+    "semantic_hash": ""
+  },
+  "shared/src/commonMain/kotlin/com/lumina/pdf/FilePersistence.kt": {
+    "mtime": 1781279668.9143736,
+    "ast_hash": "290bfb64e7d74b5e3de116d9bbb02abb",
+    "semantic_hash": ""
+  },
+  "shared/src/commonMain/kotlin/com/lumina/pdf/RecentFilesStore.kt": {
+    "mtime": 1781279700.0644991,
+    "ast_hash": "6b976e0f23ad38dde962fa4dc242ba84",
+    "semantic_hash": ""
+  },
+  "shared/src/iosMain/kotlin/com/lumina/pdf/FilePersistence.ios.kt": {
+    "mtime": 1781279687.5135956,
+    "ast_hash": "f831314af2b194b03c25450296713409",
+    "semantic_hash": ""
+  },
+  "shared/src/jsMain/kotlin/com/lumina/pdf/FilePersistence.js.kt": {
+    "mtime": 1781279691.5873394,
+    "ast_hash": "34e2ca326088a7899e9e22e3967bed7d",
+    "semantic_hash": ""
+  },
+  "shared/src/jvmMain/kotlin/com/lumina/pdf/FilePersistence.jvm.kt": {
+    "mtime": 1781279673.0480483,
+    "ast_hash": "ad50f9b9d226f254e9dc48461dfe7262",
+    "semantic_hash": ""
+  },
+  "shared/src/wasmJsMain/kotlin/com/lumina/pdf/FilePersistence.wasmJs.kt": {
+    "mtime": 1781279695.5151112,
+    "ast_hash": "9a593e89a8c7cc4789f8d2045df22935",
     "semantic_hash": ""
   }
 }

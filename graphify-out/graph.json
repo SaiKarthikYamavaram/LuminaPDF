@@ -67,7 +67,7 @@
       "label": "AppAndroidPreview()",
       "file_type": "code",
       "source_file": "androidApp/src/main/kotlin/com/lumina/pdf/MainActivity.kt",
-      "source_location": "L21",
+      "source_location": "L22",
       "_origin": "ast",
       "id": "pdf_mainactivity_appandroidpreview",
       "community": 16,
@@ -850,7 +850,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "pdfbitmap",
-      "community": 3,
+      "community": 1,
       "norm_label": "pdfbitmap"
     },
     {
@@ -2049,7 +2049,7 @@
       "source_file": "pdf-viewer/src/commonMain/kotlin/com/lumina/pdf/viewer/PdfViewer.kt",
       "source_location": "L227",
       "_origin": "ast",
-      "id": "pdf_viewer_src_commonmain_kotlin_com_lumina_pdf_viewer_pdfviewer_kt_unit",
+      "id": "unit",
       "community": 2,
       "norm_label": "unit"
     },
@@ -2170,7 +2170,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "db_pdfdatabase",
-      "community": 9,
+      "community": 12,
       "norm_label": "pdfdatabase.kt"
     },
     {
@@ -2180,7 +2180,7 @@
       "source_location": "L5",
       "_origin": "ast",
       "id": "db_pdfdatabase_pdfoffset",
-      "community": 9,
+      "community": 12,
       "norm_label": "pdfoffset"
     },
     {
@@ -2190,7 +2190,7 @@
       "source_location": "L12",
       "_origin": "ast",
       "id": "db_pdfdatabase_dbnote",
-      "community": 9,
+      "community": 12,
       "norm_label": "dbnote"
     },
     {
@@ -2200,7 +2200,7 @@
       "source_location": "L20",
       "_origin": "ast",
       "id": "db_pdfdatabase_pdfdatabase",
-      "community": 9,
+      "community": 12,
       "norm_label": "pdfdatabase"
     },
     {
@@ -2210,7 +2210,7 @@
       "source_location": "L21",
       "_origin": "ast",
       "id": "db_pdfdatabase_pdfdatabase_saveoffset",
-      "community": 9,
+      "community": 12,
       "norm_label": ".saveoffset()"
     },
     {
@@ -2220,7 +2220,7 @@
       "source_location": "L21",
       "_origin": "ast",
       "id": "pdf_viewer_src_commonmain_kotlin_com_lumina_pdf_viewer_db_pdfdatabase_kt_string",
-      "community": 9,
+      "community": 12,
       "norm_label": "string"
     },
     {
@@ -2230,7 +2230,7 @@
       "source_location": "L22",
       "_origin": "ast",
       "id": "db_pdfdatabase_pdfdatabase_getoffset",
-      "community": 9,
+      "community": 12,
       "norm_label": ".getoffset()"
     },
     {
@@ -2240,7 +2240,7 @@
       "source_location": "L24",
       "_origin": "ast",
       "id": "db_pdfdatabase_pdfdatabase_insertnote",
-      "community": 9,
+      "community": 12,
       "norm_label": ".insertnote()"
     },
     {
@@ -2250,7 +2250,7 @@
       "source_location": "L25",
       "_origin": "ast",
       "id": "db_pdfdatabase_pdfdatabase_getnotes",
-      "community": 9,
+      "community": 12,
       "norm_label": ".getnotes()"
     },
     {
@@ -2260,7 +2260,7 @@
       "source_location": "L25",
       "_origin": "ast",
       "id": "pdf_viewer_src_commonmain_kotlin_com_lumina_pdf_viewer_db_pdfdatabase_kt_list",
-      "community": 9,
+      "community": 12,
       "norm_label": "list"
     },
     {
@@ -2270,7 +2270,7 @@
       "source_location": "L26",
       "_origin": "ast",
       "id": "db_pdfdatabase_pdfdatabase_deletenote",
-      "community": 9,
+      "community": 12,
       "norm_label": ".deletenote()"
     },
     {
@@ -2280,7 +2280,7 @@
       "source_location": "L28",
       "_origin": "ast",
       "id": "db_pdfdatabase_pdfdatabase_savehighlights",
-      "community": 9,
+      "community": 12,
       "norm_label": ".savehighlights()"
     },
     {
@@ -2290,7 +2290,7 @@
       "source_location": "L29",
       "_origin": "ast",
       "id": "db_pdfdatabase_pdfdatabase_gethighlights",
-      "community": 9,
+      "community": 12,
       "norm_label": ".gethighlights()"
     },
     {
@@ -2300,7 +2300,7 @@
       "source_location": "L32",
       "_origin": "ast",
       "id": "db_pdfdatabase_rememberpdfdatabase",
-      "community": 9,
+      "community": 12,
       "norm_label": "rememberpdfdatabase()"
     },
     {
@@ -2310,7 +2310,7 @@
       "source_location": "L35",
       "_origin": "ast",
       "id": "db_pdfdatabase_getcurrenttimemillis",
-      "community": 9,
+      "community": 12,
       "norm_label": "getcurrenttimemillis()"
     },
     {
@@ -2320,7 +2320,7 @@
       "source_location": "L35",
       "_origin": "ast",
       "id": "pdf_viewer_src_commonmain_kotlin_com_lumina_pdf_viewer_db_pdfdatabase_kt_long",
-      "community": 9,
+      "community": 12,
       "norm_label": "long"
     },
     {
@@ -3194,44 +3194,134 @@
       "norm_label": ".example()"
     },
     {
-      "label": "FilePicker.android.kt",
+      "label": "AndroidContext.kt",
       "file_type": "code",
-      "source_file": "shared/src/androidMain/kotlin/com/lumina/pdf/FilePicker.android.kt",
+      "source_file": "shared/src/androidMain/kotlin/com/lumina/pdf/AndroidContext.kt",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "pdf_filepicker_android",
-      "community": 24,
-      "norm_label": "filepicker.android.kt"
+      "id": "pdf_androidcontext",
+      "community": 61,
+      "norm_label": "androidcontext.kt"
     },
     {
-      "label": "FilePicker",
+      "label": "AndroidContext",
       "file_type": "code",
-      "source_file": "shared/src/androidMain/kotlin/com/lumina/pdf/FilePicker.android.kt",
+      "source_file": "shared/src/androidMain/kotlin/com/lumina/pdf/AndroidContext.kt",
+      "source_location": "L5",
+      "_origin": "ast",
+      "id": "pdf_androidcontext_androidcontext",
+      "community": 61,
+      "norm_label": "androidcontext"
+    },
+    {
+      "label": "Context",
+      "file_type": "code",
+      "source_file": "shared/src/androidMain/kotlin/com/lumina/pdf/AndroidContext.kt",
+      "source_location": "L6",
+      "_origin": "ast",
+      "id": "context",
+      "community": 61,
+      "norm_label": "context"
+    },
+    {
+      "label": "FilePersistence.android.kt",
+      "file_type": "code",
+      "source_file": "shared/src/androidMain/kotlin/com/lumina/pdf/FilePersistence.android.kt",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "pdf_filepersistence_android",
+      "community": 24,
+      "norm_label": "filepersistence.android.kt"
+    },
+    {
+      "label": "FilePersistence",
+      "file_type": "code",
+      "source_file": "shared/src/androidMain/kotlin/com/lumina/pdf/FilePersistence.android.kt",
+      "source_location": "L5",
+      "_origin": "ast",
+      "id": "pdf_filepersistence_android_filepersistence",
+      "community": 24,
+      "norm_label": "filepersistence"
+    },
+    {
+      "label": "File",
+      "file_type": "code",
+      "source_file": "shared/src/androidMain/kotlin/com/lumina/pdf/FilePersistence.android.kt",
       "source_location": "L8",
       "_origin": "ast",
-      "id": "pdf_filepicker_android_filepicker",
+      "id": "shared_src_androidmain_kotlin_com_lumina_pdf_filepersistence_android_kt_file",
       "community": 24,
-      "norm_label": "filepicker"
+      "norm_label": "file"
     },
     {
-      "label": ".register()",
+      "label": ".saveRecentFile()",
       "file_type": "code",
-      "source_file": "shared/src/androidMain/kotlin/com/lumina/pdf/FilePicker.android.kt",
-      "source_location": "L9",
+      "source_file": "shared/src/androidMain/kotlin/com/lumina/pdf/FilePersistence.android.kt",
+      "source_location": "L18",
       "_origin": "ast",
-      "id": "pdf_filepicker_android_filepicker_register",
+      "id": "pdf_filepersistence_android_filepersistence_saverecentfile",
       "community": 24,
-      "norm_label": ".register()"
+      "norm_label": ".saverecentfile()"
     },
     {
-      "label": "Unit",
+      "label": "String",
       "file_type": "code",
-      "source_file": "shared/src/androidMain/kotlin/com/lumina/pdf/FilePicker.android.kt",
-      "source_location": "L9",
+      "source_file": "shared/src/androidMain/kotlin/com/lumina/pdf/FilePersistence.android.kt",
+      "source_location": "L18",
       "_origin": "ast",
-      "id": "shared_src_androidmain_kotlin_com_lumina_pdf_filepicker_android_kt_unit",
+      "id": "shared_src_androidmain_kotlin_com_lumina_pdf_filepersistence_android_kt_string",
       "community": 24,
-      "norm_label": "unit"
+      "norm_label": "string"
+    },
+    {
+      "label": "ByteArray",
+      "file_type": "code",
+      "source_file": "shared/src/androidMain/kotlin/com/lumina/pdf/FilePersistence.android.kt",
+      "source_location": "L18",
+      "_origin": "ast",
+      "id": "shared_src_androidmain_kotlin_com_lumina_pdf_filepersistence_android_kt_bytearray",
+      "community": 24,
+      "norm_label": "bytearray"
+    },
+    {
+      "label": ".loadRecentFile()",
+      "file_type": "code",
+      "source_file": "shared/src/androidMain/kotlin/com/lumina/pdf/FilePersistence.android.kt",
+      "source_location": "L28",
+      "_origin": "ast",
+      "id": "pdf_filepersistence_android_filepersistence_loadrecentfile",
+      "community": 24,
+      "norm_label": ".loadrecentfile()"
+    },
+    {
+      "label": ".deleteRecentFile()",
+      "file_type": "code",
+      "source_file": "shared/src/androidMain/kotlin/com/lumina/pdf/FilePersistence.android.kt",
+      "source_location": "L40",
+      "_origin": "ast",
+      "id": "pdf_filepersistence_android_filepersistence_deleterecentfile",
+      "community": 24,
+      "norm_label": ".deleterecentfile()"
+    },
+    {
+      "label": ".saveMetadata()",
+      "file_type": "code",
+      "source_file": "shared/src/androidMain/kotlin/com/lumina/pdf/FilePersistence.android.kt",
+      "source_location": "L51",
+      "_origin": "ast",
+      "id": "pdf_filepersistence_android_filepersistence_savemetadata",
+      "community": 24,
+      "norm_label": ".savemetadata()"
+    },
+    {
+      "label": ".loadMetadata()",
+      "file_type": "code",
+      "source_file": "shared/src/androidMain/kotlin/com/lumina/pdf/FilePersistence.android.kt",
+      "source_location": "L59",
+      "_origin": "ast",
+      "id": "pdf_filepersistence_android_filepersistence_loadmetadata",
+      "community": 24,
+      "norm_label": ".loadmetadata()"
     },
     {
       "label": "Platform.android.kt",
@@ -3280,7 +3370,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "pdf_app",
-      "community": 57,
+      "community": 62,
       "norm_label": "app.kt"
     },
     {
@@ -3290,78 +3380,128 @@
       "source_location": "L21",
       "_origin": "ast",
       "id": "pdf_app_app",
-      "community": 57,
+      "community": 62,
       "norm_label": "app()"
     },
     {
       "label": "formatSize()",
       "file_type": "code",
       "source_file": "shared/src/commonMain/kotlin/com/lumina/pdf/App.kt",
-      "source_location": "L176",
+      "source_location": "L227",
       "_origin": "ast",
       "id": "pdf_app_formatsize",
-      "community": 57,
+      "community": 62,
       "norm_label": "formatsize()"
     },
     {
       "label": "Int",
       "file_type": "code",
       "source_file": "shared/src/commonMain/kotlin/com/lumina/pdf/App.kt",
-      "source_location": "L176",
+      "source_location": "L227",
       "_origin": "ast",
       "id": "shared_src_commonmain_kotlin_com_lumina_pdf_app_kt_int",
-      "community": 57,
+      "community": 62,
       "norm_label": "int"
     },
     {
       "label": "String",
       "file_type": "code",
       "source_file": "shared/src/commonMain/kotlin/com/lumina/pdf/App.kt",
-      "source_location": "L176",
+      "source_location": "L227",
       "_origin": "ast",
       "id": "shared_src_commonmain_kotlin_com_lumina_pdf_app_kt_string",
-      "community": 57,
+      "community": 62,
       "norm_label": "string"
     },
     {
-      "label": "FilePicker.kt",
+      "label": "FilePersistence.kt",
       "file_type": "code",
-      "source_file": "shared/src/commonMain/kotlin/com/lumina/pdf/FilePicker.kt",
+      "source_file": "shared/src/commonMain/kotlin/com/lumina/pdf/FilePersistence.kt",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "pdf_filepicker",
-      "community": 23,
-      "norm_label": "filepicker.kt"
+      "id": "pdf_filepersistence",
+      "community": 26,
+      "norm_label": "filepersistence.kt"
     },
     {
-      "label": "FilePicker",
+      "label": "FilePersistence",
       "file_type": "code",
-      "source_file": "shared/src/commonMain/kotlin/com/lumina/pdf/FilePicker.kt",
+      "source_file": "shared/src/commonMain/kotlin/com/lumina/pdf/FilePersistence.kt",
+      "source_location": "L3",
+      "_origin": "ast",
+      "id": "pdf_filepersistence_filepersistence",
+      "community": 26,
+      "norm_label": "filepersistence"
+    },
+    {
+      "label": ".saveRecentFile()",
+      "file_type": "code",
+      "source_file": "shared/src/commonMain/kotlin/com/lumina/pdf/FilePersistence.kt",
+      "source_location": "L4",
+      "_origin": "ast",
+      "id": "pdf_filepersistence_filepersistence_saverecentfile",
+      "community": 26,
+      "norm_label": ".saverecentfile()"
+    },
+    {
+      "label": "String",
+      "file_type": "code",
+      "source_file": "shared/src/commonMain/kotlin/com/lumina/pdf/FilePersistence.kt",
+      "source_location": "L4",
+      "_origin": "ast",
+      "id": "shared_src_commonmain_kotlin_com_lumina_pdf_filepersistence_kt_string",
+      "community": 26,
+      "norm_label": "string"
+    },
+    {
+      "label": "ByteArray",
+      "file_type": "code",
+      "source_file": "shared/src/commonMain/kotlin/com/lumina/pdf/FilePersistence.kt",
+      "source_location": "L4",
+      "_origin": "ast",
+      "id": "shared_src_commonmain_kotlin_com_lumina_pdf_filepersistence_kt_bytearray",
+      "community": 26,
+      "norm_label": "bytearray"
+    },
+    {
+      "label": ".loadRecentFile()",
+      "file_type": "code",
+      "source_file": "shared/src/commonMain/kotlin/com/lumina/pdf/FilePersistence.kt",
       "source_location": "L5",
       "_origin": "ast",
-      "id": "pdf_filepicker_filepicker",
-      "community": 23,
-      "norm_label": "filepicker"
+      "id": "pdf_filepersistence_filepersistence_loadrecentfile",
+      "community": 26,
+      "norm_label": ".loadrecentfile()"
     },
     {
-      "label": ".register()",
+      "label": ".deleteRecentFile()",
       "file_type": "code",
-      "source_file": "shared/src/commonMain/kotlin/com/lumina/pdf/FilePicker.kt",
+      "source_file": "shared/src/commonMain/kotlin/com/lumina/pdf/FilePersistence.kt",
       "source_location": "L6",
       "_origin": "ast",
-      "id": "pdf_filepicker_filepicker_register",
-      "community": 23,
-      "norm_label": ".register()"
+      "id": "pdf_filepersistence_filepersistence_deleterecentfile",
+      "community": 26,
+      "norm_label": ".deleterecentfile()"
     },
     {
-      "label": "Unit",
+      "label": ".saveMetadata()",
       "file_type": "code",
-      "source_file": "shared/src/commonMain/kotlin/com/lumina/pdf/FilePicker.kt",
-      "source_location": "L6",
+      "source_file": "shared/src/commonMain/kotlin/com/lumina/pdf/FilePersistence.kt",
+      "source_location": "L7",
       "_origin": "ast",
-      "id": "shared_src_commonmain_kotlin_com_lumina_pdf_filepicker_kt_unit",
-      "community": 23,
-      "norm_label": "unit"
+      "id": "pdf_filepersistence_filepersistence_savemetadata",
+      "community": 26,
+      "norm_label": ".savemetadata()"
+    },
+    {
+      "label": ".loadMetadata()",
+      "file_type": "code",
+      "source_file": "shared/src/commonMain/kotlin/com/lumina/pdf/FilePersistence.kt",
+      "source_location": "L8",
+      "_origin": "ast",
+      "id": "pdf_filepersistence_filepersistence_loadmetadata",
+      "community": 26,
+      "norm_label": ".loadmetadata()"
     },
     {
       "label": "Greeting.kt",
@@ -3447,7 +3587,7 @@
       "label": "RecentFile",
       "file_type": "code",
       "source_file": "shared/src/commonMain/kotlin/com/lumina/pdf/HomeScreen.kt",
-      "source_location": "L32",
+      "source_location": "L33",
       "_origin": "ast",
       "id": "pdf_homescreen_recentfile",
       "community": 0,
@@ -3457,7 +3597,7 @@
       "label": "AcrobatPdfIcon()",
       "file_type": "code",
       "source_file": "shared/src/commonMain/kotlin/com/lumina/pdf/HomeScreen.kt",
-      "source_location": "L44",
+      "source_location": "L45",
       "_origin": "ast",
       "id": "pdf_homescreen_acrobatpdficon",
       "community": 0,
@@ -3467,7 +3607,7 @@
       "label": "Modifier",
       "file_type": "code",
       "source_file": "shared/src/commonMain/kotlin/com/lumina/pdf/HomeScreen.kt",
-      "source_location": "L44",
+      "source_location": "L45",
       "_origin": "ast",
       "id": "shared_src_commonmain_kotlin_com_lumina_pdf_homescreen_kt_modifier",
       "community": 0,
@@ -3477,7 +3617,7 @@
       "label": "HomeIcon()",
       "file_type": "code",
       "source_file": "shared/src/commonMain/kotlin/com/lumina/pdf/HomeScreen.kt",
-      "source_location": "L83",
+      "source_location": "L84",
       "_origin": "ast",
       "id": "pdf_homescreen_homeicon",
       "community": 0,
@@ -3487,7 +3627,7 @@
       "label": "Color",
       "file_type": "code",
       "source_file": "shared/src/commonMain/kotlin/com/lumina/pdf/HomeScreen.kt",
-      "source_location": "L83",
+      "source_location": "L84",
       "_origin": "ast",
       "id": "shared_src_commonmain_kotlin_com_lumina_pdf_homescreen_kt_color",
       "community": 0,
@@ -3497,7 +3637,7 @@
       "label": "LearnIcon()",
       "file_type": "code",
       "source_file": "shared/src/commonMain/kotlin/com/lumina/pdf/HomeScreen.kt",
-      "source_location": "L105",
+      "source_location": "L106",
       "_origin": "ast",
       "id": "pdf_homescreen_learnicon",
       "community": 0,
@@ -3507,7 +3647,7 @@
       "label": "FolderIcon()",
       "file_type": "code",
       "source_file": "shared/src/commonMain/kotlin/com/lumina/pdf/HomeScreen.kt",
-      "source_location": "L130",
+      "source_location": "L131",
       "_origin": "ast",
       "id": "pdf_homescreen_foldericon",
       "community": 0,
@@ -3517,7 +3657,7 @@
       "label": "PeopleIcon()",
       "file_type": "code",
       "source_file": "shared/src/commonMain/kotlin/com/lumina/pdf/HomeScreen.kt",
-      "source_location": "L148",
+      "source_location": "L149",
       "_origin": "ast",
       "id": "pdf_homescreen_peopleicon",
       "community": 0,
@@ -3527,7 +3667,7 @@
       "label": "CloudIcon()",
       "file_type": "code",
       "source_file": "shared/src/commonMain/kotlin/com/lumina/pdf/HomeScreen.kt",
-      "source_location": "L184",
+      "source_location": "L185",
       "_origin": "ast",
       "id": "pdf_homescreen_cloudicon",
       "community": 0,
@@ -3537,7 +3677,7 @@
       "label": "TrashIcon()",
       "file_type": "code",
       "source_file": "shared/src/commonMain/kotlin/com/lumina/pdf/HomeScreen.kt",
-      "source_location": "L203",
+      "source_location": "L204",
       "_origin": "ast",
       "id": "pdf_homescreen_trashicon",
       "community": 0,
@@ -3547,7 +3687,7 @@
       "label": "SearchIcon()",
       "file_type": "code",
       "source_file": "shared/src/commonMain/kotlin/com/lumina/pdf/HomeScreen.kt",
-      "source_location": "L230",
+      "source_location": "L231",
       "_origin": "ast",
       "id": "pdf_homescreen_searchicon",
       "community": 0,
@@ -3557,7 +3697,7 @@
       "label": "GiftIcon()",
       "file_type": "code",
       "source_file": "shared/src/commonMain/kotlin/com/lumina/pdf/HomeScreen.kt",
-      "source_location": "L251",
+      "source_location": "L252",
       "_origin": "ast",
       "id": "pdf_homescreen_gifticon",
       "community": 0,
@@ -3567,7 +3707,7 @@
       "label": "GridIcon()",
       "file_type": "code",
       "source_file": "shared/src/commonMain/kotlin/com/lumina/pdf/HomeScreen.kt",
-      "source_location": "L289",
+      "source_location": "L290",
       "_origin": "ast",
       "id": "pdf_homescreen_gridicon",
       "community": 0,
@@ -3577,7 +3717,7 @@
       "label": "ListIcon()",
       "file_type": "code",
       "source_file": "shared/src/commonMain/kotlin/com/lumina/pdf/HomeScreen.kt",
-      "source_location": "L304",
+      "source_location": "L305",
       "_origin": "ast",
       "id": "pdf_homescreen_listicon",
       "community": 0,
@@ -3587,7 +3727,7 @@
       "label": "SortArrowIcon()",
       "file_type": "code",
       "source_file": "shared/src/commonMain/kotlin/com/lumina/pdf/HomeScreen.kt",
-      "source_location": "L322",
+      "source_location": "L323",
       "_origin": "ast",
       "id": "pdf_homescreen_sortarrowicon",
       "community": 0,
@@ -3597,7 +3737,7 @@
       "label": "Boolean",
       "file_type": "code",
       "source_file": "shared/src/commonMain/kotlin/com/lumina/pdf/HomeScreen.kt",
-      "source_location": "L322",
+      "source_location": "L323",
       "_origin": "ast",
       "id": "shared_src_commonmain_kotlin_com_lumina_pdf_homescreen_kt_boolean",
       "community": 0,
@@ -3607,7 +3747,7 @@
       "label": "InfoIcon()",
       "file_type": "code",
       "source_file": "shared/src/commonMain/kotlin/com/lumina/pdf/HomeScreen.kt",
-      "source_location": "L344",
+      "source_location": "L345",
       "_origin": "ast",
       "id": "pdf_homescreen_infoicon",
       "community": 0,
@@ -3617,7 +3757,7 @@
       "label": "SyncCheckIcon()",
       "file_type": "code",
       "source_file": "shared/src/commonMain/kotlin/com/lumina/pdf/HomeScreen.kt",
-      "source_location": "L356",
+      "source_location": "L357",
       "_origin": "ast",
       "id": "pdf_homescreen_synccheckicon",
       "community": 0,
@@ -3627,17 +3767,27 @@
       "label": "CloseIcon()",
       "file_type": "code",
       "source_file": "shared/src/commonMain/kotlin/com/lumina/pdf/HomeScreen.kt",
-      "source_location": "L371",
+      "source_location": "L372",
       "_origin": "ast",
       "id": "pdf_homescreen_closeicon",
       "community": 0,
       "norm_label": "closeicon()"
     },
     {
-      "label": "HoverableItem()",
+      "label": "NotesIndicatorIcon()",
       "file_type": "code",
       "source_file": "shared/src/commonMain/kotlin/com/lumina/pdf/HomeScreen.kt",
       "source_location": "L384",
+      "_origin": "ast",
+      "id": "pdf_homescreen_notesindicatoricon",
+      "community": 0,
+      "norm_label": "notesindicatoricon()"
+    },
+    {
+      "label": "HoverableItem()",
+      "file_type": "code",
+      "source_file": "shared/src/commonMain/kotlin/com/lumina/pdf/HomeScreen.kt",
+      "source_location": "L411",
       "_origin": "ast",
       "id": "pdf_homescreen_hoverableitem",
       "community": 0,
@@ -3647,7 +3797,7 @@
       "label": "RoundedCornerShape",
       "file_type": "code",
       "source_file": "shared/src/commonMain/kotlin/com/lumina/pdf/HomeScreen.kt",
-      "source_location": "L384",
+      "source_location": "L411",
       "_origin": "ast",
       "id": "roundedcornershape",
       "community": 0,
@@ -3657,7 +3807,7 @@
       "label": "MockDocumentThumbnail()",
       "file_type": "code",
       "source_file": "shared/src/commonMain/kotlin/com/lumina/pdf/HomeScreen.kt",
-      "source_location": "L406",
+      "source_location": "L433",
       "_origin": "ast",
       "id": "pdf_homescreen_mockdocumentthumbnail",
       "community": 0,
@@ -3667,17 +3817,47 @@
       "label": "String",
       "file_type": "code",
       "source_file": "shared/src/commonMain/kotlin/com/lumina/pdf/HomeScreen.kt",
-      "source_location": "L406",
+      "source_location": "L433",
       "_origin": "ast",
       "id": "shared_src_commonmain_kotlin_com_lumina_pdf_homescreen_kt_string",
       "community": 0,
       "norm_label": "string"
     },
     {
+      "label": "ArrowRightIcon()",
+      "file_type": "code",
+      "source_file": "shared/src/commonMain/kotlin/com/lumina/pdf/HomeScreen.kt",
+      "source_location": "L593",
+      "_origin": "ast",
+      "id": "pdf_homescreen_arrowrighticon",
+      "community": 0,
+      "norm_label": "arrowrighticon()"
+    },
+    {
+      "label": "formatRelativeTime()",
+      "file_type": "code",
+      "source_file": "shared/src/commonMain/kotlin/com/lumina/pdf/HomeScreen.kt",
+      "source_location": "L608",
+      "_origin": "ast",
+      "id": "pdf_homescreen_formatrelativetime",
+      "community": 0,
+      "norm_label": "formatrelativetime()"
+    },
+    {
+      "label": "Long",
+      "file_type": "code",
+      "source_file": "shared/src/commonMain/kotlin/com/lumina/pdf/HomeScreen.kt",
+      "source_location": "L608",
+      "_origin": "ast",
+      "id": "shared_src_commonmain_kotlin_com_lumina_pdf_homescreen_kt_long",
+      "community": 0,
+      "norm_label": "long"
+    },
+    {
       "label": "HomeScreen()",
       "file_type": "code",
       "source_file": "shared/src/commonMain/kotlin/com/lumina/pdf/HomeScreen.kt",
-      "source_location": "L568",
+      "source_location": "L623",
       "_origin": "ast",
       "id": "pdf_homescreen_homescreen",
       "community": 0,
@@ -3687,7 +3867,7 @@
       "label": "List",
       "file_type": "code",
       "source_file": "shared/src/commonMain/kotlin/com/lumina/pdf/HomeScreen.kt",
-      "source_location": "L568",
+      "source_location": "L623",
       "_origin": "ast",
       "id": "shared_src_commonmain_kotlin_com_lumina_pdf_homescreen_kt_list",
       "community": 0,
@@ -3697,17 +3877,27 @@
       "label": "GridItemCard()",
       "file_type": "code",
       "source_file": "shared/src/commonMain/kotlin/com/lumina/pdf/HomeScreen.kt",
-      "source_location": "L1320",
+      "source_location": "L1215",
       "_origin": "ast",
       "id": "pdf_homescreen_griditemcard",
       "community": 0,
       "norm_label": "griditemcard()"
     },
     {
+      "label": "com",
+      "file_type": "code",
+      "source_file": "shared/src/commonMain/kotlin/com/lumina/pdf/HomeScreen.kt",
+      "source_location": "L1215",
+      "_origin": "ast",
+      "id": "com",
+      "community": 0,
+      "norm_label": "com"
+    },
+    {
       "label": "ListItemRow()",
       "file_type": "code",
       "source_file": "shared/src/commonMain/kotlin/com/lumina/pdf/HomeScreen.kt",
-      "source_location": "L1453",
+      "source_location": "L1364",
       "_origin": "ast",
       "id": "pdf_homescreen_listitemrow",
       "community": 0,
@@ -3717,7 +3907,7 @@
       "label": "onHover()",
       "file_type": "code",
       "source_file": "shared/src/commonMain/kotlin/com/lumina/pdf/HomeScreen.kt",
-      "source_location": "L1552",
+      "source_location": "L1473",
       "_origin": "ast",
       "id": "pdf_homescreen_onhover",
       "community": 0,
@@ -3764,6 +3954,86 @@
       "norm_label": "getplatform()"
     },
     {
+      "label": "RecentFilesStore.kt",
+      "file_type": "code",
+      "source_file": "shared/src/commonMain/kotlin/com/lumina/pdf/RecentFilesStore.kt",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "pdf_recentfilesstore",
+      "community": 57,
+      "norm_label": "recentfilesstore.kt"
+    },
+    {
+      "label": "RecentFilesStore",
+      "file_type": "code",
+      "source_file": "shared/src/commonMain/kotlin/com/lumina/pdf/RecentFilesStore.kt",
+      "source_location": "L3",
+      "_origin": "ast",
+      "id": "pdf_recentfilesstore_recentfilesstore",
+      "community": 57,
+      "norm_label": "recentfilesstore"
+    },
+    {
+      "label": ".saveRecentFilesList()",
+      "file_type": "code",
+      "source_file": "shared/src/commonMain/kotlin/com/lumina/pdf/RecentFilesStore.kt",
+      "source_location": "L4",
+      "_origin": "ast",
+      "id": "pdf_recentfilesstore_recentfilesstore_saverecentfileslist",
+      "community": 57,
+      "norm_label": ".saverecentfileslist()"
+    },
+    {
+      "label": "List",
+      "file_type": "code",
+      "source_file": "shared/src/commonMain/kotlin/com/lumina/pdf/RecentFilesStore.kt",
+      "source_location": "L4",
+      "_origin": "ast",
+      "id": "shared_src_commonmain_kotlin_com_lumina_pdf_recentfilesstore_kt_list",
+      "community": 57,
+      "norm_label": "list"
+    },
+    {
+      "label": "RecentFile",
+      "file_type": "code",
+      "source_file": "shared/src/commonMain/kotlin/com/lumina/pdf/RecentFilesStore.kt",
+      "source_location": "L4",
+      "_origin": "ast",
+      "id": "recentfile",
+      "community": 57,
+      "norm_label": "recentfile"
+    },
+    {
+      "label": ".loadRecentFilesList()",
+      "file_type": "code",
+      "source_file": "shared/src/commonMain/kotlin/com/lumina/pdf/RecentFilesStore.kt",
+      "source_location": "L19",
+      "_origin": "ast",
+      "id": "pdf_recentfilesstore_recentfilesstore_loadrecentfileslist",
+      "community": 57,
+      "norm_label": ".loadrecentfileslist()"
+    },
+    {
+      "label": ".deleteRecentFile()",
+      "file_type": "code",
+      "source_file": "shared/src/commonMain/kotlin/com/lumina/pdf/RecentFilesStore.kt",
+      "source_location": "L54",
+      "_origin": "ast",
+      "id": "pdf_recentfilesstore_recentfilesstore_deleterecentfile",
+      "community": 57,
+      "norm_label": ".deleterecentfile()"
+    },
+    {
+      "label": "String",
+      "file_type": "code",
+      "source_file": "shared/src/commonMain/kotlin/com/lumina/pdf/RecentFilesStore.kt",
+      "source_location": "L54",
+      "_origin": "ast",
+      "id": "shared_src_commonmain_kotlin_com_lumina_pdf_recentfilesstore_kt_string",
+      "community": 57,
+      "norm_label": "string"
+    },
+    {
       "label": "SharedCommonTest.kt",
       "file_type": "code",
       "source_file": "shared/src/commonTest/kotlin/com/lumina/pdf/SharedCommonTest.kt",
@@ -3794,44 +4064,124 @@
       "norm_label": ".example()"
     },
     {
-      "label": "FilePicker.ios.kt",
+      "label": "FilePersistence.ios.kt",
       "file_type": "code",
-      "source_file": "shared/src/iosMain/kotlin/com/lumina/pdf/FilePicker.ios.kt",
+      "source_file": "shared/src/iosMain/kotlin/com/lumina/pdf/FilePersistence.ios.kt",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "pdf_filepicker_ios",
-      "community": 25,
-      "norm_label": "filepicker.ios.kt"
+      "id": "pdf_filepersistence_ios",
+      "community": 23,
+      "norm_label": "filepersistence.ios.kt"
     },
     {
-      "label": "FilePicker",
+      "label": "FilePersistence",
       "file_type": "code",
-      "source_file": "shared/src/iosMain/kotlin/com/lumina/pdf/FilePicker.ios.kt",
-      "source_location": "L5",
-      "_origin": "ast",
-      "id": "pdf_filepicker_ios_filepicker",
-      "community": 25,
-      "norm_label": "filepicker"
-    },
-    {
-      "label": ".register()",
-      "file_type": "code",
-      "source_file": "shared/src/iosMain/kotlin/com/lumina/pdf/FilePicker.ios.kt",
+      "source_file": "shared/src/iosMain/kotlin/com/lumina/pdf/FilePersistence.ios.kt",
       "source_location": "L6",
       "_origin": "ast",
-      "id": "pdf_filepicker_ios_filepicker_register",
-      "community": 25,
-      "norm_label": ".register()"
+      "id": "pdf_filepersistence_ios_filepersistence",
+      "community": 23,
+      "norm_label": "filepersistence"
     },
     {
-      "label": "Unit",
+      "label": "String",
       "file_type": "code",
-      "source_file": "shared/src/iosMain/kotlin/com/lumina/pdf/FilePicker.ios.kt",
-      "source_location": "L6",
+      "source_file": "shared/src/iosMain/kotlin/com/lumina/pdf/FilePersistence.ios.kt",
+      "source_location": "L9",
       "_origin": "ast",
-      "id": "shared_src_iosmain_kotlin_com_lumina_pdf_filepicker_ios_kt_unit",
-      "community": 25,
-      "norm_label": "unit"
+      "id": "shared_src_iosmain_kotlin_com_lumina_pdf_filepersistence_ios_kt_string",
+      "community": 23,
+      "norm_label": "string"
+    },
+    {
+      "label": ".saveRecentFile()",
+      "file_type": "code",
+      "source_file": "shared/src/iosMain/kotlin/com/lumina/pdf/FilePersistence.ios.kt",
+      "source_location": "L27",
+      "_origin": "ast",
+      "id": "pdf_filepersistence_ios_filepersistence_saverecentfile",
+      "community": 23,
+      "norm_label": ".saverecentfile()"
+    },
+    {
+      "label": "ByteArray",
+      "file_type": "code",
+      "source_file": "shared/src/iosMain/kotlin/com/lumina/pdf/FilePersistence.ios.kt",
+      "source_location": "L27",
+      "_origin": "ast",
+      "id": "shared_src_iosmain_kotlin_com_lumina_pdf_filepersistence_ios_kt_bytearray",
+      "community": 23,
+      "norm_label": "bytearray"
+    },
+    {
+      "label": ".loadRecentFile()",
+      "file_type": "code",
+      "source_file": "shared/src/iosMain/kotlin/com/lumina/pdf/FilePersistence.ios.kt",
+      "source_location": "L33",
+      "_origin": "ast",
+      "id": "pdf_filepersistence_ios_filepersistence_loadrecentfile",
+      "community": 23,
+      "norm_label": ".loadrecentfile()"
+    },
+    {
+      "label": ".deleteRecentFile()",
+      "file_type": "code",
+      "source_file": "shared/src/iosMain/kotlin/com/lumina/pdf/FilePersistence.ios.kt",
+      "source_location": "L40",
+      "_origin": "ast",
+      "id": "pdf_filepersistence_ios_filepersistence_deleterecentfile",
+      "community": 23,
+      "norm_label": ".deleterecentfile()"
+    },
+    {
+      "label": ".saveMetadata()",
+      "file_type": "code",
+      "source_file": "shared/src/iosMain/kotlin/com/lumina/pdf/FilePersistence.ios.kt",
+      "source_location": "L47",
+      "_origin": "ast",
+      "id": "pdf_filepersistence_ios_filepersistence_savemetadata",
+      "community": 23,
+      "norm_label": ".savemetadata()"
+    },
+    {
+      "label": ".loadMetadata()",
+      "file_type": "code",
+      "source_file": "shared/src/iosMain/kotlin/com/lumina/pdf/FilePersistence.ios.kt",
+      "source_location": "L53",
+      "_origin": "ast",
+      "id": "pdf_filepersistence_ios_filepersistence_loadmetadata",
+      "community": 23,
+      "norm_label": ".loadmetadata()"
+    },
+    {
+      "label": ".toNSData()",
+      "file_type": "code",
+      "source_file": "shared/src/iosMain/kotlin/com/lumina/pdf/FilePersistence.ios.kt",
+      "source_location": "L60",
+      "_origin": "ast",
+      "id": "pdf_filepersistence_ios_filepersistence_tonsdata",
+      "community": 23,
+      "norm_label": ".tonsdata()"
+    },
+    {
+      "label": "NSData",
+      "file_type": "code",
+      "source_file": "shared/src/iosMain/kotlin/com/lumina/pdf/FilePersistence.ios.kt",
+      "source_location": "L60",
+      "_origin": "ast",
+      "id": "nsdata",
+      "community": 23,
+      "norm_label": "nsdata"
+    },
+    {
+      "label": ".toByteArray()",
+      "file_type": "code",
+      "source_file": "shared/src/iosMain/kotlin/com/lumina/pdf/FilePersistence.ios.kt",
+      "source_location": "L65",
+      "_origin": "ast",
+      "id": "pdf_filepersistence_ios_filepersistence_tobytearray",
+      "community": 23,
+      "norm_label": ".tobytearray()"
     },
     {
       "label": "MainViewController.kt",
@@ -3924,44 +4274,94 @@
       "norm_label": ".example()"
     },
     {
-      "label": "FilePicker.js.kt",
+      "label": "FilePersistence.js.kt",
       "file_type": "code",
-      "source_file": "shared/src/jsMain/kotlin/com/lumina/pdf/FilePicker.js.kt",
+      "source_file": "shared/src/jsMain/kotlin/com/lumina/pdf/FilePersistence.js.kt",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "pdf_filepicker_js",
-      "community": 26,
-      "norm_label": "filepicker.js.kt"
+      "id": "pdf_filepersistence_js",
+      "community": 27,
+      "norm_label": "filepersistence.js.kt"
     },
     {
-      "label": "FilePicker",
+      "label": "FilePersistence",
       "file_type": "code",
-      "source_file": "shared/src/jsMain/kotlin/com/lumina/pdf/FilePicker.js.kt",
+      "source_file": "shared/src/jsMain/kotlin/com/lumina/pdf/FilePersistence.js.kt",
       "source_location": "L5",
       "_origin": "ast",
-      "id": "pdf_filepicker_js_filepicker",
-      "community": 26,
-      "norm_label": "filepicker"
+      "id": "pdf_filepersistence_js_filepersistence",
+      "community": 27,
+      "norm_label": "filepersistence"
     },
     {
-      "label": ".register()",
+      "label": ".saveRecentFile()",
       "file_type": "code",
-      "source_file": "shared/src/jsMain/kotlin/com/lumina/pdf/FilePicker.js.kt",
+      "source_file": "shared/src/jsMain/kotlin/com/lumina/pdf/FilePersistence.js.kt",
       "source_location": "L6",
       "_origin": "ast",
-      "id": "pdf_filepicker_js_filepicker_register",
-      "community": 26,
-      "norm_label": ".register()"
+      "id": "pdf_filepersistence_js_filepersistence_saverecentfile",
+      "community": 27,
+      "norm_label": ".saverecentfile()"
     },
     {
-      "label": "Unit",
+      "label": "String",
       "file_type": "code",
-      "source_file": "shared/src/jsMain/kotlin/com/lumina/pdf/FilePicker.js.kt",
+      "source_file": "shared/src/jsMain/kotlin/com/lumina/pdf/FilePersistence.js.kt",
       "source_location": "L6",
       "_origin": "ast",
-      "id": "shared_src_jsmain_kotlin_com_lumina_pdf_filepicker_js_kt_unit",
-      "community": 26,
-      "norm_label": "unit"
+      "id": "shared_src_jsmain_kotlin_com_lumina_pdf_filepersistence_js_kt_string",
+      "community": 27,
+      "norm_label": "string"
+    },
+    {
+      "label": "ByteArray",
+      "file_type": "code",
+      "source_file": "shared/src/jsMain/kotlin/com/lumina/pdf/FilePersistence.js.kt",
+      "source_location": "L6",
+      "_origin": "ast",
+      "id": "shared_src_jsmain_kotlin_com_lumina_pdf_filepersistence_js_kt_bytearray",
+      "community": 27,
+      "norm_label": "bytearray"
+    },
+    {
+      "label": ".loadRecentFile()",
+      "file_type": "code",
+      "source_file": "shared/src/jsMain/kotlin/com/lumina/pdf/FilePersistence.js.kt",
+      "source_location": "L10",
+      "_origin": "ast",
+      "id": "pdf_filepersistence_js_filepersistence_loadrecentfile",
+      "community": 27,
+      "norm_label": ".loadrecentfile()"
+    },
+    {
+      "label": ".deleteRecentFile()",
+      "file_type": "code",
+      "source_file": "shared/src/jsMain/kotlin/com/lumina/pdf/FilePersistence.js.kt",
+      "source_location": "L14",
+      "_origin": "ast",
+      "id": "pdf_filepersistence_js_filepersistence_deleterecentfile",
+      "community": 27,
+      "norm_label": ".deleterecentfile()"
+    },
+    {
+      "label": ".saveMetadata()",
+      "file_type": "code",
+      "source_file": "shared/src/jsMain/kotlin/com/lumina/pdf/FilePersistence.js.kt",
+      "source_location": "L17",
+      "_origin": "ast",
+      "id": "pdf_filepersistence_js_filepersistence_savemetadata",
+      "community": 27,
+      "norm_label": ".savemetadata()"
+    },
+    {
+      "label": ".loadMetadata()",
+      "file_type": "code",
+      "source_file": "shared/src/jsMain/kotlin/com/lumina/pdf/FilePersistence.js.kt",
+      "source_location": "L21",
+      "_origin": "ast",
+      "id": "pdf_filepersistence_js_filepersistence_loadmetadata",
+      "community": 27,
+      "norm_label": ".loadmetadata()"
     },
     {
       "label": "Platform.js.kt",
@@ -4004,44 +4404,104 @@
       "norm_label": "getplatform()"
     },
     {
-      "label": "FilePicker.jvm.kt",
+      "label": "FilePersistence.jvm.kt",
       "file_type": "code",
-      "source_file": "shared/src/jvmMain/kotlin/com/lumina/pdf/FilePicker.jvm.kt",
+      "source_file": "shared/src/jvmMain/kotlin/com/lumina/pdf/FilePersistence.jvm.kt",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "pdf_filepicker_jvm",
-      "community": 27,
-      "norm_label": "filepicker.jvm.kt"
+      "id": "pdf_filepersistence_jvm",
+      "community": 25,
+      "norm_label": "filepersistence.jvm.kt"
     },
     {
-      "label": "FilePicker",
+      "label": "FilePersistence",
       "file_type": "code",
-      "source_file": "shared/src/jvmMain/kotlin/com/lumina/pdf/FilePicker.jvm.kt",
-      "source_location": "L13",
+      "source_file": "shared/src/jvmMain/kotlin/com/lumina/pdf/FilePersistence.jvm.kt",
+      "source_location": "L5",
       "_origin": "ast",
-      "id": "pdf_filepicker_jvm_filepicker",
-      "community": 27,
-      "norm_label": "filepicker"
+      "id": "pdf_filepersistence_jvm_filepersistence",
+      "community": 25,
+      "norm_label": "filepersistence"
     },
     {
-      "label": ".register()",
+      "label": "File",
       "file_type": "code",
-      "source_file": "shared/src/jvmMain/kotlin/com/lumina/pdf/FilePicker.jvm.kt",
-      "source_location": "L14",
+      "source_file": "shared/src/jvmMain/kotlin/com/lumina/pdf/FilePersistence.jvm.kt",
+      "source_location": "L6",
       "_origin": "ast",
-      "id": "pdf_filepicker_jvm_filepicker_register",
-      "community": 27,
-      "norm_label": ".register()"
+      "id": "shared_src_jvmmain_kotlin_com_lumina_pdf_filepersistence_jvm_kt_file",
+      "community": 25,
+      "norm_label": "file"
     },
     {
-      "label": "Unit",
+      "label": ".saveRecentFile()",
       "file_type": "code",
-      "source_file": "shared/src/jvmMain/kotlin/com/lumina/pdf/FilePicker.jvm.kt",
-      "source_location": "L14",
+      "source_file": "shared/src/jvmMain/kotlin/com/lumina/pdf/FilePersistence.jvm.kt",
+      "source_location": "L23",
       "_origin": "ast",
-      "id": "shared_src_jvmmain_kotlin_com_lumina_pdf_filepicker_jvm_kt_unit",
-      "community": 27,
-      "norm_label": "unit"
+      "id": "pdf_filepersistence_jvm_filepersistence_saverecentfile",
+      "community": 25,
+      "norm_label": ".saverecentfile()"
+    },
+    {
+      "label": "String",
+      "file_type": "code",
+      "source_file": "shared/src/jvmMain/kotlin/com/lumina/pdf/FilePersistence.jvm.kt",
+      "source_location": "L23",
+      "_origin": "ast",
+      "id": "shared_src_jvmmain_kotlin_com_lumina_pdf_filepersistence_jvm_kt_string",
+      "community": 25,
+      "norm_label": "string"
+    },
+    {
+      "label": "ByteArray",
+      "file_type": "code",
+      "source_file": "shared/src/jvmMain/kotlin/com/lumina/pdf/FilePersistence.jvm.kt",
+      "source_location": "L23",
+      "_origin": "ast",
+      "id": "shared_src_jvmmain_kotlin_com_lumina_pdf_filepersistence_jvm_kt_bytearray",
+      "community": 25,
+      "norm_label": "bytearray"
+    },
+    {
+      "label": ".loadRecentFile()",
+      "file_type": "code",
+      "source_file": "shared/src/jvmMain/kotlin/com/lumina/pdf/FilePersistence.jvm.kt",
+      "source_location": "L31",
+      "_origin": "ast",
+      "id": "pdf_filepersistence_jvm_filepersistence_loadrecentfile",
+      "community": 25,
+      "norm_label": ".loadrecentfile()"
+    },
+    {
+      "label": ".deleteRecentFile()",
+      "file_type": "code",
+      "source_file": "shared/src/jvmMain/kotlin/com/lumina/pdf/FilePersistence.jvm.kt",
+      "source_location": "L41",
+      "_origin": "ast",
+      "id": "pdf_filepersistence_jvm_filepersistence_deleterecentfile",
+      "community": 25,
+      "norm_label": ".deleterecentfile()"
+    },
+    {
+      "label": ".saveMetadata()",
+      "file_type": "code",
+      "source_file": "shared/src/jvmMain/kotlin/com/lumina/pdf/FilePersistence.jvm.kt",
+      "source_location": "L50",
+      "_origin": "ast",
+      "id": "pdf_filepersistence_jvm_filepersistence_savemetadata",
+      "community": 25,
+      "norm_label": ".savemetadata()"
+    },
+    {
+      "label": ".loadMetadata()",
+      "file_type": "code",
+      "source_file": "shared/src/jvmMain/kotlin/com/lumina/pdf/FilePersistence.jvm.kt",
+      "source_location": "L58",
+      "_origin": "ast",
+      "id": "pdf_filepersistence_jvm_filepersistence_loadmetadata",
+      "community": 25,
+      "norm_label": ".loadmetadata()"
     },
     {
       "label": "Platform.jvm.kt",
@@ -4114,44 +4574,94 @@
       "norm_label": ".example()"
     },
     {
-      "label": "FilePicker.wasmJs.kt",
+      "label": "FilePersistence.wasmJs.kt",
       "file_type": "code",
-      "source_file": "shared/src/wasmJsMain/kotlin/com/lumina/pdf/FilePicker.wasmJs.kt",
+      "source_file": "shared/src/wasmJsMain/kotlin/com/lumina/pdf/FilePersistence.wasmJs.kt",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "pdf_filepicker_wasmjs",
+      "id": "pdf_filepersistence_wasmjs",
       "community": 28,
-      "norm_label": "filepicker.wasmjs.kt"
+      "norm_label": "filepersistence.wasmjs.kt"
     },
     {
-      "label": "FilePicker",
+      "label": "FilePersistence",
       "file_type": "code",
-      "source_file": "shared/src/wasmJsMain/kotlin/com/lumina/pdf/FilePicker.wasmJs.kt",
+      "source_file": "shared/src/wasmJsMain/kotlin/com/lumina/pdf/FilePersistence.wasmJs.kt",
+      "source_location": "L3",
+      "_origin": "ast",
+      "id": "pdf_filepersistence_wasmjs_filepersistence",
+      "community": 28,
+      "norm_label": "filepersistence"
+    },
+    {
+      "label": ".saveRecentFile()",
+      "file_type": "code",
+      "source_file": "shared/src/wasmJsMain/kotlin/com/lumina/pdf/FilePersistence.wasmJs.kt",
+      "source_location": "L4",
+      "_origin": "ast",
+      "id": "pdf_filepersistence_wasmjs_filepersistence_saverecentfile",
+      "community": 28,
+      "norm_label": ".saverecentfile()"
+    },
+    {
+      "label": "String",
+      "file_type": "code",
+      "source_file": "shared/src/wasmJsMain/kotlin/com/lumina/pdf/FilePersistence.wasmJs.kt",
+      "source_location": "L4",
+      "_origin": "ast",
+      "id": "shared_src_wasmjsmain_kotlin_com_lumina_pdf_filepersistence_wasmjs_kt_string",
+      "community": 28,
+      "norm_label": "string"
+    },
+    {
+      "label": "ByteArray",
+      "file_type": "code",
+      "source_file": "shared/src/wasmJsMain/kotlin/com/lumina/pdf/FilePersistence.wasmJs.kt",
+      "source_location": "L4",
+      "_origin": "ast",
+      "id": "shared_src_wasmjsmain_kotlin_com_lumina_pdf_filepersistence_wasmjs_kt_bytearray",
+      "community": 28,
+      "norm_label": "bytearray"
+    },
+    {
+      "label": ".loadRecentFile()",
+      "file_type": "code",
+      "source_file": "shared/src/wasmJsMain/kotlin/com/lumina/pdf/FilePersistence.wasmJs.kt",
       "source_location": "L5",
       "_origin": "ast",
-      "id": "pdf_filepicker_wasmjs_filepicker",
+      "id": "pdf_filepersistence_wasmjs_filepersistence_loadrecentfile",
       "community": 28,
-      "norm_label": "filepicker"
+      "norm_label": ".loadrecentfile()"
     },
     {
-      "label": ".register()",
+      "label": ".deleteRecentFile()",
       "file_type": "code",
-      "source_file": "shared/src/wasmJsMain/kotlin/com/lumina/pdf/FilePicker.wasmJs.kt",
+      "source_file": "shared/src/wasmJsMain/kotlin/com/lumina/pdf/FilePersistence.wasmJs.kt",
       "source_location": "L6",
       "_origin": "ast",
-      "id": "pdf_filepicker_wasmjs_filepicker_register",
+      "id": "pdf_filepersistence_wasmjs_filepersistence_deleterecentfile",
       "community": 28,
-      "norm_label": ".register()"
+      "norm_label": ".deleterecentfile()"
     },
     {
-      "label": "Unit",
+      "label": ".saveMetadata()",
       "file_type": "code",
-      "source_file": "shared/src/wasmJsMain/kotlin/com/lumina/pdf/FilePicker.wasmJs.kt",
-      "source_location": "L6",
+      "source_file": "shared/src/wasmJsMain/kotlin/com/lumina/pdf/FilePersistence.wasmJs.kt",
+      "source_location": "L7",
       "_origin": "ast",
-      "id": "shared_src_wasmjsmain_kotlin_com_lumina_pdf_filepicker_wasmjs_kt_unit",
+      "id": "pdf_filepersistence_wasmjs_filepersistence_savemetadata",
       "community": 28,
-      "norm_label": "unit"
+      "norm_label": ".savemetadata()"
+    },
+    {
+      "label": ".loadMetadata()",
+      "file_type": "code",
+      "source_file": "shared/src/wasmJsMain/kotlin/com/lumina/pdf/FilePersistence.wasmJs.kt",
+      "source_location": "L8",
+      "_origin": "ast",
+      "id": "pdf_filepersistence_wasmjs_filepersistence_loadmetadata",
+      "community": 28,
+      "norm_label": ".loadmetadata()"
     },
     {
       "label": "Platform.wasmJs.kt",
@@ -8131,17 +8641,6 @@
       "target": "pdf_viewer_src_commonmain_kotlin_com_lumina_pdf_viewer_pdfviewer_kt_string"
     },
     {
-      "relation": "references",
-      "confidence": "EXTRACTED",
-      "source_file": "pdf-viewer/src/commonMain/kotlin/com/lumina/pdf/viewer/PdfViewer.kt",
-      "source_location": "L227",
-      "weight": 1.0,
-      "context": "parameter_type",
-      "confidence_score": 1.0,
-      "source": "viewer_pdfviewer_topbar",
-      "target": "pdf_viewer_src_commonmain_kotlin_com_lumina_pdf_viewer_pdfviewer_kt_unit"
-    },
-    {
       "relation": "calls",
       "context": "call",
       "confidence": "INFERRED",
@@ -8156,12 +8655,34 @@
       "relation": "references",
       "confidence": "EXTRACTED",
       "source_file": "pdf-viewer/src/commonMain/kotlin/com/lumina/pdf/viewer/PdfViewer.kt",
+      "source_location": "L227",
+      "weight": 1.0,
+      "context": "parameter_type",
+      "confidence_score": 1.0,
+      "source": "viewer_pdfviewer_topbar",
+      "target": "unit"
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-viewer/src/commonMain/kotlin/com/lumina/pdf/viewer/PdfViewer.kt",
       "source_location": "L488",
       "weight": 1.0,
       "context": "parameter_type",
       "confidence_score": 1.0,
       "source": "viewer_pdfviewer_clampscrolloffset",
       "target": "pdf_viewer_src_commonmain_kotlin_com_lumina_pdf_viewer_pdfviewer_kt_int"
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-viewer/src/commonMain/kotlin/com/lumina/pdf/viewer/PdfViewer.kt",
+      "source_location": "L524",
+      "weight": 1.0,
+      "context": "parameter_type",
+      "source": "viewer_pdfviewer_pdfviewer",
+      "target": "pdf_viewer_src_commonmain_kotlin_com_lumina_pdf_viewer_pdfviewer_kt_int",
+      "confidence_score": 1.0
     },
     {
       "relation": "references",
@@ -8183,7 +8704,7 @@
       "context": "parameter_type",
       "confidence_score": 1.0,
       "source": "viewer_pdfviewer_pdfviewer",
-      "target": "pdf_viewer_src_commonmain_kotlin_com_lumina_pdf_viewer_pdfviewer_kt_unit"
+      "target": "unit"
     },
     {
       "relation": "references",
@@ -8282,6 +8803,17 @@
       "source_location": "L315",
       "weight": 1.0,
       "source": "pdf_homescreen_listicon",
+      "target": "offset"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "shared/src/commonMain/kotlin/com/lumina/pdf/HomeScreen.kt",
+      "source_location": "L405",
+      "weight": 1.0,
+      "source": "pdf_homescreen_notesindicatoricon",
       "target": "offset"
     },
     {
@@ -9916,33 +10448,171 @@
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
-      "source_file": "shared/src/androidMain/kotlin/com/lumina/pdf/FilePicker.android.kt",
-      "source_location": "L8",
+      "source_file": "shared/src/androidMain/kotlin/com/lumina/pdf/AndroidContext.kt",
+      "source_location": "L5",
       "weight": 1.0,
       "confidence_score": 1.0,
-      "source": "pdf_filepicker_android",
-      "target": "pdf_filepicker_android_filepicker"
-    },
-    {
-      "relation": "method",
-      "confidence": "EXTRACTED",
-      "source_file": "shared/src/androidMain/kotlin/com/lumina/pdf/FilePicker.android.kt",
-      "source_location": "L9",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "pdf_filepicker_android_filepicker",
-      "target": "pdf_filepicker_android_filepicker_register"
+      "source": "pdf_androidcontext",
+      "target": "pdf_androidcontext_androidcontext"
     },
     {
       "relation": "references",
       "confidence": "EXTRACTED",
-      "source_file": "shared/src/androidMain/kotlin/com/lumina/pdf/FilePicker.android.kt",
-      "source_location": "L9",
+      "source_file": "shared/src/androidMain/kotlin/com/lumina/pdf/AndroidContext.kt",
+      "source_location": "L6",
+      "weight": 1.0,
+      "context": "field",
+      "confidence_score": 1.0,
+      "source": "pdf_androidcontext_androidcontext",
+      "target": "context"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "shared/src/androidMain/kotlin/com/lumina/pdf/FilePersistence.android.kt",
+      "source_location": "L5",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "pdf_filepersistence_android",
+      "target": "pdf_filepersistence_android_filepersistence"
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "shared/src/androidMain/kotlin/com/lumina/pdf/FilePersistence.android.kt",
+      "source_location": "L40",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "pdf_filepersistence_android_filepersistence",
+      "target": "pdf_filepersistence_android_filepersistence_deleterecentfile"
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "shared/src/androidMain/kotlin/com/lumina/pdf/FilePersistence.android.kt",
+      "source_location": "L59",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "pdf_filepersistence_android_filepersistence",
+      "target": "pdf_filepersistence_android_filepersistence_loadmetadata"
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "shared/src/androidMain/kotlin/com/lumina/pdf/FilePersistence.android.kt",
+      "source_location": "L28",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "pdf_filepersistence_android_filepersistence",
+      "target": "pdf_filepersistence_android_filepersistence_loadrecentfile"
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "shared/src/androidMain/kotlin/com/lumina/pdf/FilePersistence.android.kt",
+      "source_location": "L51",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "pdf_filepersistence_android_filepersistence",
+      "target": "pdf_filepersistence_android_filepersistence_savemetadata"
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "shared/src/androidMain/kotlin/com/lumina/pdf/FilePersistence.android.kt",
+      "source_location": "L18",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "pdf_filepersistence_android_filepersistence",
+      "target": "pdf_filepersistence_android_filepersistence_saverecentfile"
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "shared/src/androidMain/kotlin/com/lumina/pdf/FilePersistence.android.kt",
+      "source_location": "L14",
+      "weight": 1.0,
+      "context": "field",
+      "confidence_score": 1.0,
+      "source": "pdf_filepersistence_android_filepersistence",
+      "target": "shared_src_androidmain_kotlin_com_lumina_pdf_filepersistence_android_kt_file"
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "shared/src/androidMain/kotlin/com/lumina/pdf/FilePersistence.android.kt",
+      "source_location": "L18",
+      "weight": 1.0,
+      "context": "parameter_type",
+      "confidence_score": 1.0,
+      "source": "pdf_filepersistence_android_filepersistence_saverecentfile",
+      "target": "shared_src_androidmain_kotlin_com_lumina_pdf_filepersistence_android_kt_bytearray"
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "shared/src/androidMain/kotlin/com/lumina/pdf/FilePersistence.android.kt",
+      "source_location": "L18",
+      "weight": 1.0,
+      "context": "parameter_type",
+      "confidence_score": 1.0,
+      "source": "pdf_filepersistence_android_filepersistence_saverecentfile",
+      "target": "shared_src_androidmain_kotlin_com_lumina_pdf_filepersistence_android_kt_string"
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "shared/src/androidMain/kotlin/com/lumina/pdf/FilePersistence.android.kt",
+      "source_location": "L40",
+      "weight": 1.0,
+      "context": "parameter_type",
+      "confidence_score": 1.0,
+      "source": "pdf_filepersistence_android_filepersistence_deleterecentfile",
+      "target": "shared_src_androidmain_kotlin_com_lumina_pdf_filepersistence_android_kt_string"
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "shared/src/androidMain/kotlin/com/lumina/pdf/FilePersistence.android.kt",
+      "source_location": "L59",
       "weight": 1.0,
       "context": "return_type",
       "confidence_score": 1.0,
-      "source": "pdf_filepicker_android_filepicker_register",
-      "target": "shared_src_androidmain_kotlin_com_lumina_pdf_filepicker_android_kt_unit"
+      "source": "pdf_filepersistence_android_filepersistence_loadmetadata",
+      "target": "shared_src_androidmain_kotlin_com_lumina_pdf_filepersistence_android_kt_string"
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "shared/src/androidMain/kotlin/com/lumina/pdf/FilePersistence.android.kt",
+      "source_location": "L28",
+      "weight": 1.0,
+      "context": "parameter_type",
+      "confidence_score": 1.0,
+      "source": "pdf_filepersistence_android_filepersistence_loadrecentfile",
+      "target": "shared_src_androidmain_kotlin_com_lumina_pdf_filepersistence_android_kt_string"
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "shared/src/androidMain/kotlin/com/lumina/pdf/FilePersistence.android.kt",
+      "source_location": "L51",
+      "weight": 1.0,
+      "context": "parameter_type",
+      "confidence_score": 1.0,
+      "source": "pdf_filepersistence_android_filepersistence_savemetadata",
+      "target": "shared_src_androidmain_kotlin_com_lumina_pdf_filepersistence_android_kt_string"
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "shared/src/androidMain/kotlin/com/lumina/pdf/FilePersistence.android.kt",
+      "source_location": "L28",
+      "weight": 1.0,
+      "context": "return_type",
+      "confidence_score": 1.0,
+      "source": "pdf_filepersistence_android_filepersistence_loadrecentfile",
+      "target": "shared_src_androidmain_kotlin_com_lumina_pdf_filepersistence_android_kt_bytearray"
     },
     {
       "relation": "contains",
@@ -10085,33 +10755,139 @@
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
-      "source_file": "shared/src/commonMain/kotlin/com/lumina/pdf/FilePicker.kt",
-      "source_location": "L5",
+      "source_file": "shared/src/commonMain/kotlin/com/lumina/pdf/FilePersistence.kt",
+      "source_location": "L3",
       "weight": 1.0,
       "confidence_score": 1.0,
-      "source": "pdf_filepicker",
-      "target": "pdf_filepicker_filepicker"
+      "source": "pdf_filepersistence",
+      "target": "pdf_filepersistence_filepersistence"
     },
     {
       "relation": "method",
       "confidence": "EXTRACTED",
-      "source_file": "shared/src/commonMain/kotlin/com/lumina/pdf/FilePicker.kt",
+      "source_file": "shared/src/commonMain/kotlin/com/lumina/pdf/FilePersistence.kt",
       "source_location": "L6",
       "weight": 1.0,
       "confidence_score": 1.0,
-      "source": "pdf_filepicker_filepicker",
-      "target": "pdf_filepicker_filepicker_register"
+      "source": "pdf_filepersistence_filepersistence",
+      "target": "pdf_filepersistence_filepersistence_deleterecentfile"
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "shared/src/commonMain/kotlin/com/lumina/pdf/FilePersistence.kt",
+      "source_location": "L8",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "pdf_filepersistence_filepersistence",
+      "target": "pdf_filepersistence_filepersistence_loadmetadata"
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "shared/src/commonMain/kotlin/com/lumina/pdf/FilePersistence.kt",
+      "source_location": "L5",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "pdf_filepersistence_filepersistence",
+      "target": "pdf_filepersistence_filepersistence_loadrecentfile"
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "shared/src/commonMain/kotlin/com/lumina/pdf/FilePersistence.kt",
+      "source_location": "L7",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "pdf_filepersistence_filepersistence",
+      "target": "pdf_filepersistence_filepersistence_savemetadata"
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "shared/src/commonMain/kotlin/com/lumina/pdf/FilePersistence.kt",
+      "source_location": "L4",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "pdf_filepersistence_filepersistence",
+      "target": "pdf_filepersistence_filepersistence_saverecentfile"
     },
     {
       "relation": "references",
       "confidence": "EXTRACTED",
-      "source_file": "shared/src/commonMain/kotlin/com/lumina/pdf/FilePicker.kt",
+      "source_file": "shared/src/commonMain/kotlin/com/lumina/pdf/FilePersistence.kt",
+      "source_location": "L4",
+      "weight": 1.0,
+      "context": "parameter_type",
+      "confidence_score": 1.0,
+      "source": "pdf_filepersistence_filepersistence_saverecentfile",
+      "target": "shared_src_commonmain_kotlin_com_lumina_pdf_filepersistence_kt_bytearray"
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "shared/src/commonMain/kotlin/com/lumina/pdf/FilePersistence.kt",
+      "source_location": "L4",
+      "weight": 1.0,
+      "context": "parameter_type",
+      "confidence_score": 1.0,
+      "source": "pdf_filepersistence_filepersistence_saverecentfile",
+      "target": "shared_src_commonmain_kotlin_com_lumina_pdf_filepersistence_kt_string"
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "shared/src/commonMain/kotlin/com/lumina/pdf/FilePersistence.kt",
       "source_location": "L6",
+      "weight": 1.0,
+      "context": "parameter_type",
+      "confidence_score": 1.0,
+      "source": "pdf_filepersistence_filepersistence_deleterecentfile",
+      "target": "shared_src_commonmain_kotlin_com_lumina_pdf_filepersistence_kt_string"
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "shared/src/commonMain/kotlin/com/lumina/pdf/FilePersistence.kt",
+      "source_location": "L8",
       "weight": 1.0,
       "context": "return_type",
       "confidence_score": 1.0,
-      "source": "pdf_filepicker_filepicker_register",
-      "target": "shared_src_commonmain_kotlin_com_lumina_pdf_filepicker_kt_unit"
+      "source": "pdf_filepersistence_filepersistence_loadmetadata",
+      "target": "shared_src_commonmain_kotlin_com_lumina_pdf_filepersistence_kt_string"
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "shared/src/commonMain/kotlin/com/lumina/pdf/FilePersistence.kt",
+      "source_location": "L5",
+      "weight": 1.0,
+      "context": "parameter_type",
+      "confidence_score": 1.0,
+      "source": "pdf_filepersistence_filepersistence_loadrecentfile",
+      "target": "shared_src_commonmain_kotlin_com_lumina_pdf_filepersistence_kt_string"
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "shared/src/commonMain/kotlin/com/lumina/pdf/FilePersistence.kt",
+      "source_location": "L7",
+      "weight": 1.0,
+      "context": "parameter_type",
+      "confidence_score": 1.0,
+      "source": "pdf_filepersistence_filepersistence_savemetadata",
+      "target": "shared_src_commonmain_kotlin_com_lumina_pdf_filepersistence_kt_string"
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "shared/src/commonMain/kotlin/com/lumina/pdf/FilePersistence.kt",
+      "source_location": "L5",
+      "weight": 1.0,
+      "context": "return_type",
+      "confidence_score": 1.0,
+      "source": "pdf_filepersistence_filepersistence_loadrecentfile",
+      "target": "shared_src_commonmain_kotlin_com_lumina_pdf_filepersistence_kt_bytearray"
     },
     {
       "relation": "contains",
@@ -10190,6 +10966,16 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "shared/src/commonMain/kotlin/com/lumina/pdf/HomeScreen.kt",
+      "source_location": "L593",
+      "weight": 1.0,
+      "source": "pdf_homescreen",
+      "target": "pdf_homescreen_arrowrighticon",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "shared/src/commonMain/kotlin/com/lumina/pdf/HomeScreen.kt",
       "source_location": "L371",
       "weight": 1.0,
       "confidence_score": 1.0,
@@ -10215,6 +11001,16 @@
       "confidence_score": 1.0,
       "source": "pdf_homescreen",
       "target": "pdf_homescreen_foldericon"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "shared/src/commonMain/kotlin/com/lumina/pdf/HomeScreen.kt",
+      "source_location": "L608",
+      "weight": 1.0,
+      "source": "pdf_homescreen",
+      "target": "pdf_homescreen_formatrelativetime",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -10325,6 +11121,16 @@
       "confidence_score": 1.0,
       "source": "pdf_homescreen",
       "target": "pdf_homescreen_mockdocumentthumbnail"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "shared/src/commonMain/kotlin/com/lumina/pdf/HomeScreen.kt",
+      "source_location": "L384",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "pdf_homescreen",
+      "target": "pdf_homescreen_notesindicatoricon"
     },
     {
       "relation": "contains",
@@ -10461,6 +11267,17 @@
       "confidence_score": 1.0,
       "source": "pdf_homescreen_homescreen",
       "target": "pdf_homescreen_acrobatpdficon"
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "shared/src/commonMain/kotlin/com/lumina/pdf/HomeScreen.kt",
+      "source_location": "L593",
+      "weight": 1.0,
+      "context": "parameter_type",
+      "source": "pdf_homescreen_arrowrighticon",
+      "target": "shared_src_commonmain_kotlin_com_lumina_pdf_homescreen_kt_modifier",
+      "confidence_score": 1.0
     },
     {
       "relation": "references",
@@ -10620,6 +11437,17 @@
       "relation": "references",
       "confidence": "EXTRACTED",
       "source_file": "shared/src/commonMain/kotlin/com/lumina/pdf/HomeScreen.kt",
+      "source_location": "L384",
+      "weight": 1.0,
+      "context": "parameter_type",
+      "confidence_score": 1.0,
+      "source": "pdf_homescreen_notesindicatoricon",
+      "target": "shared_src_commonmain_kotlin_com_lumina_pdf_homescreen_kt_modifier"
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "shared/src/commonMain/kotlin/com/lumina/pdf/HomeScreen.kt",
       "source_location": "L1552",
       "weight": 1.0,
       "context": "return_type",
@@ -10703,6 +11531,17 @@
       "confidence_score": 1.0,
       "source": "pdf_homescreen_homescreen",
       "target": "pdf_homescreen_homeicon"
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "shared/src/commonMain/kotlin/com/lumina/pdf/HomeScreen.kt",
+      "source_location": "L593",
+      "weight": 1.0,
+      "context": "parameter_type",
+      "source": "pdf_homescreen_arrowrighticon",
+      "target": "shared_src_commonmain_kotlin_com_lumina_pdf_homescreen_kt_color",
+      "confidence_score": 1.0
     },
     {
       "relation": "references",
@@ -10845,6 +11684,17 @@
       "weight": 1.0,
       "confidence_score": 1.0,
       "source": "pdf_homescreen_mockdocumentthumbnail",
+      "target": "shared_src_commonmain_kotlin_com_lumina_pdf_homescreen_kt_color"
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "shared/src/commonMain/kotlin/com/lumina/pdf/HomeScreen.kt",
+      "source_location": "L384",
+      "weight": 1.0,
+      "context": "parameter_type",
+      "confidence_score": 1.0,
+      "source": "pdf_homescreen_notesindicatoricon",
       "target": "shared_src_commonmain_kotlin_com_lumina_pdf_homescreen_kt_color"
     },
     {
@@ -11083,6 +11933,39 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "shared/src/commonMain/kotlin/com/lumina/pdf/HomeScreen.kt",
+      "source_location": "L1132",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "pdf_homescreen_griditemcard",
+      "target": "pdf_homescreen_notesindicatoricon"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "shared/src/commonMain/kotlin/com/lumina/pdf/HomeScreen.kt",
+      "source_location": "L759",
+      "weight": 1.0,
+      "source": "pdf_homescreen_homescreen",
+      "target": "pdf_homescreen_notesindicatoricon",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "shared/src/commonMain/kotlin/com/lumina/pdf/HomeScreen.kt",
+      "source_location": "L1224",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "pdf_homescreen_listitemrow",
+      "target": "pdf_homescreen_notesindicatoricon"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "shared/src/commonMain/kotlin/com/lumina/pdf/HomeScreen.kt",
       "source_location": "L1331",
       "weight": 1.0,
       "confidence_score": 1.0,
@@ -11189,6 +12072,50 @@
       "target": "shared_src_commonmain_kotlin_com_lumina_pdf_homescreen_kt_string"
     },
     {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "shared/src/commonMain/kotlin/com/lumina/pdf/HomeScreen.kt",
+      "source_location": "L608",
+      "weight": 1.0,
+      "context": "return_type",
+      "source": "pdf_homescreen_formatrelativetime",
+      "target": "shared_src_commonmain_kotlin_com_lumina_pdf_homescreen_kt_string",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "shared/src/commonMain/kotlin/com/lumina/pdf/HomeScreen.kt",
+      "source_location": "L1112",
+      "weight": 1.0,
+      "source": "pdf_homescreen_homescreen",
+      "target": "pdf_homescreen_arrowrighticon",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "shared/src/commonMain/kotlin/com/lumina/pdf/HomeScreen.kt",
+      "source_location": "L608",
+      "weight": 1.0,
+      "context": "parameter_type",
+      "source": "pdf_homescreen_formatrelativetime",
+      "target": "shared_src_commonmain_kotlin_com_lumina_pdf_homescreen_kt_long",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "shared/src/commonMain/kotlin/com/lumina/pdf/HomeScreen.kt",
+      "source_location": "L1083",
+      "weight": 1.0,
+      "source": "pdf_homescreen_homescreen",
+      "target": "pdf_homescreen_formatrelativetime",
+      "confidence_score": 1.0
+    },
+    {
       "relation": "calls",
       "context": "call",
       "confidence": "EXTRACTED",
@@ -11231,6 +12158,28 @@
       "confidence_score": 1.0,
       "source": "pdf_homescreen_homescreen",
       "target": "shared_src_commonmain_kotlin_com_lumina_pdf_homescreen_kt_list"
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "shared/src/commonMain/kotlin/com/lumina/pdf/HomeScreen.kt",
+      "source_location": "L1014",
+      "weight": 1.0,
+      "context": "parameter_type",
+      "confidence_score": 1.0,
+      "source": "pdf_homescreen_griditemcard",
+      "target": "com"
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "shared/src/commonMain/kotlin/com/lumina/pdf/HomeScreen.kt",
+      "source_location": "L1163",
+      "weight": 1.0,
+      "context": "parameter_type",
+      "confidence_score": 1.0,
+      "source": "pdf_homescreen_listitemrow",
+      "target": "com"
     },
     {
       "relation": "contains",
@@ -11361,6 +12310,101 @@
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
+      "source_file": "shared/src/commonMain/kotlin/com/lumina/pdf/RecentFilesStore.kt",
+      "source_location": "L3",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "pdf_recentfilesstore",
+      "target": "pdf_recentfilesstore_recentfilesstore"
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "shared/src/commonMain/kotlin/com/lumina/pdf/RecentFilesStore.kt",
+      "source_location": "L54",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "pdf_recentfilesstore_recentfilesstore",
+      "target": "pdf_recentfilesstore_recentfilesstore_deleterecentfile"
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "shared/src/commonMain/kotlin/com/lumina/pdf/RecentFilesStore.kt",
+      "source_location": "L19",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "pdf_recentfilesstore_recentfilesstore",
+      "target": "pdf_recentfilesstore_recentfilesstore_loadrecentfileslist"
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "shared/src/commonMain/kotlin/com/lumina/pdf/RecentFilesStore.kt",
+      "source_location": "L4",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "pdf_recentfilesstore_recentfilesstore",
+      "target": "pdf_recentfilesstore_recentfilesstore_saverecentfileslist"
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "shared/src/commonMain/kotlin/com/lumina/pdf/RecentFilesStore.kt",
+      "source_location": "L4",
+      "weight": 1.0,
+      "context": "generic_arg",
+      "confidence_score": 1.0,
+      "source": "pdf_recentfilesstore_recentfilesstore_saverecentfileslist",
+      "target": "recentfile"
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "shared/src/commonMain/kotlin/com/lumina/pdf/RecentFilesStore.kt",
+      "source_location": "L4",
+      "weight": 1.0,
+      "context": "parameter_type",
+      "confidence_score": 1.0,
+      "source": "pdf_recentfilesstore_recentfilesstore_saverecentfileslist",
+      "target": "shared_src_commonmain_kotlin_com_lumina_pdf_recentfilesstore_kt_list"
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "shared/src/commonMain/kotlin/com/lumina/pdf/RecentFilesStore.kt",
+      "source_location": "L19",
+      "weight": 1.0,
+      "context": "return_type",
+      "confidence_score": 1.0,
+      "source": "pdf_recentfilesstore_recentfilesstore_loadrecentfileslist",
+      "target": "shared_src_commonmain_kotlin_com_lumina_pdf_recentfilesstore_kt_list"
+    },
+    {
+      "relation": "references",
+      "context": "generic_arg",
+      "confidence": "EXTRACTED",
+      "source_file": "shared/src/commonMain/kotlin/com/lumina/pdf/RecentFilesStore.kt",
+      "source_location": "L19",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "pdf_recentfilesstore_recentfilesstore_loadrecentfileslist",
+      "target": "recentfile"
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "shared/src/commonMain/kotlin/com/lumina/pdf/RecentFilesStore.kt",
+      "source_location": "L54",
+      "weight": 1.0,
+      "context": "parameter_type",
+      "confidence_score": 1.0,
+      "source": "pdf_recentfilesstore_recentfilesstore_deleterecentfile",
+      "target": "shared_src_commonmain_kotlin_com_lumina_pdf_recentfilesstore_kt_string"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
       "source_file": "shared/src/commonTest/kotlin/com/lumina/pdf/SharedCommonTest.kt",
       "source_location": "L6",
       "weight": 1.0,
@@ -11381,33 +12425,214 @@
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
-      "source_file": "shared/src/iosMain/kotlin/com/lumina/pdf/FilePicker.ios.kt",
-      "source_location": "L5",
+      "source_file": "shared/src/iosMain/kotlin/com/lumina/pdf/FilePersistence.ios.kt",
+      "source_location": "L6",
       "weight": 1.0,
       "confidence_score": 1.0,
-      "source": "pdf_filepicker_ios",
-      "target": "pdf_filepicker_ios_filepicker"
+      "source": "pdf_filepersistence_ios",
+      "target": "pdf_filepersistence_ios_filepersistence"
     },
     {
       "relation": "method",
       "confidence": "EXTRACTED",
-      "source_file": "shared/src/iosMain/kotlin/com/lumina/pdf/FilePicker.ios.kt",
-      "source_location": "L6",
+      "source_file": "shared/src/iosMain/kotlin/com/lumina/pdf/FilePersistence.ios.kt",
+      "source_location": "L40",
       "weight": 1.0,
       "confidence_score": 1.0,
-      "source": "pdf_filepicker_ios_filepicker",
-      "target": "pdf_filepicker_ios_filepicker_register"
+      "source": "pdf_filepersistence_ios_filepersistence",
+      "target": "pdf_filepersistence_ios_filepersistence_deleterecentfile"
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "shared/src/iosMain/kotlin/com/lumina/pdf/FilePersistence.ios.kt",
+      "source_location": "L53",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "pdf_filepersistence_ios_filepersistence",
+      "target": "pdf_filepersistence_ios_filepersistence_loadmetadata"
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "shared/src/iosMain/kotlin/com/lumina/pdf/FilePersistence.ios.kt",
+      "source_location": "L33",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "pdf_filepersistence_ios_filepersistence",
+      "target": "pdf_filepersistence_ios_filepersistence_loadrecentfile"
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "shared/src/iosMain/kotlin/com/lumina/pdf/FilePersistence.ios.kt",
+      "source_location": "L47",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "pdf_filepersistence_ios_filepersistence",
+      "target": "pdf_filepersistence_ios_filepersistence_savemetadata"
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "shared/src/iosMain/kotlin/com/lumina/pdf/FilePersistence.ios.kt",
+      "source_location": "L27",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "pdf_filepersistence_ios_filepersistence",
+      "target": "pdf_filepersistence_ios_filepersistence_saverecentfile"
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "shared/src/iosMain/kotlin/com/lumina/pdf/FilePersistence.ios.kt",
+      "source_location": "L65",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "pdf_filepersistence_ios_filepersistence",
+      "target": "pdf_filepersistence_ios_filepersistence_tobytearray"
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "shared/src/iosMain/kotlin/com/lumina/pdf/FilePersistence.ios.kt",
+      "source_location": "L60",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "pdf_filepersistence_ios_filepersistence",
+      "target": "pdf_filepersistence_ios_filepersistence_tonsdata"
     },
     {
       "relation": "references",
       "confidence": "EXTRACTED",
-      "source_file": "shared/src/iosMain/kotlin/com/lumina/pdf/FilePicker.ios.kt",
-      "source_location": "L6",
+      "source_file": "shared/src/iosMain/kotlin/com/lumina/pdf/FilePersistence.ios.kt",
+      "source_location": "L20",
+      "weight": 1.0,
+      "context": "field",
+      "confidence_score": 1.0,
+      "source": "pdf_filepersistence_ios_filepersistence",
+      "target": "shared_src_iosmain_kotlin_com_lumina_pdf_filepersistence_ios_kt_string"
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "shared/src/iosMain/kotlin/com/lumina/pdf/FilePersistence.ios.kt",
+      "source_location": "L40",
+      "weight": 1.0,
+      "context": "parameter_type",
+      "confidence_score": 1.0,
+      "source": "pdf_filepersistence_ios_filepersistence_deleterecentfile",
+      "target": "shared_src_iosmain_kotlin_com_lumina_pdf_filepersistence_ios_kt_string"
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "shared/src/iosMain/kotlin/com/lumina/pdf/FilePersistence.ios.kt",
+      "source_location": "L53",
       "weight": 1.0,
       "context": "return_type",
       "confidence_score": 1.0,
-      "source": "pdf_filepicker_ios_filepicker_register",
-      "target": "shared_src_iosmain_kotlin_com_lumina_pdf_filepicker_ios_kt_unit"
+      "source": "pdf_filepersistence_ios_filepersistence_loadmetadata",
+      "target": "shared_src_iosmain_kotlin_com_lumina_pdf_filepersistence_ios_kt_string"
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "shared/src/iosMain/kotlin/com/lumina/pdf/FilePersistence.ios.kt",
+      "source_location": "L33",
+      "weight": 1.0,
+      "context": "parameter_type",
+      "confidence_score": 1.0,
+      "source": "pdf_filepersistence_ios_filepersistence_loadrecentfile",
+      "target": "shared_src_iosmain_kotlin_com_lumina_pdf_filepersistence_ios_kt_string"
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "shared/src/iosMain/kotlin/com/lumina/pdf/FilePersistence.ios.kt",
+      "source_location": "L47",
+      "weight": 1.0,
+      "context": "parameter_type",
+      "confidence_score": 1.0,
+      "source": "pdf_filepersistence_ios_filepersistence_savemetadata",
+      "target": "shared_src_iosmain_kotlin_com_lumina_pdf_filepersistence_ios_kt_string"
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "shared/src/iosMain/kotlin/com/lumina/pdf/FilePersistence.ios.kt",
+      "source_location": "L27",
+      "weight": 1.0,
+      "context": "parameter_type",
+      "confidence_score": 1.0,
+      "source": "pdf_filepersistence_ios_filepersistence_saverecentfile",
+      "target": "shared_src_iosmain_kotlin_com_lumina_pdf_filepersistence_ios_kt_string"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "shared/src/iosMain/kotlin/com/lumina/pdf/FilePersistence.ios.kt",
+      "source_location": "L29",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "pdf_filepersistence_ios_filepersistence_saverecentfile",
+      "target": "pdf_filepersistence_ios_filepersistence_tonsdata"
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "shared/src/iosMain/kotlin/com/lumina/pdf/FilePersistence.ios.kt",
+      "source_location": "L27",
+      "weight": 1.0,
+      "context": "parameter_type",
+      "confidence_score": 1.0,
+      "source": "pdf_filepersistence_ios_filepersistence_saverecentfile",
+      "target": "shared_src_iosmain_kotlin_com_lumina_pdf_filepersistence_ios_kt_bytearray"
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "shared/src/iosMain/kotlin/com/lumina/pdf/FilePersistence.ios.kt",
+      "source_location": "L33",
+      "weight": 1.0,
+      "context": "return_type",
+      "confidence_score": 1.0,
+      "source": "pdf_filepersistence_ios_filepersistence_loadrecentfile",
+      "target": "shared_src_iosmain_kotlin_com_lumina_pdf_filepersistence_ios_kt_bytearray"
+    },
+    {
+      "relation": "references",
+      "context": "return_type",
+      "confidence": "EXTRACTED",
+      "source_file": "shared/src/iosMain/kotlin/com/lumina/pdf/FilePersistence.ios.kt",
+      "source_location": "L65",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "pdf_filepersistence_ios_filepersistence_tobytearray",
+      "target": "shared_src_iosmain_kotlin_com_lumina_pdf_filepersistence_ios_kt_bytearray"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "shared/src/iosMain/kotlin/com/lumina/pdf/FilePersistence.ios.kt",
+      "source_location": "L37",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "pdf_filepersistence_ios_filepersistence_loadrecentfile",
+      "target": "pdf_filepersistence_ios_filepersistence_tobytearray"
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "shared/src/iosMain/kotlin/com/lumina/pdf/FilePersistence.ios.kt",
+      "source_location": "L60",
+      "weight": 1.0,
+      "context": "return_type",
+      "confidence_score": 1.0,
+      "source": "pdf_filepersistence_ios_filepersistence_tonsdata",
+      "target": "nsdata"
     },
     {
       "relation": "contains",
@@ -11484,33 +12709,139 @@
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
-      "source_file": "shared/src/jsMain/kotlin/com/lumina/pdf/FilePicker.js.kt",
+      "source_file": "shared/src/jsMain/kotlin/com/lumina/pdf/FilePersistence.js.kt",
       "source_location": "L5",
       "weight": 1.0,
       "confidence_score": 1.0,
-      "source": "pdf_filepicker_js",
-      "target": "pdf_filepicker_js_filepicker"
+      "source": "pdf_filepersistence_js",
+      "target": "pdf_filepersistence_js_filepersistence"
     },
     {
       "relation": "method",
       "confidence": "EXTRACTED",
-      "source_file": "shared/src/jsMain/kotlin/com/lumina/pdf/FilePicker.js.kt",
+      "source_file": "shared/src/jsMain/kotlin/com/lumina/pdf/FilePersistence.js.kt",
+      "source_location": "L14",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "pdf_filepersistence_js_filepersistence",
+      "target": "pdf_filepersistence_js_filepersistence_deleterecentfile"
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "shared/src/jsMain/kotlin/com/lumina/pdf/FilePersistence.js.kt",
+      "source_location": "L21",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "pdf_filepersistence_js_filepersistence",
+      "target": "pdf_filepersistence_js_filepersistence_loadmetadata"
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "shared/src/jsMain/kotlin/com/lumina/pdf/FilePersistence.js.kt",
+      "source_location": "L10",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "pdf_filepersistence_js_filepersistence",
+      "target": "pdf_filepersistence_js_filepersistence_loadrecentfile"
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "shared/src/jsMain/kotlin/com/lumina/pdf/FilePersistence.js.kt",
+      "source_location": "L17",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "pdf_filepersistence_js_filepersistence",
+      "target": "pdf_filepersistence_js_filepersistence_savemetadata"
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "shared/src/jsMain/kotlin/com/lumina/pdf/FilePersistence.js.kt",
       "source_location": "L6",
       "weight": 1.0,
       "confidence_score": 1.0,
-      "source": "pdf_filepicker_js_filepicker",
-      "target": "pdf_filepicker_js_filepicker_register"
+      "source": "pdf_filepersistence_js_filepersistence",
+      "target": "pdf_filepersistence_js_filepersistence_saverecentfile"
     },
     {
       "relation": "references",
       "confidence": "EXTRACTED",
-      "source_file": "shared/src/jsMain/kotlin/com/lumina/pdf/FilePicker.js.kt",
+      "source_file": "shared/src/jsMain/kotlin/com/lumina/pdf/FilePersistence.js.kt",
       "source_location": "L6",
+      "weight": 1.0,
+      "context": "parameter_type",
+      "confidence_score": 1.0,
+      "source": "pdf_filepersistence_js_filepersistence_saverecentfile",
+      "target": "shared_src_jsmain_kotlin_com_lumina_pdf_filepersistence_js_kt_bytearray"
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "shared/src/jsMain/kotlin/com/lumina/pdf/FilePersistence.js.kt",
+      "source_location": "L6",
+      "weight": 1.0,
+      "context": "parameter_type",
+      "confidence_score": 1.0,
+      "source": "pdf_filepersistence_js_filepersistence_saverecentfile",
+      "target": "shared_src_jsmain_kotlin_com_lumina_pdf_filepersistence_js_kt_string"
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "shared/src/jsMain/kotlin/com/lumina/pdf/FilePersistence.js.kt",
+      "source_location": "L14",
+      "weight": 1.0,
+      "context": "parameter_type",
+      "confidence_score": 1.0,
+      "source": "pdf_filepersistence_js_filepersistence_deleterecentfile",
+      "target": "shared_src_jsmain_kotlin_com_lumina_pdf_filepersistence_js_kt_string"
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "shared/src/jsMain/kotlin/com/lumina/pdf/FilePersistence.js.kt",
+      "source_location": "L21",
       "weight": 1.0,
       "context": "return_type",
       "confidence_score": 1.0,
-      "source": "pdf_filepicker_js_filepicker_register",
-      "target": "shared_src_jsmain_kotlin_com_lumina_pdf_filepicker_js_kt_unit"
+      "source": "pdf_filepersistence_js_filepersistence_loadmetadata",
+      "target": "shared_src_jsmain_kotlin_com_lumina_pdf_filepersistence_js_kt_string"
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "shared/src/jsMain/kotlin/com/lumina/pdf/FilePersistence.js.kt",
+      "source_location": "L10",
+      "weight": 1.0,
+      "context": "parameter_type",
+      "confidence_score": 1.0,
+      "source": "pdf_filepersistence_js_filepersistence_loadrecentfile",
+      "target": "shared_src_jsmain_kotlin_com_lumina_pdf_filepersistence_js_kt_string"
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "shared/src/jsMain/kotlin/com/lumina/pdf/FilePersistence.js.kt",
+      "source_location": "L17",
+      "weight": 1.0,
+      "context": "parameter_type",
+      "confidence_score": 1.0,
+      "source": "pdf_filepersistence_js_filepersistence_savemetadata",
+      "target": "shared_src_jsmain_kotlin_com_lumina_pdf_filepersistence_js_kt_string"
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "shared/src/jsMain/kotlin/com/lumina/pdf/FilePersistence.js.kt",
+      "source_location": "L10",
+      "weight": 1.0,
+      "context": "return_type",
+      "confidence_score": 1.0,
+      "source": "pdf_filepersistence_js_filepersistence_loadrecentfile",
+      "target": "shared_src_jsmain_kotlin_com_lumina_pdf_filepersistence_js_kt_bytearray"
     },
     {
       "relation": "contains",
@@ -11557,33 +12888,150 @@
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
-      "source_file": "shared/src/jvmMain/kotlin/com/lumina/pdf/FilePicker.jvm.kt",
-      "source_location": "L13",
+      "source_file": "shared/src/jvmMain/kotlin/com/lumina/pdf/FilePersistence.jvm.kt",
+      "source_location": "L5",
       "weight": 1.0,
       "confidence_score": 1.0,
-      "source": "pdf_filepicker_jvm",
-      "target": "pdf_filepicker_jvm_filepicker"
+      "source": "pdf_filepersistence_jvm",
+      "target": "pdf_filepersistence_jvm_filepersistence"
     },
     {
       "relation": "method",
       "confidence": "EXTRACTED",
-      "source_file": "shared/src/jvmMain/kotlin/com/lumina/pdf/FilePicker.jvm.kt",
-      "source_location": "L14",
+      "source_file": "shared/src/jvmMain/kotlin/com/lumina/pdf/FilePersistence.jvm.kt",
+      "source_location": "L41",
       "weight": 1.0,
       "confidence_score": 1.0,
-      "source": "pdf_filepicker_jvm_filepicker",
-      "target": "pdf_filepicker_jvm_filepicker_register"
+      "source": "pdf_filepersistence_jvm_filepersistence",
+      "target": "pdf_filepersistence_jvm_filepersistence_deleterecentfile"
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "shared/src/jvmMain/kotlin/com/lumina/pdf/FilePersistence.jvm.kt",
+      "source_location": "L58",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "pdf_filepersistence_jvm_filepersistence",
+      "target": "pdf_filepersistence_jvm_filepersistence_loadmetadata"
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "shared/src/jvmMain/kotlin/com/lumina/pdf/FilePersistence.jvm.kt",
+      "source_location": "L31",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "pdf_filepersistence_jvm_filepersistence",
+      "target": "pdf_filepersistence_jvm_filepersistence_loadrecentfile"
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "shared/src/jvmMain/kotlin/com/lumina/pdf/FilePersistence.jvm.kt",
+      "source_location": "L50",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "pdf_filepersistence_jvm_filepersistence",
+      "target": "pdf_filepersistence_jvm_filepersistence_savemetadata"
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "shared/src/jvmMain/kotlin/com/lumina/pdf/FilePersistence.jvm.kt",
+      "source_location": "L23",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "pdf_filepersistence_jvm_filepersistence",
+      "target": "pdf_filepersistence_jvm_filepersistence_saverecentfile"
     },
     {
       "relation": "references",
       "confidence": "EXTRACTED",
-      "source_file": "shared/src/jvmMain/kotlin/com/lumina/pdf/FilePicker.jvm.kt",
-      "source_location": "L14",
+      "source_file": "shared/src/jvmMain/kotlin/com/lumina/pdf/FilePersistence.jvm.kt",
+      "source_location": "L19",
+      "weight": 1.0,
+      "context": "field",
+      "confidence_score": 1.0,
+      "source": "pdf_filepersistence_jvm_filepersistence",
+      "target": "shared_src_jvmmain_kotlin_com_lumina_pdf_filepersistence_jvm_kt_file"
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "shared/src/jvmMain/kotlin/com/lumina/pdf/FilePersistence.jvm.kt",
+      "source_location": "L23",
+      "weight": 1.0,
+      "context": "parameter_type",
+      "confidence_score": 1.0,
+      "source": "pdf_filepersistence_jvm_filepersistence_saverecentfile",
+      "target": "shared_src_jvmmain_kotlin_com_lumina_pdf_filepersistence_jvm_kt_bytearray"
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "shared/src/jvmMain/kotlin/com/lumina/pdf/FilePersistence.jvm.kt",
+      "source_location": "L23",
+      "weight": 1.0,
+      "context": "parameter_type",
+      "confidence_score": 1.0,
+      "source": "pdf_filepersistence_jvm_filepersistence_saverecentfile",
+      "target": "shared_src_jvmmain_kotlin_com_lumina_pdf_filepersistence_jvm_kt_string"
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "shared/src/jvmMain/kotlin/com/lumina/pdf/FilePersistence.jvm.kt",
+      "source_location": "L41",
+      "weight": 1.0,
+      "context": "parameter_type",
+      "confidence_score": 1.0,
+      "source": "pdf_filepersistence_jvm_filepersistence_deleterecentfile",
+      "target": "shared_src_jvmmain_kotlin_com_lumina_pdf_filepersistence_jvm_kt_string"
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "shared/src/jvmMain/kotlin/com/lumina/pdf/FilePersistence.jvm.kt",
+      "source_location": "L58",
       "weight": 1.0,
       "context": "return_type",
       "confidence_score": 1.0,
-      "source": "pdf_filepicker_jvm_filepicker_register",
-      "target": "shared_src_jvmmain_kotlin_com_lumina_pdf_filepicker_jvm_kt_unit"
+      "source": "pdf_filepersistence_jvm_filepersistence_loadmetadata",
+      "target": "shared_src_jvmmain_kotlin_com_lumina_pdf_filepersistence_jvm_kt_string"
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "shared/src/jvmMain/kotlin/com/lumina/pdf/FilePersistence.jvm.kt",
+      "source_location": "L31",
+      "weight": 1.0,
+      "context": "parameter_type",
+      "confidence_score": 1.0,
+      "source": "pdf_filepersistence_jvm_filepersistence_loadrecentfile",
+      "target": "shared_src_jvmmain_kotlin_com_lumina_pdf_filepersistence_jvm_kt_string"
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "shared/src/jvmMain/kotlin/com/lumina/pdf/FilePersistence.jvm.kt",
+      "source_location": "L50",
+      "weight": 1.0,
+      "context": "parameter_type",
+      "confidence_score": 1.0,
+      "source": "pdf_filepersistence_jvm_filepersistence_savemetadata",
+      "target": "shared_src_jvmmain_kotlin_com_lumina_pdf_filepersistence_jvm_kt_string"
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "shared/src/jvmMain/kotlin/com/lumina/pdf/FilePersistence.jvm.kt",
+      "source_location": "L31",
+      "weight": 1.0,
+      "context": "return_type",
+      "confidence_score": 1.0,
+      "source": "pdf_filepersistence_jvm_filepersistence_loadrecentfile",
+      "target": "shared_src_jvmmain_kotlin_com_lumina_pdf_filepersistence_jvm_kt_bytearray"
     },
     {
       "relation": "contains",
@@ -11650,33 +13098,139 @@
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
-      "source_file": "shared/src/wasmJsMain/kotlin/com/lumina/pdf/FilePicker.wasmJs.kt",
-      "source_location": "L5",
+      "source_file": "shared/src/wasmJsMain/kotlin/com/lumina/pdf/FilePersistence.wasmJs.kt",
+      "source_location": "L3",
       "weight": 1.0,
       "confidence_score": 1.0,
-      "source": "pdf_filepicker_wasmjs",
-      "target": "pdf_filepicker_wasmjs_filepicker"
+      "source": "pdf_filepersistence_wasmjs",
+      "target": "pdf_filepersistence_wasmjs_filepersistence"
     },
     {
       "relation": "method",
       "confidence": "EXTRACTED",
-      "source_file": "shared/src/wasmJsMain/kotlin/com/lumina/pdf/FilePicker.wasmJs.kt",
+      "source_file": "shared/src/wasmJsMain/kotlin/com/lumina/pdf/FilePersistence.wasmJs.kt",
       "source_location": "L6",
       "weight": 1.0,
       "confidence_score": 1.0,
-      "source": "pdf_filepicker_wasmjs_filepicker",
-      "target": "pdf_filepicker_wasmjs_filepicker_register"
+      "source": "pdf_filepersistence_wasmjs_filepersistence",
+      "target": "pdf_filepersistence_wasmjs_filepersistence_deleterecentfile"
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "shared/src/wasmJsMain/kotlin/com/lumina/pdf/FilePersistence.wasmJs.kt",
+      "source_location": "L8",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "pdf_filepersistence_wasmjs_filepersistence",
+      "target": "pdf_filepersistence_wasmjs_filepersistence_loadmetadata"
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "shared/src/wasmJsMain/kotlin/com/lumina/pdf/FilePersistence.wasmJs.kt",
+      "source_location": "L5",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "pdf_filepersistence_wasmjs_filepersistence",
+      "target": "pdf_filepersistence_wasmjs_filepersistence_loadrecentfile"
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "shared/src/wasmJsMain/kotlin/com/lumina/pdf/FilePersistence.wasmJs.kt",
+      "source_location": "L7",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "pdf_filepersistence_wasmjs_filepersistence",
+      "target": "pdf_filepersistence_wasmjs_filepersistence_savemetadata"
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "shared/src/wasmJsMain/kotlin/com/lumina/pdf/FilePersistence.wasmJs.kt",
+      "source_location": "L4",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "pdf_filepersistence_wasmjs_filepersistence",
+      "target": "pdf_filepersistence_wasmjs_filepersistence_saverecentfile"
     },
     {
       "relation": "references",
       "confidence": "EXTRACTED",
-      "source_file": "shared/src/wasmJsMain/kotlin/com/lumina/pdf/FilePicker.wasmJs.kt",
+      "source_file": "shared/src/wasmJsMain/kotlin/com/lumina/pdf/FilePersistence.wasmJs.kt",
+      "source_location": "L4",
+      "weight": 1.0,
+      "context": "parameter_type",
+      "confidence_score": 1.0,
+      "source": "pdf_filepersistence_wasmjs_filepersistence_saverecentfile",
+      "target": "shared_src_wasmjsmain_kotlin_com_lumina_pdf_filepersistence_wasmjs_kt_bytearray"
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "shared/src/wasmJsMain/kotlin/com/lumina/pdf/FilePersistence.wasmJs.kt",
+      "source_location": "L4",
+      "weight": 1.0,
+      "context": "parameter_type",
+      "confidence_score": 1.0,
+      "source": "pdf_filepersistence_wasmjs_filepersistence_saverecentfile",
+      "target": "shared_src_wasmjsmain_kotlin_com_lumina_pdf_filepersistence_wasmjs_kt_string"
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "shared/src/wasmJsMain/kotlin/com/lumina/pdf/FilePersistence.wasmJs.kt",
       "source_location": "L6",
+      "weight": 1.0,
+      "context": "parameter_type",
+      "confidence_score": 1.0,
+      "source": "pdf_filepersistence_wasmjs_filepersistence_deleterecentfile",
+      "target": "shared_src_wasmjsmain_kotlin_com_lumina_pdf_filepersistence_wasmjs_kt_string"
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "shared/src/wasmJsMain/kotlin/com/lumina/pdf/FilePersistence.wasmJs.kt",
+      "source_location": "L8",
       "weight": 1.0,
       "context": "return_type",
       "confidence_score": 1.0,
-      "source": "pdf_filepicker_wasmjs_filepicker_register",
-      "target": "shared_src_wasmjsmain_kotlin_com_lumina_pdf_filepicker_wasmjs_kt_unit"
+      "source": "pdf_filepersistence_wasmjs_filepersistence_loadmetadata",
+      "target": "shared_src_wasmjsmain_kotlin_com_lumina_pdf_filepersistence_wasmjs_kt_string"
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "shared/src/wasmJsMain/kotlin/com/lumina/pdf/FilePersistence.wasmJs.kt",
+      "source_location": "L5",
+      "weight": 1.0,
+      "context": "parameter_type",
+      "confidence_score": 1.0,
+      "source": "pdf_filepersistence_wasmjs_filepersistence_loadrecentfile",
+      "target": "shared_src_wasmjsmain_kotlin_com_lumina_pdf_filepersistence_wasmjs_kt_string"
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "shared/src/wasmJsMain/kotlin/com/lumina/pdf/FilePersistence.wasmJs.kt",
+      "source_location": "L7",
+      "weight": 1.0,
+      "context": "parameter_type",
+      "confidence_score": 1.0,
+      "source": "pdf_filepersistence_wasmjs_filepersistence_savemetadata",
+      "target": "shared_src_wasmjsmain_kotlin_com_lumina_pdf_filepersistence_wasmjs_kt_string"
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "shared/src/wasmJsMain/kotlin/com/lumina/pdf/FilePersistence.wasmJs.kt",
+      "source_location": "L5",
+      "weight": 1.0,
+      "context": "return_type",
+      "confidence_score": 1.0,
+      "source": "pdf_filepersistence_wasmjs_filepersistence_loadrecentfile",
+      "target": "shared_src_wasmjsmain_kotlin_com_lumina_pdf_filepersistence_wasmjs_kt_bytearray"
     },
     {
       "relation": "contains",
@@ -11736,9 +13290,9 @@
       "source_file": ".agents/rules/graphify.md",
       "source_location": "L6",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "rules_graphify",
-      "target": "rules_graphify_graphify",
-      "confidence_score": 1.0
+      "target": "rules_graphify_graphify"
     },
     {
       "relation": "contains",
@@ -11746,9 +13300,9 @@
       "source_file": ".agents/workflows/graphify.md",
       "source_location": "L6",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "workflows_graphify",
-      "target": "workflows_graphify_workflow_graphify",
-      "confidence_score": 1.0
+      "target": "workflows_graphify_workflow_graphify"
     },
     {
       "relation": "contains",
@@ -11756,9 +13310,9 @@
       "source_file": "README.md",
       "source_location": "L28",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "readme",
-      "target": "readme_running_tests",
-      "confidence_score": 1.0
+      "target": "readme_running_tests"
     },
     {
       "relation": "contains",
@@ -11766,9 +13320,9 @@
       "source_file": "README.md",
       "source_location": "L15",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "readme",
-      "target": "readme_running_the_apps",
-      "confidence_score": 1.0
+      "target": "readme_running_the_apps"
     },
     {
       "relation": "contains",
@@ -11776,9 +13330,9 @@
       "source_file": "docs/packages.md",
       "source_location": "L1",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "docs_packages",
-      "target": "docs_packages_module_pdf_core",
-      "confidence_score": 1.0
+      "target": "docs_packages_module_pdf_core"
     },
     {
       "relation": "contains",
@@ -11786,9 +13340,9 @@
       "source_file": "docs/packages.md",
       "source_location": "L15",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "docs_packages",
-      "target": "docs_packages_module_pdf_renderer",
-      "confidence_score": 1.0
+      "target": "docs_packages_module_pdf_renderer"
     },
     {
       "relation": "contains",
@@ -11796,9 +13350,9 @@
       "source_file": "docs/packages.md",
       "source_location": "L25",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "docs_packages",
-      "target": "docs_packages_module_pdf_viewer",
-      "confidence_score": 1.0
+      "target": "docs_packages_module_pdf_viewer"
     },
     {
       "relation": "contains",
@@ -11806,9 +13360,9 @@
       "source_file": "docs/packages.md",
       "source_location": "L6",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "docs_packages",
-      "target": "docs_packages_package_com_lumina_pdf_core",
-      "confidence_score": 1.0
+      "target": "docs_packages_package_com_lumina_pdf_core"
     },
     {
       "relation": "contains",
@@ -11816,9 +13370,9 @@
       "source_file": "docs/packages.md",
       "source_location": "L18",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "docs_packages",
-      "target": "docs_packages_package_com_lumina_pdf_renderer",
-      "confidence_score": 1.0
+      "target": "docs_packages_package_com_lumina_pdf_renderer"
     },
     {
       "relation": "contains",
@@ -11826,9 +13380,9 @@
       "source_file": "docs/packages.md",
       "source_location": "L28",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "docs_packages",
-      "target": "docs_packages_package_com_lumina_pdf_viewer",
-      "confidence_score": 1.0
+      "target": "docs_packages_package_com_lumina_pdf_viewer"
     },
     {
       "relation": "contains",
@@ -11836,9 +13390,9 @@
       "source_file": "docs/packages.md",
       "source_location": "L34",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "docs_packages",
-      "target": "docs_packages_package_com_lumina_pdf_viewer_db",
-      "confidence_score": 1.0
+      "target": "docs_packages_package_com_lumina_pdf_viewer_db"
     },
     {
       "relation": "contains",
@@ -11846,9 +13400,9 @@
       "source_file": "implementation_plan.md",
       "source_location": "L712",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "implementation_plan",
-      "target": "implementation_plan_annotation_architecture",
-      "confidence_score": 1.0
+      "target": "implementation_plan_annotation_architecture"
     },
     {
       "relation": "contains",
@@ -11856,9 +13410,9 @@
       "source_file": "implementation_plan.md",
       "source_location": "L520",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "implementation_plan",
-      "target": "implementation_plan_cache_architecture",
-      "confidence_score": 1.0
+      "target": "implementation_plan_cache_architecture"
     },
     {
       "relation": "contains",
@@ -11866,9 +13420,9 @@
       "source_file": "implementation_plan.md",
       "source_location": "L610",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "implementation_plan",
-      "target": "implementation_plan_compose_rendering_strategy",
-      "confidence_score": 1.0
+      "target": "implementation_plan_compose_rendering_strategy"
     },
     {
       "relation": "contains",
@@ -11876,9 +13430,9 @@
       "source_file": "implementation_plan.md",
       "source_location": "L287",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "implementation_plan",
-      "target": "implementation_plan_core_design_principle",
-      "confidence_score": 1.0
+      "target": "implementation_plan_core_design_principle"
     },
     {
       "relation": "contains",
@@ -11886,9 +13440,9 @@
       "source_file": "implementation_plan.md",
       "source_location": "L894",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "implementation_plan",
-      "target": "implementation_plan_final_recommendation",
-      "confidence_score": 1.0
+      "target": "implementation_plan_final_recommendation"
     },
     {
       "relation": "contains",
@@ -11896,9 +13450,9 @@
       "source_file": "implementation_plan.md",
       "source_location": "L37",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "implementation_plan",
-      "target": "implementation_plan_high_level_architecture",
-      "confidence_score": 1.0
+      "target": "implementation_plan_high_level_architecture"
     },
     {
       "relation": "contains",
@@ -11906,9 +13460,9 @@
       "source_file": "implementation_plan.md",
       "source_location": "L1",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "implementation_plan",
-      "target": "implementation_plan_kmp_pdf_renderer_production_architecture_plan",
-      "confidence_score": 1.0
+      "target": "implementation_plan_kmp_pdf_renderer_production_architecture_plan"
     },
     {
       "relation": "contains",
@@ -11916,9 +13470,9 @@
       "source_file": "implementation_plan.md",
       "source_location": "L50",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "implementation_plan",
-      "target": "implementation_plan_module_breakdown",
-      "confidence_score": 1.0
+      "target": "implementation_plan_module_breakdown"
     },
     {
       "relation": "contains",
@@ -11926,9 +13480,9 @@
       "source_file": "implementation_plan.md",
       "source_location": "L670",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "implementation_plan",
-      "target": "implementation_plan_night_mode",
-      "confidence_score": 1.0
+      "target": "implementation_plan_night_mode"
     },
     {
       "relation": "contains",
@@ -11936,9 +13490,9 @@
       "source_file": "implementation_plan.md",
       "source_location": "L451",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "implementation_plan",
-      "target": "implementation_plan_page_virtualization",
-      "confidence_score": 1.0
+      "target": "implementation_plan_page_virtualization"
     },
     {
       "relation": "contains",
@@ -11946,9 +13500,9 @@
       "source_file": "implementation_plan.md",
       "source_location": "L746",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "implementation_plan",
-      "target": "implementation_plan_persistence_host_app_responsibility",
-      "confidence_score": 1.0
+      "target": "implementation_plan_persistence_host_app_responsibility"
     },
     {
       "relation": "contains",
@@ -11956,9 +13510,9 @@
       "source_file": "implementation_plan.md",
       "source_location": "L7",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "implementation_plan",
-      "target": "implementation_plan_philosophy",
-      "confidence_score": 1.0
+      "target": "implementation_plan_philosophy"
     },
     {
       "relation": "contains",
@@ -11966,9 +13520,9 @@
       "source_file": "implementation_plan.md",
       "source_location": "L780",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "implementation_plan",
-      "target": "implementation_plan_recommended_build_phases",
-      "confidence_score": 1.0
+      "target": "implementation_plan_recommended_build_phases"
     },
     {
       "relation": "contains",
@@ -11976,9 +13530,9 @@
       "source_file": "implementation_plan.md",
       "source_location": "L239",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "implementation_plan",
-      "target": "implementation_plan_recommended_tech_stack",
-      "confidence_score": 1.0
+      "target": "implementation_plan_recommended_tech_stack"
     },
     {
       "relation": "contains",
@@ -11986,9 +13540,9 @@
       "source_file": "implementation_plan.md",
       "source_location": "L407",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "implementation_plan",
-      "target": "implementation_plan_rendering_pipeline",
-      "confidence_score": 1.0
+      "target": "implementation_plan_rendering_pipeline"
     },
     {
       "relation": "contains",
@@ -11996,9 +13550,9 @@
       "source_file": "implementation_plan.md",
       "source_location": "L581",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "implementation_plan",
-      "target": "implementation_plan_rendering_queue",
-      "confidence_score": 1.0
+      "target": "implementation_plan_rendering_queue"
     },
     {
       "relation": "contains",
@@ -12006,9 +13560,9 @@
       "source_file": "implementation_plan.md",
       "source_location": "L690",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "implementation_plan",
-      "target": "implementation_plan_search_architecture",
-      "confidence_score": 1.0
+      "target": "implementation_plan_search_architecture"
     },
     {
       "relation": "contains",
@@ -12016,9 +13570,9 @@
       "source_file": "implementation_plan.md",
       "source_location": "L841",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "implementation_plan",
-      "target": "implementation_plan_testing_strategy",
-      "confidence_score": 1.0
+      "target": "implementation_plan_testing_strategy"
     },
     {
       "relation": "contains",
@@ -12026,9 +13580,9 @@
       "source_file": "implementation_plan.md",
       "source_location": "L876",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "implementation_plan",
-      "target": "implementation_plan_things_to_avoid",
-      "confidence_score": 1.0
+      "target": "implementation_plan_things_to_avoid"
     },
     {
       "relation": "contains",
@@ -12036,9 +13590,9 @@
       "source_file": "implementation_plan.md",
       "source_location": "L488",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "implementation_plan",
-      "target": "implementation_plan_tile_rendering_strategy",
-      "confidence_score": 1.0
+      "target": "implementation_plan_tile_rendering_strategy"
     },
     {
       "relation": "contains",
@@ -12046,9 +13600,9 @@
       "source_file": "implementation_plan.md",
       "source_location": "L364",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "implementation_plan",
-      "target": "implementation_plan_viewer_api_design",
-      "confidence_score": 1.0
+      "target": "implementation_plan_viewer_api_design"
     },
     {
       "relation": "contains",
@@ -12056,9 +13610,9 @@
       "source_file": "implementation_plan.md",
       "source_location": "L640",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "implementation_plan",
-      "target": "implementation_plan_viewer_modes",
-      "confidence_score": 1.0
+      "target": "implementation_plan_viewer_modes"
     },
     {
       "relation": "contains",
@@ -12066,9 +13620,9 @@
       "source_file": "implementation_plan.md",
       "source_location": "L52",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "implementation_plan_module_breakdown",
-      "target": "implementation_plan_1_pdf_core",
-      "confidence_score": 1.0
+      "target": "implementation_plan_1_pdf_core"
     },
     {
       "relation": "contains",
@@ -12076,9 +13630,9 @@
       "source_file": "implementation_plan.md",
       "source_location": "L81",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "implementation_plan_module_breakdown",
-      "target": "implementation_plan_2_pdf_renderer",
-      "confidence_score": 1.0
+      "target": "implementation_plan_2_pdf_renderer"
     },
     {
       "relation": "contains",
@@ -12086,9 +13640,9 @@
       "source_file": "implementation_plan.md",
       "source_location": "L169",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "implementation_plan_module_breakdown",
-      "target": "implementation_plan_3_pdf_viewer",
-      "confidence_score": 1.0
+      "target": "implementation_plan_3_pdf_viewer"
     },
     {
       "relation": "contains",
@@ -12096,9 +13650,9 @@
       "source_file": "implementation_plan.md",
       "source_location": "L197",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "implementation_plan_module_breakdown",
-      "target": "implementation_plan_4_pdf_annotations_optional",
-      "confidence_score": 1.0
+      "target": "implementation_plan_4_pdf_annotations_optional"
     },
     {
       "relation": "contains",
@@ -12106,9 +13660,9 @@
       "source_file": "implementation_plan.md",
       "source_location": "L214",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "implementation_plan_module_breakdown",
-      "target": "implementation_plan_5_pdf_search_optional",
-      "confidence_score": 1.0
+      "target": "implementation_plan_5_pdf_search_optional"
     },
     {
       "relation": "contains",
@@ -12116,9 +13670,9 @@
       "source_file": "implementation_plan.md",
       "source_location": "L227",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "implementation_plan_module_breakdown",
-      "target": "implementation_plan_6_sample_app",
-      "confidence_score": 1.0
+      "target": "implementation_plan_6_sample_app"
     },
     {
       "relation": "contains",
@@ -12126,9 +13680,9 @@
       "source_file": "implementation_plan.md",
       "source_location": "L77",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "implementation_plan_1_pdf_core",
-      "target": "implementation_plan_no_app_features",
-      "confidence_score": 1.0
+      "target": "implementation_plan_no_app_features"
     },
     {
       "relation": "contains",
@@ -12136,9 +13690,9 @@
       "source_file": "implementation_plan.md",
       "source_location": "L75",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "implementation_plan_1_pdf_core",
-      "target": "implementation_plan_no_platform_code",
-      "confidence_score": 1.0
+      "target": "implementation_plan_no_platform_code"
     },
     {
       "relation": "contains",
@@ -12146,9 +13700,9 @@
       "source_file": "implementation_plan.md",
       "source_location": "L73",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "implementation_plan_1_pdf_core",
-      "target": "implementation_plan_no_ui",
-      "confidence_score": 1.0
+      "target": "implementation_plan_no_ui"
     },
     {
       "relation": "contains",
@@ -12156,9 +13710,9 @@
       "source_file": "implementation_plan.md",
       "source_location": "L64",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "implementation_plan_1_pdf_core",
-      "target": "implementation_plan_responsibilities",
-      "confidence_score": 1.0
+      "target": "implementation_plan_responsibilities"
     },
     {
       "relation": "contains",
@@ -12166,9 +13720,9 @@
       "source_file": "implementation_plan.md",
       "source_location": "L87",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "implementation_plan_2_pdf_renderer",
-      "target": "implementation_plan_android",
-      "confidence_score": 1.0
+      "target": "implementation_plan_android"
     },
     {
       "relation": "contains",
@@ -12176,9 +13730,9 @@
       "source_file": "implementation_plan.md",
       "source_location": "L121",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "implementation_plan_2_pdf_renderer",
-      "target": "implementation_plan_desktop_jvm",
-      "confidence_score": 1.0
+      "target": "implementation_plan_desktop_jvm"
     },
     {
       "relation": "contains",
@@ -12186,9 +13740,9 @@
       "source_file": "implementation_plan.md",
       "source_location": "L104",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "implementation_plan_2_pdf_renderer",
-      "target": "implementation_plan_ios",
-      "confidence_score": 1.0
+      "target": "implementation_plan_ios"
     },
     {
       "relation": "contains",
@@ -12196,9 +13750,9 @@
       "source_file": "implementation_plan.md",
       "source_location": "L144",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "implementation_plan_2_pdf_renderer",
-      "target": "implementation_plan_web_later_phase",
-      "confidence_score": 1.0
+      "target": "implementation_plan_web_later_phase"
     },
     {
       "relation": "contains",
@@ -12206,9 +13760,9 @@
       "source_file": "implementation_plan.md",
       "source_location": "L253",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "implementation_plan_recommended_tech_stack",
-      "target": "implementation_plan_android_253",
-      "confidence_score": 1.0
+      "target": "implementation_plan_android_253"
     },
     {
       "relation": "contains",
@@ -12216,9 +13770,9 @@
       "source_file": "implementation_plan.md",
       "source_location": "L271",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "implementation_plan_recommended_tech_stack",
-      "target": "implementation_plan_desktop",
-      "confidence_score": 1.0
+      "target": "implementation_plan_desktop"
     },
     {
       "relation": "contains",
@@ -12226,9 +13780,9 @@
       "source_file": "implementation_plan.md",
       "source_location": "L263",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "implementation_plan_recommended_tech_stack",
-      "target": "implementation_plan_ios_263",
-      "confidence_score": 1.0
+      "target": "implementation_plan_ios_263"
     },
     {
       "relation": "contains",
@@ -12236,9 +13790,9 @@
       "source_file": "implementation_plan.md",
       "source_location": "L241",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "implementation_plan_recommended_tech_stack",
-      "target": "implementation_plan_shared_commonmain",
-      "confidence_score": 1.0
+      "target": "implementation_plan_shared_commonmain"
     },
     {
       "relation": "contains",
@@ -12246,9 +13800,9 @@
       "source_file": "implementation_plan.md",
       "source_location": "L279",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "implementation_plan_recommended_tech_stack",
-      "target": "implementation_plan_web",
-      "confidence_score": 1.0
+      "target": "implementation_plan_web"
     },
     {
       "relation": "contains",
@@ -12256,9 +13810,9 @@
       "source_file": "implementation_plan.md",
       "source_location": "L289",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "implementation_plan_core_design_principle",
-      "target": "implementation_plan_native_rendering_via_expect_actual",
-      "confidence_score": 1.0
+      "target": "implementation_plan_native_rendering_via_expect_actual"
     },
     {
       "relation": "contains",
@@ -12266,9 +13820,9 @@
       "source_file": "implementation_plan.md",
       "source_location": "L303",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "implementation_plan_core_design_principle",
-      "target": "implementation_plan_shared_interface",
-      "confidence_score": 1.0
+      "target": "implementation_plan_shared_interface"
     },
     {
       "relation": "contains",
@@ -12276,9 +13830,9 @@
       "source_file": "implementation_plan.md",
       "source_location": "L332",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "implementation_plan_shared_interface",
-      "target": "implementation_plan_why_rendertile_matters",
-      "confidence_score": 1.0
+      "target": "implementation_plan_why_rendertile_matters"
     },
     {
       "relation": "contains",
@@ -12286,9 +13840,9 @@
       "source_file": "implementation_plan.md",
       "source_location": "L385",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "implementation_plan_viewer_api_design",
-      "target": "implementation_plan_viewer_state",
-      "confidence_score": 1.0
+      "target": "implementation_plan_viewer_state"
     },
     {
       "relation": "contains",
@@ -12296,9 +13850,9 @@
       "source_file": "implementation_plan.md",
       "source_location": "L411",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "implementation_plan_rendering_pipeline",
-      "target": "implementation_plan_multi_resolution_rendering",
-      "confidence_score": 1.0
+      "target": "implementation_plan_multi_resolution_rendering"
     },
     {
       "relation": "contains",
@@ -12306,9 +13860,9 @@
       "source_file": "implementation_plan.md",
       "source_location": "L435",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "implementation_plan_rendering_pipeline",
-      "target": "implementation_plan_smart_zoom_rendering",
-      "confidence_score": 1.0
+      "target": "implementation_plan_smart_zoom_rendering"
     },
     {
       "relation": "contains",
@@ -12316,9 +13870,9 @@
       "source_file": "implementation_plan.md",
       "source_location": "L532",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "implementation_plan_cache_architecture",
-      "target": "implementation_plan_l1_memory_cache",
-      "confidence_score": 1.0
+      "target": "implementation_plan_l1_memory_cache"
     },
     {
       "relation": "contains",
@@ -12326,9 +13880,9 @@
       "source_file": "implementation_plan.md",
       "source_location": "L554",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "implementation_plan_cache_architecture",
-      "target": "implementation_plan_l2_disk_cache",
-      "confidence_score": 1.0
+      "target": "implementation_plan_l2_disk_cache"
     },
     {
       "relation": "contains",
@@ -12336,9 +13890,9 @@
       "source_file": "implementation_plan.md",
       "source_location": "L565",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "implementation_plan_cache_architecture",
-      "target": "implementation_plan_l3_native_handle_cache",
-      "confidence_score": 1.0
+      "target": "implementation_plan_l3_native_handle_cache"
     },
     {
       "relation": "contains",
@@ -12346,9 +13900,9 @@
       "source_file": "implementation_plan.md",
       "source_location": "L642",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "implementation_plan_viewer_modes",
-      "target": "implementation_plan_phase_1",
-      "confidence_score": 1.0
+      "target": "implementation_plan_phase_1"
     },
     {
       "relation": "contains",
@@ -12356,9 +13910,9 @@
       "source_file": "implementation_plan.md",
       "source_location": "L660",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "implementation_plan_viewer_modes",
-      "target": "implementation_plan_phase_2",
-      "confidence_score": 1.0
+      "target": "implementation_plan_phase_2"
     },
     {
       "relation": "contains",
@@ -12366,9 +13920,9 @@
       "source_file": "implementation_plan.md",
       "source_location": "L646",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "implementation_plan_phase_1",
-      "target": "implementation_plan_continuous_scroll",
-      "confidence_score": 1.0
+      "target": "implementation_plan_continuous_scroll"
     },
     {
       "relation": "contains",
@@ -12376,9 +13930,9 @@
       "source_file": "implementation_plan.md",
       "source_location": "L652",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "implementation_plan_phase_1",
-      "target": "implementation_plan_paged_mode",
-      "confidence_score": 1.0
+      "target": "implementation_plan_paged_mode"
     },
     {
       "relation": "contains",
@@ -12386,9 +13940,9 @@
       "source_file": "implementation_plan.md",
       "source_location": "L664",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "implementation_plan_phase_2",
-      "target": "implementation_plan_two_page_spread",
-      "confidence_score": 1.0
+      "target": "implementation_plan_two_page_spread"
     },
     {
       "relation": "contains",
@@ -12396,9 +13950,9 @@
       "source_file": "implementation_plan.md",
       "source_location": "L782",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "implementation_plan_recommended_build_phases",
-      "target": "implementation_plan_phase_1_mvp_renderer",
-      "confidence_score": 1.0
+      "target": "implementation_plan_phase_1_mvp_renderer"
     },
     {
       "relation": "contains",
@@ -12406,9 +13960,9 @@
       "source_file": "implementation_plan.md",
       "source_location": "L804",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "implementation_plan_recommended_build_phases",
-      "target": "implementation_plan_phase_2_performance",
-      "confidence_score": 1.0
+      "target": "implementation_plan_phase_2_performance"
     },
     {
       "relation": "contains",
@@ -12416,9 +13970,9 @@
       "source_file": "implementation_plan.md",
       "source_location": "L816",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "implementation_plan_recommended_build_phases",
-      "target": "implementation_plan_phase_3_viewer_ux",
-      "confidence_score": 1.0
+      "target": "implementation_plan_phase_3_viewer_ux"
     },
     {
       "relation": "contains",
@@ -12426,9 +13980,9 @@
       "source_file": "implementation_plan.md",
       "source_location": "L828",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "implementation_plan_recommended_build_phases",
-      "target": "implementation_plan_phase_4_advanced",
-      "confidence_score": 1.0
+      "target": "implementation_plan_phase_4_advanced"
     },
     {
       "relation": "contains",
@@ -12436,9 +13990,9 @@
       "source_file": "implementation_plan.md",
       "source_location": "L853",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "implementation_plan_testing_strategy",
-      "target": "implementation_plan_integration_tests",
-      "confidence_score": 1.0
+      "target": "implementation_plan_integration_tests"
     },
     {
       "relation": "contains",
@@ -12446,9 +14000,9 @@
       "source_file": "implementation_plan.md",
       "source_location": "L863",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "implementation_plan_testing_strategy",
-      "target": "implementation_plan_stress_tests",
-      "confidence_score": 1.0
+      "target": "implementation_plan_stress_tests"
     },
     {
       "relation": "contains",
@@ -12456,11 +14010,11 @@
       "source_file": "implementation_plan.md",
       "source_location": "L843",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "implementation_plan_testing_strategy",
-      "target": "implementation_plan_unit_tests",
-      "confidence_score": 1.0
+      "target": "implementation_plan_unit_tests"
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "4fa4a335520c2dca5db1e4689283a8be5d605c0f"
+  "built_at_commit": "d200262ef5a0618d4bf84fd6c4cab60b108aa802"
 }
