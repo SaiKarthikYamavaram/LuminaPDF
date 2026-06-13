@@ -64,6 +64,8 @@ kotlin {
             implementation(libs.androidx.lifecycle.viewmodelCompose)
             implementation(libs.androidx.lifecycle.runtimeCompose)
             implementation(libs.filekit.compose)
+            implementation(libs.voyager.navigator)
+
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)

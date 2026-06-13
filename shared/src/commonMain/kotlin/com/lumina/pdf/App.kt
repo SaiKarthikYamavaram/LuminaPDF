@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
@@ -17,6 +18,50 @@ import kotlinx.coroutines.launch
 import luminapdf.shared.generated.resources.*
 import org.jetbrains.compose.resources.Font
 import org.jetbrains.compose.resources.ExperimentalResourceApi
+import cafe.adriel.voyager.core.screen.Screen
+import cafe.adriel.voyager.navigator.Navigator
+import cafe.adriel.voyager.navigator.LocalNavigator
+import cafe.adriel.voyager.navigator.currentOrThrow
+import cafe.adriel.voyager.navigator.CurrentScreen
+
+class AppHomeScreen(
+    private val recentFiles: SnapshotStateList<RecentFile>,
+    private val onOpenFile: (RecentFile, Int?, Navigator) -> Unit,
+    private val onRemoveFromRecents: (RecentFile) -> Unit,
+    private val onDeleteDocument: (RecentFile) -> Unit,
+    private val onTriggerFilePicker: () -> Unit
+) : Screen {
+    @Composable
+    override fun Content() {
+        val navigator = LocalNavigator.currentOrThrow
+        HomeScreen(
+            recentFiles = recentFiles,
+            onOpenFile = { recentFile, page -> onOpenFile(recentFile, page, navigator) },
+            onRemoveFromRecents = onRemoveFromRecents,
+            onDeleteDocument = onDeleteDocument,
+            onTriggerFilePicker = onTriggerFilePicker,
+            modifier = Modifier.fillMaxSize()
+        )
+    }
+}
+
+class AppPdfViewerScreen(
+    private val document: PdfDocument,
+    private val documentId: String,
+    private val initialPage: Int?,
+    private val onClose: () -> Unit
+) : Screen {
+    @Composable
+    override fun Content() {
+        PdfViewer(
+            document = document,
+            documentId = documentId,
+            initialPage = initialPage,
+            onClose = onClose,
+            modifier = Modifier.fillMaxSize()
+        )
+    }
+}
 
 @OptIn(ExperimentalResourceApi::class)
 @Composable
@@ -59,6 +104,7 @@ fun App() {
         var initialPageToOpen by remember { mutableStateOf<Int?>(null) }
         var error by remember { mutableStateOf<String?>(null) }
         val scope = rememberCoroutineScope()
+        var navigatorRef by remember { mutableStateOf<Navigator?>(null) }
 
         LaunchedEffect(Unit) {
             try {
@@ -105,6 +151,44 @@ fun App() {
             }
         }
 
+        val onOpenFile: (RecentFile, Int?, Navigator) -> Unit = { recentFile, page, navigator ->
+            scope.launch {
+                try {
+                    val bytesToOpen = recentFile.fileBytes ?: Res.readBytes("files/sample.pdf")
+                    val factory = PdfDocumentFactory()
+                    currentDocument = factory.open(bytesToOpen)
+                    currentDocumentName = recentFile.id
+                    initialPageToOpen = page
+                    
+                    // Move the opened file to the top of the list, update lastOpened, and mark inRecents = true
+                    val existing = recentFiles.find { it.id == recentFile.id }
+                    if (existing != null) {
+                        val updated = existing.copy(lastOpened = "Just now", inRecents = true)
+                        recentFiles.remove(existing)
+                        recentFiles.add(0, updated)
+                        RecentFilesStore.saveRecentFilesList(recentFiles)
+                    }
+                    
+                    navigator.push(
+                        AppPdfViewerScreen(
+                            document = currentDocument!!,
+                            documentId = recentFile.id,
+                            initialPage = page,
+                            onClose = {
+                                currentDocument?.close()
+                                currentDocument = null
+                                initialPageToOpen = null
+                                navigator.pop()
+                            }
+                        )
+                    )
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                    error = e.message ?: "Error opening file"
+                }
+            }
+        }
+
         val pickFileLauncher = io.github.vinceglb.filekit.compose.rememberFilePickerLauncher(
             type = io.github.vinceglb.filekit.core.PickerType.File(extensions = listOf("pdf")),
             title = "Select PDF File"
@@ -145,6 +229,23 @@ fun App() {
                         currentDocumentName = fileToOpen.id
                         initialPageToOpen = null
                         
+                        val navigator = navigatorRef
+                        if (navigator != null) {
+                            navigator.push(
+                                AppPdfViewerScreen(
+                                    document = currentDocument!!,
+                                    documentId = fileToOpen.id,
+                                    initialPage = null,
+                                    onClose = {
+                                        currentDocument?.close()
+                                        currentDocument = null
+                                        initialPageToOpen = null
+                                        navigator.pop()
+                                    }
+                                )
+                            )
+                        }
+                        
                         // Render thumbnail in background
                         val doc = factory.open(bytes)
                         val bitmap = doc.renderPage(0, 180, 240)
@@ -175,44 +276,10 @@ fun App() {
             )
         }
 
-        if (currentDocument != null) {
-            PdfViewer(
-                document = currentDocument!!,
-                documentId = currentDocumentName,
-                initialPage = initialPageToOpen,
-                onClose = {
-                    currentDocument?.close()
-                    currentDocument = null
-                    initialPageToOpen = null
-                },
-                modifier = Modifier.fillMaxSize()
-            )
-        } else {
-            HomeScreen(
+        Navigator(
+            screen = AppHomeScreen(
                 recentFiles = recentFiles,
-                onOpenFile = { recentFile, page ->
-                    scope.launch {
-                        try {
-                            val bytesToOpen = recentFile.fileBytes ?: Res.readBytes("files/sample.pdf")
-                            val factory = PdfDocumentFactory()
-                            currentDocument = factory.open(bytesToOpen)
-                            currentDocumentName = recentFile.id
-                            initialPageToOpen = page
-                            
-                            // Move the opened file to the top of the list, update lastOpened, and mark inRecents = true
-                            val existing = recentFiles.find { it.id == recentFile.id }
-                            if (existing != null) {
-                                val updated = existing.copy(lastOpened = "Just now", inRecents = true)
-                                recentFiles.remove(existing)
-                                recentFiles.add(0, updated)
-                                RecentFilesStore.saveRecentFilesList(recentFiles)
-                            }
-                        } catch (e: Exception) {
-                            e.printStackTrace()
-                            error = e.message ?: "Error opening file"
-                        }
-                    }
-                },
+                onOpenFile = onOpenFile,
                 onRemoveFromRecents = { recentFile ->
                     val idx = recentFiles.indexOfFirst { it.id == recentFile.id }
                     if (idx != -1) {
@@ -225,9 +292,11 @@ fun App() {
                     RecentFilesStore.deleteRecentFile(recentFile.id)
                     RecentFilesStore.saveRecentFilesList(recentFiles)
                 },
-                onTriggerFilePicker = pickFile,
-                modifier = Modifier.fillMaxSize()
+                onTriggerFilePicker = pickFile
             )
+        ) { navigator ->
+            navigatorRef = navigator
+            CurrentScreen()
         }
     }
 }

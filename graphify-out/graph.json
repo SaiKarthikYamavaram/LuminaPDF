@@ -2070,7 +2070,7 @@
       "source_location": "L558",
       "_origin": "ast",
       "id": "offset",
-      "community": 0,
+      "community": 2,
       "norm_label": "offset"
     },
     {
@@ -3374,10 +3374,60 @@
       "norm_label": "app.kt"
     },
     {
+      "label": "AppHomeScreen",
+      "file_type": "code",
+      "source_file": "shared/src/commonMain/kotlin/com/lumina/pdf/App.kt",
+      "source_location": "L27",
+      "_origin": "ast",
+      "id": "pdf_app_apphomescreen",
+      "community": 62,
+      "norm_label": "apphomescreen"
+    },
+    {
+      "label": "Screen",
+      "file_type": "code",
+      "source_file": "",
+      "source_location": "",
+      "_origin": "ast",
+      "id": "screen",
+      "community": 62,
+      "norm_label": "screen"
+    },
+    {
+      "label": ".Content()",
+      "file_type": "code",
+      "source_file": "shared/src/commonMain/kotlin/com/lumina/pdf/App.kt",
+      "source_location": "L34",
+      "_origin": "ast",
+      "id": "pdf_app_apphomescreen_content",
+      "community": 62,
+      "norm_label": ".content()"
+    },
+    {
+      "label": "AppPdfViewerScreen",
+      "file_type": "code",
+      "source_file": "shared/src/commonMain/kotlin/com/lumina/pdf/App.kt",
+      "source_location": "L48",
+      "_origin": "ast",
+      "id": "pdf_app_apppdfviewerscreen",
+      "community": 62,
+      "norm_label": "apppdfviewerscreen"
+    },
+    {
+      "label": ".Content()",
+      "file_type": "code",
+      "source_file": "shared/src/commonMain/kotlin/com/lumina/pdf/App.kt",
+      "source_location": "L54",
+      "_origin": "ast",
+      "id": "pdf_app_apppdfviewerscreen_content",
+      "community": 62,
+      "norm_label": ".content()"
+    },
+    {
       "label": "App()",
       "file_type": "code",
       "source_file": "shared/src/commonMain/kotlin/com/lumina/pdf/App.kt",
-      "source_location": "L21",
+      "source_location": "L66",
       "_origin": "ast",
       "id": "pdf_app_app",
       "community": 62,
@@ -3387,7 +3437,7 @@
       "label": "formatSize()",
       "file_type": "code",
       "source_file": "shared/src/commonMain/kotlin/com/lumina/pdf/App.kt",
-      "source_location": "L235",
+      "source_location": "L304",
       "_origin": "ast",
       "id": "pdf_app_formatsize",
       "community": 62,
@@ -3397,7 +3447,7 @@
       "label": "Int",
       "file_type": "code",
       "source_file": "shared/src/commonMain/kotlin/com/lumina/pdf/App.kt",
-      "source_location": "L235",
+      "source_location": "L304",
       "_origin": "ast",
       "id": "shared_src_commonmain_kotlin_com_lumina_pdf_app_kt_int",
       "community": 62,
@@ -3407,7 +3457,7 @@
       "label": "String",
       "file_type": "code",
       "source_file": "shared/src/commonMain/kotlin/com/lumina/pdf/App.kt",
-      "source_location": "L235",
+      "source_location": "L304",
       "_origin": "ast",
       "id": "shared_src_commonmain_kotlin_com_lumina_pdf_app_kt_string",
       "community": 62,
@@ -8883,6 +8933,17 @@
       "target": "viewer_pdfviewer_pdfviewer"
     },
     {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "shared/src/commonMain/kotlin/com/lumina/pdf/App.kt",
+      "source_location": "L56",
+      "weight": 1.0,
+      "source": "pdf_app_apppdfviewerscreen_content",
+      "target": "viewer_pdfviewer_pdfviewer"
+    },
+    {
       "relation": "references",
       "confidence": "EXTRACTED",
       "source_file": "pdf-viewer/src/commonMain/kotlin/com/lumina/pdf/viewer/PdfViewer.kt",
@@ -10691,11 +10752,104 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "shared/src/commonMain/kotlin/com/lumina/pdf/App.kt",
+      "source_location": "L27",
+      "weight": 1.0,
+      "source": "pdf_app",
+      "target": "pdf_app_apphomescreen",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "shared/src/commonMain/kotlin/com/lumina/pdf/App.kt",
+      "source_location": "L48",
+      "weight": 1.0,
+      "source": "pdf_app",
+      "target": "pdf_app_apppdfviewerscreen",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "shared/src/commonMain/kotlin/com/lumina/pdf/App.kt",
       "source_location": "L176",
       "weight": 1.0,
       "confidence_score": 1.0,
       "source": "pdf_app",
       "target": "pdf_app_formatsize"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "shared/src/commonMain/kotlin/com/lumina/pdf/App.kt",
+      "source_location": "L280",
+      "weight": 1.0,
+      "source": "pdf_app_app",
+      "target": "pdf_app_apphomescreen",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "shared/src/commonMain/kotlin/com/lumina/pdf/App.kt",
+      "source_location": "L34",
+      "weight": 1.0,
+      "source": "pdf_app_apphomescreen",
+      "target": "pdf_app_apphomescreen_content",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "implements",
+      "confidence": "EXTRACTED",
+      "source_file": "shared/src/commonMain/kotlin/com/lumina/pdf/App.kt",
+      "source_location": "L27",
+      "weight": 1.0,
+      "source": "pdf_app_apphomescreen",
+      "target": "screen",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "implements",
+      "confidence": "EXTRACTED",
+      "source_file": "shared/src/commonMain/kotlin/com/lumina/pdf/App.kt",
+      "source_location": "L48",
+      "weight": 1.0,
+      "source": "pdf_app_apppdfviewerscreen",
+      "target": "screen",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "shared/src/commonMain/kotlin/com/lumina/pdf/App.kt",
+      "source_location": "L37",
+      "weight": 1.0,
+      "source": "pdf_app_apphomescreen_content",
+      "target": "pdf_homescreen_homescreen"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "shared/src/commonMain/kotlin/com/lumina/pdf/App.kt",
+      "source_location": "L173",
+      "weight": 1.0,
+      "source": "pdf_app_app",
+      "target": "pdf_app_apppdfviewerscreen",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "shared/src/commonMain/kotlin/com/lumina/pdf/App.kt",
+      "source_location": "L54",
+      "weight": 1.0,
+      "source": "pdf_app_apppdfviewerscreen",
+      "target": "pdf_app_apppdfviewerscreen_content",
+      "confidence_score": 1.0
     },
     {
       "relation": "calls",
@@ -14016,5 +14170,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "34ac8100319c13229ff713dcc823f8ab403e3830"
+  "built_at_commit": "9029bd9ac704a785f0222eae9b61aece823b781f"
 }
