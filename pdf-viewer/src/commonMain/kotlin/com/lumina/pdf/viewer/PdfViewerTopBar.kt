@@ -1,0 +1,348 @@
+package com.lumina.pdf.viewer
+
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.key.*
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.dp
+import com.lumina.pdf.core.PdfRect
+import kotlinx.coroutines.delay
+
+@Composable
+fun TopBar(
+    zoomPercent: Int,
+    onZoomIn: () -> Unit,
+    onZoomOut: () -> Unit,
+    onFitPage: () -> Unit,
+    nightMode: Boolean,
+    onToggleNightMode: () -> Unit,
+    isSearchActive: Boolean,
+    onSearchActiveChange: (Boolean) -> Unit,
+    searchQuery: String,
+    onSearchQueryChange: (String) -> Unit,
+    currentMatchIndex: Int,
+    totalMatches: Int,
+    onNextMatch: () -> Unit,
+    onPrevMatch: () -> Unit,
+    isOutlineActive: Boolean,
+    onOutlineActiveChange: (Boolean) -> Unit,
+    isNotesActive: Boolean,
+    onNotesActiveChange: (Boolean) -> Unit,
+    currentPage: Int,
+    pageCount: Int,
+    onJumpToPage: (Int) -> Unit,
+    onClose: (() -> Unit)? = null,
+    modifier: Modifier = Modifier
+) {
+    val searchFocusRequester = remember { FocusRequester() }
+    var showJumpDialog by remember { mutableStateOf(false) }
+    var jumpPageInput by remember { mutableStateOf("") }
+
+    if (showJumpDialog) {
+        AlertDialog(
+            onDismissRequest = { showJumpDialog = false },
+            title = { Text("Jump to Page") },
+            text = {
+                Column {
+                    Text("Enter page number (1 to $pageCount):", style = MaterialTheme.typography.bodyMedium)
+                    Spacer(modifier = Modifier.height(8.dp))
+                    OutlinedTextField(
+                        value = jumpPageInput,
+                        onValueChange = { input ->
+                            if (input.isEmpty() || input.all { it.isDigit() }) {
+                                jumpPageInput = input
+                            }
+                        },
+                        singleLine = true,
+                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                }
+            },
+            confirmButton = {
+                Button(
+                    onClick = {
+                        val targetPage = jumpPageInput.toIntOrNull()
+                        if (targetPage != null) {
+                            val zeroIndexedPage = (targetPage - 1).coerceIn(0, pageCount - 1)
+                            onJumpToPage(zeroIndexedPage)
+                        }
+                        showJumpDialog = false
+                        jumpPageInput = ""
+                    }
+                ) {
+                    Text("Go")
+                }
+            },
+            dismissButton = {
+                TextButton(onClick = { showJumpDialog = false }) {
+                    Text("Cancel")
+                }
+            }
+        )
+    }
+
+    LaunchedEffect(isSearchActive) {
+        if (isSearchActive) {
+            delay(100)
+            searchFocusRequester.requestFocus()
+        }
+    }
+
+    Surface(
+        color = MaterialTheme.colorScheme.surface.copy(alpha = 0.90f),
+        tonalElevation = 4.dp,
+        shadowElevation = 4.dp,
+        modifier = modifier
+            .fillMaxWidth()
+            .height(40.dp)
+    ) {
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(horizontal = 12.dp)
+        ) {
+            if (isSearchActive) {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier.weight(1f),
+                    horizontalArrangement = Arrangement.spacedBy(4.dp)
+                ) {
+                    SearchIcon(color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f), modifier = Modifier.size(16.dp))
+                    
+                    androidx.compose.foundation.text.BasicTextField(
+                        value = searchQuery,
+                        onValueChange = onSearchQueryChange,
+                        singleLine = true,
+                        textStyle = MaterialTheme.typography.bodyMedium.copy(
+                            color = MaterialTheme.colorScheme.onSurface
+                        ),
+                        cursorBrush = androidx.compose.ui.graphics.SolidColor(MaterialTheme.colorScheme.primary),
+                        modifier = Modifier
+                            .focusRequester(searchFocusRequester)
+                            .onKeyEvent { keyEvent ->
+                                if (keyEvent.type == KeyEventType.KeyDown && keyEvent.key == Key.Escape) {
+                                    onSearchActiveChange(false)
+                                    onSearchQueryChange("")
+                                    true
+                                } else false
+                            }
+                            .weight(1f)
+                            .height(28.dp)
+                            .background(
+                                color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.06f),
+                                shape = RoundedCornerShape(4.dp)
+                            )
+                            .padding(horizontal = 8.dp, vertical = 4.dp),
+                        decorationBox = { innerTextField ->
+                            Box(contentAlignment = Alignment.CenterStart) {
+                                if (searchQuery.isEmpty()) {
+                                    Text(
+                                        text = "Search...",
+                                        style = MaterialTheme.typography.bodyMedium,
+                                        color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.4f)
+                                    )
+                                }
+                                innerTextField()
+                            }
+                        }
+                    )
+                    
+                    if (searchQuery.isNotEmpty()) {
+                        val matchText = if (totalMatches > 0) {
+                            "${currentMatchIndex + 1} / $totalMatches"
+                        } else {
+                            "0 / 0"
+                        }
+                        Text(
+                            text = matchText,
+                            style = MaterialTheme.typography.labelMedium,
+                            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f),
+                            modifier = Modifier.padding(horizontal = 4.dp)
+                        )
+                    }
+                    
+                    IconButton(
+                        onClick = onPrevMatch,
+                        enabled = totalMatches > 0,
+                        modifier = Modifier.size(28.dp)
+                    ) {
+                        ChevronUpIcon(
+                            color = if (totalMatches > 0) MaterialTheme.colorScheme.onSurface else MaterialTheme.colorScheme.onSurface.copy(alpha = 0.3f),
+                            modifier = Modifier.size(16.dp)
+                        )
+                    }
+
+                    IconButton(
+                        onClick = onNextMatch,
+                        enabled = totalMatches > 0,
+                        modifier = Modifier.size(28.dp)
+                    ) {
+                        ChevronDownIcon(
+                            color = if (totalMatches > 0) MaterialTheme.colorScheme.onSurface else MaterialTheme.colorScheme.onSurface.copy(alpha = 0.3f),
+                            modifier = Modifier.size(16.dp)
+                        )
+                    }
+                    
+                    IconButton(
+                        onClick = {
+                            onSearchActiveChange(false)
+                            onSearchQueryChange("")
+                        },
+                        modifier = Modifier.size(28.dp)
+                    ) {
+                        CloseIcon(color = MaterialTheme.colorScheme.onSurface, modifier = Modifier.size(16.dp))
+                    }
+                }
+            } else {
+                if (onClose != null) {
+                    IconButton(
+                        onClick = onClose,
+                        modifier = Modifier.size(32.dp)
+                    ) {
+                        ArrowBackIcon(color = MaterialTheme.colorScheme.onSurface, modifier = Modifier.size(16.dp))
+                    }
+                    Spacer(modifier = Modifier.width(4.dp))
+                }
+
+                // Outline toggle button (Hamburger menu at the far left)
+                IconButton(
+                    onClick = { onOutlineActiveChange(!isOutlineActive) },
+                    modifier = Modifier.size(32.dp)
+                ) {
+                    MenuIcon(
+                        color = if (isOutlineActive) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface,
+                        modifier = Modifier.size(16.dp)
+                    )
+                }
+
+                Spacer(modifier = Modifier.width(4.dp))
+
+                // Notes toggle button
+                IconButton(
+                    onClick = { onNotesActiveChange(!isNotesActive) },
+                    modifier = Modifier.size(32.dp)
+                ) {
+                    NoteIcon(
+                        color = if (isNotesActive) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface,
+                        modifier = Modifier.size(16.dp)
+                    )
+                }
+
+                Spacer(modifier = Modifier.width(4.dp))
+
+                Text(
+                    text = "LuminaPDF",
+                    style = MaterialTheme.typography.titleSmall,
+                    fontWeight = FontWeight.ExtraBold,
+                    color = MaterialTheme.colorScheme.primary,
+                    modifier = Modifier.weight(1f)
+                )
+
+                IconButton(
+                    onClick = { onSearchActiveChange(true) },
+                    modifier = Modifier.size(32.dp)
+                ) {
+                    SearchIcon(color = MaterialTheme.colorScheme.onSurface, modifier = Modifier.size(16.dp))
+                }
+                
+                Spacer(modifier = Modifier.width(4.dp))
+            }
+
+            Spacer(modifier = Modifier.width(8.dp))
+
+            // Zoom controls
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(4.dp)
+            ) {
+                IconButton(
+                    onClick = onZoomOut,
+                    modifier = Modifier.size(32.dp)
+                ) {
+                    RemoveIcon(color = MaterialTheme.colorScheme.onSurface, modifier = Modifier.size(16.dp))
+                }
+
+                Surface(
+                    shape = RoundedCornerShape(4.dp),
+                    color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.06f),
+                    modifier = Modifier.width(48.dp)
+                ) {
+                    Text(
+                        text = "$zoomPercent%",
+                        style = MaterialTheme.typography.bodySmall,
+                        fontWeight = FontWeight.SemiBold,
+                        textAlign = TextAlign.Center,
+                        modifier = Modifier.padding(vertical = 2.dp),
+                        color = MaterialTheme.colorScheme.onSurface
+                    )
+                }
+
+                IconButton(
+                    onClick = onZoomIn,
+                    modifier = Modifier.size(32.dp)
+                ) {
+                    AddIcon(color = MaterialTheme.colorScheme.onSurface, modifier = Modifier.size(16.dp))
+                }
+
+                TextButton(
+                    onClick = onFitPage,
+                    modifier = Modifier.height(32.dp),
+                    contentPadding = PaddingValues(horizontal = 8.dp),
+                    colors = ButtonDefaults.textButtonColors(contentColor = MaterialTheme.colorScheme.primary)
+                ) {
+                    Text(
+                        text = "Fit Page",
+                        style = MaterialTheme.typography.labelMedium,
+                        fontWeight = FontWeight.Bold
+                    )
+                }
+
+                Spacer(modifier = Modifier.width(4.dp))
+
+                TextButton(
+                    onClick = {
+                        jumpPageInput = (currentPage + 1).toString()
+                        showJumpDialog = true
+                    },
+                    modifier = Modifier.height(32.dp),
+                    contentPadding = PaddingValues(horizontal = 8.dp),
+                    colors = ButtonDefaults.textButtonColors(contentColor = MaterialTheme.colorScheme.primary)
+                ) {
+                    Text(
+                        text = "Page ${currentPage + 1} / $pageCount",
+                        style = MaterialTheme.typography.labelMedium,
+                        fontWeight = FontWeight.Bold
+                    )
+                }
+            }
+
+            Spacer(modifier = Modifier.width(4.dp))
+
+            // Night Mode Toggle
+            IconButton(
+                onClick = onToggleNightMode,
+                modifier = Modifier.size(32.dp)
+            ) {
+                if (nightMode) {
+                    SunIcon(color = MaterialTheme.colorScheme.primary, modifier = Modifier.size(16.dp))
+                } else {
+                    MoonIcon(color = MaterialTheme.colorScheme.onSurface, modifier = Modifier.size(16.dp))
+                }
+            }
+        }
+    }
+}

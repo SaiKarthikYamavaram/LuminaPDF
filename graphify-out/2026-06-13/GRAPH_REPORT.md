@@ -1,21 +1,20 @@
 # Graph Report - LuminaPDF  (2026-06-13)
 
 ## Corpus Check
-- 79 files · ~51,463 words
+- 80 files · ~51,775 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 554 nodes · 811 edges · 63 communities (44 shown, 19 thin omitted)
-- Extraction: 97% EXTRACTED · 3% INFERRED · 0% AMBIGUOUS · INFERRED: 25 edges (avg confidence: 0.8)
+- 557 nodes · 800 edges · 62 communities (43 shown, 19 thin omitted)
+- Extraction: 92% EXTRACTED · 8% INFERRED · 0% AMBIGUOUS · INFERRED: 64 edges (avg confidence: 0.8)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `9029bd9a`
+- Built from commit: `ab9f0885`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
 ## Community Hubs (Navigation)
-- [[_COMMUNITY_Offset|Offset]]
 - [[_COMMUNITY_Mutablelist|Mutablelist]]
 - [[_COMMUNITY_Pdf Viewer Src Commonmain|Pdf Viewer Src Commonmain]]
 - [[_COMMUNITY_Pdf Renderer Src Androidmain|Pdf Renderer Src Androidmain]]
@@ -68,45 +67,41 @@
 - [[_COMMUNITY_Community 62|Community 62]]
 
 ## God Nodes (most connected - your core abstractions)
-1. `HomeScreen()` - 27 edges
-2. `Modifier` - 23 edges
-3. `Color` - 22 edges
-4. `Offset` - 21 edges
-5. `TopBar()` - 19 edges
+1. `Modifier` - 28 edges
+2. `Color` - 28 edges
+3. `HomeScreen()` - 22 edges
+4. `TopBar()` - 19 edges
+5. `Offset` - 19 edges
 6. `PdfDatabase` - 19 edges
 7. `PdfViewer()` - 18 edges
-8. `Modifier` - 13 edges
-9. `JvmPdfDatabase` - 13 edges
-10. `Platform` - 13 edges
+8. `JvmPdfDatabase` - 13 edges
+9. `Platform` - 13 edges
+10. `GridItemCard()` - 12 edges
 
 ## Surprising Connections (you probably didn't know these)
 - `PdfViewer()` --calls--> `LruMemoryCache`  [INFERRED]
   pdf-viewer/src/commonMain/kotlin/com/lumina/pdf/viewer/PdfViewer.kt → pdf-core/src/commonMain/kotlin/com/lumina/pdf/core/LruMemoryCache.kt
 - `PdfViewer()` --calls--> `RenderQueue`  [INFERRED]
   pdf-viewer/src/commonMain/kotlin/com/lumina/pdf/viewer/PdfViewer.kt → pdf-core/src/commonMain/kotlin/com/lumina/pdf/core/RenderQueue.kt
-- `TopBar()` --calls--> `RoundedCornerShape`  [INFERRED]
-  pdf-viewer/src/commonMain/kotlin/com/lumina/pdf/viewer/PdfViewer.kt → shared/src/commonMain/kotlin/com/lumina/pdf/HomeScreen.kt
 - `App()` --calls--> `PdfViewer()`  [INFERRED]
   shared/src/commonMain/kotlin/com/lumina/pdf/App.kt → pdf-viewer/src/commonMain/kotlin/com/lumina/pdf/viewer/PdfViewer.kt
-- `PdfViewer()` --calls--> `RoundedCornerShape`  [INFERRED]
-  pdf-viewer/src/commonMain/kotlin/com/lumina/pdf/viewer/PdfViewer.kt → shared/src/commonMain/kotlin/com/lumina/pdf/HomeScreen.kt
+- `HomeScreen()` --calls--> `AcrobatPdfIcon()`  [INFERRED]
+  shared/src/commonMain/kotlin/com/lumina/pdf/HomeScreen.kt → pdf-viewer/src/commonMain/kotlin/com/lumina/pdf/viewer/SharedComponents.kt
+- `HomeScreen()` --calls--> `HomeIcon()`  [INFERRED]
+  shared/src/commonMain/kotlin/com/lumina/pdf/HomeScreen.kt → pdf-viewer/src/commonMain/kotlin/com/lumina/pdf/viewer/SharedComponents.kt
 
 ## Import Cycles
 - None detected.
 
-## Communities (63 total, 19 thin omitted)
-
-### Community 0 - "Offset"
-Cohesion: 0.21
-Nodes (34): com, Offset, AcrobatPdfIcon(), ArrowRightIcon(), CloseIcon(), CloudIcon(), FolderIcon(), formatRelativeTime() (+26 more)
+## Communities (62 total, 19 thin omitted)
 
 ### Community 1 - "Mutablelist"
 Cohesion: 0.09
 Nodes (19): MutableList, org, Int, Float, Int, List, OutlineItem, PdfBitmap (+11 more)
 
 ### Community 2 - "Pdf Viewer Src Commonmain"
-Cohesion: 0.21
-Nodes (25): Boolean, Color, Float, Int, Modifier, PdfDocument, String, PdfViewerConfig (+17 more)
+Cohesion: 0.10
+Nodes (59): com, Offset, formatRelativeTime(), GridItemCard(), HomeScreen(), ListItemRow(), onHover(), RecentFile (+51 more)
 
 ### Community 3 - "Pdf Renderer Src Androidmain"
 Cohesion: 0.12
@@ -221,11 +216,11 @@ Cohesion: 0.32
 Nodes (4): RecentFilesStore, RecentFile, List, String
 
 ### Community 62 - "Community 62"
-Cohesion: 0.39
-Nodes (7): App(), formatSize(), Home, Screen, Viewer, Int, String
+Cohesion: 0.29
+Nodes (7): App(), AppHomeScreen, AppPdfViewerScreen, formatSize(), Screen, Int, String
 
 ## Knowledge Gaps
-- **133 isolated node(s):** `Bundle`, `Scene`, `OutlineItem`, `Int`, `Float` (+128 more)
+- **135 isolated node(s):** `Bundle`, `Scene`, `OutlineItem`, `Int`, `Float` (+130 more)
   These have ≤1 connection - possible missing edges or undocumented components.
 - **19 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
@@ -233,16 +228,16 @@ Nodes (7): App(), formatSize(), Home, Screen, Viewer, Int, String
 _Questions this graph is uniquely positioned to answer:_
 
 - **Why does `PdfDatabase` connect `Db Pdfdatabase Js` to `Db Pdfdatabase Android`, `Db Pdfdatabase Ios`, `Db Pdfdatabase Jvm`, `Db Pdfdatabase Wasmjs`?**
-  _High betweenness centrality (0.029) - this node is a cross-community bridge._
-- **Why does `PdfViewer()` connect `Pdf Viewer Src Commonmain` to `Offset`, `Core Lrumemorycache`, `Community 62`, `Core Renderqueue`?**
-  _High betweenness centrality (0.019) - this node is a cross-community bridge._
+  _High betweenness centrality (0.028) - this node is a cross-community bridge._
+- **Why does `PdfViewer()` connect `Pdf Viewer Src Commonmain` to `Core Lrumemorycache`, `Community 62`, `Core Renderqueue`?**
+  _High betweenness centrality (0.020) - this node is a cross-community bridge._
 - **Why does `LruMemoryCache` connect `Core Lrumemorycache` to `Pdf Viewer Src Commonmain`?**
   _High betweenness centrality (0.012) - this node is a cross-community bridge._
-- **Are the 11 inferred relationships involving `Offset` (e.g. with `CloseIcon()` and `GiftIcon()`) actually correct?**
-  _`Offset` has 11 INFERRED edges - model-reasoned connections that need verification._
+- **Are the 12 inferred relationships involving `HomeScreen()` (e.g. with `App()` and `.Content()`) actually correct?**
+  _`HomeScreen()` has 12 INFERRED edges - model-reasoned connections that need verification._
+- **Are the 12 inferred relationships involving `TopBar()` (e.g. with `RoundedCornerShape` and `AddIcon()`) actually correct?**
+  _`TopBar()` has 12 INFERRED edges - model-reasoned connections that need verification._
+- **Are the 17 inferred relationships involving `Offset` (e.g. with `AddIcon()` and `ArrowBackIcon()`) actually correct?**
+  _`Offset` has 17 INFERRED edges - model-reasoned connections that need verification._
 - **What connects `Bundle`, `Scene`, `OutlineItem` to the rest of the system?**
-  _133 weakly-connected nodes found - possible documentation gaps or missing edges._
-- **Should `Mutablelist` be split into smaller, more focused modules?**
-  _Cohesion score 0.09090909090909091 - nodes in this community are weakly interconnected._
-- **Should `Pdf Renderer Src Androidmain` be split into smaller, more focused modules?**
-  _Cohesion score 0.11666666666666667 - nodes in this community are weakly interconnected._
+  _135 weakly-connected nodes found - possible documentation gaps or missing edges._

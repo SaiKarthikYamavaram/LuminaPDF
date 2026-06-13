@@ -175,8 +175,8 @@
     "semantic_hash": "2d5bce23abf3aa323e5f7ab30f02ff9f"
   },
   "pdf-viewer/src/commonMain/kotlin/com/lumina/pdf/viewer/PdfViewer.kt": {
-    "mtime": 1781283994.518545,
-    "ast_hash": "8f2cdf8454ffd0a5fcfabff5731076df",
+    "mtime": 1781332721.6194324,
+    "ast_hash": "2bc41687ef2cb575b52ff9bc8636f01c",
     "semantic_hash": ""
   },
   "pdf-viewer/src/commonMain/kotlin/com/lumina/pdf/viewer/PdfViewerConfig.kt": {
@@ -240,8 +240,8 @@
     "semantic_hash": "eeb7235e052be29627d044d4db2dd811"
   },
   "shared/build.gradle.kts": {
-    "mtime": 1781328611.9156716,
-    "ast_hash": "321d1fcbcce1f9b2123509b830928053",
+    "mtime": 1781329080.830737,
+    "ast_hash": "15edf3e55609446ac350c80178f7f929",
     "semantic_hash": ""
   },
   "shared/src/androidHostTest/kotlin/com/lumina/pdf/SharedLogicAndroidHostTest.kt": {
@@ -255,8 +255,8 @@
     "semantic_hash": "30b4456515cab36bec9b4377d5c59850"
   },
   "shared/src/commonMain/kotlin/com/lumina/pdf/App.kt": {
-    "mtime": 1781328627.175151,
-    "ast_hash": "ce006bf43971dd1ac5cfbcabec260422",
+    "mtime": 1781329109.8817978,
+    "ast_hash": "aee975f7b5a04ef73786d5b95ae1a413",
     "semantic_hash": ""
   },
   "shared/src/commonMain/kotlin/com/lumina/pdf/Greeting.kt": {
@@ -270,8 +270,8 @@
     "semantic_hash": "bd2f7b8c1426439b555b05df32b6f002"
   },
   "shared/src/commonMain/kotlin/com/lumina/pdf/HomeScreen.kt": {
-    "mtime": 1781282035.079719,
-    "ast_hash": "7cafb8dd7a9df89934ae5149331694de",
+    "mtime": 1781332713.3227363,
+    "ast_hash": "b6f29ced1afaff85b71f7bf6db1e1fd9",
     "semantic_hash": ""
   },
   "shared/src/commonMain/kotlin/com/lumina/pdf/Platform.kt": {
@@ -462,6 +462,11 @@
   "shared/src/wasmJsMain/kotlin/com/lumina/pdf/FilePersistence.wasmJs.kt": {
     "mtime": 1781279695.5151112,
     "ast_hash": "9a593e89a8c7cc4789f8d2045df22935",
+    "semantic_hash": ""
+  },
+  "pdf-viewer/src/commonMain/kotlin/com/lumina/pdf/viewer/SharedComponents.kt": {
+    "mtime": 1781332690.6422071,
+    "ast_hash": "a677eba4d42de795a207d8e90c540c61",
     "semantic_hash": ""
   }
 }
