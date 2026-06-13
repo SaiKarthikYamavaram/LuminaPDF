@@ -630,6 +630,7 @@ fun PdfViewer(
     }
 
     var isInitialZoomSet by remember { mutableStateOf(false) }
+    var lastViewSize by remember { mutableStateOf(IntSize.Zero) }
 
     val topBarHeight = 40.dp
     val topPaddingPx = with(density) { topBarHeight.toPx() + 24.dp.toPx() }
@@ -877,6 +878,72 @@ fun PdfViewer(
                 )
             }
             isInitialZoomSet = true
+        }
+    }
+
+    LaunchedEffect(viewSize) {
+        if (viewSize.width > 0 && viewSize.height > 0 && pageCount > 0) {
+            if (isInitialZoomSet && lastViewSize != IntSize.Zero && lastViewSize != viewSize) {
+                // Window resized!
+                val oldWidth = lastViewSize.width.toFloat()
+                val oldHeight = lastViewSize.height.toFloat()
+                val newWidth = viewSize.width.toFloat()
+                val newHeight = viewSize.height.toFloat()
+
+                val oldEstimatedPageHeight = oldWidth * 1.4f
+                val oldTotalHeight = pageCount * oldEstimatedPageHeight + (pageCount - 1) * spacingPx
+
+                // Calculate old fit zoom
+                val oldFitWidthZoom = (oldWidth - 2 * marginPx) / oldWidth
+                val oldFitHeightZoom = (oldHeight - topPaddingPx - bottomPaddingPx - 2 * marginPx) / oldEstimatedPageHeight
+                val oldFitZoom = min(oldFitWidthZoom, oldFitHeightZoom).coerceIn(config.minZoom, config.maxZoom)
+
+                // Calculate new fit zoom
+                val newEstimatedPageHeight = newWidth * 1.4f
+                val newFitWidthZoom = (newWidth - 2 * marginPx) / newWidth
+                val newFitHeightZoom = (newHeight - topPaddingPx - bottomPaddingPx - 2 * marginPx) / newEstimatedPageHeight
+                val newFitZoom = min(newFitWidthZoom, newFitHeightZoom).coerceIn(config.minZoom, config.maxZoom)
+
+                // Determine new zoom
+                val wasFitZoom = kotlin.math.abs(state.zoom - oldFitZoom) < 0.01f
+                val newZoom = if (wasFitZoom) {
+                    newFitZoom
+                } else {
+                    state.zoom
+                }
+
+                // Calculate relative center in old document coordinates
+                val oldCenterX = oldWidth / 2f
+                val oldCenterY = oldHeight / 2f
+                val oldDocCenterX = (oldCenterX - state.scrollOffset.x) / state.zoom
+                val oldDocCenterY = (oldCenterY - state.scrollOffset.y) / state.zoom
+
+                val relX = oldDocCenterX / oldWidth
+                val relY = oldDocCenterY / oldTotalHeight
+
+                // Calculate new scroll offsets based on the same relative center
+                val newCenterX = newWidth / 2f
+                val newCenterY = newHeight / 2f
+                val newTotalHeight = pageCount * newEstimatedPageHeight + (pageCount - 1) * spacingPx
+
+                val targetScrollX = newCenterX - (relX * newWidth) * newZoom
+                val targetScrollY = newCenterY - (relY * newTotalHeight) * newZoom
+
+                state.zoom = newZoom
+                state.scrollOffset = clampScrollOffset(
+                    Offset(targetScrollX, targetScrollY),
+                    newZoom,
+                    newWidth,
+                    newHeight,
+                    newEstimatedPageHeight,
+                    pageCount,
+                    spacingPx,
+                    topPaddingPx,
+                    bottomPaddingPx,
+                    marginPx
+                )
+            }
+            lastViewSize = viewSize
         }
     }
 
