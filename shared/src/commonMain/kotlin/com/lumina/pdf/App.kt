@@ -15,6 +15,7 @@ import com.lumina.pdf.renderer.PdfDocumentFactory
 import com.lumina.pdf.viewer.PdfViewer
 import com.lumina.pdf.viewer.asImageBitmap
 import kotlinx.coroutines.launch
+import co.touchlab.kermit.Logger
 import luminapdf.shared.generated.resources.*
 import org.jetbrains.compose.resources.Font
 import org.jetbrains.compose.resources.ExperimentalResourceApi
@@ -142,12 +143,12 @@ fun App() {
                                 doc.close()
                             }
                         } catch (e: Exception) {
-                            e.printStackTrace()
+                            Logger.e(e) { "Failed to load background thumbnail for recent file" }
                         }
                     }
                 }
             } catch (e: Exception) {
-                e.printStackTrace()
+                Logger.e(e) { "Failed to load recent files list" }
             }
         }
 
@@ -183,7 +184,7 @@ fun App() {
                         )
                     )
                 } catch (e: Exception) {
-                    e.printStackTrace()
+                    Logger.e(e) { "Failed to open recent file: ${recentFile.id}" }
                     error = e.message ?: "Error opening file"
                 }
             }
@@ -255,7 +256,7 @@ fun App() {
                         }
                         doc.close()
                     } catch (e: Exception) {
-                        e.printStackTrace()
+                        Logger.e(e) { "Failed to open picked file: ${platformFile.name}" }
                         error = e.message ?: "Error opening file"
                     }
                 }

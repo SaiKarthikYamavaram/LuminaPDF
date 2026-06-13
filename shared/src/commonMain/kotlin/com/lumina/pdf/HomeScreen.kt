@@ -4,6 +4,7 @@ import androidx.compose.animation.*
 import androidx.compose.foundation.*
 import com.lumina.pdf.viewer.db.rememberPdfDatabase
 import com.lumina.pdf.viewer.*
+import co.touchlab.kermit.Logger
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsHoveredAsState
 import androidx.compose.foundation.layout.*
@@ -85,7 +86,7 @@ fun HomeScreen(
                         map[file] = fileNotes
                     }
                 } catch (e: Exception) {
-                    e.printStackTrace()
+                    Logger.e(e) { "Failed to get notes for file: ${file.id}" }
                 }
             }
             value = map

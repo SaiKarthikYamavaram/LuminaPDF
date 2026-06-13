@@ -19,6 +19,7 @@ sqldelight = "2.3.2"
 dokka = "2.2.0"
 filekit = "0.8.7"
 voyager = "1.0.1"
+kermit = "2.1.0"
 
 
 [libraries]
@@ -49,6 +50,7 @@ sqldelight-sqlite-driver = { module = "app.cash.sqldelight:sqlite-driver", versi
 sqldelight-native-driver = { module = "app.cash.sqldelight:native-driver", version.ref = "sqldelight" }
 filekit-compose = { module = "io.github.vinceglb:filekit-compose", version.ref = "filekit" }
 voyager-navigator = { module = "cafe.adriel.voyager:voyager-navigator", version.ref = "voyager" }
+kermit = { module = "co.touchlab:kermit", version.ref = "kermit" }
 
 
 [plugins]

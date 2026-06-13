@@ -1,12 +1,12 @@
 # Graph Report - LuminaPDF  (2026-06-13)
 
 ## Corpus Check
-- 80 files · ~51,775 words
+- 82 files · ~51,871 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 557 nodes · 800 edges · 62 communities (43 shown, 19 thin omitted)
-- Extraction: 92% EXTRACTED · 8% INFERRED · 0% AMBIGUOUS · INFERRED: 64 edges (avg confidence: 0.8)
+- 565 nodes · 798 edges · 61 communities (42 shown, 19 thin omitted)
+- Extraction: 91% EXTRACTED · 9% INFERRED · 0% AMBIGUOUS · INFERRED: 69 edges (avg confidence: 0.8)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
@@ -28,7 +28,6 @@
 - [[_COMMUNITY_Db Pdfdatabase|Db Pdfdatabase]]
 - [[_COMMUNITY_Db Pdfdatabase Js|Db Pdfdatabase Js]]
 - [[_COMMUNITY_Iosapp Contentview|Iosapp Contentview]]
-- [[_COMMUNITY_Core Renderqueue|Core Renderqueue]]
 - [[_COMMUNITY_Pdf Greeting|Pdf Greeting]]
 - [[_COMMUNITY_Bundle|Bundle]]
 - [[_COMMUNITY_Pdf Renderer Src Commonmain|Pdf Renderer Src Commonmain]]
@@ -69,9 +68,9 @@
 ## God Nodes (most connected - your core abstractions)
 1. `Modifier` - 28 edges
 2. `Color` - 28 edges
-3. `HomeScreen()` - 22 edges
-4. `TopBar()` - 19 edges
-5. `Offset` - 19 edges
+3. `HomeScreen()` - 20 edges
+4. `Offset` - 19 edges
+5. `TopBar()` - 19 edges
 6. `PdfDatabase` - 19 edges
 7. `PdfViewer()` - 18 edges
 8. `JvmPdfDatabase` - 13 edges
@@ -93,7 +92,7 @@
 ## Import Cycles
 - None detected.
 
-## Communities (62 total, 19 thin omitted)
+## Communities (61 total, 19 thin omitted)
 
 ### Community 1 - "Mutablelist"
 Cohesion: 0.09
@@ -101,7 +100,7 @@ Nodes (19): MutableList, org, Int, Float, Int, List, OutlineItem, PdfBitmap (+11
 
 ### Community 2 - "Pdf Viewer Src Commonmain"
 Cohesion: 0.10
-Nodes (59): com, Offset, formatRelativeTime(), GridItemCard(), HomeScreen(), ListItemRow(), onHover(), RecentFile (+51 more)
+Nodes (54): com, Offset, formatRelativeTime(), HomeScreen(), RecentFile, GridItemCard(), ListItemRow(), onHover() (+46 more)
 
 ### Community 3 - "Pdf Renderer Src Androidmain"
 Cohesion: 0.12
@@ -146,10 +145,6 @@ Nodes (16): DbNote, getCurrentTimeMillis(), getCurrentTimeMillis(), JsPdfDatabas
 ### Community 13 - "Iosapp Contentview"
 Cohesion: 0.28
 Nodes (6): ComposeView, ContentView, Self, UIViewController, UIViewControllerRepresentable, View
-
-### Community 14 - "Core Renderqueue"
-Cohesion: 0.39
-Nodes (6): Page, RenderPriority, RenderQueue, RenderRequest, Thumbnail, Tile
 
 ### Community 15 - "Pdf Greeting"
 Cohesion: 0.29
@@ -213,14 +208,14 @@ Nodes (7): Module pdf-core, Module pdf-renderer, Module pdf-viewer, Package com.
 
 ### Community 57 - "Community 57"
 Cohesion: 0.32
-Nodes (4): RecentFilesStore, RecentFile, List, String
+Nodes (4): RecentFilesStore, List, RecentFile, String
 
 ### Community 62 - "Community 62"
-Cohesion: 0.29
-Nodes (7): App(), AppHomeScreen, AppPdfViewerScreen, formatSize(), Screen, Int, String
+Cohesion: 0.09
+Nodes (24): Page, RenderPriority, RenderQueue, RenderRequest, Thumbnail, Tile, App(), AppHomeScreen (+16 more)
 
 ## Knowledge Gaps
-- **135 isolated node(s):** `Bundle`, `Scene`, `OutlineItem`, `Int`, `Float` (+130 more)
+- **143 isolated node(s):** `Bundle`, `Scene`, `OutlineItem`, `Int`, `Float` (+138 more)
   These have ≤1 connection - possible missing edges or undocumented components.
 - **19 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
@@ -229,15 +224,15 @@ _Questions this graph is uniquely positioned to answer:_
 
 - **Why does `PdfDatabase` connect `Db Pdfdatabase Js` to `Db Pdfdatabase Android`, `Db Pdfdatabase Ios`, `Db Pdfdatabase Jvm`, `Db Pdfdatabase Wasmjs`?**
   _High betweenness centrality (0.028) - this node is a cross-community bridge._
-- **Why does `PdfViewer()` connect `Pdf Viewer Src Commonmain` to `Core Lrumemorycache`, `Community 62`, `Core Renderqueue`?**
-  _High betweenness centrality (0.020) - this node is a cross-community bridge._
-- **Why does `LruMemoryCache` connect `Core Lrumemorycache` to `Pdf Viewer Src Commonmain`?**
-  _High betweenness centrality (0.012) - this node is a cross-community bridge._
-- **Are the 12 inferred relationships involving `HomeScreen()` (e.g. with `App()` and `.Content()`) actually correct?**
-  _`HomeScreen()` has 12 INFERRED edges - model-reasoned connections that need verification._
-- **Are the 12 inferred relationships involving `TopBar()` (e.g. with `RoundedCornerShape` and `AddIcon()`) actually correct?**
-  _`TopBar()` has 12 INFERRED edges - model-reasoned connections that need verification._
+- **Why does `PdfViewer()` connect `Community 62` to `Pdf Viewer Src Commonmain`, `Core Lrumemorycache`?**
+  _High betweenness centrality (0.023) - this node is a cross-community bridge._
+- **Why does `LruMemoryCache` connect `Core Lrumemorycache` to `Community 62`?**
+  _High betweenness centrality (0.013) - this node is a cross-community bridge._
+- **Are the 14 inferred relationships involving `HomeScreen()` (e.g. with `App()` and `.Content()`) actually correct?**
+  _`HomeScreen()` has 14 INFERRED edges - model-reasoned connections that need verification._
 - **Are the 17 inferred relationships involving `Offset` (e.g. with `AddIcon()` and `ArrowBackIcon()`) actually correct?**
   _`Offset` has 17 INFERRED edges - model-reasoned connections that need verification._
+- **Are the 13 inferred relationships involving `TopBar()` (e.g. with `PdfViewer()` and `RoundedCornerShape`) actually correct?**
+  _`TopBar()` has 13 INFERRED edges - model-reasoned connections that need verification._
 - **What connects `Bundle`, `Scene`, `OutlineItem` to the rest of the system?**
-  _135 weakly-connected nodes found - possible documentation gaps or missing edges._
+  _143 weakly-connected nodes found - possible documentation gaps or missing edges._

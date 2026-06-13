@@ -50,6 +50,7 @@ kotlin {
             implementation(libs.compose.ui)
             implementation(libs.kotlinx.coroutines.core)
             implementation(libs.sqldelight.runtime)
+            implementation(libs.kermit)
         }
         androidMain.dependencies {
             implementation(libs.sqldelight.android.driver)

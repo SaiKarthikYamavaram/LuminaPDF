@@ -44,6 +44,7 @@ import androidx.compose.ui.unit.dp
 import com.lumina.pdf.core.*
 import com.lumina.pdf.viewer.db.*
 import kotlinx.coroutines.launch
+import co.touchlab.kermit.Logger
 import kotlin.math.cos
 import kotlin.math.sin
 import kotlin.math.min
@@ -153,7 +154,7 @@ fun PdfViewer(
             try {
                 notes.addAll(db.getNotes(documentId))
             } catch (e: Exception) {
-                e.printStackTrace()
+                Logger.e(e) { "Failed to load notes for document $documentId" }
             }
         }
     }
@@ -163,6 +164,7 @@ fun PdfViewer(
         try {
             outlineItems = document.getOutline()
         } catch (e: Exception) {
+            Logger.e(e) { "Failed to load document outline" }
             outlineItems = emptyList()
         }
     }
@@ -519,20 +521,40 @@ fun PdfViewer(
             state.currentPage = bestPage
         }
 
-        // 1. Request Thumbnails
-        for (page in state.visiblePages) {
+        val firstVisiblePage = firstVisible
+        val lastVisiblePage = visibleList.lastOrNull() ?: firstVisible
+        val pagesToLoad = if (firstVisiblePage != -1) {
+            val startPrefetchPage = (firstVisiblePage - 2).coerceAtLeast(0)
+            val endPrefetchPage = (lastVisiblePage + 2).coerceAtMost(pageCount - 1)
+            (startPrefetchPage..endPrefetchPage).toSet()
+        } else {
+            state.visiblePages.toSet()
+        }
+
+        // Call clearObsolete to discard pending requests that are no longer needed
+        renderQueue.clearObsolete(activePages = pagesToLoad, visiblePages = state.visiblePages.toSet())
+
+        // 1. Request Thumbnails (including prefetch pages)
+        for (page in pagesToLoad) {
             val thumbKey = "thumb_$page"
             if (!thumbnails.containsKey(page)) {
                 val cached = cache.get(thumbKey)
                 if (cached != null) {
                     thumbnails[page] = cached.asImageBitmap()
                 } else {
-                    renderQueue.submit(RenderRequest.Thumbnail(page, viewSize.width / 2, (estimatedPageHeight / 2).toInt()) { bitmap ->
-                        bitmap?.let {
-                            cache.put(thumbKey, it)
-                            thumbnails[page] = it.asImageBitmap()
+                    renderQueue.submit(
+                        RenderRequest.Thumbnail(
+                            pageIndex = page,
+                            width = viewSize.width / 2,
+                            height = (estimatedPageHeight / 2).toInt(),
+                            isPrefetch = page !in state.visiblePages
+                        ) { bitmap ->
+                            bitmap?.let {
+                                cache.put(thumbKey, it)
+                                thumbnails[page] = it.asImageBitmap()
+                            }
                         }
-                    })
+                    )
                 }
             }
         }
@@ -584,9 +606,7 @@ fun PdfViewer(
             activeTiles.clear()
         }
 
-        val firstVisiblePage = firstVisible
-        val lastVisiblePage = visibleList.lastOrNull() ?: firstVisible
-        val keysToRemove = thumbnails.keys.filter { it !in (firstVisiblePage - 1..lastVisiblePage + 1) }
+        val keysToRemove = thumbnails.keys.filter { it !in (firstVisiblePage - 3..lastVisiblePage + 3) }
         for (k in keysToRemove) thumbnails.remove(k)
     }
 

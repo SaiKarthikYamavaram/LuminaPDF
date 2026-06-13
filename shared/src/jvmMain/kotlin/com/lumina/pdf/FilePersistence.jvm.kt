@@ -1,6 +1,7 @@
 package com.lumina.pdf
 
 import java.io.File
+import co.touchlab.kermit.Logger
 
 actual object FilePersistence {
     private val appDir: File by lazy {
@@ -24,7 +25,7 @@ actual object FilePersistence {
         try {
             File(recentsDir, id).writeBytes(bytes)
         } catch (e: Exception) {
-            e.printStackTrace()
+            Logger.e(e) { "Failed to save recent file: $id" }
         }
     }
 
@@ -33,7 +34,7 @@ actual object FilePersistence {
             val file = File(recentsDir, id)
             if (file.exists()) file.readBytes() else null
         } catch (e: Exception) {
-            e.printStackTrace()
+            Logger.e(e) { "Failed to load recent file: $id" }
             null
         }
     }
@@ -43,7 +44,7 @@ actual object FilePersistence {
             val file = File(recentsDir, id)
             if (file.exists()) file.delete()
         } catch (e: Exception) {
-            e.printStackTrace()
+            Logger.e(e) { "Failed to delete recent file: $id" }
         }
     }
 
@@ -51,7 +52,7 @@ actual object FilePersistence {
         try {
             metadataFile.writeText(metadata)
         } catch (e: Exception) {
-            e.printStackTrace()
+            Logger.e(e) { "Failed to save metadata" }
         }
     }
 
@@ -59,7 +60,7 @@ actual object FilePersistence {
         return try {
             if (metadataFile.exists()) metadataFile.readText() else null
         } catch (e: Exception) {
-            e.printStackTrace()
+            Logger.e(e) { "Failed to load metadata" }
             null
         }
     }

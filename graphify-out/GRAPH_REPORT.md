@@ -1,20 +1,21 @@
 # Graph Report - LuminaPDF  (2026-06-13)
 
 ## Corpus Check
-- 82 files · ~51,871 words
+- 82 files · ~52,302 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 565 nodes · 798 edges · 61 communities (42 shown, 19 thin omitted)
+- 568 nodes · 801 edges · 62 communities (43 shown, 19 thin omitted)
 - Extraction: 91% EXTRACTED · 9% INFERRED · 0% AMBIGUOUS · INFERRED: 69 edges (avg confidence: 0.8)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `ab9f0885`
+- Built from commit: `6d4321de`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
 ## Community Hubs (Navigation)
+- [[_COMMUNITY_Community 0|Community 0]]
 - [[_COMMUNITY_Mutablelist|Mutablelist]]
 - [[_COMMUNITY_Pdf Viewer Src Commonmain|Pdf Viewer Src Commonmain]]
 - [[_COMMUNITY_Pdf Renderer Src Androidmain|Pdf Renderer Src Androidmain]]
@@ -92,19 +93,23 @@
 ## Import Cycles
 - None detected.
 
-## Communities (61 total, 19 thin omitted)
+## Communities (62 total, 19 thin omitted)
+
+### Community 0 - "Community 0"
+Cohesion: 0.25
+Nodes (8): Page, RenderPriority, RenderQueue, RenderRequest, Thumbnail, Tile, Int, Set
 
 ### Community 1 - "Mutablelist"
 Cohesion: 0.09
-Nodes (19): MutableList, org, Int, Float, Int, List, OutlineItem, PdfBitmap (+11 more)
+Nodes (18): MutableList, org, Int, Float, Int, List, OutlineItem, PdfBitmap (+10 more)
 
 ### Community 2 - "Pdf Viewer Src Commonmain"
 Cohesion: 0.10
 Nodes (54): com, Offset, formatRelativeTime(), HomeScreen(), RecentFile, GridItemCard(), ListItemRow(), onHover() (+46 more)
 
 ### Community 3 - "Pdf Renderer Src Androidmain"
-Cohesion: 0.12
-Nodes (13): Int, Float, Int, List, OutlineItem, PdfBitmap, PdfRect, String (+5 more)
+Cohesion: 0.11
+Nodes (14): Int, Float, Int, List, OutlineItem, PdfBitmap, PdfRect, String (+6 more)
 
 ### Community 4 - "Pdf Platform"
 Cohesion: 0.12
@@ -123,8 +128,8 @@ Cohesion: 0.17
 Nodes (10): getCurrentTimeMillis(), jsDateNow(), rememberPdfDatabase(), WasmJsPdfDatabase, Double, DbNote, List, Long (+2 more)
 
 ### Community 8 - "Db Pdfdatabase Android"
-Cohesion: 0.18
-Nodes (9): AndroidPdfDatabase, getCurrentTimeMillis(), rememberPdfDatabase(), DbNote, List, Long, PdfOffset, SqlDriver (+1 more)
+Cohesion: 0.10
+Nodes (17): AndroidPdfDatabase, getCurrentTimeMillis(), rememberPdfDatabase(), DbNote, getCurrentTimeMillis(), PdfDatabase, PdfOffset, rememberPdfDatabase() (+9 more)
 
 ### Community 9 - "Db Pdfdatabase Ios"
 Cohesion: 0.18
@@ -139,8 +144,8 @@ Cohesion: 0.04
 Nodes (47): Android, Annotation Architecture, Cache Architecture, Compose Rendering Strategy, Continuous Scroll, Core Design Principle, Desktop, Final Recommendation (+39 more)
 
 ### Community 12 - "Db Pdfdatabase Js"
-Cohesion: 0.10
-Nodes (16): DbNote, getCurrentTimeMillis(), getCurrentTimeMillis(), JsPdfDatabase, rememberPdfDatabase(), PdfDatabase, PdfOffset, rememberPdfDatabase() (+8 more)
+Cohesion: 0.19
+Nodes (8): getCurrentTimeMillis(), JsPdfDatabase, rememberPdfDatabase(), DbNote, List, Long, PdfOffset, String
 
 ### Community 13 - "Iosapp Contentview"
 Cohesion: 0.28
@@ -211,21 +216,21 @@ Cohesion: 0.32
 Nodes (4): RecentFilesStore, List, RecentFile, String
 
 ### Community 62 - "Community 62"
-Cohesion: 0.09
-Nodes (24): Page, RenderPriority, RenderQueue, RenderRequest, Thumbnail, Tile, App(), AppHomeScreen (+16 more)
+Cohesion: 0.13
+Nodes (18): App(), AppHomeScreen, AppPdfViewerScreen, formatSize(), Float, Int, Modifier, PdfDocument (+10 more)
 
 ## Knowledge Gaps
-- **143 isolated node(s):** `Bundle`, `Scene`, `OutlineItem`, `Int`, `Float` (+138 more)
+- **145 isolated node(s):** `Bundle`, `Scene`, `OutlineItem`, `Int`, `Float` (+140 more)
   These have ≤1 connection - possible missing edges or undocumented components.
 - **19 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
-- **Why does `PdfDatabase` connect `Db Pdfdatabase Js` to `Db Pdfdatabase Android`, `Db Pdfdatabase Ios`, `Db Pdfdatabase Jvm`, `Db Pdfdatabase Wasmjs`?**
-  _High betweenness centrality (0.028) - this node is a cross-community bridge._
-- **Why does `PdfViewer()` connect `Community 62` to `Pdf Viewer Src Commonmain`, `Core Lrumemorycache`?**
-  _High betweenness centrality (0.023) - this node is a cross-community bridge._
+- **Why does `PdfDatabase` connect `Db Pdfdatabase Android` to `Db Pdfdatabase Ios`, `Db Pdfdatabase Js`, `Db Pdfdatabase Jvm`, `Db Pdfdatabase Wasmjs`?**
+  _High betweenness centrality (0.027) - this node is a cross-community bridge._
+- **Why does `PdfViewer()` connect `Community 62` to `Community 0`, `Pdf Viewer Src Commonmain`, `Core Lrumemorycache`?**
+  _High betweenness centrality (0.024) - this node is a cross-community bridge._
 - **Why does `LruMemoryCache` connect `Core Lrumemorycache` to `Community 62`?**
   _High betweenness centrality (0.013) - this node is a cross-community bridge._
 - **Are the 14 inferred relationships involving `HomeScreen()` (e.g. with `App()` and `.Content()`) actually correct?**
@@ -235,4 +240,4 @@ _Questions this graph is uniquely positioned to answer:_
 - **Are the 13 inferred relationships involving `TopBar()` (e.g. with `PdfViewer()` and `RoundedCornerShape`) actually correct?**
   _`TopBar()` has 13 INFERRED edges - model-reasoned connections that need verification._
 - **What connects `Bundle`, `Scene`, `OutlineItem` to the rest of the system?**
-  _143 weakly-connected nodes found - possible documentation gaps or missing edges._
+  _145 weakly-connected nodes found - possible documentation gaps or missing edges._
