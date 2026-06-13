@@ -34,6 +34,8 @@ import androidx.compose.ui.input.key.*
 import androidx.compose.ui.input.pointer.*
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
@@ -245,10 +247,59 @@ fun TopBar(
     onOutlineActiveChange: (Boolean) -> Unit,
     isNotesActive: Boolean,
     onNotesActiveChange: (Boolean) -> Unit,
+    currentPage: Int,
+    pageCount: Int,
+    onJumpToPage: (Int) -> Unit,
     onClose: (() -> Unit)? = null,
     modifier: Modifier = Modifier
 ) {
     val searchFocusRequester = remember { FocusRequester() }
+    var showJumpDialog by remember { mutableStateOf(false) }
+    var jumpPageInput by remember { mutableStateOf("") }
+
+    if (showJumpDialog) {
+        AlertDialog(
+            onDismissRequest = { showJumpDialog = false },
+            title = { Text("Jump to Page") },
+            text = {
+                Column {
+                    Text("Enter page number (1 to $pageCount):", style = MaterialTheme.typography.bodyMedium)
+                    Spacer(modifier = Modifier.height(8.dp))
+                    OutlinedTextField(
+                        value = jumpPageInput,
+                        onValueChange = { input ->
+                            if (input.isEmpty() || input.all { it.isDigit() }) {
+                                jumpPageInput = input
+                            }
+                        },
+                        singleLine = true,
+                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                }
+            },
+            confirmButton = {
+                Button(
+                    onClick = {
+                        val targetPage = jumpPageInput.toIntOrNull()
+                        if (targetPage != null) {
+                            val zeroIndexedPage = (targetPage - 1).coerceIn(0, pageCount - 1)
+                            onJumpToPage(zeroIndexedPage)
+                        }
+                        showJumpDialog = false
+                        jumpPageInput = ""
+                    }
+                ) {
+                    Text("Go")
+                }
+            },
+            dismissButton = {
+                TextButton(onClick = { showJumpDialog = false }) {
+                    Text("Cancel")
+                }
+            }
+        )
+    }
 
     LaunchedEffect(isSearchActive) {
         if (isSearchActive) {
@@ -462,6 +513,24 @@ fun TopBar(
                 ) {
                     Text(
                         text = "Fit Page",
+                        style = MaterialTheme.typography.labelMedium,
+                        fontWeight = FontWeight.Bold
+                    )
+                }
+
+                Spacer(modifier = Modifier.width(4.dp))
+
+                TextButton(
+                    onClick = {
+                        jumpPageInput = (currentPage + 1).toString()
+                        showJumpDialog = true
+                    },
+                    modifier = Modifier.height(32.dp),
+                    contentPadding = PaddingValues(horizontal = 8.dp),
+                    colors = ButtonDefaults.textButtonColors(contentColor = MaterialTheme.colorScheme.primary)
+                ) {
+                    Text(
+                        text = "Page ${currentPage + 1} / $pageCount",
                         style = MaterialTheme.typography.labelMedium,
                         fontWeight = FontWeight.Bold
                     )
@@ -1200,6 +1269,9 @@ fun PdfViewer(
                 isNotesOpen = it 
                 if (it) isOutlineOpen = false
             },
+            currentPage = state.currentPage,
+            pageCount = pageCount,
+            onJumpToPage = { jumpToPage(it) },
             onClose = onClose,
             modifier = Modifier.align(Alignment.TopCenter)
         )
