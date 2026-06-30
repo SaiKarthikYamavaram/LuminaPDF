@@ -96,7 +96,7 @@ android {
 val releaseOutputDir = project.layout.buildDirectory.dir("outputs/apk/release").get().asFile
 val aabOutputDir     = project.layout.buildDirectory.dir("outputs/bundle/release").get().asFile
 
-tasks.named("assembleRelease") {
+tasks.matching { it.name == "assembleRelease" }.configureEach {
     doLast {
         val src = File(releaseOutputDir, "androidApp-release.apk")
         val dst = File(releaseOutputDir, "LuminaPDF-$appVersionName.apk")
@@ -104,7 +104,7 @@ tasks.named("assembleRelease") {
     }
 }
 
-tasks.named("bundleRelease") {
+tasks.matching { it.name == "bundleRelease" }.configureEach {
     doLast {
         val src = File(aabOutputDir, "androidApp-release.aab")
         val dst = File(aabOutputDir, "LuminaPDF-$appVersionName.aab")

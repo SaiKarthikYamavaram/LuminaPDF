@@ -24,7 +24,7 @@ compose.desktop {
             packageName = "Lumina"
             packageVersion = "1.0.1"
 
-            modules("java.sql", "java.naming", "java.instrument", "jdk.unsupported")
+            modules("java.sql", "java.naming", "java.instrument", "jdk.unsupported", "jdk.security.auth")
 
             windows {
                 shortcut = true
