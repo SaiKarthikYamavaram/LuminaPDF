@@ -8,69 +8,99 @@ import org.apache.pdfbox.pdmodel.PDDocument
 import org.apache.pdfbox.rendering.PDFRenderer
 import org.apache.pdfbox.text.PDFTextStripper
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
 import kotlinx.coroutines.withContext
 
 class JvmPdfDocument(private val document: PDDocument) : PdfDocument {
     private val renderer = PDFRenderer(document)
+    private val renderMutex = Mutex()
 
-    override suspend fun pageCount(): Int = document.numberOfPages
+    override suspend fun pageCount(): Int = renderMutex.withLock {
+        document.numberOfPages
+    }
 
     override suspend fun renderPage(page: Int, width: Int, height: Int): PdfBitmap = withContext(Dispatchers.IO) {
-        val pdPage = document.getPage(page)
-        val cropBox = pdPage.cropBox
-        val scale = width.toFloat() / cropBox.width
-        val image = renderer.renderImage(page, scale)
-        JvmPdfBitmap(image)
+        renderMutex.withLock {
+            val pdPage = document.getPage(page)
+            val cropBox = pdPage.cropBox
+            val scale = width.toFloat() / cropBox.width
+            val image = renderer.renderImage(page, scale)
+            JvmPdfBitmap(image)
+        }
+    }
+
+    private val pageRenderCache = object : LinkedHashMap<Pair<Int, Float>, java.lang.ref.SoftReference<java.awt.image.BufferedImage>>(4, 0.75f, true) {
+        override fun removeEldestEntry(eldest: Map.Entry<Pair<Int, Float>, java.lang.ref.SoftReference<java.awt.image.BufferedImage>>): Boolean {
+            return size > 3
+        }
     }
 
     override suspend fun renderTile(page: Int, region: PdfRect, scale: Float): PdfBitmap = withContext(Dispatchers.IO) {
-        // Basic implementation for MVP, PDFBox rendering might need more specific tile rendering
-        // For now, render full and crop (not efficient, but works for Phase 1 MVP)
-        // Advanced tile rendering is Phase 2.
-        val image = renderer.renderImage(page, scale)
-        val subImage = image.getSubimage(
-            region.left.toInt().coerceAtLeast(0),
-            region.top.toInt().coerceAtLeast(0),
-            region.width.toInt().coerceAtMost(image.width - region.left.toInt()),
-            region.height.toInt().coerceAtMost(image.height - region.top.toInt())
-        )
+        val cacheKey = Pair(page, scale)
+        val fullImage = synchronized(pageRenderCache) {
+            pageRenderCache[cacheKey]?.get()
+        } ?: renderMutex.withLock {
+            synchronized(pageRenderCache) {
+                pageRenderCache[cacheKey]?.get()
+            } ?: run {
+                val rendered = renderer.renderImage(page, scale)
+                synchronized(pageRenderCache) {
+                    pageRenderCache[cacheKey] = java.lang.ref.SoftReference(rendered)
+                }
+                rendered
+            }
+        }
+
+        val x = region.left.toInt().coerceAtLeast(0)
+        val y = region.top.toInt().coerceAtLeast(0)
+        val w = region.width.toInt().coerceAtMost(fullImage.width - x).coerceAtLeast(1)
+        val h = region.height.toInt().coerceAtMost(fullImage.height - y).coerceAtLeast(1)
+        
+        val subImage = fullImage.getSubimage(x, y, w, h)
         JvmPdfBitmap(subImage)
     }
 
     override suspend fun extractText(page: Int): String = withContext(Dispatchers.IO) {
-        val stripper = PDFTextStripper()
-        stripper.startPage = page + 1
-        stripper.endPage = page + 1
-        stripper.getText(document)
+        renderMutex.withLock {
+            val stripper = PDFTextStripper()
+            stripper.startPage = page + 1
+            stripper.endPage = page + 1
+            stripper.getText(document)
+        }
     }
 
     override suspend fun searchText(page: Int, query: String): List<PdfRect> = withContext(Dispatchers.IO) {
         if (query.isEmpty()) return@withContext emptyList()
-        val pdPage = document.getPage(page)
-        val cropBox = pdPage.cropBox
-        val pageWidth = cropBox.width
-        val pageHeight = cropBox.height
-        
-        val locator = PDFTextLocator(query)
-        locator.startPage = page + 1
-        locator.endPage = page + 1
-        locator.getText(document)
-        locator.findMatches(pageWidth, pageHeight)
-        locator.matches
+        renderMutex.withLock {
+            val pdPage = document.getPage(page)
+            val cropBox = pdPage.cropBox
+            val pageWidth = cropBox.width
+            val pageHeight = cropBox.height
+            
+            val locator = PDFTextLocator(query)
+            locator.startPage = page + 1
+            locator.endPage = page + 1
+            locator.getText(document)
+            locator.findMatches(pageWidth, pageHeight)
+            locator.matches
+        }
     }
 
     override suspend fun getOutline(): List<OutlineItem> = withContext(Dispatchers.IO) {
-        val outline = document.documentCatalog.documentOutline ?: return@withContext emptyList()
-        val result = mutableListOf<OutlineItem>()
-        var current = outline.firstChild
-        while (current != null) {
-            val mapped = mapOutlineItem(current)
-            if (mapped != null) {
-                result.add(mapped)
+        renderMutex.withLock {
+            val outline = document.documentCatalog.documentOutline ?: return@withLock emptyList()
+            val result = mutableListOf<OutlineItem>()
+            var current = outline.firstChild
+            while (current != null) {
+                val mapped = mapOutlineItem(current)
+                if (mapped != null) {
+                    result.add(mapped)
+                }
+                current = current.nextSibling
             }
-            current = current.nextSibling
+            result
         }
-        result
     }
 
     private fun mapOutlineItem(item: org.apache.pdfbox.pdmodel.interactive.documentnavigation.outline.PDOutlineItem): OutlineItem? {

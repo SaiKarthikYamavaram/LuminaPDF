@@ -2,6 +2,7 @@ package com.lumina.pdf.core
 
 import co.touchlab.kermit.Logger
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
@@ -16,66 +17,69 @@ enum class RenderPriority {
 }
 
 sealed class RenderRequest(val priority: RenderPriority) {
-    data class Page(val pageIndex: Int, val width: Int, val height: Int, val onRendered: (PdfBitmap?) -> Unit) : RenderRequest(RenderPriority.VISIBLE_PAGE)
-    data class Tile(val pageIndex: Int, val region: PdfRect, val scale: Float, val onRendered: (PdfBitmap?) -> Unit) : RenderRequest(RenderPriority.VISIBLE_TILE)
+    data class Page(val pageIndex: Int, val width: Int, val height: Int, val onRendered: suspend (PdfBitmap?) -> Unit) : RenderRequest(RenderPriority.VISIBLE_PAGE)
+    data class Tile(val pageIndex: Int, val region: PdfRect, val scale: Float, val onRendered: suspend (PdfBitmap?) -> Unit) : RenderRequest(RenderPriority.VISIBLE_TILE)
     data class Thumbnail(
         val pageIndex: Int, 
         val width: Int, 
         val height: Int, 
         val isPrefetch: Boolean = false, 
-        val onRendered: (PdfBitmap?) -> Unit
+        val onRendered: suspend (PdfBitmap?) -> Unit
     ) : RenderRequest(if (isPrefetch) RenderPriority.PREFETCH_PAGE else RenderPriority.VISIBLE_PAGE)
 }
 
 class RenderQueue(
     private val document: PdfDocument,
-    private val coroutineScope: CoroutineScope
+    private val coroutineScope: CoroutineScope,
+    private val numWorkers: Int = 3
 ) {
     private val pendingRequests = mutableListOf<RenderRequest>()
     private val mutex = Mutex()
     private val wakeUpChannel = Channel<Unit>(Channel.CONFLATED)
 
     init {
-        coroutineScope.launch {
-            while (true) {
-                // Wait for a wake-up signal if there are no requests
-                if (pendingRequests.isEmpty()) {
-                    wakeUpChannel.receive()
-                }
-
-                val request = mutex.withLock {
-                    if (pendingRequests.isEmpty()) null else {
-                        // Find request with highest priority (lowest ordinal value)
-                        val bestRequest = pendingRequests.minByOrNull { it.priority.ordinal }
-                        if (bestRequest != null) {
-                            pendingRequests.remove(bestRequest)
-                        }
-                        bestRequest
+        repeat(numWorkers) {
+            coroutineScope.launch(Dispatchers.Default) {
+                while (true) {
+                    // Wait for a wake-up signal if there are no requests
+                    if (pendingRequests.isEmpty()) {
+                        wakeUpChannel.receive()
                     }
-                }
 
-                if (request != null) {
-                    try {
-                        when (request) {
-                            is RenderRequest.Page -> {
-                                val bitmap = document.renderPage(request.pageIndex, request.width, request.height)
-                                request.onRendered(bitmap)
+                    val request = mutex.withLock {
+                        if (pendingRequests.isEmpty()) null else {
+                            // Find request with highest priority (lowest ordinal value)
+                            val bestRequest = pendingRequests.minByOrNull { it.priority.ordinal }
+                            if (bestRequest != null) {
+                                pendingRequests.remove(bestRequest)
                             }
-                            is RenderRequest.Tile -> {
-                                val bitmap = document.renderTile(request.pageIndex, request.region, request.scale)
-                                request.onRendered(bitmap)
-                            }
-                            is RenderRequest.Thumbnail -> {
-                                val bitmap = document.renderPage(request.pageIndex, request.width, request.height)
-                                request.onRendered(bitmap)
-                            }
+                            bestRequest
                         }
-                    } catch (e: Exception) {
-                        Logger.e(e) { "Failed to render request: $request" }
-                        when (request) {
-                            is RenderRequest.Page -> request.onRendered(null)
-                            is RenderRequest.Tile -> request.onRendered(null)
-                            is RenderRequest.Thumbnail -> request.onRendered(null)
+                    }
+
+                    if (request != null) {
+                        try {
+                            when (request) {
+                                is RenderRequest.Page -> {
+                                    val bitmap = document.renderPage(request.pageIndex, request.width, request.height)
+                                    request.onRendered(bitmap)
+                                }
+                                is RenderRequest.Tile -> {
+                                    val bitmap = document.renderTile(request.pageIndex, request.region, request.scale)
+                                    request.onRendered(bitmap)
+                                }
+                                is RenderRequest.Thumbnail -> {
+                                    val bitmap = document.renderPage(request.pageIndex, request.width, request.height)
+                                    request.onRendered(bitmap)
+                                }
+                            }
+                        } catch (e: Exception) {
+                            Logger.e(e) { "Failed to render request: $request" }
+                            when (request) {
+                                is RenderRequest.Page -> request.onRendered(null)
+                                is RenderRequest.Tile -> request.onRendered(null)
+                                is RenderRequest.Thumbnail -> request.onRendered(null)
+                            }
                         }
                     }
                 }

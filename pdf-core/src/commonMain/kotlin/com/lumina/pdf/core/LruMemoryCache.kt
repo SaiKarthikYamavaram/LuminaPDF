@@ -7,26 +7,30 @@ class LruMemoryCache(private val maxSize: Int) : MemoryCache {
     private val map = LinkedHashMap<String, PdfBitmap>(maxSize, 0.75f)
     private val mutex = Mutex()
 
-    override fun get(key: String): PdfBitmap? {
+    override suspend fun get(key: String): PdfBitmap? = mutex.withLock {
         // LinkedHashMap isn't automatically LRU in commonMain without JVM's accessOrder=true.
         // We simulate LRU by removing and re-inserting on get.
-        val value = map.remove(key) ?: return null
+        val value = map.remove(key) ?: return@withLock null
         map[key] = value
-        return value
+        value
     }
 
-    override fun put(key: String, bitmap: PdfBitmap) {
+    override suspend fun put(key: String, bitmap: PdfBitmap) = mutex.withLock {
         map[key] = bitmap
         trimToSize()
     }
 
-    override fun remove(key: String) {
-        map.remove(key)?.close()
+    override suspend fun remove(key: String) {
+        mutex.withLock {
+            map.remove(key)?.close()
+        }
     }
 
-    override fun clear() {
-        map.values.forEach { it.close() }
-        map.clear()
+    override suspend fun clear() {
+        mutex.withLock {
+            map.values.forEach { it.close() }
+            map.clear()
+        }
     }
 
     private fun trimToSize() {
