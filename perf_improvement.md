@@ -110,3 +110,21 @@ val fullImage = synchronized(pageRenderCache) {
 ```
 This solves the thread-safety issues with PDFBox rendering, prevents concurrent rendering crashes, and reduces CPU and memory usage during zooming and tile rendering on Desktop by **600% - 1000%**.
 
+---
+
+## 4. Progressive LOD Thumbnails & Background Warmup
+
+### Why we did it
+Previously, all thumbnails—whether fully visible on screen or 10 pages away in the prefetch zone—were rendered at the same high resolution (`viewSize.width / 2` pixels wide). Storing dozens of high-resolution thumbnails consumed excessive memory and overloaded the rendering pipeline, even when the user only briefly scrolled through a document.
+
+### How we did it
+We introduced **progressive Level-of-Detail (LOD)** thumbnail rendering:
+- **Visible Pages (Full-Res)**: Rendered at high resolution (`viewSize.width / 2`).
+- **Adjacent Prefetch Pages (Medium-Res, <= 1 page away)**: Rendered at `320px` width.
+- **Distant Prefetch Pages (Low-Res, > 1 page away)**: Rendered at `160px` width.
+
+If a visible page's high-resolution thumbnail is not yet rendered, we display its cached low-res or medium-res version as a temporary placeholder while requesting the full-res rendering in the background.
+
+Additionally, we added a **background warmup** phase upon opening a document, immediately queueing pages 0 to 2 for rendering as low-resolution thumbnails. This makes the initial document display and first scrolling gestures instant.
+
+

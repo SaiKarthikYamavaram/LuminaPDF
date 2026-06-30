@@ -308,6 +308,27 @@ fun PdfViewer(
     LaunchedEffect(document) {
         pageCount = document.pageCount()
         isInitialZoomSet = false
+        
+        // Warm up first 3 pages as low-res thumbnails in background
+        for (p in 0 until minOf(3, pageCount)) {
+            val lowKey = "thumb_${p}_low"
+            val medKey = "thumb_${p}_med"
+            val fullKey = "thumb_${p}_full"
+            if (thumbCache.get(fullKey) == null && thumbCache.get(medKey) == null && thumbCache.get(lowKey) == null) {
+                renderQueue.submit(
+                    RenderRequest.Thumbnail(
+                        pageIndex = p,
+                        width = 160,
+                        height = 224,
+                        isPrefetch = true
+                    ) { bitmap ->
+                        bitmap?.let {
+                            thumbCache.put(lowKey, it)
+                        }
+                    }
+                )
+            }
+        }
     }
 
     // Scrollbar/tooltip visibility
@@ -538,24 +559,62 @@ fun PdfViewer(
         // Call clearObsolete to discard pending requests that are no longer needed
         renderQueue.clearObsolete(activePages = pagesToLoad, visiblePages = state.visiblePages.toSet())
 
-        // 1. Request Thumbnails (including prefetch pages)
+        // 1. Request Thumbnails (including prefetch pages with progressive LOD)
         for (page in pagesToLoad) {
-            val thumbKey = "thumb_$page"
-            if (!thumbnails.containsKey(page)) {
-                val cached = thumbCache.get(thumbKey)
-                if (cached != null) {
-                    thumbnails[page] = cached.asImageBitmap()
+            val isVisible = page in state.visiblePages
+            if (isVisible) {
+                val fullKey = "thumb_${page}_full"
+                val cachedFull = thumbCache.get(fullKey)
+                if (cachedFull != null) {
+                    thumbnails[page] = cachedFull.asImageBitmap()
                 } else {
+                    // Display fallback if available
+                    val cachedMed = thumbCache.get("thumb_${page}_med")
+                    val cachedLow = thumbCache.get("thumb_${page}_low")
+                    val fallback = cachedMed ?: cachedLow
+                    if (fallback != null) {
+                        thumbnails[page] = fallback.asImageBitmap()
+                    }
+                    
                     renderQueue.submit(
                         RenderRequest.Thumbnail(
                             pageIndex = page,
                             width = viewSize.width / 2,
                             height = (estimatedPageHeight / 2).toInt(),
-                            isPrefetch = page !in state.visiblePages
+                            isPrefetch = false
                         ) { bitmap ->
                             bitmap?.let {
-                                thumbCache.put(thumbKey, it)
+                                thumbCache.put(fullKey, it)
                                 thumbnails[page] = it.asImageBitmap()
+                            }
+                        }
+                    )
+                }
+            } else {
+                // Prefetch logic
+                val distance = if (page < firstVisiblePage) firstVisiblePage - page else page - lastVisiblePage
+                val (tierKey, targetWidth, targetHeight) = if (distance <= 1) {
+                    Triple("med", 320, (320 * 1.4f).toInt())
+                } else {
+                    Triple("low", 160, (160 * 1.4f).toInt())
+                }
+                
+                val fullKey = "thumb_${page}_full"
+                val tierKeyFull = "thumb_${page}_$tierKey"
+                
+                if (thumbCache.get(fullKey) == null && thumbCache.get(tierKeyFull) == null) {
+                    renderQueue.submit(
+                        RenderRequest.Thumbnail(
+                            pageIndex = page,
+                            width = targetWidth,
+                            height = targetHeight,
+                            isPrefetch = true
+                        ) { bitmap ->
+                            bitmap?.let {
+                                thumbCache.put(tierKeyFull, it)
+                                if (!thumbnails.containsKey(page)) {
+                                    thumbnails[page] = it.asImageBitmap()
+                                }
                             }
                         }
                     )
