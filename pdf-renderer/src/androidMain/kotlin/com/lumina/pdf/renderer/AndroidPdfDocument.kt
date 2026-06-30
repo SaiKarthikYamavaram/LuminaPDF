@@ -28,11 +28,19 @@ class AndroidPdfDocument(
 
     override suspend fun renderPage(page: Int, width: Int, height: Int): PdfBitmap = withContext(Dispatchers.IO) {
         renderMutex.withLock {
-            val bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
+            val softwareBitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
             val pdfPage = renderer.openPage(page)
-            pdfPage.render(bitmap, null, null, PdfRenderer.Page.RENDER_MODE_FOR_DISPLAY)
+            pdfPage.render(softwareBitmap, null, null, PdfRenderer.Page.RENDER_MODE_FOR_DISPLAY)
             pdfPage.close()
-            AndroidPdfBitmap(bitmap)
+            
+            val finalBitmap = if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+                softwareBitmap.copy(Bitmap.Config.HARDWARE, false).also {
+                    softwareBitmap.recycle()
+                }
+            } else {
+                softwareBitmap
+            }
+            AndroidPdfBitmap(finalBitmap)
         }
     }
 
@@ -42,16 +50,23 @@ class AndroidPdfDocument(
             val destWidth = (pdfPage.width * scale).toInt()
             val destHeight = (pdfPage.height * scale).toInt()
             
-            val bitmap = Bitmap.createBitmap(region.width.toInt(), region.height.toInt(), Bitmap.Config.ARGB_8888)
+            val softwareBitmap = Bitmap.createBitmap(region.width.toInt(), region.height.toInt(), Bitmap.Config.ARGB_8888)
             
             val transform = Matrix()
             transform.postScale(scale, scale)
             transform.postTranslate(-region.left, -region.top)
 
-            pdfPage.render(bitmap, null, transform, PdfRenderer.Page.RENDER_MODE_FOR_DISPLAY)
+            pdfPage.render(softwareBitmap, null, transform, PdfRenderer.Page.RENDER_MODE_FOR_DISPLAY)
             pdfPage.close()
             
-            AndroidPdfBitmap(bitmap)
+            val finalBitmap = if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+                softwareBitmap.copy(Bitmap.Config.HARDWARE, false).also {
+                    softwareBitmap.recycle()
+                }
+            } else {
+                softwareBitmap
+            }
+            AndroidPdfBitmap(finalBitmap)
         }
     }
 
