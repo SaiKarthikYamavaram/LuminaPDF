@@ -14,6 +14,26 @@
       "norm_label": "build.gradle.kts"
     },
     {
+      "label": "getOrEnv()",
+      "file_type": "code",
+      "source_file": "androidApp/build.gradle.kts",
+      "source_location": "L35",
+      "_origin": "ast",
+      "id": "androidapp_build_gradle_getorenv",
+      "community": 46,
+      "norm_label": "getorenv()"
+    },
+    {
+      "label": "String",
+      "file_type": "code",
+      "source_file": "androidApp/build.gradle.kts",
+      "source_location": "L35",
+      "_origin": "ast",
+      "id": "androidapp_build_gradle_kts_string",
+      "community": 46,
+      "norm_label": "string"
+    },
+    {
       "label": "MainActivity.kt",
       "file_type": "code",
       "source_file": "androidApp/src/main/kotlin/com/lumina/pdf/MainActivity.kt",
@@ -124,6 +144,36 @@
       "norm_label": "contentview.swift"
     },
     {
+      "label": "UIKit",
+      "file_type": "code",
+      "source_file": "iosApp/iosApp/ContentView.swift",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "uikit",
+      "community": 13,
+      "norm_label": "uikit"
+    },
+    {
+      "label": "SwiftUI",
+      "file_type": "code",
+      "source_file": "iosApp/iosApp/ContentView.swift",
+      "source_location": "L2",
+      "_origin": "ast",
+      "id": "iosapp_iosapp_contentview_swift_swiftui",
+      "community": 13,
+      "norm_label": "swiftui"
+    },
+    {
+      "label": "Shared",
+      "file_type": "code",
+      "source_file": "iosApp/iosApp/ContentView.swift",
+      "source_location": "L3",
+      "_origin": "ast",
+      "id": "shared",
+      "community": 13,
+      "norm_label": "shared"
+    },
+    {
       "label": "ComposeView",
       "file_type": "code",
       "source_file": "iosApp/iosApp/ContentView.swift",
@@ -214,6 +264,16 @@
       "norm_label": "iosapp.swift"
     },
     {
+      "label": "SwiftUI",
+      "file_type": "code",
+      "source_file": "iosApp/iosApp/iOSApp.swift",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "iosapp_iosapp_iosapp_swift_swiftui",
+      "community": 21,
+      "norm_label": "swiftui"
+    },
+    {
       "label": "iOSApp",
       "file_type": "code",
       "source_file": "iosApp/iosApp/iOSApp.swift",
@@ -260,7 +320,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "core_lrumemorycache",
-      "community": 5,
+      "community": 62,
       "norm_label": "lrumemorycache.kt"
     },
     {
@@ -270,77 +330,97 @@
       "source_location": "L6",
       "_origin": "ast",
       "id": "core_lrumemorycache_lrumemorycache",
-      "community": 5,
+      "community": 62,
       "norm_label": "lrumemorycache"
+    },
+    {
+      "label": ".sizeOf()",
+      "file_type": "code",
+      "source_file": "pdf-core/src/commonMain/kotlin/com/lumina/pdf/core/LruMemoryCache.kt",
+      "source_location": "L11",
+      "_origin": "ast",
+      "id": "core_lrumemorycache_lrumemorycache_sizeof",
+      "community": 62,
+      "norm_label": ".sizeof()"
+    },
+    {
+      "label": "PdfBitmap",
+      "file_type": "code",
+      "source_file": "pdf-core/src/commonMain/kotlin/com/lumina/pdf/core/LruMemoryCache.kt",
+      "source_location": "L11",
+      "_origin": "ast",
+      "id": "pdf_core_src_commonmain_kotlin_com_lumina_pdf_core_lrumemorycache_kt_pdfbitmap",
+      "community": 62,
+      "norm_label": "pdfbitmap"
+    },
+    {
+      "label": "Long",
+      "file_type": "code",
+      "source_file": "pdf-core/src/commonMain/kotlin/com/lumina/pdf/core/LruMemoryCache.kt",
+      "source_location": "L11",
+      "_origin": "ast",
+      "id": "pdf_core_src_commonmain_kotlin_com_lumina_pdf_core_lrumemorycache_kt_long",
+      "community": 62,
+      "norm_label": "long"
     },
     {
       "label": ".get()",
       "file_type": "code",
       "source_file": "pdf-core/src/commonMain/kotlin/com/lumina/pdf/core/LruMemoryCache.kt",
-      "source_location": "L10",
+      "source_location": "L15",
       "_origin": "ast",
       "id": "core_lrumemorycache_lrumemorycache_get",
-      "community": 5,
+      "community": 62,
       "norm_label": ".get()"
     },
     {
       "label": "String",
       "file_type": "code",
       "source_file": "pdf-core/src/commonMain/kotlin/com/lumina/pdf/core/LruMemoryCache.kt",
-      "source_location": "L10",
+      "source_location": "L15",
       "_origin": "ast",
       "id": "pdf_core_src_commonmain_kotlin_com_lumina_pdf_core_lrumemorycache_kt_string",
-      "community": 5,
+      "community": 62,
       "norm_label": "string"
-    },
-    {
-      "label": "PdfBitmap",
-      "file_type": "code",
-      "source_file": "pdf-core/src/commonMain/kotlin/com/lumina/pdf/core/LruMemoryCache.kt",
-      "source_location": "L10",
-      "_origin": "ast",
-      "id": "pdf_core_src_commonmain_kotlin_com_lumina_pdf_core_lrumemorycache_kt_pdfbitmap",
-      "community": 5,
-      "norm_label": "pdfbitmap"
     },
     {
       "label": ".put()",
       "file_type": "code",
       "source_file": "pdf-core/src/commonMain/kotlin/com/lumina/pdf/core/LruMemoryCache.kt",
-      "source_location": "L18",
+      "source_location": "L23",
       "_origin": "ast",
       "id": "core_lrumemorycache_lrumemorycache_put",
-      "community": 5,
+      "community": 62,
       "norm_label": ".put()"
     },
     {
       "label": ".remove()",
       "file_type": "code",
       "source_file": "pdf-core/src/commonMain/kotlin/com/lumina/pdf/core/LruMemoryCache.kt",
-      "source_location": "L23",
+      "source_location": "L34",
       "_origin": "ast",
       "id": "core_lrumemorycache_lrumemorycache_remove",
-      "community": 5,
+      "community": 62,
       "norm_label": ".remove()"
     },
     {
       "label": ".clear()",
       "file_type": "code",
       "source_file": "pdf-core/src/commonMain/kotlin/com/lumina/pdf/core/LruMemoryCache.kt",
-      "source_location": "L27",
+      "source_location": "L44",
       "_origin": "ast",
       "id": "core_lrumemorycache_lrumemorycache_clear",
-      "community": 5,
+      "community": 62,
       "norm_label": ".clear()"
     },
     {
       "label": ".trimToSize()",
       "file_type": "code",
       "source_file": "pdf-core/src/commonMain/kotlin/com/lumina/pdf/core/LruMemoryCache.kt",
-      "source_location": "L32",
+      "source_location": "L52",
       "_origin": "ast",
       "id": "core_lrumemorycache_lrumemorycache_trimtosize",
-      "community": 5,
+      "community": 62,
       "norm_label": ".trimtosize()"
     },
     {
@@ -747,7 +827,7 @@
       "label": "RenderPriority",
       "file_type": "code",
       "source_file": "pdf-core/src/commonMain/kotlin/com/lumina/pdf/core/RenderQueue.kt",
-      "source_location": "L10",
+      "source_location": "L11",
       "_origin": "ast",
       "id": "core_renderqueue_renderpriority",
       "community": 0,
@@ -757,7 +837,7 @@
       "label": "RenderRequest",
       "file_type": "code",
       "source_file": "pdf-core/src/commonMain/kotlin/com/lumina/pdf/core/RenderQueue.kt",
-      "source_location": "L18",
+      "source_location": "L19",
       "_origin": "ast",
       "id": "core_renderqueue_renderrequest",
       "community": 0,
@@ -767,7 +847,7 @@
       "label": "Page",
       "file_type": "code",
       "source_file": "pdf-core/src/commonMain/kotlin/com/lumina/pdf/core/RenderQueue.kt",
-      "source_location": "L19",
+      "source_location": "L20",
       "_origin": "ast",
       "id": "core_renderqueue_page",
       "community": 0,
@@ -777,7 +857,7 @@
       "label": "Tile",
       "file_type": "code",
       "source_file": "pdf-core/src/commonMain/kotlin/com/lumina/pdf/core/RenderQueue.kt",
-      "source_location": "L20",
+      "source_location": "L21",
       "_origin": "ast",
       "id": "core_renderqueue_tile",
       "community": 0,
@@ -787,7 +867,7 @@
       "label": "Thumbnail",
       "file_type": "code",
       "source_file": "pdf-core/src/commonMain/kotlin/com/lumina/pdf/core/RenderQueue.kt",
-      "source_location": "L21",
+      "source_location": "L22",
       "_origin": "ast",
       "id": "core_renderqueue_thumbnail",
       "community": 0,
@@ -797,7 +877,7 @@
       "label": "RenderQueue",
       "file_type": "code",
       "source_file": "pdf-core/src/commonMain/kotlin/com/lumina/pdf/core/RenderQueue.kt",
-      "source_location": "L30",
+      "source_location": "L31",
       "_origin": "ast",
       "id": "core_renderqueue_renderqueue",
       "community": 0,
@@ -807,7 +887,7 @@
       "label": ".submit()",
       "file_type": "code",
       "source_file": "pdf-core/src/commonMain/kotlin/com/lumina/pdf/core/RenderQueue.kt",
-      "source_location": "L86",
+      "source_location": "L90",
       "_origin": "ast",
       "id": "core_renderqueue_renderqueue_submit",
       "community": 0,
@@ -817,7 +897,7 @@
       "label": ".clearObsolete()",
       "file_type": "code",
       "source_file": "pdf-core/src/commonMain/kotlin/com/lumina/pdf/core/RenderQueue.kt",
-      "source_location": "L117",
+      "source_location": "L121",
       "_origin": "ast",
       "id": "core_renderqueue_renderqueue_clearobsolete",
       "community": 0,
@@ -827,7 +907,7 @@
       "label": "Set",
       "file_type": "code",
       "source_file": "pdf-core/src/commonMain/kotlin/com/lumina/pdf/core/RenderQueue.kt",
-      "source_location": "L117",
+      "source_location": "L121",
       "_origin": "ast",
       "id": "set",
       "community": 0,
@@ -837,7 +917,7 @@
       "label": "Int",
       "file_type": "code",
       "source_file": "pdf-core/src/commonMain/kotlin/com/lumina/pdf/core/RenderQueue.kt",
-      "source_location": "L117",
+      "source_location": "L121",
       "_origin": "ast",
       "id": "pdf_core_src_commonmain_kotlin_com_lumina_pdf_core_renderqueue_kt_int",
       "community": 0,
@@ -917,7 +997,7 @@
       "label": "AndroidPdfDocument",
       "file_type": "code",
       "source_file": "pdf-renderer/src/androidMain/kotlin/com/lumina/pdf/renderer/AndroidPdfDocument.kt",
-      "source_location": "L16",
+      "source_location": "L18",
       "_origin": "ast",
       "id": "renderer_androidpdfdocument_androidpdfdocument",
       "community": 3,
@@ -930,14 +1010,14 @@
       "source_location": "",
       "_origin": "ast",
       "id": "pdfdocument",
-      "community": 3,
+      "community": 1,
       "norm_label": "pdfdocument"
     },
     {
       "label": ".pageCount()",
       "file_type": "code",
       "source_file": "pdf-renderer/src/androidMain/kotlin/com/lumina/pdf/renderer/AndroidPdfDocument.kt",
-      "source_location": "L22",
+      "source_location": "L25",
       "_origin": "ast",
       "id": "renderer_androidpdfdocument_androidpdfdocument_pagecount",
       "community": 3,
@@ -947,7 +1027,7 @@
       "label": "Int",
       "file_type": "code",
       "source_file": "pdf-renderer/src/androidMain/kotlin/com/lumina/pdf/renderer/AndroidPdfDocument.kt",
-      "source_location": "L22",
+      "source_location": "L25",
       "_origin": "ast",
       "id": "pdf_renderer_src_androidmain_kotlin_com_lumina_pdf_renderer_androidpdfdocument_kt_int",
       "community": 3,
@@ -957,7 +1037,7 @@
       "label": ".renderPage()",
       "file_type": "code",
       "source_file": "pdf-renderer/src/androidMain/kotlin/com/lumina/pdf/renderer/AndroidPdfDocument.kt",
-      "source_location": "L24",
+      "source_location": "L29",
       "_origin": "ast",
       "id": "renderer_androidpdfdocument_androidpdfdocument_renderpage",
       "community": 3,
@@ -967,7 +1047,7 @@
       "label": "PdfBitmap",
       "file_type": "code",
       "source_file": "pdf-renderer/src/androidMain/kotlin/com/lumina/pdf/renderer/AndroidPdfDocument.kt",
-      "source_location": "L24",
+      "source_location": "L29",
       "_origin": "ast",
       "id": "pdf_renderer_src_androidmain_kotlin_com_lumina_pdf_renderer_androidpdfdocument_kt_pdfbitmap",
       "community": 3,
@@ -977,7 +1057,7 @@
       "label": ".renderTile()",
       "file_type": "code",
       "source_file": "pdf-renderer/src/androidMain/kotlin/com/lumina/pdf/renderer/AndroidPdfDocument.kt",
-      "source_location": "L32",
+      "source_location": "L47",
       "_origin": "ast",
       "id": "renderer_androidpdfdocument_androidpdfdocument_rendertile",
       "community": 3,
@@ -987,7 +1067,7 @@
       "label": "PdfRect",
       "file_type": "code",
       "source_file": "pdf-renderer/src/androidMain/kotlin/com/lumina/pdf/renderer/AndroidPdfDocument.kt",
-      "source_location": "L32",
+      "source_location": "L47",
       "_origin": "ast",
       "id": "pdf_renderer_src_androidmain_kotlin_com_lumina_pdf_renderer_androidpdfdocument_kt_pdfrect",
       "community": 3,
@@ -997,7 +1077,7 @@
       "label": "Float",
       "file_type": "code",
       "source_file": "pdf-renderer/src/androidMain/kotlin/com/lumina/pdf/renderer/AndroidPdfDocument.kt",
-      "source_location": "L32",
+      "source_location": "L47",
       "_origin": "ast",
       "id": "pdf_renderer_src_androidmain_kotlin_com_lumina_pdf_renderer_androidpdfdocument_kt_float",
       "community": 3,
@@ -1007,7 +1087,7 @@
       "label": ".extractText()",
       "file_type": "code",
       "source_file": "pdf-renderer/src/androidMain/kotlin/com/lumina/pdf/renderer/AndroidPdfDocument.kt",
-      "source_location": "L49",
+      "source_location": "L73",
       "_origin": "ast",
       "id": "renderer_androidpdfdocument_androidpdfdocument_extracttext",
       "community": 3,
@@ -1017,7 +1097,7 @@
       "label": "String",
       "file_type": "code",
       "source_file": "pdf-renderer/src/androidMain/kotlin/com/lumina/pdf/renderer/AndroidPdfDocument.kt",
-      "source_location": "L49",
+      "source_location": "L73",
       "_origin": "ast",
       "id": "pdf_renderer_src_androidmain_kotlin_com_lumina_pdf_renderer_androidpdfdocument_kt_string",
       "community": 3,
@@ -1027,7 +1107,7 @@
       "label": ".searchText()",
       "file_type": "code",
       "source_file": "pdf-renderer/src/androidMain/kotlin/com/lumina/pdf/renderer/AndroidPdfDocument.kt",
-      "source_location": "L55",
+      "source_location": "L79",
       "_origin": "ast",
       "id": "renderer_androidpdfdocument_androidpdfdocument_searchtext",
       "community": 3,
@@ -1037,7 +1117,7 @@
       "label": "List",
       "file_type": "code",
       "source_file": "pdf-renderer/src/androidMain/kotlin/com/lumina/pdf/renderer/AndroidPdfDocument.kt",
-      "source_location": "L55",
+      "source_location": "L79",
       "_origin": "ast",
       "id": "pdf_renderer_src_androidmain_kotlin_com_lumina_pdf_renderer_androidpdfdocument_kt_list",
       "community": 3,
@@ -1047,7 +1127,7 @@
       "label": ".getOutline()",
       "file_type": "code",
       "source_file": "pdf-renderer/src/androidMain/kotlin/com/lumina/pdf/renderer/AndroidPdfDocument.kt",
-      "source_location": "L59",
+      "source_location": "L83",
       "_origin": "ast",
       "id": "renderer_androidpdfdocument_androidpdfdocument_getoutline",
       "community": 3,
@@ -1057,7 +1137,7 @@
       "label": "OutlineItem",
       "file_type": "code",
       "source_file": "pdf-renderer/src/androidMain/kotlin/com/lumina/pdf/renderer/AndroidPdfDocument.kt",
-      "source_location": "L59",
+      "source_location": "L83",
       "_origin": "ast",
       "id": "pdf_renderer_src_androidmain_kotlin_com_lumina_pdf_renderer_androidpdfdocument_kt_outlineitem",
       "community": 3,
@@ -1067,7 +1147,7 @@
       "label": ".close()",
       "file_type": "code",
       "source_file": "pdf-renderer/src/androidMain/kotlin/com/lumina/pdf/renderer/AndroidPdfDocument.kt",
-      "source_location": "L63",
+      "source_location": "L87",
       "_origin": "ast",
       "id": "renderer_androidpdfdocument_androidpdfdocument_close",
       "community": 3,
@@ -1327,7 +1407,7 @@
       "label": "JvmPdfDocument",
       "file_type": "code",
       "source_file": "pdf-renderer/src/jvmMain/kotlin/com/lumina/pdf/renderer/JvmPdfDocument.kt",
-      "source_location": "L13",
+      "source_location": "L15",
       "_origin": "ast",
       "id": "renderer_jvmpdfdocument_jvmpdfdocument",
       "community": 1,
@@ -1337,7 +1417,7 @@
       "label": ".pageCount()",
       "file_type": "code",
       "source_file": "pdf-renderer/src/jvmMain/kotlin/com/lumina/pdf/renderer/JvmPdfDocument.kt",
-      "source_location": "L16",
+      "source_location": "L19",
       "_origin": "ast",
       "id": "renderer_jvmpdfdocument_jvmpdfdocument_pagecount",
       "community": 1,
@@ -1347,7 +1427,7 @@
       "label": "Int",
       "file_type": "code",
       "source_file": "pdf-renderer/src/jvmMain/kotlin/com/lumina/pdf/renderer/JvmPdfDocument.kt",
-      "source_location": "L16",
+      "source_location": "L19",
       "_origin": "ast",
       "id": "pdf_renderer_src_jvmmain_kotlin_com_lumina_pdf_renderer_jvmpdfdocument_kt_int",
       "community": 1,
@@ -1357,7 +1437,7 @@
       "label": ".renderPage()",
       "file_type": "code",
       "source_file": "pdf-renderer/src/jvmMain/kotlin/com/lumina/pdf/renderer/JvmPdfDocument.kt",
-      "source_location": "L18",
+      "source_location": "L23",
       "_origin": "ast",
       "id": "renderer_jvmpdfdocument_jvmpdfdocument_renderpage",
       "community": 1,
@@ -1367,7 +1447,7 @@
       "label": "PdfBitmap",
       "file_type": "code",
       "source_file": "pdf-renderer/src/jvmMain/kotlin/com/lumina/pdf/renderer/JvmPdfDocument.kt",
-      "source_location": "L18",
+      "source_location": "L23",
       "_origin": "ast",
       "id": "pdf_renderer_src_jvmmain_kotlin_com_lumina_pdf_renderer_jvmpdfdocument_kt_pdfbitmap",
       "community": 1,
@@ -1377,7 +1457,7 @@
       "label": ".renderTile()",
       "file_type": "code",
       "source_file": "pdf-renderer/src/jvmMain/kotlin/com/lumina/pdf/renderer/JvmPdfDocument.kt",
-      "source_location": "L26",
+      "source_location": "L39",
       "_origin": "ast",
       "id": "renderer_jvmpdfdocument_jvmpdfdocument_rendertile",
       "community": 1,
@@ -1387,7 +1467,7 @@
       "label": "PdfRect",
       "file_type": "code",
       "source_file": "pdf-renderer/src/jvmMain/kotlin/com/lumina/pdf/renderer/JvmPdfDocument.kt",
-      "source_location": "L26",
+      "source_location": "L39",
       "_origin": "ast",
       "id": "pdf_renderer_src_jvmmain_kotlin_com_lumina_pdf_renderer_jvmpdfdocument_kt_pdfrect",
       "community": 1,
@@ -1397,7 +1477,7 @@
       "label": "Float",
       "file_type": "code",
       "source_file": "pdf-renderer/src/jvmMain/kotlin/com/lumina/pdf/renderer/JvmPdfDocument.kt",
-      "source_location": "L26",
+      "source_location": "L39",
       "_origin": "ast",
       "id": "pdf_renderer_src_jvmmain_kotlin_com_lumina_pdf_renderer_jvmpdfdocument_kt_float",
       "community": 1,
@@ -1407,7 +1487,7 @@
       "label": ".extractText()",
       "file_type": "code",
       "source_file": "pdf-renderer/src/jvmMain/kotlin/com/lumina/pdf/renderer/JvmPdfDocument.kt",
-      "source_location": "L40",
+      "source_location": "L64",
       "_origin": "ast",
       "id": "renderer_jvmpdfdocument_jvmpdfdocument_extracttext",
       "community": 1,
@@ -1417,7 +1497,7 @@
       "label": "String",
       "file_type": "code",
       "source_file": "pdf-renderer/src/jvmMain/kotlin/com/lumina/pdf/renderer/JvmPdfDocument.kt",
-      "source_location": "L40",
+      "source_location": "L64",
       "_origin": "ast",
       "id": "pdf_renderer_src_jvmmain_kotlin_com_lumina_pdf_renderer_jvmpdfdocument_kt_string",
       "community": 1,
@@ -1427,7 +1507,7 @@
       "label": ".searchText()",
       "file_type": "code",
       "source_file": "pdf-renderer/src/jvmMain/kotlin/com/lumina/pdf/renderer/JvmPdfDocument.kt",
-      "source_location": "L47",
+      "source_location": "L73",
       "_origin": "ast",
       "id": "renderer_jvmpdfdocument_jvmpdfdocument_searchtext",
       "community": 1,
@@ -1437,7 +1517,7 @@
       "label": "List",
       "file_type": "code",
       "source_file": "pdf-renderer/src/jvmMain/kotlin/com/lumina/pdf/renderer/JvmPdfDocument.kt",
-      "source_location": "L47",
+      "source_location": "L73",
       "_origin": "ast",
       "id": "pdf_renderer_src_jvmmain_kotlin_com_lumina_pdf_renderer_jvmpdfdocument_kt_list",
       "community": 1,
@@ -1447,7 +1527,7 @@
       "label": ".getOutline()",
       "file_type": "code",
       "source_file": "pdf-renderer/src/jvmMain/kotlin/com/lumina/pdf/renderer/JvmPdfDocument.kt",
-      "source_location": "L62",
+      "source_location": "L90",
       "_origin": "ast",
       "id": "renderer_jvmpdfdocument_jvmpdfdocument_getoutline",
       "community": 1,
@@ -1457,7 +1537,7 @@
       "label": "OutlineItem",
       "file_type": "code",
       "source_file": "pdf-renderer/src/jvmMain/kotlin/com/lumina/pdf/renderer/JvmPdfDocument.kt",
-      "source_location": "L62",
+      "source_location": "L90",
       "_origin": "ast",
       "id": "pdf_renderer_src_jvmmain_kotlin_com_lumina_pdf_renderer_jvmpdfdocument_kt_outlineitem",
       "community": 1,
@@ -1467,7 +1547,7 @@
       "label": ".mapOutlineItem()",
       "file_type": "code",
       "source_file": "pdf-renderer/src/jvmMain/kotlin/com/lumina/pdf/renderer/JvmPdfDocument.kt",
-      "source_location": "L76",
+      "source_location": "L106",
       "_origin": "ast",
       "id": "renderer_jvmpdfdocument_jvmpdfdocument_mapoutlineitem",
       "community": 1,
@@ -1477,7 +1557,7 @@
       "label": "org",
       "file_type": "code",
       "source_file": "pdf-renderer/src/jvmMain/kotlin/com/lumina/pdf/renderer/JvmPdfDocument.kt",
-      "source_location": "L76",
+      "source_location": "L106",
       "_origin": "ast",
       "id": "org",
       "community": 1,
@@ -1487,7 +1567,7 @@
       "label": ".close()",
       "file_type": "code",
       "source_file": "pdf-renderer/src/jvmMain/kotlin/com/lumina/pdf/renderer/JvmPdfDocument.kt",
-      "source_location": "L131",
+      "source_location": "L161",
       "_origin": "ast",
       "id": "renderer_jvmpdfdocument_jvmpdfdocument_close",
       "community": 1,
@@ -1497,7 +1577,7 @@
       "label": "PDFTextLocator",
       "file_type": "code",
       "source_file": "pdf-renderer/src/jvmMain/kotlin/com/lumina/pdf/renderer/JvmPdfDocument.kt",
-      "source_location": "L136",
+      "source_location": "L166",
       "_origin": "ast",
       "id": "renderer_jvmpdfdocument_pdftextlocator",
       "community": 1,
@@ -1517,7 +1597,7 @@
       "label": ".writeString()",
       "file_type": "code",
       "source_file": "pdf-renderer/src/jvmMain/kotlin/com/lumina/pdf/renderer/JvmPdfDocument.kt",
-      "source_location": "L146",
+      "source_location": "L176",
       "_origin": "ast",
       "id": "renderer_jvmpdfdocument_pdftextlocator_writestring",
       "community": 1,
@@ -1527,7 +1607,7 @@
       "label": "MutableList",
       "file_type": "code",
       "source_file": "pdf-renderer/src/jvmMain/kotlin/com/lumina/pdf/renderer/JvmPdfDocument.kt",
-      "source_location": "L146",
+      "source_location": "L176",
       "_origin": "ast",
       "id": "mutablelist",
       "community": 1,
@@ -1537,7 +1617,7 @@
       "label": ".findMatches()",
       "file_type": "code",
       "source_file": "pdf-renderer/src/jvmMain/kotlin/com/lumina/pdf/renderer/JvmPdfDocument.kt",
-      "source_location": "L152",
+      "source_location": "L182",
       "_origin": "ast",
       "id": "renderer_jvmpdfdocument_pdftextlocator_findmatches",
       "community": 1,
@@ -1667,7 +1747,7 @@
       "label": "asImageBitmap()",
       "file_type": "code",
       "source_file": "pdf-viewer/src/androidMain/kotlin/com/lumina/pdf/viewer/PdfBitmapExtensions.android.kt",
-      "source_location": "L8",
+      "source_location": "L18",
       "_origin": "ast",
       "id": "viewer_pdfbitmapextensions_android_asimagebitmap",
       "community": 34,
@@ -1677,11 +1757,131 @@
       "label": "ImageBitmap",
       "file_type": "code",
       "source_file": "pdf-viewer/src/androidMain/kotlin/com/lumina/pdf/viewer/PdfBitmapExtensions.android.kt",
-      "source_location": "L8",
+      "source_location": "L18",
       "_origin": "ast",
       "id": "pdf_viewer_src_androidmain_kotlin_com_lumina_pdf_viewer_pdfbitmapextensions_android_kt_imagebitmap",
       "community": 34,
       "norm_label": "imagebitmap"
+    },
+    {
+      "label": "toByteArray()",
+      "file_type": "code",
+      "source_file": "pdf-viewer/src/androidMain/kotlin/com/lumina/pdf/viewer/PdfBitmapExtensions.android.kt",
+      "source_location": "L26",
+      "_origin": "ast",
+      "id": "viewer_pdfbitmapextensions_android_tobytearray",
+      "community": 34,
+      "norm_label": "tobytearray()"
+    },
+    {
+      "label": "ByteArray",
+      "file_type": "code",
+      "source_file": "pdf-viewer/src/androidMain/kotlin/com/lumina/pdf/viewer/PdfBitmapExtensions.android.kt",
+      "source_location": "L26",
+      "_origin": "ast",
+      "id": "pdf_viewer_src_androidmain_kotlin_com_lumina_pdf_viewer_pdfbitmapextensions_android_kt_bytearray",
+      "community": 34,
+      "norm_label": "bytearray"
+    },
+    {
+      "label": "decodeByteArrayToPdfBitmap()",
+      "file_type": "code",
+      "source_file": "pdf-viewer/src/androidMain/kotlin/com/lumina/pdf/viewer/PdfBitmapExtensions.android.kt",
+      "source_location": "L46",
+      "_origin": "ast",
+      "id": "viewer_pdfbitmapextensions_android_decodebytearraytopdfbitmap",
+      "community": 34,
+      "norm_label": "decodebytearraytopdfbitmap()"
+    },
+    {
+      "label": "PdfBitmap",
+      "file_type": "code",
+      "source_file": "pdf-viewer/src/androidMain/kotlin/com/lumina/pdf/viewer/PdfBitmapExtensions.android.kt",
+      "source_location": "L46",
+      "_origin": "ast",
+      "id": "pdf_viewer_src_androidmain_kotlin_com_lumina_pdf_viewer_pdfbitmapextensions_android_kt_pdfbitmap",
+      "community": 34,
+      "norm_label": "pdfbitmap"
+    },
+    {
+      "label": "AndroidDiskCache",
+      "file_type": "code",
+      "source_file": "pdf-viewer/src/androidMain/kotlin/com/lumina/pdf/viewer/PdfBitmapExtensions.android.kt",
+      "source_location": "L51",
+      "_origin": "ast",
+      "id": "viewer_pdfbitmapextensions_android_androiddiskcache",
+      "community": 34,
+      "norm_label": "androiddiskcache"
+    },
+    {
+      "label": "DiskCache",
+      "file_type": "code",
+      "source_file": "",
+      "source_location": "",
+      "_origin": "ast",
+      "id": "diskcache",
+      "community": 36,
+      "norm_label": "diskcache"
+    },
+    {
+      "label": ".get()",
+      "file_type": "code",
+      "source_file": "pdf-viewer/src/androidMain/kotlin/com/lumina/pdf/viewer/PdfBitmapExtensions.android.kt",
+      "source_location": "L54",
+      "_origin": "ast",
+      "id": "viewer_pdfbitmapextensions_android_androiddiskcache_get",
+      "community": 34,
+      "norm_label": ".get()"
+    },
+    {
+      "label": "String",
+      "file_type": "code",
+      "source_file": "pdf-viewer/src/androidMain/kotlin/com/lumina/pdf/viewer/PdfBitmapExtensions.android.kt",
+      "source_location": "L54",
+      "_origin": "ast",
+      "id": "pdf_viewer_src_androidmain_kotlin_com_lumina_pdf_viewer_pdfbitmapextensions_android_kt_string",
+      "community": 34,
+      "norm_label": "string"
+    },
+    {
+      "label": ".put()",
+      "file_type": "code",
+      "source_file": "pdf-viewer/src/androidMain/kotlin/com/lumina/pdf/viewer/PdfBitmapExtensions.android.kt",
+      "source_location": "L59",
+      "_origin": "ast",
+      "id": "viewer_pdfbitmapextensions_android_androiddiskcache_put",
+      "community": 34,
+      "norm_label": ".put()"
+    },
+    {
+      "label": ".remove()",
+      "file_type": "code",
+      "source_file": "pdf-viewer/src/androidMain/kotlin/com/lumina/pdf/viewer/PdfBitmapExtensions.android.kt",
+      "source_location": "L64",
+      "_origin": "ast",
+      "id": "viewer_pdfbitmapextensions_android_androiddiskcache_remove",
+      "community": 34,
+      "norm_label": ".remove()"
+    },
+    {
+      "label": ".clear()",
+      "file_type": "code",
+      "source_file": "pdf-viewer/src/androidMain/kotlin/com/lumina/pdf/viewer/PdfBitmapExtensions.android.kt",
+      "source_location": "L69",
+      "_origin": "ast",
+      "id": "viewer_pdfbitmapextensions_android_androiddiskcache_clear",
+      "community": 34,
+      "norm_label": ".clear()"
+    },
+    {
+      "label": "rememberDiskCache()",
+      "file_type": "code",
+      "source_file": "pdf-viewer/src/androidMain/kotlin/com/lumina/pdf/viewer/PdfBitmapExtensions.android.kt",
+      "source_location": "L74",
+      "_origin": "ast",
+      "id": "viewer_pdfbitmapextensions_android_rememberdiskcache",
+      "community": 34,
+      "norm_label": "rememberdiskcache()"
     },
     {
       "label": "PdfDatabase.android.kt",
@@ -1867,7 +2067,7 @@
       "label": "asImageBitmap()",
       "file_type": "code",
       "source_file": "pdf-viewer/src/commonMain/kotlin/com/lumina/pdf/viewer/PdfBitmapExtensions.kt",
-      "source_location": "L6",
+      "source_location": "L7",
       "_origin": "ast",
       "id": "viewer_pdfbitmapextensions_asimagebitmap",
       "community": 35,
@@ -1877,11 +2077,71 @@
       "label": "ImageBitmap",
       "file_type": "code",
       "source_file": "pdf-viewer/src/commonMain/kotlin/com/lumina/pdf/viewer/PdfBitmapExtensions.kt",
-      "source_location": "L6",
+      "source_location": "L7",
       "_origin": "ast",
       "id": "pdf_viewer_src_commonmain_kotlin_com_lumina_pdf_viewer_pdfbitmapextensions_kt_imagebitmap",
       "community": 35,
       "norm_label": "imagebitmap"
+    },
+    {
+      "label": "toByteArray()",
+      "file_type": "code",
+      "source_file": "pdf-viewer/src/commonMain/kotlin/com/lumina/pdf/viewer/PdfBitmapExtensions.kt",
+      "source_location": "L9",
+      "_origin": "ast",
+      "id": "viewer_pdfbitmapextensions_tobytearray",
+      "community": 35,
+      "norm_label": "tobytearray()"
+    },
+    {
+      "label": "ByteArray",
+      "file_type": "code",
+      "source_file": "pdf-viewer/src/commonMain/kotlin/com/lumina/pdf/viewer/PdfBitmapExtensions.kt",
+      "source_location": "L9",
+      "_origin": "ast",
+      "id": "pdf_viewer_src_commonmain_kotlin_com_lumina_pdf_viewer_pdfbitmapextensions_kt_bytearray",
+      "community": 35,
+      "norm_label": "bytearray"
+    },
+    {
+      "label": "decodeByteArrayToPdfBitmap()",
+      "file_type": "code",
+      "source_file": "pdf-viewer/src/commonMain/kotlin/com/lumina/pdf/viewer/PdfBitmapExtensions.kt",
+      "source_location": "L11",
+      "_origin": "ast",
+      "id": "viewer_pdfbitmapextensions_decodebytearraytopdfbitmap",
+      "community": 35,
+      "norm_label": "decodebytearraytopdfbitmap()"
+    },
+    {
+      "label": "PdfBitmap",
+      "file_type": "code",
+      "source_file": "pdf-viewer/src/commonMain/kotlin/com/lumina/pdf/viewer/PdfBitmapExtensions.kt",
+      "source_location": "L11",
+      "_origin": "ast",
+      "id": "pdf_viewer_src_commonmain_kotlin_com_lumina_pdf_viewer_pdfbitmapextensions_kt_pdfbitmap",
+      "community": 35,
+      "norm_label": "pdfbitmap"
+    },
+    {
+      "label": "rememberDiskCache()",
+      "file_type": "code",
+      "source_file": "pdf-viewer/src/commonMain/kotlin/com/lumina/pdf/viewer/PdfBitmapExtensions.kt",
+      "source_location": "L13",
+      "_origin": "ast",
+      "id": "viewer_pdfbitmapextensions_rememberdiskcache",
+      "community": 35,
+      "norm_label": "rememberdiskcache()"
+    },
+    {
+      "label": "DiskCache",
+      "file_type": "code",
+      "source_file": "pdf-viewer/src/commonMain/kotlin/com/lumina/pdf/viewer/PdfBitmapExtensions.kt",
+      "source_location": "L13",
+      "_origin": "ast",
+      "id": "pdf_viewer_src_commonmain_kotlin_com_lumina_pdf_viewer_pdfbitmapextensions_kt_diskcache",
+      "community": 35,
+      "norm_label": "diskcache"
     },
     {
       "label": "PdfViewer.kt",
@@ -2470,7 +2730,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "db_pdfdatabase",
-      "community": 8,
+      "community": 7,
       "norm_label": "pdfdatabase.kt"
     },
     {
@@ -2480,7 +2740,7 @@
       "source_location": "L5",
       "_origin": "ast",
       "id": "db_pdfdatabase_pdfoffset",
-      "community": 8,
+      "community": 7,
       "norm_label": "pdfoffset"
     },
     {
@@ -2490,7 +2750,7 @@
       "source_location": "L12",
       "_origin": "ast",
       "id": "db_pdfdatabase_dbnote",
-      "community": 8,
+      "community": 7,
       "norm_label": "dbnote"
     },
     {
@@ -2500,7 +2760,7 @@
       "source_location": "L20",
       "_origin": "ast",
       "id": "db_pdfdatabase_pdfdatabase",
-      "community": 8,
+      "community": 7,
       "norm_label": "pdfdatabase"
     },
     {
@@ -2510,7 +2770,7 @@
       "source_location": "L21",
       "_origin": "ast",
       "id": "db_pdfdatabase_pdfdatabase_saveoffset",
-      "community": 8,
+      "community": 7,
       "norm_label": ".saveoffset()"
     },
     {
@@ -2520,7 +2780,7 @@
       "source_location": "L21",
       "_origin": "ast",
       "id": "pdf_viewer_src_commonmain_kotlin_com_lumina_pdf_viewer_db_pdfdatabase_kt_string",
-      "community": 8,
+      "community": 7,
       "norm_label": "string"
     },
     {
@@ -2530,7 +2790,7 @@
       "source_location": "L22",
       "_origin": "ast",
       "id": "db_pdfdatabase_pdfdatabase_getoffset",
-      "community": 8,
+      "community": 7,
       "norm_label": ".getoffset()"
     },
     {
@@ -2540,7 +2800,7 @@
       "source_location": "L24",
       "_origin": "ast",
       "id": "db_pdfdatabase_pdfdatabase_insertnote",
-      "community": 8,
+      "community": 7,
       "norm_label": ".insertnote()"
     },
     {
@@ -2550,7 +2810,7 @@
       "source_location": "L25",
       "_origin": "ast",
       "id": "db_pdfdatabase_pdfdatabase_getnotes",
-      "community": 8,
+      "community": 7,
       "norm_label": ".getnotes()"
     },
     {
@@ -2560,7 +2820,7 @@
       "source_location": "L25",
       "_origin": "ast",
       "id": "pdf_viewer_src_commonmain_kotlin_com_lumina_pdf_viewer_db_pdfdatabase_kt_list",
-      "community": 8,
+      "community": 7,
       "norm_label": "list"
     },
     {
@@ -2570,7 +2830,7 @@
       "source_location": "L26",
       "_origin": "ast",
       "id": "db_pdfdatabase_pdfdatabase_deletenote",
-      "community": 8,
+      "community": 7,
       "norm_label": ".deletenote()"
     },
     {
@@ -2580,7 +2840,7 @@
       "source_location": "L28",
       "_origin": "ast",
       "id": "db_pdfdatabase_pdfdatabase_savehighlights",
-      "community": 8,
+      "community": 7,
       "norm_label": ".savehighlights()"
     },
     {
@@ -2590,7 +2850,7 @@
       "source_location": "L29",
       "_origin": "ast",
       "id": "db_pdfdatabase_pdfdatabase_gethighlights",
-      "community": 8,
+      "community": 7,
       "norm_label": ".gethighlights()"
     },
     {
@@ -2600,7 +2860,7 @@
       "source_location": "L32",
       "_origin": "ast",
       "id": "db_pdfdatabase_rememberpdfdatabase",
-      "community": 8,
+      "community": 7,
       "norm_label": "rememberpdfdatabase()"
     },
     {
@@ -2610,7 +2870,7 @@
       "source_location": "L35",
       "_origin": "ast",
       "id": "db_pdfdatabase_getcurrenttimemillis",
-      "community": 8,
+      "community": 7,
       "norm_label": "getcurrenttimemillis()"
     },
     {
@@ -2620,7 +2880,7 @@
       "source_location": "L35",
       "_origin": "ast",
       "id": "pdf_viewer_src_commonmain_kotlin_com_lumina_pdf_viewer_db_pdfdatabase_kt_long",
-      "community": 8,
+      "community": 7,
       "norm_label": "long"
     },
     {
@@ -2637,7 +2897,7 @@
       "label": "asImageBitmap()",
       "file_type": "code",
       "source_file": "pdf-viewer/src/iosMain/kotlin/com/lumina/pdf/viewer/PdfBitmapExtensions.ios.kt",
-      "source_location": "L6",
+      "source_location": "L10",
       "_origin": "ast",
       "id": "viewer_pdfbitmapextensions_ios_asimagebitmap",
       "community": 36,
@@ -2647,11 +2907,121 @@
       "label": "ImageBitmap",
       "file_type": "code",
       "source_file": "pdf-viewer/src/iosMain/kotlin/com/lumina/pdf/viewer/PdfBitmapExtensions.ios.kt",
-      "source_location": "L6",
+      "source_location": "L10",
       "_origin": "ast",
       "id": "pdf_viewer_src_iosmain_kotlin_com_lumina_pdf_viewer_pdfbitmapextensions_ios_kt_imagebitmap",
       "community": 36,
       "norm_label": "imagebitmap"
+    },
+    {
+      "label": "toByteArray()",
+      "file_type": "code",
+      "source_file": "pdf-viewer/src/iosMain/kotlin/com/lumina/pdf/viewer/PdfBitmapExtensions.ios.kt",
+      "source_location": "L14",
+      "_origin": "ast",
+      "id": "viewer_pdfbitmapextensions_ios_tobytearray",
+      "community": 36,
+      "norm_label": "tobytearray()"
+    },
+    {
+      "label": "ByteArray",
+      "file_type": "code",
+      "source_file": "pdf-viewer/src/iosMain/kotlin/com/lumina/pdf/viewer/PdfBitmapExtensions.ios.kt",
+      "source_location": "L14",
+      "_origin": "ast",
+      "id": "pdf_viewer_src_iosmain_kotlin_com_lumina_pdf_viewer_pdfbitmapextensions_ios_kt_bytearray",
+      "community": 36,
+      "norm_label": "bytearray"
+    },
+    {
+      "label": "decodeByteArrayToPdfBitmap()",
+      "file_type": "code",
+      "source_file": "pdf-viewer/src/iosMain/kotlin/com/lumina/pdf/viewer/PdfBitmapExtensions.ios.kt",
+      "source_location": "L16",
+      "_origin": "ast",
+      "id": "viewer_pdfbitmapextensions_ios_decodebytearraytopdfbitmap",
+      "community": 36,
+      "norm_label": "decodebytearraytopdfbitmap()"
+    },
+    {
+      "label": "PdfBitmap",
+      "file_type": "code",
+      "source_file": "pdf-viewer/src/iosMain/kotlin/com/lumina/pdf/viewer/PdfBitmapExtensions.ios.kt",
+      "source_location": "L16",
+      "_origin": "ast",
+      "id": "pdf_viewer_src_iosmain_kotlin_com_lumina_pdf_viewer_pdfbitmapextensions_ios_kt_pdfbitmap",
+      "community": 36,
+      "norm_label": "pdfbitmap"
+    },
+    {
+      "label": "IosNoOpDiskCache",
+      "file_type": "code",
+      "source_file": "pdf-viewer/src/iosMain/kotlin/com/lumina/pdf/viewer/PdfBitmapExtensions.ios.kt",
+      "source_location": "L18",
+      "_origin": "ast",
+      "id": "viewer_pdfbitmapextensions_ios_iosnoopdiskcache",
+      "community": 36,
+      "norm_label": "iosnoopdiskcache"
+    },
+    {
+      "label": ".get()",
+      "file_type": "code",
+      "source_file": "pdf-viewer/src/iosMain/kotlin/com/lumina/pdf/viewer/PdfBitmapExtensions.ios.kt",
+      "source_location": "L19",
+      "_origin": "ast",
+      "id": "viewer_pdfbitmapextensions_ios_iosnoopdiskcache_get",
+      "community": 36,
+      "norm_label": ".get()"
+    },
+    {
+      "label": "String",
+      "file_type": "code",
+      "source_file": "pdf-viewer/src/iosMain/kotlin/com/lumina/pdf/viewer/PdfBitmapExtensions.ios.kt",
+      "source_location": "L19",
+      "_origin": "ast",
+      "id": "pdf_viewer_src_iosmain_kotlin_com_lumina_pdf_viewer_pdfbitmapextensions_ios_kt_string",
+      "community": 36,
+      "norm_label": "string"
+    },
+    {
+      "label": ".put()",
+      "file_type": "code",
+      "source_file": "pdf-viewer/src/iosMain/kotlin/com/lumina/pdf/viewer/PdfBitmapExtensions.ios.kt",
+      "source_location": "L20",
+      "_origin": "ast",
+      "id": "viewer_pdfbitmapextensions_ios_iosnoopdiskcache_put",
+      "community": 36,
+      "norm_label": ".put()"
+    },
+    {
+      "label": ".remove()",
+      "file_type": "code",
+      "source_file": "pdf-viewer/src/iosMain/kotlin/com/lumina/pdf/viewer/PdfBitmapExtensions.ios.kt",
+      "source_location": "L21",
+      "_origin": "ast",
+      "id": "viewer_pdfbitmapextensions_ios_iosnoopdiskcache_remove",
+      "community": 36,
+      "norm_label": ".remove()"
+    },
+    {
+      "label": ".clear()",
+      "file_type": "code",
+      "source_file": "pdf-viewer/src/iosMain/kotlin/com/lumina/pdf/viewer/PdfBitmapExtensions.ios.kt",
+      "source_location": "L22",
+      "_origin": "ast",
+      "id": "viewer_pdfbitmapextensions_ios_iosnoopdiskcache_clear",
+      "community": 36,
+      "norm_label": ".clear()"
+    },
+    {
+      "label": "rememberDiskCache()",
+      "file_type": "code",
+      "source_file": "pdf-viewer/src/iosMain/kotlin/com/lumina/pdf/viewer/PdfBitmapExtensions.ios.kt",
+      "source_location": "L25",
+      "_origin": "ast",
+      "id": "viewer_pdfbitmapextensions_ios_rememberdiskcache",
+      "community": 36,
+      "norm_label": "rememberdiskcache()"
     },
     {
       "label": "PdfDatabase.ios.kt",
@@ -2830,28 +3200,138 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "viewer_pdfbitmapextensions_js",
-      "community": 37,
+      "community": 36,
       "norm_label": "pdfbitmapextensions.js.kt"
     },
     {
       "label": "asImageBitmap()",
       "file_type": "code",
       "source_file": "pdf-viewer/src/jsMain/kotlin/com/lumina/pdf/viewer/PdfBitmapExtensions.js.kt",
-      "source_location": "L6",
+      "source_location": "L10",
       "_origin": "ast",
       "id": "viewer_pdfbitmapextensions_js_asimagebitmap",
-      "community": 37,
+      "community": 36,
       "norm_label": "asimagebitmap()"
     },
     {
       "label": "ImageBitmap",
       "file_type": "code",
       "source_file": "pdf-viewer/src/jsMain/kotlin/com/lumina/pdf/viewer/PdfBitmapExtensions.js.kt",
-      "source_location": "L6",
+      "source_location": "L10",
       "_origin": "ast",
       "id": "pdf_viewer_src_jsmain_kotlin_com_lumina_pdf_viewer_pdfbitmapextensions_js_kt_imagebitmap",
-      "community": 37,
+      "community": 36,
       "norm_label": "imagebitmap"
+    },
+    {
+      "label": "toByteArray()",
+      "file_type": "code",
+      "source_file": "pdf-viewer/src/jsMain/kotlin/com/lumina/pdf/viewer/PdfBitmapExtensions.js.kt",
+      "source_location": "L14",
+      "_origin": "ast",
+      "id": "viewer_pdfbitmapextensions_js_tobytearray",
+      "community": 36,
+      "norm_label": "tobytearray()"
+    },
+    {
+      "label": "ByteArray",
+      "file_type": "code",
+      "source_file": "pdf-viewer/src/jsMain/kotlin/com/lumina/pdf/viewer/PdfBitmapExtensions.js.kt",
+      "source_location": "L14",
+      "_origin": "ast",
+      "id": "pdf_viewer_src_jsmain_kotlin_com_lumina_pdf_viewer_pdfbitmapextensions_js_kt_bytearray",
+      "community": 36,
+      "norm_label": "bytearray"
+    },
+    {
+      "label": "decodeByteArrayToPdfBitmap()",
+      "file_type": "code",
+      "source_file": "pdf-viewer/src/jsMain/kotlin/com/lumina/pdf/viewer/PdfBitmapExtensions.js.kt",
+      "source_location": "L16",
+      "_origin": "ast",
+      "id": "viewer_pdfbitmapextensions_js_decodebytearraytopdfbitmap",
+      "community": 36,
+      "norm_label": "decodebytearraytopdfbitmap()"
+    },
+    {
+      "label": "PdfBitmap",
+      "file_type": "code",
+      "source_file": "pdf-viewer/src/jsMain/kotlin/com/lumina/pdf/viewer/PdfBitmapExtensions.js.kt",
+      "source_location": "L16",
+      "_origin": "ast",
+      "id": "pdf_viewer_src_jsmain_kotlin_com_lumina_pdf_viewer_pdfbitmapextensions_js_kt_pdfbitmap",
+      "community": 36,
+      "norm_label": "pdfbitmap"
+    },
+    {
+      "label": "JsNoOpDiskCache",
+      "file_type": "code",
+      "source_file": "pdf-viewer/src/jsMain/kotlin/com/lumina/pdf/viewer/PdfBitmapExtensions.js.kt",
+      "source_location": "L18",
+      "_origin": "ast",
+      "id": "viewer_pdfbitmapextensions_js_jsnoopdiskcache",
+      "community": 36,
+      "norm_label": "jsnoopdiskcache"
+    },
+    {
+      "label": ".get()",
+      "file_type": "code",
+      "source_file": "pdf-viewer/src/jsMain/kotlin/com/lumina/pdf/viewer/PdfBitmapExtensions.js.kt",
+      "source_location": "L19",
+      "_origin": "ast",
+      "id": "viewer_pdfbitmapextensions_js_jsnoopdiskcache_get",
+      "community": 36,
+      "norm_label": ".get()"
+    },
+    {
+      "label": "String",
+      "file_type": "code",
+      "source_file": "pdf-viewer/src/jsMain/kotlin/com/lumina/pdf/viewer/PdfBitmapExtensions.js.kt",
+      "source_location": "L19",
+      "_origin": "ast",
+      "id": "pdf_viewer_src_jsmain_kotlin_com_lumina_pdf_viewer_pdfbitmapextensions_js_kt_string",
+      "community": 36,
+      "norm_label": "string"
+    },
+    {
+      "label": ".put()",
+      "file_type": "code",
+      "source_file": "pdf-viewer/src/jsMain/kotlin/com/lumina/pdf/viewer/PdfBitmapExtensions.js.kt",
+      "source_location": "L20",
+      "_origin": "ast",
+      "id": "viewer_pdfbitmapextensions_js_jsnoopdiskcache_put",
+      "community": 36,
+      "norm_label": ".put()"
+    },
+    {
+      "label": ".remove()",
+      "file_type": "code",
+      "source_file": "pdf-viewer/src/jsMain/kotlin/com/lumina/pdf/viewer/PdfBitmapExtensions.js.kt",
+      "source_location": "L21",
+      "_origin": "ast",
+      "id": "viewer_pdfbitmapextensions_js_jsnoopdiskcache_remove",
+      "community": 36,
+      "norm_label": ".remove()"
+    },
+    {
+      "label": ".clear()",
+      "file_type": "code",
+      "source_file": "pdf-viewer/src/jsMain/kotlin/com/lumina/pdf/viewer/PdfBitmapExtensions.js.kt",
+      "source_location": "L22",
+      "_origin": "ast",
+      "id": "viewer_pdfbitmapextensions_js_jsnoopdiskcache_clear",
+      "community": 36,
+      "norm_label": ".clear()"
+    },
+    {
+      "label": "rememberDiskCache()",
+      "file_type": "code",
+      "source_file": "pdf-viewer/src/jsMain/kotlin/com/lumina/pdf/viewer/PdfBitmapExtensions.js.kt",
+      "source_location": "L25",
+      "_origin": "ast",
+      "id": "viewer_pdfbitmapextensions_js_rememberdiskcache",
+      "community": 36,
+      "norm_label": "rememberdiskcache()"
     },
     {
       "label": "PdfDatabase.js.kt",
@@ -2860,7 +3340,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "db_pdfdatabase_js",
-      "community": 12,
+      "community": 7,
       "norm_label": "pdfdatabase.js.kt"
     },
     {
@@ -2870,7 +3350,7 @@
       "source_location": "L7",
       "_origin": "ast",
       "id": "db_pdfdatabase_js_jspdfdatabase",
-      "community": 12,
+      "community": 7,
       "norm_label": "jspdfdatabase"
     },
     {
@@ -2880,7 +3360,7 @@
       "source_location": "L8",
       "_origin": "ast",
       "id": "db_pdfdatabase_js_jspdfdatabase_saveoffset",
-      "community": 12,
+      "community": 7,
       "norm_label": ".saveoffset()"
     },
     {
@@ -2890,7 +3370,7 @@
       "source_location": "L8",
       "_origin": "ast",
       "id": "pdf_viewer_src_jsmain_kotlin_com_lumina_pdf_viewer_db_pdfdatabase_js_kt_string",
-      "community": 12,
+      "community": 7,
       "norm_label": "string"
     },
     {
@@ -2900,7 +3380,7 @@
       "source_location": "L8",
       "_origin": "ast",
       "id": "pdf_viewer_src_jsmain_kotlin_com_lumina_pdf_viewer_db_pdfdatabase_js_kt_pdfoffset",
-      "community": 12,
+      "community": 7,
       "norm_label": "pdfoffset"
     },
     {
@@ -2910,7 +3390,7 @@
       "source_location": "L15",
       "_origin": "ast",
       "id": "db_pdfdatabase_js_jspdfdatabase_getoffset",
-      "community": 12,
+      "community": 7,
       "norm_label": ".getoffset()"
     },
     {
@@ -2920,7 +3400,7 @@
       "source_location": "L29",
       "_origin": "ast",
       "id": "db_pdfdatabase_js_jspdfdatabase_insertnote",
-      "community": 12,
+      "community": 7,
       "norm_label": ".insertnote()"
     },
     {
@@ -2930,7 +3410,7 @@
       "source_location": "L29",
       "_origin": "ast",
       "id": "pdf_viewer_src_jsmain_kotlin_com_lumina_pdf_viewer_db_pdfdatabase_js_kt_dbnote",
-      "community": 12,
+      "community": 7,
       "norm_label": "dbnote"
     },
     {
@@ -2940,7 +3420,7 @@
       "source_location": "L33",
       "_origin": "ast",
       "id": "db_pdfdatabase_js_jspdfdatabase_getnotes",
-      "community": 12,
+      "community": 7,
       "norm_label": ".getnotes()"
     },
     {
@@ -2950,7 +3430,7 @@
       "source_location": "L33",
       "_origin": "ast",
       "id": "pdf_viewer_src_jsmain_kotlin_com_lumina_pdf_viewer_db_pdfdatabase_js_kt_list",
-      "community": 12,
+      "community": 7,
       "norm_label": "list"
     },
     {
@@ -2960,7 +3440,7 @@
       "source_location": "L53",
       "_origin": "ast",
       "id": "db_pdfdatabase_js_jspdfdatabase_deletenote",
-      "community": 12,
+      "community": 7,
       "norm_label": ".deletenote()"
     },
     {
@@ -2970,7 +3450,7 @@
       "source_location": "L64",
       "_origin": "ast",
       "id": "db_pdfdatabase_js_jspdfdatabase_savehighlights",
-      "community": 12,
+      "community": 7,
       "norm_label": ".savehighlights()"
     },
     {
@@ -2980,7 +3460,7 @@
       "source_location": "L68",
       "_origin": "ast",
       "id": "db_pdfdatabase_js_jspdfdatabase_gethighlights",
-      "community": 12,
+      "community": 7,
       "norm_label": ".gethighlights()"
     },
     {
@@ -2990,7 +3470,7 @@
       "source_location": "L73",
       "_origin": "ast",
       "id": "db_pdfdatabase_js_rememberpdfdatabase",
-      "community": 12,
+      "community": 7,
       "norm_label": "rememberpdfdatabase()"
     },
     {
@@ -3000,7 +3480,7 @@
       "source_location": "L78",
       "_origin": "ast",
       "id": "db_pdfdatabase_js_getcurrenttimemillis",
-      "community": 12,
+      "community": 7,
       "norm_label": "getcurrenttimemillis()"
     },
     {
@@ -3010,7 +3490,7 @@
       "source_location": "L78",
       "_origin": "ast",
       "id": "pdf_viewer_src_jsmain_kotlin_com_lumina_pdf_viewer_db_pdfdatabase_js_kt_long",
-      "community": 12,
+      "community": 7,
       "norm_label": "long"
     },
     {
@@ -3027,7 +3507,7 @@
       "label": "asImageBitmap()",
       "file_type": "code",
       "source_file": "pdf-viewer/src/jvmMain/kotlin/com/lumina/pdf/viewer/PdfBitmapExtensions.jvm.kt",
-      "source_location": "L8",
+      "source_location": "L16",
       "_origin": "ast",
       "id": "viewer_pdfbitmapextensions_jvm_asimagebitmap",
       "community": 38,
@@ -3037,11 +3517,121 @@
       "label": "ImageBitmap",
       "file_type": "code",
       "source_file": "pdf-viewer/src/jvmMain/kotlin/com/lumina/pdf/viewer/PdfBitmapExtensions.jvm.kt",
-      "source_location": "L8",
+      "source_location": "L16",
       "_origin": "ast",
       "id": "pdf_viewer_src_jvmmain_kotlin_com_lumina_pdf_viewer_pdfbitmapextensions_jvm_kt_imagebitmap",
       "community": 38,
       "norm_label": "imagebitmap"
+    },
+    {
+      "label": "toByteArray()",
+      "file_type": "code",
+      "source_file": "pdf-viewer/src/jvmMain/kotlin/com/lumina/pdf/viewer/PdfBitmapExtensions.jvm.kt",
+      "source_location": "L24",
+      "_origin": "ast",
+      "id": "viewer_pdfbitmapextensions_jvm_tobytearray",
+      "community": 38,
+      "norm_label": "tobytearray()"
+    },
+    {
+      "label": "ByteArray",
+      "file_type": "code",
+      "source_file": "pdf-viewer/src/jvmMain/kotlin/com/lumina/pdf/viewer/PdfBitmapExtensions.jvm.kt",
+      "source_location": "L24",
+      "_origin": "ast",
+      "id": "pdf_viewer_src_jvmmain_kotlin_com_lumina_pdf_viewer_pdfbitmapextensions_jvm_kt_bytearray",
+      "community": 38,
+      "norm_label": "bytearray"
+    },
+    {
+      "label": "decodeByteArrayToPdfBitmap()",
+      "file_type": "code",
+      "source_file": "pdf-viewer/src/jvmMain/kotlin/com/lumina/pdf/viewer/PdfBitmapExtensions.jvm.kt",
+      "source_location": "L31",
+      "_origin": "ast",
+      "id": "viewer_pdfbitmapextensions_jvm_decodebytearraytopdfbitmap",
+      "community": 38,
+      "norm_label": "decodebytearraytopdfbitmap()"
+    },
+    {
+      "label": "PdfBitmap",
+      "file_type": "code",
+      "source_file": "pdf-viewer/src/jvmMain/kotlin/com/lumina/pdf/viewer/PdfBitmapExtensions.jvm.kt",
+      "source_location": "L31",
+      "_origin": "ast",
+      "id": "pdf_viewer_src_jvmmain_kotlin_com_lumina_pdf_viewer_pdfbitmapextensions_jvm_kt_pdfbitmap",
+      "community": 38,
+      "norm_label": "pdfbitmap"
+    },
+    {
+      "label": "JvmDiskCache",
+      "file_type": "code",
+      "source_file": "pdf-viewer/src/jvmMain/kotlin/com/lumina/pdf/viewer/PdfBitmapExtensions.jvm.kt",
+      "source_location": "L37",
+      "_origin": "ast",
+      "id": "viewer_pdfbitmapextensions_jvm_jvmdiskcache",
+      "community": 38,
+      "norm_label": "jvmdiskcache"
+    },
+    {
+      "label": ".get()",
+      "file_type": "code",
+      "source_file": "pdf-viewer/src/jvmMain/kotlin/com/lumina/pdf/viewer/PdfBitmapExtensions.jvm.kt",
+      "source_location": "L40",
+      "_origin": "ast",
+      "id": "viewer_pdfbitmapextensions_jvm_jvmdiskcache_get",
+      "community": 38,
+      "norm_label": ".get()"
+    },
+    {
+      "label": "String",
+      "file_type": "code",
+      "source_file": "pdf-viewer/src/jvmMain/kotlin/com/lumina/pdf/viewer/PdfBitmapExtensions.jvm.kt",
+      "source_location": "L40",
+      "_origin": "ast",
+      "id": "pdf_viewer_src_jvmmain_kotlin_com_lumina_pdf_viewer_pdfbitmapextensions_jvm_kt_string",
+      "community": 38,
+      "norm_label": "string"
+    },
+    {
+      "label": ".put()",
+      "file_type": "code",
+      "source_file": "pdf-viewer/src/jvmMain/kotlin/com/lumina/pdf/viewer/PdfBitmapExtensions.jvm.kt",
+      "source_location": "L45",
+      "_origin": "ast",
+      "id": "viewer_pdfbitmapextensions_jvm_jvmdiskcache_put",
+      "community": 38,
+      "norm_label": ".put()"
+    },
+    {
+      "label": ".remove()",
+      "file_type": "code",
+      "source_file": "pdf-viewer/src/jvmMain/kotlin/com/lumina/pdf/viewer/PdfBitmapExtensions.jvm.kt",
+      "source_location": "L50",
+      "_origin": "ast",
+      "id": "viewer_pdfbitmapextensions_jvm_jvmdiskcache_remove",
+      "community": 38,
+      "norm_label": ".remove()"
+    },
+    {
+      "label": ".clear()",
+      "file_type": "code",
+      "source_file": "pdf-viewer/src/jvmMain/kotlin/com/lumina/pdf/viewer/PdfBitmapExtensions.jvm.kt",
+      "source_location": "L55",
+      "_origin": "ast",
+      "id": "viewer_pdfbitmapextensions_jvm_jvmdiskcache_clear",
+      "community": 38,
+      "norm_label": ".clear()"
+    },
+    {
+      "label": "rememberDiskCache()",
+      "file_type": "code",
+      "source_file": "pdf-viewer/src/jvmMain/kotlin/com/lumina/pdf/viewer/PdfBitmapExtensions.jvm.kt",
+      "source_location": "L60",
+      "_origin": "ast",
+      "id": "viewer_pdfbitmapextensions_jvm_rememberdiskcache",
+      "community": 38,
+      "norm_label": "rememberdiskcache()"
     },
     {
       "label": "PdfDatabase.jvm.kt",
@@ -3240,28 +3830,138 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "viewer_pdfbitmapextensions_wasmjs",
-      "community": 39,
+      "community": 36,
       "norm_label": "pdfbitmapextensions.wasmjs.kt"
     },
     {
       "label": "asImageBitmap()",
       "file_type": "code",
       "source_file": "pdf-viewer/src/wasmJsMain/kotlin/com/lumina/pdf/viewer/PdfBitmapExtensions.wasmJs.kt",
-      "source_location": "L6",
+      "source_location": "L10",
       "_origin": "ast",
       "id": "viewer_pdfbitmapextensions_wasmjs_asimagebitmap",
-      "community": 39,
+      "community": 36,
       "norm_label": "asimagebitmap()"
     },
     {
       "label": "ImageBitmap",
       "file_type": "code",
       "source_file": "pdf-viewer/src/wasmJsMain/kotlin/com/lumina/pdf/viewer/PdfBitmapExtensions.wasmJs.kt",
-      "source_location": "L6",
+      "source_location": "L10",
       "_origin": "ast",
       "id": "pdf_viewer_src_wasmjsmain_kotlin_com_lumina_pdf_viewer_pdfbitmapextensions_wasmjs_kt_imagebitmap",
-      "community": 39,
+      "community": 36,
       "norm_label": "imagebitmap"
+    },
+    {
+      "label": "toByteArray()",
+      "file_type": "code",
+      "source_file": "pdf-viewer/src/wasmJsMain/kotlin/com/lumina/pdf/viewer/PdfBitmapExtensions.wasmJs.kt",
+      "source_location": "L14",
+      "_origin": "ast",
+      "id": "viewer_pdfbitmapextensions_wasmjs_tobytearray",
+      "community": 36,
+      "norm_label": "tobytearray()"
+    },
+    {
+      "label": "ByteArray",
+      "file_type": "code",
+      "source_file": "pdf-viewer/src/wasmJsMain/kotlin/com/lumina/pdf/viewer/PdfBitmapExtensions.wasmJs.kt",
+      "source_location": "L14",
+      "_origin": "ast",
+      "id": "pdf_viewer_src_wasmjsmain_kotlin_com_lumina_pdf_viewer_pdfbitmapextensions_wasmjs_kt_bytearray",
+      "community": 36,
+      "norm_label": "bytearray"
+    },
+    {
+      "label": "decodeByteArrayToPdfBitmap()",
+      "file_type": "code",
+      "source_file": "pdf-viewer/src/wasmJsMain/kotlin/com/lumina/pdf/viewer/PdfBitmapExtensions.wasmJs.kt",
+      "source_location": "L16",
+      "_origin": "ast",
+      "id": "viewer_pdfbitmapextensions_wasmjs_decodebytearraytopdfbitmap",
+      "community": 36,
+      "norm_label": "decodebytearraytopdfbitmap()"
+    },
+    {
+      "label": "PdfBitmap",
+      "file_type": "code",
+      "source_file": "pdf-viewer/src/wasmJsMain/kotlin/com/lumina/pdf/viewer/PdfBitmapExtensions.wasmJs.kt",
+      "source_location": "L16",
+      "_origin": "ast",
+      "id": "pdf_viewer_src_wasmjsmain_kotlin_com_lumina_pdf_viewer_pdfbitmapextensions_wasmjs_kt_pdfbitmap",
+      "community": 36,
+      "norm_label": "pdfbitmap"
+    },
+    {
+      "label": "WasmJsNoOpDiskCache",
+      "file_type": "code",
+      "source_file": "pdf-viewer/src/wasmJsMain/kotlin/com/lumina/pdf/viewer/PdfBitmapExtensions.wasmJs.kt",
+      "source_location": "L18",
+      "_origin": "ast",
+      "id": "viewer_pdfbitmapextensions_wasmjs_wasmjsnoopdiskcache",
+      "community": 36,
+      "norm_label": "wasmjsnoopdiskcache"
+    },
+    {
+      "label": ".get()",
+      "file_type": "code",
+      "source_file": "pdf-viewer/src/wasmJsMain/kotlin/com/lumina/pdf/viewer/PdfBitmapExtensions.wasmJs.kt",
+      "source_location": "L19",
+      "_origin": "ast",
+      "id": "viewer_pdfbitmapextensions_wasmjs_wasmjsnoopdiskcache_get",
+      "community": 36,
+      "norm_label": ".get()"
+    },
+    {
+      "label": "String",
+      "file_type": "code",
+      "source_file": "pdf-viewer/src/wasmJsMain/kotlin/com/lumina/pdf/viewer/PdfBitmapExtensions.wasmJs.kt",
+      "source_location": "L19",
+      "_origin": "ast",
+      "id": "pdf_viewer_src_wasmjsmain_kotlin_com_lumina_pdf_viewer_pdfbitmapextensions_wasmjs_kt_string",
+      "community": 36,
+      "norm_label": "string"
+    },
+    {
+      "label": ".put()",
+      "file_type": "code",
+      "source_file": "pdf-viewer/src/wasmJsMain/kotlin/com/lumina/pdf/viewer/PdfBitmapExtensions.wasmJs.kt",
+      "source_location": "L20",
+      "_origin": "ast",
+      "id": "viewer_pdfbitmapextensions_wasmjs_wasmjsnoopdiskcache_put",
+      "community": 36,
+      "norm_label": ".put()"
+    },
+    {
+      "label": ".remove()",
+      "file_type": "code",
+      "source_file": "pdf-viewer/src/wasmJsMain/kotlin/com/lumina/pdf/viewer/PdfBitmapExtensions.wasmJs.kt",
+      "source_location": "L21",
+      "_origin": "ast",
+      "id": "viewer_pdfbitmapextensions_wasmjs_wasmjsnoopdiskcache_remove",
+      "community": 36,
+      "norm_label": ".remove()"
+    },
+    {
+      "label": ".clear()",
+      "file_type": "code",
+      "source_file": "pdf-viewer/src/wasmJsMain/kotlin/com/lumina/pdf/viewer/PdfBitmapExtensions.wasmJs.kt",
+      "source_location": "L22",
+      "_origin": "ast",
+      "id": "viewer_pdfbitmapextensions_wasmjs_wasmjsnoopdiskcache_clear",
+      "community": 36,
+      "norm_label": ".clear()"
+    },
+    {
+      "label": "rememberDiskCache()",
+      "file_type": "code",
+      "source_file": "pdf-viewer/src/wasmJsMain/kotlin/com/lumina/pdf/viewer/PdfBitmapExtensions.wasmJs.kt",
+      "source_location": "L25",
+      "_origin": "ast",
+      "id": "viewer_pdfbitmapextensions_wasmjs_rememberdiskcache",
+      "community": 36,
+      "norm_label": "rememberdiskcache()"
     },
     {
       "label": "PdfDatabase.wasmJs.kt",
@@ -5682,9 +6382,260 @@
       "id": "implementation_plan_final_recommendation",
       "community": 11,
       "norm_label": "final recommendation"
+    },
+    {
+      "label": "perf_improvement.md",
+      "file_type": "document",
+      "source_file": "perf_improvement.md",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "perf_improvement",
+      "community": 12,
+      "norm_label": "perf_improvement.md"
+    },
+    {
+      "label": "LuminaPDF \u2014 Performance Improvements (Phase 1)",
+      "file_type": "document",
+      "source_file": "perf_improvement.md",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "perf_improvement_luminapdf_performance_improvements_phase_1",
+      "community": 12,
+      "norm_label": "luminapdf \u2014 performance improvements (phase 1)"
+    },
+    {
+      "label": "1. Thread-Safe LRU Memory Cache (`LruMemoryCache`)",
+      "file_type": "document",
+      "source_file": "perf_improvement.md",
+      "source_location": "L7",
+      "_origin": "ast",
+      "id": "perf_improvement_1_thread_safe_lru_memory_cache_lrumemorycache",
+      "community": 12,
+      "norm_label": "1. thread-safe lru memory cache (`lrumemorycache`)"
+    },
+    {
+      "label": "Why we did it",
+      "file_type": "document",
+      "source_file": "perf_improvement.md",
+      "source_location": "L9",
+      "_origin": "ast",
+      "id": "perf_improvement_why_we_did_it",
+      "community": 12,
+      "norm_label": "why we did it"
+    },
+    {
+      "label": "How we did it",
+      "file_type": "document",
+      "source_file": "perf_improvement.md",
+      "source_location": "L20",
+      "_origin": "ast",
+      "id": "perf_improvement_how_we_did_it",
+      "community": 12,
+      "norm_label": "how we did it"
+    },
+    {
+      "label": "2. Parallel Render Workers in `RenderQueue`",
+      "file_type": "document",
+      "source_file": "perf_improvement.md",
+      "source_location": "L40",
+      "_origin": "ast",
+      "id": "perf_improvement_2_parallel_render_workers_in_renderqueue",
+      "community": 12,
+      "norm_label": "2. parallel render workers in `renderqueue`"
+    },
+    {
+      "label": "Why we did it",
+      "file_type": "document",
+      "source_file": "perf_improvement.md",
+      "source_location": "L42",
+      "_origin": "ast",
+      "id": "perf_improvement_why_we_did_it_42",
+      "community": 12,
+      "norm_label": "why we did it"
+    },
+    {
+      "label": "How we did it",
+      "file_type": "document",
+      "source_file": "perf_improvement.md",
+      "source_location": "L45",
+      "_origin": "ast",
+      "id": "perf_improvement_how_we_did_it_45",
+      "community": 12,
+      "norm_label": "how we did it"
+    },
+    {
+      "label": "3. JVM Tile Cache Optimization (`JvmPdfDocument`)",
+      "file_type": "document",
+      "source_file": "perf_improvement.md",
+      "source_location": "L76",
+      "_origin": "ast",
+      "id": "perf_improvement_3_jvm_tile_cache_optimization_jvmpdfdocument",
+      "community": 12,
+      "norm_label": "3. jvm tile cache optimization (`jvmpdfdocument`)"
+    },
+    {
+      "label": "Why we did it",
+      "file_type": "document",
+      "source_file": "perf_improvement.md",
+      "source_location": "L78",
+      "_origin": "ast",
+      "id": "perf_improvement_why_we_did_it_78",
+      "community": 12,
+      "norm_label": "why we did it"
+    },
+    {
+      "label": "How we did it",
+      "file_type": "document",
+      "source_file": "perf_improvement.md",
+      "source_location": "L86",
+      "_origin": "ast",
+      "id": "perf_improvement_how_we_did_it_86",
+      "community": 12,
+      "norm_label": "how we did it"
+    },
+    {
+      "label": "4. Progressive LOD Thumbnails & Background Warmup",
+      "file_type": "document",
+      "source_file": "perf_improvement.md",
+      "source_location": "L115",
+      "_origin": "ast",
+      "id": "perf_improvement_4_progressive_lod_thumbnails_background_warmup",
+      "community": 12,
+      "norm_label": "4. progressive lod thumbnails & background warmup"
+    },
+    {
+      "label": "Why we did it",
+      "file_type": "document",
+      "source_file": "perf_improvement.md",
+      "source_location": "L117",
+      "_origin": "ast",
+      "id": "perf_improvement_why_we_did_it_117",
+      "community": 12,
+      "norm_label": "why we did it"
+    },
+    {
+      "label": "How we did it",
+      "file_type": "document",
+      "source_file": "perf_improvement.md",
+      "source_location": "L120",
+      "_origin": "ast",
+      "id": "perf_improvement_how_we_did_it_120",
+      "community": 12,
+      "norm_label": "how we did it"
+    },
+    {
+      "label": "5. Tile Grouping & Viewport Culling",
+      "file_type": "document",
+      "source_file": "perf_improvement.md",
+      "source_location": "L132",
+      "_origin": "ast",
+      "id": "perf_improvement_5_tile_grouping_viewport_culling",
+      "community": 12,
+      "norm_label": "5. tile grouping & viewport culling"
+    },
+    {
+      "label": "Why we did it",
+      "file_type": "document",
+      "source_file": "perf_improvement.md",
+      "source_location": "L134",
+      "_origin": "ast",
+      "id": "perf_improvement_why_we_did_it_134",
+      "community": 12,
+      "norm_label": "why we did it"
+    },
+    {
+      "label": "How we did it",
+      "file_type": "document",
+      "source_file": "perf_improvement.md",
+      "source_location": "L137",
+      "_origin": "ast",
+      "id": "perf_improvement_how_we_did_it_137",
+      "community": 12,
+      "norm_label": "how we did it"
+    },
+    {
+      "label": "6. Android GPU Acceleration & Memory Recycling",
+      "file_type": "document",
+      "source_file": "perf_improvement.md",
+      "source_location": "L150",
+      "_origin": "ast",
+      "id": "perf_improvement_6_android_gpu_acceleration_memory_recycling",
+      "community": 12,
+      "norm_label": "6. android gpu acceleration & memory recycling"
+    },
+    {
+      "label": "Why we did it",
+      "file_type": "document",
+      "source_file": "perf_improvement.md",
+      "source_location": "L152",
+      "_origin": "ast",
+      "id": "perf_improvement_why_we_did_it_152",
+      "community": 12,
+      "norm_label": "why we did it"
+    },
+    {
+      "label": "How we did it",
+      "file_type": "document",
+      "source_file": "perf_improvement.md",
+      "source_location": "L155",
+      "_origin": "ast",
+      "id": "perf_improvement_how_we_did_it_155",
+      "community": 12,
+      "norm_label": "how we did it"
+    },
+    {
+      "label": "7. Persistent L2 Disk Cache",
+      "file_type": "document",
+      "source_file": "perf_improvement.md",
+      "source_location": "L172",
+      "_origin": "ast",
+      "id": "perf_improvement_7_persistent_l2_disk_cache",
+      "community": 12,
+      "norm_label": "7. persistent l2 disk cache"
+    },
+    {
+      "label": "Why we did it",
+      "file_type": "document",
+      "source_file": "perf_improvement.md",
+      "source_location": "L174",
+      "_origin": "ast",
+      "id": "perf_improvement_why_we_did_it_174",
+      "community": 12,
+      "norm_label": "why we did it"
+    },
+    {
+      "label": "How we did it",
+      "file_type": "document",
+      "source_file": "perf_improvement.md",
+      "source_location": "L177",
+      "_origin": "ast",
+      "id": "perf_improvement_how_we_did_it_177",
+      "community": 12,
+      "norm_label": "how we did it"
     }
   ],
   "links": [
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "androidApp/build.gradle.kts",
+      "source_location": "L35",
+      "weight": 1.0,
+      "source": "androidapp_build_gradle",
+      "target": "androidapp_build_gradle_getorenv",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "androidApp/build.gradle.kts",
+      "source_location": "L35",
+      "weight": 1.0,
+      "context": "return_type",
+      "source": "androidapp_build_gradle_getorenv",
+      "target": "androidapp_build_gradle_kts_string",
+      "confidence_score": 1.0
+    },
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
@@ -5765,6 +6716,39 @@
       "confidence_score": 1.0,
       "source": "iosapp_contentview",
       "target": "iosapp_contentview_contentview"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "iosApp/iosApp/ContentView.swift",
+      "source_location": "L2",
+      "weight": 1.0,
+      "source": "iosapp_contentview",
+      "target": "iosapp_iosapp_contentview_swift_swiftui",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "iosApp/iosApp/ContentView.swift",
+      "source_location": "L3",
+      "weight": 1.0,
+      "source": "iosapp_contentview",
+      "target": "shared",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "iosApp/iosApp/ContentView.swift",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "iosapp_contentview",
+      "target": "uikit",
+      "confidence_score": 1.0
     },
     {
       "relation": "method",
@@ -5862,6 +6846,17 @@
       "target": "iosapp_iosapp_iosapp"
     },
     {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "iosApp/iosApp/iOSApp.swift",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "iosapp_iosapp",
+      "target": "iosapp_iosapp_iosapp_swift_swiftui",
+      "confidence_score": 1.0
+    },
+    {
       "relation": "implements",
       "confidence": "EXTRACTED",
       "source_file": "iosApp/iosApp/iOSApp.swift",
@@ -5936,6 +6931,16 @@
       "relation": "method",
       "confidence": "EXTRACTED",
       "source_file": "pdf-core/src/commonMain/kotlin/com/lumina/pdf/core/LruMemoryCache.kt",
+      "source_location": "L11",
+      "weight": 1.0,
+      "source": "core_lrumemorycache_lrumemorycache",
+      "target": "core_lrumemorycache_lrumemorycache_sizeof",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-core/src/commonMain/kotlin/com/lumina/pdf/core/LruMemoryCache.kt",
       "source_location": "L32",
       "weight": 1.0,
       "confidence_score": 1.0,
@@ -5968,11 +6973,55 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "pdf-core/src/commonMain/kotlin/com/lumina/pdf/core/LruMemoryCache.kt",
-      "source_location": "L13",
+      "source_location": "L26",
       "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "core_lrumemorycache_lrumemorycache_get",
-      "target": "core_lrumemorycache_lrumemorycache_remove"
+      "source": "core_lrumemorycache_lrumemorycache_put",
+      "target": "core_lrumemorycache_lrumemorycache_sizeof",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-core/src/commonMain/kotlin/com/lumina/pdf/core/LruMemoryCache.kt",
+      "source_location": "L38",
+      "weight": 1.0,
+      "source": "core_lrumemorycache_lrumemorycache_remove",
+      "target": "core_lrumemorycache_lrumemorycache_sizeof",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-core/src/commonMain/kotlin/com/lumina/pdf/core/LruMemoryCache.kt",
+      "source_location": "L11",
+      "weight": 1.0,
+      "context": "return_type",
+      "source": "core_lrumemorycache_lrumemorycache_sizeof",
+      "target": "pdf_core_src_commonmain_kotlin_com_lumina_pdf_core_lrumemorycache_kt_long",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-core/src/commonMain/kotlin/com/lumina/pdf/core/LruMemoryCache.kt",
+      "source_location": "L11",
+      "weight": 1.0,
+      "context": "parameter_type",
+      "source": "core_lrumemorycache_lrumemorycache_sizeof",
+      "target": "pdf_core_src_commonmain_kotlin_com_lumina_pdf_core_lrumemorycache_kt_pdfbitmap",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-core/src/commonMain/kotlin/com/lumina/pdf/core/LruMemoryCache.kt",
+      "source_location": "L57",
+      "weight": 1.0,
+      "source": "core_lrumemorycache_lrumemorycache_trimtosize",
+      "target": "core_lrumemorycache_lrumemorycache_sizeof",
+      "confidence_score": 1.0
     },
     {
       "relation": "references",
@@ -5984,6 +7033,28 @@
       "confidence_score": 1.0,
       "source": "core_lrumemorycache_lrumemorycache_get",
       "target": "pdf_core_src_commonmain_kotlin_com_lumina_pdf_core_lrumemorycache_kt_pdfbitmap"
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-core/src/commonMain/kotlin/com/lumina/pdf/core/LruMemoryCache.kt",
+      "source_location": "L18",
+      "weight": 1.0,
+      "context": "parameter_type",
+      "confidence_score": 1.0,
+      "source": "core_lrumemorycache_lrumemorycache_put",
+      "target": "pdf_core_src_commonmain_kotlin_com_lumina_pdf_core_lrumemorycache_kt_pdfbitmap"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-core/src/commonMain/kotlin/com/lumina/pdf/core/LruMemoryCache.kt",
+      "source_location": "L13",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "core_lrumemorycache_lrumemorycache_get",
+      "target": "core_lrumemorycache_lrumemorycache_remove"
     },
     {
       "relation": "references",
@@ -6019,15 +7090,15 @@
       "target": "pdf_core_src_commonmain_kotlin_com_lumina_pdf_core_lrumemorycache_kt_string"
     },
     {
-      "relation": "references",
+      "relation": "calls",
+      "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "pdf-core/src/commonMain/kotlin/com/lumina/pdf/core/LruMemoryCache.kt",
-      "source_location": "L18",
+      "source_location": "L24",
       "weight": 1.0,
-      "context": "parameter_type",
-      "confidence_score": 1.0,
       "source": "core_lrumemorycache_lrumemorycache_put",
-      "target": "pdf_core_src_commonmain_kotlin_com_lumina_pdf_core_lrumemorycache_kt_pdfbitmap"
+      "target": "core_lrumemorycache_lrumemorycache_remove",
+      "confidence_score": 1.0
     },
     {
       "relation": "calls",
@@ -6675,9 +7746,9 @@
       "source_file": "pdf-core/src/commonMain/kotlin/com/lumina/pdf/core/RenderQueue.kt",
       "source_location": "L117",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "core_renderqueue_renderqueue",
-      "target": "core_renderqueue_renderqueue_clearobsolete",
-      "confidence_score": 1.0
+      "target": "core_renderqueue_renderqueue_clearobsolete"
     },
     {
       "relation": "method",
@@ -6707,9 +7778,9 @@
       "source_location": "L117",
       "weight": 1.0,
       "context": "generic_arg",
+      "confidence_score": 1.0,
       "source": "core_renderqueue_renderqueue_clearobsolete",
-      "target": "pdf_core_src_commonmain_kotlin_com_lumina_pdf_core_renderqueue_kt_int",
-      "confidence_score": 1.0
+      "target": "pdf_core_src_commonmain_kotlin_com_lumina_pdf_core_renderqueue_kt_int"
     },
     {
       "relation": "references",
@@ -6718,9 +7789,9 @@
       "source_location": "L117",
       "weight": 1.0,
       "context": "parameter_type",
+      "confidence_score": 1.0,
       "source": "core_renderqueue_renderqueue_clearobsolete",
-      "target": "set",
-      "confidence_score": 1.0
+      "target": "set"
     },
     {
       "relation": "contains",
@@ -6783,6 +7854,17 @@
       "source_location": "L46",
       "weight": 1.0,
       "source": "renderer_androidpdfdocument_androidpdfdocument_rendertile",
+      "target": "renderer_androidpdfbitmap_androidpdfbitmap"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "pdf-viewer/src/androidMain/kotlin/com/lumina/pdf/viewer/PdfBitmapExtensions.android.kt",
+      "source_location": "L48",
+      "weight": 1.0,
+      "source": "viewer_pdfbitmapextensions_android_decodebytearraytopdfbitmap",
       "target": "renderer_androidpdfbitmap_androidpdfbitmap"
     },
     {
@@ -7315,6 +8397,17 @@
       "target": "renderer_jvmpdfbitmap_jvmpdfbitmap"
     },
     {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "pdf-viewer/src/jvmMain/kotlin/com/lumina/pdf/viewer/PdfBitmapExtensions.jvm.kt",
+      "source_location": "L34",
+      "weight": 1.0,
+      "source": "viewer_pdfbitmapextensions_jvm_decodebytearraytopdfbitmap",
+      "target": "renderer_jvmpdfbitmap_jvmpdfbitmap"
+    },
+    {
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "pdf-renderer/src/jvmMain/kotlin/com/lumina/pdf/renderer/JvmPdfDocument.kt",
@@ -7829,11 +8922,51 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "pdf-viewer/src/androidMain/kotlin/com/lumina/pdf/viewer/PdfBitmapExtensions.android.kt",
+      "source_location": "L51",
+      "weight": 1.0,
+      "source": "viewer_pdfbitmapextensions_android",
+      "target": "viewer_pdfbitmapextensions_android_androiddiskcache",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-viewer/src/androidMain/kotlin/com/lumina/pdf/viewer/PdfBitmapExtensions.android.kt",
       "source_location": "L8",
       "weight": 1.0,
       "confidence_score": 1.0,
       "source": "viewer_pdfbitmapextensions_android",
       "target": "viewer_pdfbitmapextensions_android_asimagebitmap"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-viewer/src/androidMain/kotlin/com/lumina/pdf/viewer/PdfBitmapExtensions.android.kt",
+      "source_location": "L46",
+      "weight": 1.0,
+      "source": "viewer_pdfbitmapextensions_android",
+      "target": "viewer_pdfbitmapextensions_android_decodebytearraytopdfbitmap",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-viewer/src/androidMain/kotlin/com/lumina/pdf/viewer/PdfBitmapExtensions.android.kt",
+      "source_location": "L74",
+      "weight": 1.0,
+      "source": "viewer_pdfbitmapextensions_android",
+      "target": "viewer_pdfbitmapextensions_android_rememberdiskcache",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-viewer/src/androidMain/kotlin/com/lumina/pdf/viewer/PdfBitmapExtensions.android.kt",
+      "source_location": "L26",
+      "weight": 1.0,
+      "source": "viewer_pdfbitmapextensions_android",
+      "target": "viewer_pdfbitmapextensions_android_tobytearray",
+      "confidence_score": 1.0
     },
     {
       "relation": "references",
@@ -7845,6 +8978,250 @@
       "confidence_score": 1.0,
       "source": "viewer_pdfbitmapextensions_android_asimagebitmap",
       "target": "pdf_viewer_src_androidmain_kotlin_com_lumina_pdf_viewer_pdfbitmapextensions_android_kt_imagebitmap"
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-viewer/src/androidMain/kotlin/com/lumina/pdf/viewer/PdfBitmapExtensions.android.kt",
+      "source_location": "L26",
+      "weight": 1.0,
+      "context": "return_type",
+      "source": "viewer_pdfbitmapextensions_android_tobytearray",
+      "target": "pdf_viewer_src_androidmain_kotlin_com_lumina_pdf_viewer_pdfbitmapextensions_android_kt_bytearray",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-viewer/src/androidMain/kotlin/com/lumina/pdf/viewer/PdfBitmapExtensions.android.kt",
+      "source_location": "L54",
+      "weight": 1.0,
+      "context": "return_type",
+      "source": "viewer_pdfbitmapextensions_android_androiddiskcache_get",
+      "target": "pdf_viewer_src_androidmain_kotlin_com_lumina_pdf_viewer_pdfbitmapextensions_android_kt_bytearray",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-viewer/src/androidMain/kotlin/com/lumina/pdf/viewer/PdfBitmapExtensions.android.kt",
+      "source_location": "L59",
+      "weight": 1.0,
+      "context": "parameter_type",
+      "source": "viewer_pdfbitmapextensions_android_androiddiskcache_put",
+      "target": "pdf_viewer_src_androidmain_kotlin_com_lumina_pdf_viewer_pdfbitmapextensions_android_kt_bytearray",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-viewer/src/androidMain/kotlin/com/lumina/pdf/viewer/PdfBitmapExtensions.android.kt",
+      "source_location": "L46",
+      "weight": 1.0,
+      "context": "parameter_type",
+      "source": "viewer_pdfbitmapextensions_android_decodebytearraytopdfbitmap",
+      "target": "pdf_viewer_src_androidmain_kotlin_com_lumina_pdf_viewer_pdfbitmapextensions_android_kt_bytearray",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-viewer/src/androidMain/kotlin/com/lumina/pdf/viewer/PdfBitmapExtensions.android.kt",
+      "source_location": "L46",
+      "weight": 1.0,
+      "context": "return_type",
+      "source": "viewer_pdfbitmapextensions_android_decodebytearraytopdfbitmap",
+      "target": "pdf_viewer_src_androidmain_kotlin_com_lumina_pdf_viewer_pdfbitmapextensions_android_kt_pdfbitmap",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "implements",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-viewer/src/androidMain/kotlin/com/lumina/pdf/viewer/PdfBitmapExtensions.android.kt",
+      "source_location": "L51",
+      "weight": 1.0,
+      "source": "viewer_pdfbitmapextensions_android_androiddiskcache",
+      "target": "diskcache",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-viewer/src/androidMain/kotlin/com/lumina/pdf/viewer/PdfBitmapExtensions.android.kt",
+      "source_location": "L69",
+      "weight": 1.0,
+      "source": "viewer_pdfbitmapextensions_android_androiddiskcache",
+      "target": "viewer_pdfbitmapextensions_android_androiddiskcache_clear",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-viewer/src/androidMain/kotlin/com/lumina/pdf/viewer/PdfBitmapExtensions.android.kt",
+      "source_location": "L54",
+      "weight": 1.0,
+      "source": "viewer_pdfbitmapextensions_android_androiddiskcache",
+      "target": "viewer_pdfbitmapextensions_android_androiddiskcache_get",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-viewer/src/androidMain/kotlin/com/lumina/pdf/viewer/PdfBitmapExtensions.android.kt",
+      "source_location": "L59",
+      "weight": 1.0,
+      "source": "viewer_pdfbitmapextensions_android_androiddiskcache",
+      "target": "viewer_pdfbitmapextensions_android_androiddiskcache_put",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-viewer/src/androidMain/kotlin/com/lumina/pdf/viewer/PdfBitmapExtensions.android.kt",
+      "source_location": "L64",
+      "weight": 1.0,
+      "source": "viewer_pdfbitmapextensions_android_androiddiskcache",
+      "target": "viewer_pdfbitmapextensions_android_androiddiskcache_remove",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-viewer/src/androidMain/kotlin/com/lumina/pdf/viewer/PdfBitmapExtensions.android.kt",
+      "source_location": "L77",
+      "weight": 1.0,
+      "source": "viewer_pdfbitmapextensions_android_rememberdiskcache",
+      "target": "viewer_pdfbitmapextensions_android_androiddiskcache",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-viewer/src/androidMain/kotlin/com/lumina/pdf/viewer/PdfBitmapExtensions.android.kt",
+      "source_location": "L74",
+      "weight": 1.0,
+      "context": "return_type",
+      "source": "viewer_pdfbitmapextensions_android_rememberdiskcache",
+      "target": "diskcache",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "implements",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-viewer/src/iosMain/kotlin/com/lumina/pdf/viewer/PdfBitmapExtensions.ios.kt",
+      "source_location": "L18",
+      "weight": 1.0,
+      "source": "viewer_pdfbitmapextensions_ios_iosnoopdiskcache",
+      "target": "diskcache",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-viewer/src/iosMain/kotlin/com/lumina/pdf/viewer/PdfBitmapExtensions.ios.kt",
+      "source_location": "L25",
+      "weight": 1.0,
+      "context": "return_type",
+      "source": "viewer_pdfbitmapextensions_ios_rememberdiskcache",
+      "target": "diskcache",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "implements",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-viewer/src/jsMain/kotlin/com/lumina/pdf/viewer/PdfBitmapExtensions.js.kt",
+      "source_location": "L18",
+      "weight": 1.0,
+      "source": "viewer_pdfbitmapextensions_js_jsnoopdiskcache",
+      "target": "diskcache",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-viewer/src/jsMain/kotlin/com/lumina/pdf/viewer/PdfBitmapExtensions.js.kt",
+      "source_location": "L25",
+      "weight": 1.0,
+      "context": "return_type",
+      "source": "viewer_pdfbitmapextensions_js_rememberdiskcache",
+      "target": "diskcache",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "implements",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-viewer/src/jvmMain/kotlin/com/lumina/pdf/viewer/PdfBitmapExtensions.jvm.kt",
+      "source_location": "L37",
+      "weight": 1.0,
+      "source": "viewer_pdfbitmapextensions_jvm_jvmdiskcache",
+      "target": "diskcache",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-viewer/src/jvmMain/kotlin/com/lumina/pdf/viewer/PdfBitmapExtensions.jvm.kt",
+      "source_location": "L60",
+      "weight": 1.0,
+      "context": "return_type",
+      "source": "viewer_pdfbitmapextensions_jvm_rememberdiskcache",
+      "target": "diskcache",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-viewer/src/wasmJsMain/kotlin/com/lumina/pdf/viewer/PdfBitmapExtensions.wasmJs.kt",
+      "source_location": "L25",
+      "weight": 1.0,
+      "context": "return_type",
+      "source": "viewer_pdfbitmapextensions_wasmjs_rememberdiskcache",
+      "target": "diskcache",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "implements",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-viewer/src/wasmJsMain/kotlin/com/lumina/pdf/viewer/PdfBitmapExtensions.wasmJs.kt",
+      "source_location": "L18",
+      "weight": 1.0,
+      "source": "viewer_pdfbitmapextensions_wasmjs_wasmjsnoopdiskcache",
+      "target": "diskcache",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-viewer/src/androidMain/kotlin/com/lumina/pdf/viewer/PdfBitmapExtensions.android.kt",
+      "source_location": "L54",
+      "weight": 1.0,
+      "context": "parameter_type",
+      "source": "viewer_pdfbitmapextensions_android_androiddiskcache_get",
+      "target": "pdf_viewer_src_androidmain_kotlin_com_lumina_pdf_viewer_pdfbitmapextensions_android_kt_string",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-viewer/src/androidMain/kotlin/com/lumina/pdf/viewer/PdfBitmapExtensions.android.kt",
+      "source_location": "L59",
+      "weight": 1.0,
+      "context": "parameter_type",
+      "source": "viewer_pdfbitmapextensions_android_androiddiskcache_put",
+      "target": "pdf_viewer_src_androidmain_kotlin_com_lumina_pdf_viewer_pdfbitmapextensions_android_kt_string",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-viewer/src/androidMain/kotlin/com/lumina/pdf/viewer/PdfBitmapExtensions.android.kt",
+      "source_location": "L64",
+      "weight": 1.0,
+      "context": "parameter_type",
+      "source": "viewer_pdfbitmapextensions_android_androiddiskcache_remove",
+      "target": "pdf_viewer_src_androidmain_kotlin_com_lumina_pdf_viewer_pdfbitmapextensions_android_kt_string",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -8132,6 +9509,36 @@
       "target": "viewer_pdfbitmapextensions_asimagebitmap"
     },
     {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-viewer/src/commonMain/kotlin/com/lumina/pdf/viewer/PdfBitmapExtensions.kt",
+      "source_location": "L11",
+      "weight": 1.0,
+      "source": "viewer_pdfbitmapextensions",
+      "target": "viewer_pdfbitmapextensions_decodebytearraytopdfbitmap",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-viewer/src/commonMain/kotlin/com/lumina/pdf/viewer/PdfBitmapExtensions.kt",
+      "source_location": "L13",
+      "weight": 1.0,
+      "source": "viewer_pdfbitmapextensions",
+      "target": "viewer_pdfbitmapextensions_rememberdiskcache",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-viewer/src/commonMain/kotlin/com/lumina/pdf/viewer/PdfBitmapExtensions.kt",
+      "source_location": "L9",
+      "weight": 1.0,
+      "source": "viewer_pdfbitmapextensions",
+      "target": "viewer_pdfbitmapextensions_tobytearray",
+      "confidence_score": 1.0
+    },
+    {
       "relation": "references",
       "confidence": "EXTRACTED",
       "source_file": "pdf-viewer/src/commonMain/kotlin/com/lumina/pdf/viewer/PdfBitmapExtensions.kt",
@@ -8141,6 +9548,50 @@
       "confidence_score": 1.0,
       "source": "viewer_pdfbitmapextensions_asimagebitmap",
       "target": "pdf_viewer_src_commonmain_kotlin_com_lumina_pdf_viewer_pdfbitmapextensions_kt_imagebitmap"
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-viewer/src/commonMain/kotlin/com/lumina/pdf/viewer/PdfBitmapExtensions.kt",
+      "source_location": "L9",
+      "weight": 1.0,
+      "context": "return_type",
+      "source": "viewer_pdfbitmapextensions_tobytearray",
+      "target": "pdf_viewer_src_commonmain_kotlin_com_lumina_pdf_viewer_pdfbitmapextensions_kt_bytearray",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-viewer/src/commonMain/kotlin/com/lumina/pdf/viewer/PdfBitmapExtensions.kt",
+      "source_location": "L11",
+      "weight": 1.0,
+      "context": "parameter_type",
+      "source": "viewer_pdfbitmapextensions_decodebytearraytopdfbitmap",
+      "target": "pdf_viewer_src_commonmain_kotlin_com_lumina_pdf_viewer_pdfbitmapextensions_kt_bytearray",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-viewer/src/commonMain/kotlin/com/lumina/pdf/viewer/PdfBitmapExtensions.kt",
+      "source_location": "L11",
+      "weight": 1.0,
+      "context": "return_type",
+      "source": "viewer_pdfbitmapextensions_decodebytearraytopdfbitmap",
+      "target": "pdf_viewer_src_commonmain_kotlin_com_lumina_pdf_viewer_pdfbitmapextensions_kt_pdfbitmap",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-viewer/src/commonMain/kotlin/com/lumina/pdf/viewer/PdfBitmapExtensions.kt",
+      "source_location": "L13",
+      "weight": 1.0,
+      "context": "return_type",
+      "source": "viewer_pdfbitmapextensions_rememberdiskcache",
+      "target": "pdf_viewer_src_commonmain_kotlin_com_lumina_pdf_viewer_pdfbitmapextensions_kt_diskcache",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -10314,6 +11765,46 @@
       "target": "viewer_pdfbitmapextensions_ios_asimagebitmap"
     },
     {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-viewer/src/iosMain/kotlin/com/lumina/pdf/viewer/PdfBitmapExtensions.ios.kt",
+      "source_location": "L16",
+      "weight": 1.0,
+      "source": "viewer_pdfbitmapextensions_ios",
+      "target": "viewer_pdfbitmapextensions_ios_decodebytearraytopdfbitmap",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-viewer/src/iosMain/kotlin/com/lumina/pdf/viewer/PdfBitmapExtensions.ios.kt",
+      "source_location": "L18",
+      "weight": 1.0,
+      "source": "viewer_pdfbitmapextensions_ios",
+      "target": "viewer_pdfbitmapextensions_ios_iosnoopdiskcache",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-viewer/src/iosMain/kotlin/com/lumina/pdf/viewer/PdfBitmapExtensions.ios.kt",
+      "source_location": "L25",
+      "weight": 1.0,
+      "source": "viewer_pdfbitmapextensions_ios",
+      "target": "viewer_pdfbitmapextensions_ios_rememberdiskcache",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-viewer/src/iosMain/kotlin/com/lumina/pdf/viewer/PdfBitmapExtensions.ios.kt",
+      "source_location": "L14",
+      "weight": 1.0,
+      "source": "viewer_pdfbitmapextensions_ios",
+      "target": "viewer_pdfbitmapextensions_ios_tobytearray",
+      "confidence_score": 1.0
+    },
+    {
       "relation": "references",
       "confidence": "EXTRACTED",
       "source_file": "pdf-viewer/src/iosMain/kotlin/com/lumina/pdf/viewer/PdfBitmapExtensions.ios.kt",
@@ -10323,6 +11814,145 @@
       "confidence_score": 1.0,
       "source": "viewer_pdfbitmapextensions_ios_asimagebitmap",
       "target": "pdf_viewer_src_iosmain_kotlin_com_lumina_pdf_viewer_pdfbitmapextensions_ios_kt_imagebitmap"
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-viewer/src/iosMain/kotlin/com/lumina/pdf/viewer/PdfBitmapExtensions.ios.kt",
+      "source_location": "L14",
+      "weight": 1.0,
+      "context": "return_type",
+      "source": "viewer_pdfbitmapextensions_ios_tobytearray",
+      "target": "pdf_viewer_src_iosmain_kotlin_com_lumina_pdf_viewer_pdfbitmapextensions_ios_kt_bytearray",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-viewer/src/iosMain/kotlin/com/lumina/pdf/viewer/PdfBitmapExtensions.ios.kt",
+      "source_location": "L16",
+      "weight": 1.0,
+      "context": "parameter_type",
+      "source": "viewer_pdfbitmapextensions_ios_decodebytearraytopdfbitmap",
+      "target": "pdf_viewer_src_iosmain_kotlin_com_lumina_pdf_viewer_pdfbitmapextensions_ios_kt_bytearray",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-viewer/src/iosMain/kotlin/com/lumina/pdf/viewer/PdfBitmapExtensions.ios.kt",
+      "source_location": "L19",
+      "weight": 1.0,
+      "context": "return_type",
+      "source": "viewer_pdfbitmapextensions_ios_iosnoopdiskcache_get",
+      "target": "pdf_viewer_src_iosmain_kotlin_com_lumina_pdf_viewer_pdfbitmapextensions_ios_kt_bytearray",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-viewer/src/iosMain/kotlin/com/lumina/pdf/viewer/PdfBitmapExtensions.ios.kt",
+      "source_location": "L20",
+      "weight": 1.0,
+      "context": "parameter_type",
+      "source": "viewer_pdfbitmapextensions_ios_iosnoopdiskcache_put",
+      "target": "pdf_viewer_src_iosmain_kotlin_com_lumina_pdf_viewer_pdfbitmapextensions_ios_kt_bytearray",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-viewer/src/iosMain/kotlin/com/lumina/pdf/viewer/PdfBitmapExtensions.ios.kt",
+      "source_location": "L16",
+      "weight": 1.0,
+      "context": "return_type",
+      "source": "viewer_pdfbitmapextensions_ios_decodebytearraytopdfbitmap",
+      "target": "pdf_viewer_src_iosmain_kotlin_com_lumina_pdf_viewer_pdfbitmapextensions_ios_kt_pdfbitmap",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-viewer/src/iosMain/kotlin/com/lumina/pdf/viewer/PdfBitmapExtensions.ios.kt",
+      "source_location": "L22",
+      "weight": 1.0,
+      "source": "viewer_pdfbitmapextensions_ios_iosnoopdiskcache",
+      "target": "viewer_pdfbitmapextensions_ios_iosnoopdiskcache_clear",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-viewer/src/iosMain/kotlin/com/lumina/pdf/viewer/PdfBitmapExtensions.ios.kt",
+      "source_location": "L19",
+      "weight": 1.0,
+      "source": "viewer_pdfbitmapextensions_ios_iosnoopdiskcache",
+      "target": "viewer_pdfbitmapextensions_ios_iosnoopdiskcache_get",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-viewer/src/iosMain/kotlin/com/lumina/pdf/viewer/PdfBitmapExtensions.ios.kt",
+      "source_location": "L20",
+      "weight": 1.0,
+      "source": "viewer_pdfbitmapextensions_ios_iosnoopdiskcache",
+      "target": "viewer_pdfbitmapextensions_ios_iosnoopdiskcache_put",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-viewer/src/iosMain/kotlin/com/lumina/pdf/viewer/PdfBitmapExtensions.ios.kt",
+      "source_location": "L21",
+      "weight": 1.0,
+      "source": "viewer_pdfbitmapextensions_ios_iosnoopdiskcache",
+      "target": "viewer_pdfbitmapextensions_ios_iosnoopdiskcache_remove",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-viewer/src/iosMain/kotlin/com/lumina/pdf/viewer/PdfBitmapExtensions.ios.kt",
+      "source_location": "L27",
+      "weight": 1.0,
+      "source": "viewer_pdfbitmapextensions_ios_rememberdiskcache",
+      "target": "viewer_pdfbitmapextensions_ios_iosnoopdiskcache",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-viewer/src/iosMain/kotlin/com/lumina/pdf/viewer/PdfBitmapExtensions.ios.kt",
+      "source_location": "L19",
+      "weight": 1.0,
+      "context": "parameter_type",
+      "source": "viewer_pdfbitmapextensions_ios_iosnoopdiskcache_get",
+      "target": "pdf_viewer_src_iosmain_kotlin_com_lumina_pdf_viewer_pdfbitmapextensions_ios_kt_string",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-viewer/src/iosMain/kotlin/com/lumina/pdf/viewer/PdfBitmapExtensions.ios.kt",
+      "source_location": "L20",
+      "weight": 1.0,
+      "context": "parameter_type",
+      "source": "viewer_pdfbitmapextensions_ios_iosnoopdiskcache_put",
+      "target": "pdf_viewer_src_iosmain_kotlin_com_lumina_pdf_viewer_pdfbitmapextensions_ios_kt_string",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-viewer/src/iosMain/kotlin/com/lumina/pdf/viewer/PdfBitmapExtensions.ios.kt",
+      "source_location": "L21",
+      "weight": 1.0,
+      "context": "parameter_type",
+      "source": "viewer_pdfbitmapextensions_ios_iosnoopdiskcache_remove",
+      "target": "pdf_viewer_src_iosmain_kotlin_com_lumina_pdf_viewer_pdfbitmapextensions_ios_kt_string",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -10589,6 +12219,46 @@
       "target": "viewer_pdfbitmapextensions_js_asimagebitmap"
     },
     {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-viewer/src/jsMain/kotlin/com/lumina/pdf/viewer/PdfBitmapExtensions.js.kt",
+      "source_location": "L16",
+      "weight": 1.0,
+      "source": "viewer_pdfbitmapextensions_js",
+      "target": "viewer_pdfbitmapextensions_js_decodebytearraytopdfbitmap",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-viewer/src/jsMain/kotlin/com/lumina/pdf/viewer/PdfBitmapExtensions.js.kt",
+      "source_location": "L18",
+      "weight": 1.0,
+      "source": "viewer_pdfbitmapextensions_js",
+      "target": "viewer_pdfbitmapextensions_js_jsnoopdiskcache",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-viewer/src/jsMain/kotlin/com/lumina/pdf/viewer/PdfBitmapExtensions.js.kt",
+      "source_location": "L25",
+      "weight": 1.0,
+      "source": "viewer_pdfbitmapextensions_js",
+      "target": "viewer_pdfbitmapextensions_js_rememberdiskcache",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-viewer/src/jsMain/kotlin/com/lumina/pdf/viewer/PdfBitmapExtensions.js.kt",
+      "source_location": "L14",
+      "weight": 1.0,
+      "source": "viewer_pdfbitmapextensions_js",
+      "target": "viewer_pdfbitmapextensions_js_tobytearray",
+      "confidence_score": 1.0
+    },
+    {
       "relation": "references",
       "confidence": "EXTRACTED",
       "source_file": "pdf-viewer/src/jsMain/kotlin/com/lumina/pdf/viewer/PdfBitmapExtensions.js.kt",
@@ -10598,6 +12268,145 @@
       "confidence_score": 1.0,
       "source": "viewer_pdfbitmapextensions_js_asimagebitmap",
       "target": "pdf_viewer_src_jsmain_kotlin_com_lumina_pdf_viewer_pdfbitmapextensions_js_kt_imagebitmap"
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-viewer/src/jsMain/kotlin/com/lumina/pdf/viewer/PdfBitmapExtensions.js.kt",
+      "source_location": "L14",
+      "weight": 1.0,
+      "context": "return_type",
+      "source": "viewer_pdfbitmapextensions_js_tobytearray",
+      "target": "pdf_viewer_src_jsmain_kotlin_com_lumina_pdf_viewer_pdfbitmapextensions_js_kt_bytearray",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-viewer/src/jsMain/kotlin/com/lumina/pdf/viewer/PdfBitmapExtensions.js.kt",
+      "source_location": "L16",
+      "weight": 1.0,
+      "context": "parameter_type",
+      "source": "viewer_pdfbitmapextensions_js_decodebytearraytopdfbitmap",
+      "target": "pdf_viewer_src_jsmain_kotlin_com_lumina_pdf_viewer_pdfbitmapextensions_js_kt_bytearray",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-viewer/src/jsMain/kotlin/com/lumina/pdf/viewer/PdfBitmapExtensions.js.kt",
+      "source_location": "L19",
+      "weight": 1.0,
+      "context": "return_type",
+      "source": "viewer_pdfbitmapextensions_js_jsnoopdiskcache_get",
+      "target": "pdf_viewer_src_jsmain_kotlin_com_lumina_pdf_viewer_pdfbitmapextensions_js_kt_bytearray",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-viewer/src/jsMain/kotlin/com/lumina/pdf/viewer/PdfBitmapExtensions.js.kt",
+      "source_location": "L20",
+      "weight": 1.0,
+      "context": "parameter_type",
+      "source": "viewer_pdfbitmapextensions_js_jsnoopdiskcache_put",
+      "target": "pdf_viewer_src_jsmain_kotlin_com_lumina_pdf_viewer_pdfbitmapextensions_js_kt_bytearray",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-viewer/src/jsMain/kotlin/com/lumina/pdf/viewer/PdfBitmapExtensions.js.kt",
+      "source_location": "L16",
+      "weight": 1.0,
+      "context": "return_type",
+      "source": "viewer_pdfbitmapextensions_js_decodebytearraytopdfbitmap",
+      "target": "pdf_viewer_src_jsmain_kotlin_com_lumina_pdf_viewer_pdfbitmapextensions_js_kt_pdfbitmap",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-viewer/src/jsMain/kotlin/com/lumina/pdf/viewer/PdfBitmapExtensions.js.kt",
+      "source_location": "L22",
+      "weight": 1.0,
+      "source": "viewer_pdfbitmapextensions_js_jsnoopdiskcache",
+      "target": "viewer_pdfbitmapextensions_js_jsnoopdiskcache_clear",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-viewer/src/jsMain/kotlin/com/lumina/pdf/viewer/PdfBitmapExtensions.js.kt",
+      "source_location": "L19",
+      "weight": 1.0,
+      "source": "viewer_pdfbitmapextensions_js_jsnoopdiskcache",
+      "target": "viewer_pdfbitmapextensions_js_jsnoopdiskcache_get",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-viewer/src/jsMain/kotlin/com/lumina/pdf/viewer/PdfBitmapExtensions.js.kt",
+      "source_location": "L20",
+      "weight": 1.0,
+      "source": "viewer_pdfbitmapextensions_js_jsnoopdiskcache",
+      "target": "viewer_pdfbitmapextensions_js_jsnoopdiskcache_put",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-viewer/src/jsMain/kotlin/com/lumina/pdf/viewer/PdfBitmapExtensions.js.kt",
+      "source_location": "L21",
+      "weight": 1.0,
+      "source": "viewer_pdfbitmapextensions_js_jsnoopdiskcache",
+      "target": "viewer_pdfbitmapextensions_js_jsnoopdiskcache_remove",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-viewer/src/jsMain/kotlin/com/lumina/pdf/viewer/PdfBitmapExtensions.js.kt",
+      "source_location": "L27",
+      "weight": 1.0,
+      "source": "viewer_pdfbitmapextensions_js_rememberdiskcache",
+      "target": "viewer_pdfbitmapextensions_js_jsnoopdiskcache",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-viewer/src/jsMain/kotlin/com/lumina/pdf/viewer/PdfBitmapExtensions.js.kt",
+      "source_location": "L19",
+      "weight": 1.0,
+      "context": "parameter_type",
+      "source": "viewer_pdfbitmapextensions_js_jsnoopdiskcache_get",
+      "target": "pdf_viewer_src_jsmain_kotlin_com_lumina_pdf_viewer_pdfbitmapextensions_js_kt_string",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-viewer/src/jsMain/kotlin/com/lumina/pdf/viewer/PdfBitmapExtensions.js.kt",
+      "source_location": "L20",
+      "weight": 1.0,
+      "context": "parameter_type",
+      "source": "viewer_pdfbitmapextensions_js_jsnoopdiskcache_put",
+      "target": "pdf_viewer_src_jsmain_kotlin_com_lumina_pdf_viewer_pdfbitmapextensions_js_kt_string",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-viewer/src/jsMain/kotlin/com/lumina/pdf/viewer/PdfBitmapExtensions.js.kt",
+      "source_location": "L21",
+      "weight": 1.0,
+      "context": "parameter_type",
+      "source": "viewer_pdfbitmapextensions_js_jsnoopdiskcache_remove",
+      "target": "pdf_viewer_src_jsmain_kotlin_com_lumina_pdf_viewer_pdfbitmapextensions_js_kt_string",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -10853,6 +12662,46 @@
       "target": "viewer_pdfbitmapextensions_jvm_asimagebitmap"
     },
     {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-viewer/src/jvmMain/kotlin/com/lumina/pdf/viewer/PdfBitmapExtensions.jvm.kt",
+      "source_location": "L31",
+      "weight": 1.0,
+      "source": "viewer_pdfbitmapextensions_jvm",
+      "target": "viewer_pdfbitmapextensions_jvm_decodebytearraytopdfbitmap",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-viewer/src/jvmMain/kotlin/com/lumina/pdf/viewer/PdfBitmapExtensions.jvm.kt",
+      "source_location": "L37",
+      "weight": 1.0,
+      "source": "viewer_pdfbitmapextensions_jvm",
+      "target": "viewer_pdfbitmapextensions_jvm_jvmdiskcache",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-viewer/src/jvmMain/kotlin/com/lumina/pdf/viewer/PdfBitmapExtensions.jvm.kt",
+      "source_location": "L60",
+      "weight": 1.0,
+      "source": "viewer_pdfbitmapextensions_jvm",
+      "target": "viewer_pdfbitmapextensions_jvm_rememberdiskcache",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-viewer/src/jvmMain/kotlin/com/lumina/pdf/viewer/PdfBitmapExtensions.jvm.kt",
+      "source_location": "L24",
+      "weight": 1.0,
+      "source": "viewer_pdfbitmapextensions_jvm",
+      "target": "viewer_pdfbitmapextensions_jvm_tobytearray",
+      "confidence_score": 1.0
+    },
+    {
       "relation": "references",
       "confidence": "EXTRACTED",
       "source_file": "pdf-viewer/src/jvmMain/kotlin/com/lumina/pdf/viewer/PdfBitmapExtensions.jvm.kt",
@@ -10862,6 +12711,145 @@
       "confidence_score": 1.0,
       "source": "viewer_pdfbitmapextensions_jvm_asimagebitmap",
       "target": "pdf_viewer_src_jvmmain_kotlin_com_lumina_pdf_viewer_pdfbitmapextensions_jvm_kt_imagebitmap"
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-viewer/src/jvmMain/kotlin/com/lumina/pdf/viewer/PdfBitmapExtensions.jvm.kt",
+      "source_location": "L24",
+      "weight": 1.0,
+      "context": "return_type",
+      "source": "viewer_pdfbitmapextensions_jvm_tobytearray",
+      "target": "pdf_viewer_src_jvmmain_kotlin_com_lumina_pdf_viewer_pdfbitmapextensions_jvm_kt_bytearray",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-viewer/src/jvmMain/kotlin/com/lumina/pdf/viewer/PdfBitmapExtensions.jvm.kt",
+      "source_location": "L31",
+      "weight": 1.0,
+      "context": "parameter_type",
+      "source": "viewer_pdfbitmapextensions_jvm_decodebytearraytopdfbitmap",
+      "target": "pdf_viewer_src_jvmmain_kotlin_com_lumina_pdf_viewer_pdfbitmapextensions_jvm_kt_bytearray",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-viewer/src/jvmMain/kotlin/com/lumina/pdf/viewer/PdfBitmapExtensions.jvm.kt",
+      "source_location": "L40",
+      "weight": 1.0,
+      "context": "return_type",
+      "source": "viewer_pdfbitmapextensions_jvm_jvmdiskcache_get",
+      "target": "pdf_viewer_src_jvmmain_kotlin_com_lumina_pdf_viewer_pdfbitmapextensions_jvm_kt_bytearray",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-viewer/src/jvmMain/kotlin/com/lumina/pdf/viewer/PdfBitmapExtensions.jvm.kt",
+      "source_location": "L45",
+      "weight": 1.0,
+      "context": "parameter_type",
+      "source": "viewer_pdfbitmapextensions_jvm_jvmdiskcache_put",
+      "target": "pdf_viewer_src_jvmmain_kotlin_com_lumina_pdf_viewer_pdfbitmapextensions_jvm_kt_bytearray",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-viewer/src/jvmMain/kotlin/com/lumina/pdf/viewer/PdfBitmapExtensions.jvm.kt",
+      "source_location": "L31",
+      "weight": 1.0,
+      "context": "return_type",
+      "source": "viewer_pdfbitmapextensions_jvm_decodebytearraytopdfbitmap",
+      "target": "pdf_viewer_src_jvmmain_kotlin_com_lumina_pdf_viewer_pdfbitmapextensions_jvm_kt_pdfbitmap",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-viewer/src/jvmMain/kotlin/com/lumina/pdf/viewer/PdfBitmapExtensions.jvm.kt",
+      "source_location": "L55",
+      "weight": 1.0,
+      "source": "viewer_pdfbitmapextensions_jvm_jvmdiskcache",
+      "target": "viewer_pdfbitmapextensions_jvm_jvmdiskcache_clear",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-viewer/src/jvmMain/kotlin/com/lumina/pdf/viewer/PdfBitmapExtensions.jvm.kt",
+      "source_location": "L40",
+      "weight": 1.0,
+      "source": "viewer_pdfbitmapextensions_jvm_jvmdiskcache",
+      "target": "viewer_pdfbitmapextensions_jvm_jvmdiskcache_get",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-viewer/src/jvmMain/kotlin/com/lumina/pdf/viewer/PdfBitmapExtensions.jvm.kt",
+      "source_location": "L45",
+      "weight": 1.0,
+      "source": "viewer_pdfbitmapextensions_jvm_jvmdiskcache",
+      "target": "viewer_pdfbitmapextensions_jvm_jvmdiskcache_put",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-viewer/src/jvmMain/kotlin/com/lumina/pdf/viewer/PdfBitmapExtensions.jvm.kt",
+      "source_location": "L50",
+      "weight": 1.0,
+      "source": "viewer_pdfbitmapextensions_jvm_jvmdiskcache",
+      "target": "viewer_pdfbitmapextensions_jvm_jvmdiskcache_remove",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-viewer/src/jvmMain/kotlin/com/lumina/pdf/viewer/PdfBitmapExtensions.jvm.kt",
+      "source_location": "L62",
+      "weight": 1.0,
+      "source": "viewer_pdfbitmapextensions_jvm_rememberdiskcache",
+      "target": "viewer_pdfbitmapextensions_jvm_jvmdiskcache",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-viewer/src/jvmMain/kotlin/com/lumina/pdf/viewer/PdfBitmapExtensions.jvm.kt",
+      "source_location": "L40",
+      "weight": 1.0,
+      "context": "parameter_type",
+      "source": "viewer_pdfbitmapextensions_jvm_jvmdiskcache_get",
+      "target": "pdf_viewer_src_jvmmain_kotlin_com_lumina_pdf_viewer_pdfbitmapextensions_jvm_kt_string",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-viewer/src/jvmMain/kotlin/com/lumina/pdf/viewer/PdfBitmapExtensions.jvm.kt",
+      "source_location": "L45",
+      "weight": 1.0,
+      "context": "parameter_type",
+      "source": "viewer_pdfbitmapextensions_jvm_jvmdiskcache_put",
+      "target": "pdf_viewer_src_jvmmain_kotlin_com_lumina_pdf_viewer_pdfbitmapextensions_jvm_kt_string",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-viewer/src/jvmMain/kotlin/com/lumina/pdf/viewer/PdfBitmapExtensions.jvm.kt",
+      "source_location": "L50",
+      "weight": 1.0,
+      "context": "parameter_type",
+      "source": "viewer_pdfbitmapextensions_jvm_jvmdiskcache_remove",
+      "target": "pdf_viewer_src_jvmmain_kotlin_com_lumina_pdf_viewer_pdfbitmapextensions_jvm_kt_string",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -11150,6 +13138,46 @@
       "target": "viewer_pdfbitmapextensions_wasmjs_asimagebitmap"
     },
     {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-viewer/src/wasmJsMain/kotlin/com/lumina/pdf/viewer/PdfBitmapExtensions.wasmJs.kt",
+      "source_location": "L16",
+      "weight": 1.0,
+      "source": "viewer_pdfbitmapextensions_wasmjs",
+      "target": "viewer_pdfbitmapextensions_wasmjs_decodebytearraytopdfbitmap",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-viewer/src/wasmJsMain/kotlin/com/lumina/pdf/viewer/PdfBitmapExtensions.wasmJs.kt",
+      "source_location": "L25",
+      "weight": 1.0,
+      "source": "viewer_pdfbitmapextensions_wasmjs",
+      "target": "viewer_pdfbitmapextensions_wasmjs_rememberdiskcache",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-viewer/src/wasmJsMain/kotlin/com/lumina/pdf/viewer/PdfBitmapExtensions.wasmJs.kt",
+      "source_location": "L14",
+      "weight": 1.0,
+      "source": "viewer_pdfbitmapextensions_wasmjs",
+      "target": "viewer_pdfbitmapextensions_wasmjs_tobytearray",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-viewer/src/wasmJsMain/kotlin/com/lumina/pdf/viewer/PdfBitmapExtensions.wasmJs.kt",
+      "source_location": "L18",
+      "weight": 1.0,
+      "source": "viewer_pdfbitmapextensions_wasmjs",
+      "target": "viewer_pdfbitmapextensions_wasmjs_wasmjsnoopdiskcache",
+      "confidence_score": 1.0
+    },
+    {
       "relation": "references",
       "confidence": "EXTRACTED",
       "source_file": "pdf-viewer/src/wasmJsMain/kotlin/com/lumina/pdf/viewer/PdfBitmapExtensions.wasmJs.kt",
@@ -11159,6 +13187,145 @@
       "confidence_score": 1.0,
       "source": "viewer_pdfbitmapextensions_wasmjs_asimagebitmap",
       "target": "pdf_viewer_src_wasmjsmain_kotlin_com_lumina_pdf_viewer_pdfbitmapextensions_wasmjs_kt_imagebitmap"
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-viewer/src/wasmJsMain/kotlin/com/lumina/pdf/viewer/PdfBitmapExtensions.wasmJs.kt",
+      "source_location": "L14",
+      "weight": 1.0,
+      "context": "return_type",
+      "source": "viewer_pdfbitmapextensions_wasmjs_tobytearray",
+      "target": "pdf_viewer_src_wasmjsmain_kotlin_com_lumina_pdf_viewer_pdfbitmapextensions_wasmjs_kt_bytearray",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-viewer/src/wasmJsMain/kotlin/com/lumina/pdf/viewer/PdfBitmapExtensions.wasmJs.kt",
+      "source_location": "L16",
+      "weight": 1.0,
+      "context": "parameter_type",
+      "source": "viewer_pdfbitmapextensions_wasmjs_decodebytearraytopdfbitmap",
+      "target": "pdf_viewer_src_wasmjsmain_kotlin_com_lumina_pdf_viewer_pdfbitmapextensions_wasmjs_kt_bytearray",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-viewer/src/wasmJsMain/kotlin/com/lumina/pdf/viewer/PdfBitmapExtensions.wasmJs.kt",
+      "source_location": "L19",
+      "weight": 1.0,
+      "context": "return_type",
+      "source": "viewer_pdfbitmapextensions_wasmjs_wasmjsnoopdiskcache_get",
+      "target": "pdf_viewer_src_wasmjsmain_kotlin_com_lumina_pdf_viewer_pdfbitmapextensions_wasmjs_kt_bytearray",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-viewer/src/wasmJsMain/kotlin/com/lumina/pdf/viewer/PdfBitmapExtensions.wasmJs.kt",
+      "source_location": "L20",
+      "weight": 1.0,
+      "context": "parameter_type",
+      "source": "viewer_pdfbitmapextensions_wasmjs_wasmjsnoopdiskcache_put",
+      "target": "pdf_viewer_src_wasmjsmain_kotlin_com_lumina_pdf_viewer_pdfbitmapextensions_wasmjs_kt_bytearray",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-viewer/src/wasmJsMain/kotlin/com/lumina/pdf/viewer/PdfBitmapExtensions.wasmJs.kt",
+      "source_location": "L16",
+      "weight": 1.0,
+      "context": "return_type",
+      "source": "viewer_pdfbitmapextensions_wasmjs_decodebytearraytopdfbitmap",
+      "target": "pdf_viewer_src_wasmjsmain_kotlin_com_lumina_pdf_viewer_pdfbitmapextensions_wasmjs_kt_pdfbitmap",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-viewer/src/wasmJsMain/kotlin/com/lumina/pdf/viewer/PdfBitmapExtensions.wasmJs.kt",
+      "source_location": "L27",
+      "weight": 1.0,
+      "source": "viewer_pdfbitmapextensions_wasmjs_rememberdiskcache",
+      "target": "viewer_pdfbitmapextensions_wasmjs_wasmjsnoopdiskcache",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-viewer/src/wasmJsMain/kotlin/com/lumina/pdf/viewer/PdfBitmapExtensions.wasmJs.kt",
+      "source_location": "L22",
+      "weight": 1.0,
+      "source": "viewer_pdfbitmapextensions_wasmjs_wasmjsnoopdiskcache",
+      "target": "viewer_pdfbitmapextensions_wasmjs_wasmjsnoopdiskcache_clear",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-viewer/src/wasmJsMain/kotlin/com/lumina/pdf/viewer/PdfBitmapExtensions.wasmJs.kt",
+      "source_location": "L19",
+      "weight": 1.0,
+      "source": "viewer_pdfbitmapextensions_wasmjs_wasmjsnoopdiskcache",
+      "target": "viewer_pdfbitmapextensions_wasmjs_wasmjsnoopdiskcache_get",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-viewer/src/wasmJsMain/kotlin/com/lumina/pdf/viewer/PdfBitmapExtensions.wasmJs.kt",
+      "source_location": "L20",
+      "weight": 1.0,
+      "source": "viewer_pdfbitmapextensions_wasmjs_wasmjsnoopdiskcache",
+      "target": "viewer_pdfbitmapextensions_wasmjs_wasmjsnoopdiskcache_put",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-viewer/src/wasmJsMain/kotlin/com/lumina/pdf/viewer/PdfBitmapExtensions.wasmJs.kt",
+      "source_location": "L21",
+      "weight": 1.0,
+      "source": "viewer_pdfbitmapextensions_wasmjs_wasmjsnoopdiskcache",
+      "target": "viewer_pdfbitmapextensions_wasmjs_wasmjsnoopdiskcache_remove",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-viewer/src/wasmJsMain/kotlin/com/lumina/pdf/viewer/PdfBitmapExtensions.wasmJs.kt",
+      "source_location": "L19",
+      "weight": 1.0,
+      "context": "parameter_type",
+      "source": "viewer_pdfbitmapextensions_wasmjs_wasmjsnoopdiskcache_get",
+      "target": "pdf_viewer_src_wasmjsmain_kotlin_com_lumina_pdf_viewer_pdfbitmapextensions_wasmjs_kt_string",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-viewer/src/wasmJsMain/kotlin/com/lumina/pdf/viewer/PdfBitmapExtensions.wasmJs.kt",
+      "source_location": "L20",
+      "weight": 1.0,
+      "context": "parameter_type",
+      "source": "viewer_pdfbitmapextensions_wasmjs_wasmjsnoopdiskcache_put",
+      "target": "pdf_viewer_src_wasmjsmain_kotlin_com_lumina_pdf_viewer_pdfbitmapextensions_wasmjs_kt_string",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-viewer/src/wasmJsMain/kotlin/com/lumina/pdf/viewer/PdfBitmapExtensions.wasmJs.kt",
+      "source_location": "L21",
+      "weight": 1.0,
+      "context": "parameter_type",
+      "source": "viewer_pdfbitmapextensions_wasmjs_wasmjsnoopdiskcache_remove",
+      "target": "pdf_viewer_src_wasmjsmain_kotlin_com_lumina_pdf_viewer_pdfbitmapextensions_wasmjs_kt_string",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -14134,8 +16301,228 @@
       "confidence_score": 1.0,
       "source": "implementation_plan_testing_strategy",
       "target": "implementation_plan_unit_tests"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "perf_improvement.md",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "perf_improvement",
+      "target": "perf_improvement_luminapdf_performance_improvements_phase_1",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "perf_improvement.md",
+      "source_location": "L7",
+      "weight": 1.0,
+      "source": "perf_improvement_luminapdf_performance_improvements_phase_1",
+      "target": "perf_improvement_1_thread_safe_lru_memory_cache_lrumemorycache",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "perf_improvement.md",
+      "source_location": "L40",
+      "weight": 1.0,
+      "source": "perf_improvement_luminapdf_performance_improvements_phase_1",
+      "target": "perf_improvement_2_parallel_render_workers_in_renderqueue",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "perf_improvement.md",
+      "source_location": "L76",
+      "weight": 1.0,
+      "source": "perf_improvement_luminapdf_performance_improvements_phase_1",
+      "target": "perf_improvement_3_jvm_tile_cache_optimization_jvmpdfdocument",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "perf_improvement.md",
+      "source_location": "L115",
+      "weight": 1.0,
+      "source": "perf_improvement_luminapdf_performance_improvements_phase_1",
+      "target": "perf_improvement_4_progressive_lod_thumbnails_background_warmup",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "perf_improvement.md",
+      "source_location": "L132",
+      "weight": 1.0,
+      "source": "perf_improvement_luminapdf_performance_improvements_phase_1",
+      "target": "perf_improvement_5_tile_grouping_viewport_culling",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "perf_improvement.md",
+      "source_location": "L150",
+      "weight": 1.0,
+      "source": "perf_improvement_luminapdf_performance_improvements_phase_1",
+      "target": "perf_improvement_6_android_gpu_acceleration_memory_recycling",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "perf_improvement.md",
+      "source_location": "L172",
+      "weight": 1.0,
+      "source": "perf_improvement_luminapdf_performance_improvements_phase_1",
+      "target": "perf_improvement_7_persistent_l2_disk_cache",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "perf_improvement.md",
+      "source_location": "L20",
+      "weight": 1.0,
+      "source": "perf_improvement_1_thread_safe_lru_memory_cache_lrumemorycache",
+      "target": "perf_improvement_how_we_did_it",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "perf_improvement.md",
+      "source_location": "L9",
+      "weight": 1.0,
+      "source": "perf_improvement_1_thread_safe_lru_memory_cache_lrumemorycache",
+      "target": "perf_improvement_why_we_did_it",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "perf_improvement.md",
+      "source_location": "L45",
+      "weight": 1.0,
+      "source": "perf_improvement_2_parallel_render_workers_in_renderqueue",
+      "target": "perf_improvement_how_we_did_it_45",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "perf_improvement.md",
+      "source_location": "L42",
+      "weight": 1.0,
+      "source": "perf_improvement_2_parallel_render_workers_in_renderqueue",
+      "target": "perf_improvement_why_we_did_it_42",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "perf_improvement.md",
+      "source_location": "L86",
+      "weight": 1.0,
+      "source": "perf_improvement_3_jvm_tile_cache_optimization_jvmpdfdocument",
+      "target": "perf_improvement_how_we_did_it_86",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "perf_improvement.md",
+      "source_location": "L78",
+      "weight": 1.0,
+      "source": "perf_improvement_3_jvm_tile_cache_optimization_jvmpdfdocument",
+      "target": "perf_improvement_why_we_did_it_78",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "perf_improvement.md",
+      "source_location": "L120",
+      "weight": 1.0,
+      "source": "perf_improvement_4_progressive_lod_thumbnails_background_warmup",
+      "target": "perf_improvement_how_we_did_it_120",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "perf_improvement.md",
+      "source_location": "L117",
+      "weight": 1.0,
+      "source": "perf_improvement_4_progressive_lod_thumbnails_background_warmup",
+      "target": "perf_improvement_why_we_did_it_117",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "perf_improvement.md",
+      "source_location": "L137",
+      "weight": 1.0,
+      "source": "perf_improvement_5_tile_grouping_viewport_culling",
+      "target": "perf_improvement_how_we_did_it_137",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "perf_improvement.md",
+      "source_location": "L134",
+      "weight": 1.0,
+      "source": "perf_improvement_5_tile_grouping_viewport_culling",
+      "target": "perf_improvement_why_we_did_it_134",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "perf_improvement.md",
+      "source_location": "L155",
+      "weight": 1.0,
+      "source": "perf_improvement_6_android_gpu_acceleration_memory_recycling",
+      "target": "perf_improvement_how_we_did_it_155",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "perf_improvement.md",
+      "source_location": "L152",
+      "weight": 1.0,
+      "source": "perf_improvement_6_android_gpu_acceleration_memory_recycling",
+      "target": "perf_improvement_why_we_did_it_152",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "perf_improvement.md",
+      "source_location": "L177",
+      "weight": 1.0,
+      "source": "perf_improvement_7_persistent_l2_disk_cache",
+      "target": "perf_improvement_how_we_did_it_177",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "perf_improvement.md",
+      "source_location": "L174",
+      "weight": 1.0,
+      "source": "perf_improvement_7_persistent_l2_disk_cache",
+      "target": "perf_improvement_why_we_did_it_174",
+      "confidence_score": 1.0
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "6d4321dec6ea0b5dfa0eb64307855dd74394c19d"
+  "built_at_commit": "dda0ec6ca9218f4c9a8c7daa9d001f1c54986149"
 }

@@ -167,3 +167,16 @@ val finalBitmap = if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSI
 ```
 This reduces overall JVM heap allocations on Android by over **80%**, preventing GC collection lag stutters while enabling hardware-accelerated pan and zoom compositing.
 
+---
+
+## 7. Persistent L2 Disk Cache
+
+### Why we did it
+Previously, every time the application restarted or a document was re-opened, all page thumbnails had to be rendered from scratch. For long documents or slow mobile/desktop CPUs, this re-rendering work consumed critical CPU cycles and created visual load lag.
+
+### How we did it
+We implemented a persistent **L2 Disk Cache** for page thumbnails:
+- **Platform-Specific Encoding**: Added expect/actual serialization (`toByteArray()`) using Android `Bitmap.compress` (PNG) and JVM `ImageIO.write`, as well as deserialization (`decodeByteArrayToPdfBitmap()`).
+- **JVM & Android Storage**: Implemented target-specific `DiskCache` classes using local file directories (Android `context.cacheDir` and JVM `java.io.tmpdir`), which store raw PNG files mapped to unique keys.
+- **Two-tier Lookup (L1 -> L2)**: Modified the thumbnail loading pipeline in the viewer: on an L1 memory cache miss (`thumbCache`), the system queries the L2 disk cache. If found, the byte array is decoded, saved to the L1 cache, and drawn immediately, completely bypassing the expensive vector rendering pipeline.
+- **Asynchronous Cache Insertion**: When a thumbnail is rendered, we serialize it to a PNG byte array and write it to the disk cache asynchronously inside the background coroutine workers.

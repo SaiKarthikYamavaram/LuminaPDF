@@ -110,6 +110,7 @@ fun PdfViewer(
     // Memory caches and render queue
     val thumbCache = remember(document) { LruMemoryCache(maxBytes = 16L * 1024 * 1024) } // Max 16 MB for thumbnails
     val tileCache = remember(document) { LruMemoryCache(maxBytes = 96L * 1024 * 1024) }  // Max 96 MB for tiles
+    val diskCache = rememberDiskCache()
     val renderQueue = remember(document) { RenderQueue(document, coroutineScope) }
 
     // State maps for current UI
@@ -315,18 +316,29 @@ fun PdfViewer(
             val medKey = "thumb_${p}_med"
             val fullKey = "thumb_${p}_full"
             if (thumbCache.get(fullKey) == null && thumbCache.get(medKey) == null && thumbCache.get(lowKey) == null) {
-                renderQueue.submit(
-                    RenderRequest.Thumbnail(
-                        pageIndex = p,
-                        width = 160,
-                        height = 224,
-                        isPrefetch = true
-                    ) { bitmap ->
-                        bitmap?.let {
-                            thumbCache.put(lowKey, it)
-                        }
+                val diskBytes = diskCache.get(lowKey)
+                if (diskBytes != null) {
+                    val decoded = decodeByteArrayToPdfBitmap(diskBytes)
+                    if (decoded != null) {
+                        thumbCache.put(lowKey, decoded)
                     }
-                )
+                } else {
+                    renderQueue.submit(
+                        RenderRequest.Thumbnail(
+                            pageIndex = p,
+                            width = 160,
+                            height = 224,
+                            isPrefetch = true
+                        ) { bitmap ->
+                            bitmap?.let {
+                                thumbCache.put(lowKey, it)
+                                it.toByteArray()?.let { bytes ->
+                                    diskCache.put(lowKey, bytes)
+                                }
+                            }
+                        }
+                    )
+                }
             }
         }
     }
@@ -568,6 +580,17 @@ fun PdfViewer(
                 if (cachedFull != null) {
                     thumbnails[page] = cachedFull.asImageBitmap()
                 } else {
+                    // Try Disk Cache (L2)
+                    val diskBytes = diskCache.get(fullKey)
+                    if (diskBytes != null) {
+                        val decoded = decodeByteArrayToPdfBitmap(diskBytes)
+                        if (decoded != null) {
+                            thumbCache.put(fullKey, decoded)
+                            thumbnails[page] = decoded.asImageBitmap()
+                            continue
+                        }
+                    }
+
                     // Display fallback if available
                     val cachedMed = thumbCache.get("thumb_${page}_med")
                     val cachedLow = thumbCache.get("thumb_${page}_low")
@@ -586,6 +609,9 @@ fun PdfViewer(
                             bitmap?.let {
                                 thumbCache.put(fullKey, it)
                                 thumbnails[page] = it.asImageBitmap()
+                                it.toByteArray()?.let { bytes ->
+                                    diskCache.put(fullKey, bytes)
+                                }
                             }
                         }
                     )
@@ -603,6 +629,19 @@ fun PdfViewer(
                 val tierKeyFull = "thumb_${page}_$tierKey"
                 
                 if (thumbCache.get(fullKey) == null && thumbCache.get(tierKeyFull) == null) {
+                    // Try Disk Cache (L2)
+                    val diskTierBytes = diskCache.get(tierKeyFull)
+                    if (diskTierBytes != null) {
+                        val decoded = decodeByteArrayToPdfBitmap(diskTierBytes)
+                        if (decoded != null) {
+                            thumbCache.put(tierKeyFull, decoded)
+                            if (!thumbnails.containsKey(page)) {
+                                                            thumbnails[page] = decoded.asImageBitmap()
+                            }
+                            continue
+                        }
+                    }
+
                     renderQueue.submit(
                         RenderRequest.Thumbnail(
                             pageIndex = page,
@@ -614,6 +653,9 @@ fun PdfViewer(
                                 thumbCache.put(tierKeyFull, it)
                                 if (!thumbnails.containsKey(page)) {
                                     thumbnails[page] = it.asImageBitmap()
+                                }
+                                it.toByteArray()?.let { bytes ->
+                                    diskCache.put(tierKeyFull, bytes)
                                 }
                             }
                         }
