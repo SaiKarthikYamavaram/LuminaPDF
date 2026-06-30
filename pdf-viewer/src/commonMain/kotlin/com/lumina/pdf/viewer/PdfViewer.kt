@@ -817,6 +817,9 @@ fun PdfViewer(
             val estimatedPageHeight = size.width * 1.4f
             val tileSize = 512
 
+            // Group active tiles by page to optimize O(1) page lookup in loop
+            val groupedTiles = activeTiles.keys.groupBy { it.page }
+
             translate(left = state.scrollOffset.x, top = state.scrollOffset.y) {
                 scale(scale = state.zoom, pivot = Offset.Zero) {
                     for (page in state.visiblePages) {
@@ -838,9 +841,21 @@ fun PdfViewer(
                         if (state.zoom > 1.5f) {
                             translate(left = 0f, top = pageTop) {
                                 scale(scale = 1f / state.zoom, pivot = Offset.Zero) {
-                                    activeTiles.filter { it.key.page == page }.forEach { (key, tileBitmap) ->
+                                    groupedTiles[page]?.forEach { key ->
+                                        val tileBitmap = activeTiles[key] ?: return@forEach
                                         val bucketZoom = key.zoomLevel / 10f
                                         val scaleMultiplier = state.zoom / bucketZoom
+                                        
+                                        // Viewport culling: skip rendering if tile bounds are completely off-screen
+                                        val tileLeft = state.scrollOffset.x + (key.col * tileSize * scaleMultiplier)
+                                        val tileTop = state.scrollOffset.y + (pageTop * state.zoom) + (key.row * tileSize * scaleMultiplier)
+                                        val tileRight = tileLeft + (tileSize * scaleMultiplier)
+                                        val tileBottom = tileTop + (tileSize * scaleMultiplier)
+                                        
+                                        if (tileRight < 0f || tileLeft > viewSize.width || tileBottom < 0f || tileTop > viewSize.height) {
+                                            return@forEach
+                                        }
+
                                         val left = key.col * tileSize * scaleMultiplier
                                         val top = key.row * tileSize * scaleMultiplier
                                         val sizePx = (tileSize * scaleMultiplier).toInt()

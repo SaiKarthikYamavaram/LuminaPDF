@@ -127,4 +127,20 @@ If a visible page's high-resolution thumbnail is not yet rendered, we display it
 
 Additionally, we added a **background warmup** phase upon opening a document, immediately queueing pages 0 to 2 for rendering as low-resolution thumbnails. This makes the initial document display and first scrolling gestures instant.
 
+---
 
+## 5. Tile Grouping & Viewport Culling
+
+### Why we did it
+Previously, for every visible page, the Canvas drawing block scanned the entire `activeTiles` state map using `activeTiles.filter { it.key.page == page }`. On a large multi-page document with high zoom scales and dozens of cached tiles, this meant executing `O(N)` list filters multiple times *per frame*. Additionally, tiles that were completely outside of the screen viewport bounds (e.g. tiles at the far top or bottom of a zoomed visible page) were still undergoing drawing commands and coordinate translation on the graphics system, introducing rendering overhead.
+
+### How we did it
+We optimized the Canvas drawing operations through two techniques:
+- **O(1) Page Tile Lookups**: At the start of the Canvas block, we group all active tiles by page index once: `val groupedTiles = activeTiles.keys.groupBy { it.page }`. In the visible pages loop, we lookup a page's tiles in `O(1)` time (`groupedTiles[page]`), completely eliminating the nested `O(N)` scans.
+- **Viewport Tile Culling**: Before drawing any tile, we compute its absolute coordinate bounds on screen in raw canvas pixels. If the tile's bounds do not intersect the screen viewport (e.g., `tileRight < 0f` or `tileLeft > viewSize.width`), we skip the translation and drawing commands entirely:
+  ```kotlin
+  if (tileRight < 0f || tileLeft > viewSize.width || tileBottom < 0f || tileTop > viewSize.height) {
+      return@forEach
+  }
+  ```
+These changes reduce draw-call counts on the graphics thread and completely avoid rendering CPU-time wastes during scrolling and zooming.
