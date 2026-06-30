@@ -521,6 +521,9 @@ fun PdfViewer(
             state.currentPage = bestPage
         }
 
+        // Debounce expensive rendering requests by 80ms while scrolling/zooming
+        kotlinx.coroutines.delay(80)
+
         val firstVisiblePage = firstVisible
         val lastVisiblePage = visibleList.lastOrNull() ?: firstVisible
         val pagesToLoad = if (firstVisiblePage != -1) {
@@ -562,40 +565,63 @@ fun PdfViewer(
         // 2. Request Tiles
         if (state.zoom > 1.5f) {
             val tileSize = 512
-            val zoomLevelInt = state.zoom.toInt()
+            val bucketZoom = when {
+                state.zoom <= 2.0f -> 2.0f
+                state.zoom <= 2.8f -> 2.8f
+                state.zoom <= 4.0f -> 4.0f
+                else -> 5.6f
+            }
+            val zoomLevelInt = (bucketZoom * 10).toInt()
             
             for (page in state.visiblePages) {
-                val localScrollY = (-state.scrollOffset.y - (page * (estimatedPageHeight + spacingPx) * state.zoom)).coerceAtLeast(0f)
+                val pageTopPx = page * (estimatedPageHeight + spacingPx) * state.zoom
+                val localScrollY = ((-state.scrollOffset.y - pageTopPx) / state.zoom * bucketZoom).coerceAtLeast(0f)
+                val localViewportHeight = (viewSize.height / state.zoom * bucketZoom)
+                
                 val startCol = 0
-                val endCol = viewSize.width / tileSize + 1
+                val endCol = ((viewSize.width / state.zoom * bucketZoom) / tileSize).toInt() + 1
                 val startRow = (localScrollY / tileSize).toInt()
-                val endRow = ((localScrollY + viewSize.height) / tileSize).toInt() + 1
+                val endRow = ((localScrollY + localViewportHeight) / tileSize).toInt() + 1
 
                 val requestedKeys = mutableSetOf<TileKey>()
+                
+                // Prioritize tiles closest to the center of the viewport
+                val centerRow = (startRow + endRow) / 2
+                val centerCol = (startCol + endCol) / 2
+                val tilesToRequest = mutableListOf<Pair<Int, Int>>()
                 for (row in startRow..endRow) {
                     for (col in startCol..endCol) {
-                        val key = TileKey(page, row, col, zoomLevelInt)
-                        requestedKeys.add(key)
-                        
-                        val cacheKey = "tile_${page}_${row}_${col}_$zoomLevelInt"
-                        if (!activeTiles.containsKey(key)) {
-                            val cachedTile = cache.get(cacheKey)
-                            if (cachedTile != null) {
-                                activeTiles[key] = cachedTile.asImageBitmap()
-                            } else {
-                                val tileRect = PdfRect(
-                                    left = (col * tileSize).toFloat() / state.zoom,
-                                    top = (row * tileSize).toFloat() / state.zoom,
-                                    right = ((col + 1) * tileSize).toFloat() / state.zoom,
-                                    bottom = ((row + 1) * tileSize).toFloat() / state.zoom
-                                )
-                                renderQueue.submit(RenderRequest.Tile(page, tileRect, state.zoom) { bitmap ->
-                                    bitmap?.let {
-                                        cache.put(cacheKey, it)
-                                        activeTiles[key] = it.asImageBitmap()
-                                    }
-                                })
-                            }
+                        tilesToRequest.add(Pair(row, col))
+                    }
+                }
+                tilesToRequest.sortBy { (r, c) ->
+                    val dr = r - centerRow
+                    val dc = c - centerCol
+                    dr * dr + dc * dc
+                }
+
+                for ((row, col) in tilesToRequest) {
+                    val key = TileKey(page, row, col, zoomLevelInt)
+                    requestedKeys.add(key)
+                    
+                    val cacheKey = "tile_${page}_${row}_${col}_$zoomLevelInt"
+                    if (!activeTiles.containsKey(key)) {
+                        val cachedTile = cache.get(cacheKey)
+                        if (cachedTile != null) {
+                            activeTiles[key] = cachedTile.asImageBitmap()
+                        } else {
+                            val tileRect = PdfRect(
+                                left = (col * tileSize).toFloat() / bucketZoom,
+                                top = (row * tileSize).toFloat() / bucketZoom,
+                                right = ((col + 1) * tileSize).toFloat() / bucketZoom,
+                                bottom = ((row + 1) * tileSize).toFloat() / bucketZoom
+                            )
+                            renderQueue.submit(RenderRequest.Tile(page, tileRect, bucketZoom) { bitmap ->
+                                bitmap?.let {
+                                    cache.put(cacheKey, it)
+                                    activeTiles[key] = it.asImageBitmap()
+                                }
+                            })
                         }
                     }
                 }
@@ -753,9 +779,15 @@ fun PdfViewer(
                             translate(left = 0f, top = pageTop) {
                                 scale(scale = 1f / state.zoom, pivot = Offset.Zero) {
                                     activeTiles.filter { it.key.page == page }.forEach { (key, tileBitmap) ->
-                                        translate(left = (key.col * tileSize).toFloat(), top = (key.row * tileSize).toFloat()) {
+                                        val bucketZoom = key.zoomLevel / 10f
+                                        val scaleMultiplier = state.zoom / bucketZoom
+                                        val left = key.col * tileSize * scaleMultiplier
+                                        val top = key.row * tileSize * scaleMultiplier
+                                        val sizePx = (tileSize * scaleMultiplier).toInt()
+                                        translate(left = left, top = top) {
                                             drawImage(
                                                 image = tileBitmap,
+                                                dstSize = IntSize(sizePx, sizePx),
                                                 colorFilter = colorFilter
                                             )
                                         }
