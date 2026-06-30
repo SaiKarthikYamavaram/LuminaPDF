@@ -107,8 +107,9 @@ fun PdfViewer(
     var viewSize by remember { mutableStateOf(IntSize.Zero) }
     var pageCount by remember { mutableStateOf(0) }
     
-    // Memory cache and render queue
-    val cache = remember(document) { LruMemoryCache(maxSize = 100) } // Max 100 bitmaps (thumbnails/tiles)
+    // Memory caches and render queue
+    val thumbCache = remember(document) { LruMemoryCache(maxBytes = 16L * 1024 * 1024) } // Max 16 MB for thumbnails
+    val tileCache = remember(document) { LruMemoryCache(maxBytes = 96L * 1024 * 1024) }  // Max 96 MB for tiles
     val renderQueue = remember(document) { RenderQueue(document, coroutineScope) }
 
     // State maps for current UI
@@ -541,7 +542,7 @@ fun PdfViewer(
         for (page in pagesToLoad) {
             val thumbKey = "thumb_$page"
             if (!thumbnails.containsKey(page)) {
-                val cached = cache.get(thumbKey)
+                val cached = thumbCache.get(thumbKey)
                 if (cached != null) {
                     thumbnails[page] = cached.asImageBitmap()
                 } else {
@@ -553,7 +554,7 @@ fun PdfViewer(
                             isPrefetch = page !in state.visiblePages
                         ) { bitmap ->
                             bitmap?.let {
-                                cache.put(thumbKey, it)
+                                thumbCache.put(thumbKey, it)
                                 thumbnails[page] = it.asImageBitmap()
                             }
                         }
@@ -606,7 +607,7 @@ fun PdfViewer(
                     
                     val cacheKey = "tile_${page}_${row}_${col}_$zoomLevelInt"
                     if (!activeTiles.containsKey(key)) {
-                        val cachedTile = cache.get(cacheKey)
+                        val cachedTile = tileCache.get(cacheKey)
                         if (cachedTile != null) {
                             activeTiles[key] = cachedTile.asImageBitmap()
                         } else {
@@ -618,7 +619,7 @@ fun PdfViewer(
                             )
                             renderQueue.submit(RenderRequest.Tile(page, tileRect, bucketZoom) { bitmap ->
                                 bitmap?.let {
-                                    cache.put(cacheKey, it)
+                                    tileCache.put(cacheKey, it)
                                     activeTiles[key] = it.asImageBitmap()
                                 }
                             })
