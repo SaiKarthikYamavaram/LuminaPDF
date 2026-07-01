@@ -5,6 +5,7 @@ import android.graphics.Matrix
 import android.graphics.Rect
 import android.graphics.pdf.PdfRenderer
 import android.os.ParcelFileDescriptor
+import com.lumina.pdf.core.CharacterBox
 import com.lumina.pdf.core.OutlineItem
 import com.lumina.pdf.core.PdfBitmap
 import com.lumina.pdf.core.PdfDocument
@@ -74,6 +75,10 @@ class AndroidPdfDocument(
         // android.graphics.pdf.PdfRenderer does not support text extraction.
         // Requires third party library on Android, or return empty for MVP.
         return ""
+    }
+
+    override suspend fun extractCharacterBoxes(page: Int): List<CharacterBox> {
+        return emptyList()
     }
 
     override suspend fun searchText(page: Int, query: String): List<PdfRect> {

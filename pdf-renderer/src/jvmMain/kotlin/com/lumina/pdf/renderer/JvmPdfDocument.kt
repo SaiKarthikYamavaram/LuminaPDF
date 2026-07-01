@@ -1,5 +1,6 @@
 package com.lumina.pdf.renderer
 
+import com.lumina.pdf.core.CharacterBox
 import com.lumina.pdf.core.OutlineItem
 import com.lumina.pdf.core.PdfBitmap
 import com.lumina.pdf.core.PdfDocument
@@ -84,6 +85,21 @@ class JvmPdfDocument(private val document: PDDocument) : PdfDocument {
             locator.getText(document)
             locator.findMatches(pageWidth, pageHeight)
             locator.matches
+        }
+    }
+
+    override suspend fun extractCharacterBoxes(page: Int): List<CharacterBox> = withContext(Dispatchers.IO) {
+        renderMutex.withLock {
+            val pdPage = document.getPage(page)
+            val cropBox = pdPage.cropBox
+            val pageWidth = cropBox.width
+            val pageHeight = cropBox.height
+            
+            val extractor = PDFCharacterBoxExtractor(page)
+            extractor.startPage = page + 1
+            extractor.endPage = page + 1
+            extractor.getText(document)
+            extractor.getBoxes(pageWidth, pageHeight)
         }
     }
 
@@ -200,6 +216,40 @@ class PDFTextLocator(
                 )
             }
             index = text.indexOf(query, index + 1, ignoreCase = true)
+        }
+    }
+}
+
+class PDFCharacterBoxExtractor(
+    private val pageIndex: Int
+) : PDFTextStripper() {
+    private val characters = mutableListOf<org.apache.pdfbox.text.TextPosition>()
+
+    init {
+        sortByPosition = true
+    }
+
+    override fun writeString(text: String?, textPositions: MutableList<org.apache.pdfbox.text.TextPosition>?) {
+        if (textPositions != null) {
+            characters.addAll(textPositions)
+        }
+    }
+
+    fun getBoxes(pageWidth: Float, pageHeight: Float): List<CharacterBox> {
+        return characters.map { tp ->
+            val left = tp.xDirAdj / pageWidth
+            val right = (tp.xDirAdj + tp.widthDirAdj) / pageWidth
+            val top = (tp.yDirAdj - tp.heightDir) / pageHeight
+            val bottom = tp.yDirAdj / pageHeight
+            val char = if (tp.unicode.isNotEmpty()) tp.unicode[0] else ' '
+            CharacterBox(
+                char = char,
+                pageIndex = pageIndex,
+                left = left.coerceIn(0f, 1f),
+                top = top.coerceIn(0f, 1f),
+                right = right.coerceIn(0f, 1f),
+                bottom = bottom.coerceIn(0f, 1f)
+            )
         }
     }
 }

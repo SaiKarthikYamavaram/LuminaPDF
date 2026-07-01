@@ -211,4 +211,22 @@ We implemented `UnifiedLruCache` to manage both page tiles and thumbnails under 
 
 This maintains high rendering throughput during panning/zooming while preventing memory exhaustion and GC pauses.
 
+---
+
+## 10. Strip-Based Spatial Indexing for Text Selection (Phase 4)
+
+### Why we did it
+To support interactive text selection, the viewer must map pointer drag offsets to character bounds on screen. On a page with thousands of characters, running intersection math sequentially on every single character during mouse-drag or pointer-move events would require $O(N)$ comparisons per frame. Under high frame-rates, this triggers substantial processing overhead and noticeable lag in the selection handles.
+
+### How we did it
+We introduced a KMP-portable, lazy-loaded **Strip-Based Spatial Indexing** model:
+- **Character Box Extraction**: Added `extractCharacterBoxes(page)` to the native document layer to retrieve individual glyph coordinate bounds.
+- **Y-Band Bucketing (`StripSpatialIndex`)**: Buckets the character bounds into vertical row strips of uniform height (e.g., 0.015f of the normalized height).
+- **$O(1)$ Search Complexity**: During drag events, the pointer's coordinates are divided by the strip height to identify the specific strip index instantly. Selection intersection tests are only executed against the small number of character boxes within that strip bucket, achieving $O(1)$ complexity.
+- **Lazy Page Loading**: Character bounds are only extracted and indexed for the pages currently active in the visible viewport, keeping CPU usage and memory footprints minimal.
+- **Bottom Selection Banner**: Displays character selection metrics and allows copying to the clipboard asynchronously via `LocalClipboardManager`.
+
+This enables high-performance, real-time multi-page text selection and copying.
+
+
 

@@ -19,6 +19,10 @@ interface PdfDocument {
         page: Int
     ): String
 
+    suspend fun extractCharacterBoxes(
+        page: Int
+    ): List<CharacterBox>
+
     suspend fun searchText(
         page: Int,
         query: String

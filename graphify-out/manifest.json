@@ -85,9 +85,9 @@
     "semantic_hash": ""
   },
   "pdf-core/src/commonMain/kotlin/com/lumina/pdf/core/PdfDocument.kt": {
-    "mtime": 1782818430.2496817,
-    "ast_hash": "2833ce76f056459ab56f39eeeb6cc460",
-    "semantic_hash": "2833ce76f056459ab56f39eeeb6cc460"
+    "mtime": 1782891693.9550173,
+    "ast_hash": "3b8ae52bc60d8c76cb649fba065f30c8",
+    "semantic_hash": ""
   },
   "pdf-core/src/commonMain/kotlin/com/lumina/pdf/core/PdfRect.kt": {
     "mtime": 1782818430.2496817,
@@ -110,8 +110,8 @@
     "semantic_hash": "4c61ceeded47ab50f99ed505fca92f3a"
   },
   "pdf-renderer/src/androidMain/kotlin/com/lumina/pdf/renderer/AndroidPdfDocument.kt": {
-    "mtime": 1782837435.5651379,
-    "ast_hash": "b306bd3bd3d8594636b46d1f8fc1ea48",
+    "mtime": 1782891718.8940153,
+    "ast_hash": "8ce5c12511e5bbaad2f6047c40220f54",
     "semantic_hash": ""
   },
   "pdf-renderer/src/androidMain/kotlin/com/lumina/pdf/renderer/PdfDocumentFactory.android.kt": {
@@ -140,8 +140,8 @@
     "semantic_hash": "064d6ceb88c45a8ae02d3ede646e78fe"
   },
   "pdf-renderer/src/jvmMain/kotlin/com/lumina/pdf/renderer/JvmPdfDocument.kt": {
-    "mtime": 1782836039.522258,
-    "ast_hash": "aa2d76a7fedbd88a2e7929d64696ba67",
+    "mtime": 1782891713.3760157,
+    "ast_hash": "341d92ad5d30911e27ff10190429c8f1",
     "semantic_hash": ""
   },
   "pdf-renderer/src/jvmMain/kotlin/com/lumina/pdf/renderer/PdfDocumentFactory.jvm.kt": {
@@ -175,8 +175,8 @@
     "semantic_hash": ""
   },
   "pdf-viewer/src/commonMain/kotlin/com/lumina/pdf/viewer/PdfViewer.kt": {
-    "mtime": 1782888760.1612704,
-    "ast_hash": "27f52dd19fc0e12afdaba6f0343ee9f0",
+    "mtime": 1782891769.3510108,
+    "ast_hash": "62b3dbee57c11ee0784d87592b234166",
     "semantic_hash": ""
   },
   "pdf-viewer/src/commonMain/kotlin/com/lumina/pdf/viewer/PdfViewerConfig.kt": {
@@ -480,8 +480,8 @@
     "semantic_hash": ""
   },
   "perf_improvement.md": {
-    "mtime": 1782888768.4672697,
-    "ast_hash": "91dfbe932df591322256a13c6ebca375",
+    "mtime": 1782891777.4050102,
+    "ast_hash": "e7bf6082e16b693d451888523174e3ca",
     "semantic_hash": ""
   },
   "desktopApp/bin/main/com/lumina/pdf/main.kt": {
@@ -502,6 +502,16 @@
   "pdf-core/src/commonMain/kotlin/com/lumina/pdf/core/UnifiedLruCache.kt": {
     "mtime": 1782888735.8672724,
     "ast_hash": "eba37d585664f2457c81b7bc41e63659",
+    "semantic_hash": ""
+  },
+  "pdf-core/src/commonMain/kotlin/com/lumina/pdf/core/CharacterBox.kt": {
+    "mtime": 1782891682.5670183,
+    "ast_hash": "a53f1d75c37343fc0ba1622550c34f3c",
+    "semantic_hash": ""
+  },
+  "pdf-core/src/commonMain/kotlin/com/lumina/pdf/core/StripSpatialIndex.kt": {
+    "mtime": 1782891689.2420177,
+    "ast_hash": "890f67eda608c83e8bca3af034c89b8f",
     "semantic_hash": ""
   }
 }

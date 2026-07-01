@@ -43,6 +43,8 @@ import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import com.lumina.pdf.core.*
 import com.lumina.pdf.viewer.db.*
+import androidx.compose.ui.platform.LocalClipboardManager
+import androidx.compose.ui.text.AnnotatedString
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import co.touchlab.kermit.Logger
@@ -207,6 +209,119 @@ fun PdfViewer(
     var debouncedSearchQuery by remember { mutableStateOf("") }
     val searchMatches = remember { mutableStateMapOf<Int, List<PdfRect>>() }
     var currentMatchIndex by remember { mutableStateOf(-1) }
+
+    // Selection states
+    val pageCharacterBoxes = remember { mutableStateMapOf<Int, List<CharacterBox>>() }
+    val pageSpatialIndices = remember { mutableStateMapOf<Int, StripSpatialIndex>() }
+    var selectionStart by remember { mutableStateOf<CharacterBox?>(null) }
+    var selectionEnd by remember { mutableStateOf<CharacterBox?>(null) }
+    var isDraggingStartHandle by remember { mutableStateOf(false) }
+    var isDraggingEndHandle by remember { mutableStateOf(false) }
+
+    // Load character boxes and build spatial indices for visible pages
+    LaunchedEffect(state.visiblePages, document) {
+        for (page in state.visiblePages) {
+            if (!pageCharacterBoxes.containsKey(page)) {
+                coroutineScope.launch(Dispatchers.Default) {
+                    try {
+                        val boxes = document.extractCharacterBoxes(page)
+                        if (boxes.isNotEmpty()) {
+                            pageCharacterBoxes[page] = boxes
+                            val index = StripSpatialIndex()
+                            index.build(boxes)
+                            pageSpatialIndices[page] = index
+                        }
+                    } catch (e: Exception) {
+                        Logger.e(e) { "Failed to extract character boxes for page $page" }
+                    }
+                }
+            }
+        }
+    }
+
+    fun findCharOffset(canvasOffset: Offset): Pair<Int, Offset>? {
+        if (viewSize.width == 0 || viewSize.height == 0) return null
+        val estimatedPageHeight = viewSize.width.toFloat() * 1.4f
+        for (page in 0 until pageCount) {
+            val pageTop = state.scrollOffset.y + page * (estimatedPageHeight + spacingPx) * state.zoom
+            val pageBottom = pageTop + estimatedPageHeight * state.zoom
+            val pageLeft = state.scrollOffset.x
+            val pageRight = pageLeft + viewSize.width.toFloat() * state.zoom
+            
+            if (canvasOffset.y in pageTop..pageBottom && canvasOffset.x in pageLeft..pageRight) {
+                val normalizedX = (canvasOffset.x - pageLeft) / (viewSize.width.toFloat() * state.zoom)
+                val normalizedY = (canvasOffset.y - pageTop) / (estimatedPageHeight * state.zoom)
+                return Pair(page, Offset(normalizedX, normalizedY))
+            }
+        }
+        return null
+    }
+
+    fun getCharacterScreenPosition(charBox: CharacterBox, isStart: Boolean): Offset {
+        val estimatedPageHeight = viewSize.width.toFloat() * 1.4f
+        val pageTop = state.scrollOffset.y + charBox.pageIndex * (estimatedPageHeight + spacingPx) * state.zoom
+        val x = if (isStart) charBox.left else charBox.right
+        val charX = state.scrollOffset.x + x * (viewSize.width.toFloat() * state.zoom)
+        val charY = pageTop + charBox.bottom * (estimatedPageHeight * state.zoom)
+        return Offset(charX, charY)
+    }
+
+    val selectedBoxes by remember {
+        derivedStateOf {
+            val start = selectionStart
+            val end = selectionEnd
+            if (start == null || end == null) return@derivedStateOf emptyList<CharacterBox>()
+            
+            val startPage = start.pageIndex
+            val endPage = end.pageIndex
+            val minPage = minOf(startPage, endPage)
+            val maxPage = maxOf(startPage, endPage)
+            
+            val result = mutableListOf<CharacterBox>()
+            for (p in minPage..maxPage) {
+                val pageBoxes = pageCharacterBoxes[p] ?: continue
+                for (box in pageBoxes) {
+                    val isAfterStart = if (p > startPage) true 
+                                      else if (p < startPage) false
+                                      else {
+                                          if (box.top > start.top + 0.005f) true
+                                          else if (box.bottom < start.bottom - 0.005f) false
+                                          else box.left >= start.left - 0.005f
+                                      }
+                    
+                    val isBeforeEnd = if (p < endPage) true
+                                     else if (p > endPage) false
+                                     else {
+                                         if (box.bottom < end.bottom - 0.005f) true
+                                         else if (box.top > end.top + 0.005f) false
+                                         else box.right <= end.right + 0.005f
+                                     }
+                    
+                    val isAfterEnd = if (p > endPage) true 
+                                     else if (p < endPage) false
+                                     else {
+                                         if (box.top > end.top + 0.005f) true
+                                         else if (box.bottom < end.bottom - 0.005f) false
+                                         else box.left >= end.left - 0.005f
+                                     }
+                    
+                    val isBeforeStart = if (p < startPage) true
+                                        else if (p > startPage) false
+                                        else {
+                                            if (box.bottom < start.bottom - 0.005f) true
+                                            else if (box.top > start.top + 0.005f) false
+                                            else box.right <= start.right + 0.005f
+                                        }
+
+                    val isSelected = (isAfterStart && isBeforeEnd) || (isAfterEnd && isBeforeStart)
+                    if (isSelected) {
+                        result.add(box)
+                    }
+                }
+            }
+            result
+        }
+    }
 
     // Debounce search query updates to make search smooth and non-blocking
     LaunchedEffect(searchQuery) {
@@ -835,7 +950,7 @@ fun PdfViewer(
             modifier = Modifier
                 .fillMaxSize()
                 .onSizeChanged { viewSize = it }
-                .pointerInput(Unit) {
+                .pointerInput(pageSpatialIndices) {
                     detectTapGestures(
                         onDoubleTap = { offset ->
                             focusRequester.requestFocus()
@@ -845,6 +960,72 @@ fun PdfViewer(
                         },
                         onTap = {
                             focusRequester.requestFocus()
+                            selectionStart = null
+                            selectionEnd = null
+                        },
+                        onLongPress = { offset ->
+                            focusRequester.requestFocus()
+                            val res = findCharOffset(offset)
+                            if (res != null) {
+                                val (page, normOffset) = res
+                                val charBox = pageSpatialIndices[page]?.query(normOffset.x, normOffset.y)
+                                if (charBox != null) {
+                                    selectionStart = charBox
+                                    selectionEnd = charBox
+                                }
+                            }
+                        }
+                    )
+                }
+                .pointerInput(viewSize, pageCount, state.zoom, selectionStart, selectionEnd) {
+                    detectDragGestures(
+                        onDragStart = { offset ->
+                            val start = selectionStart
+                            val end = selectionEnd
+                            if (start != null && end != null) {
+                                val startPos = getCharacterScreenPosition(start, isStart = true)
+                                val endPos = getCharacterScreenPosition(end, isStart = false)
+                                val startDist = (offset - startPos).getDistance()
+                                val endDist = (offset - endPos).getDistance()
+                                
+                                val threshold = 32.dp.toPx()
+                                if (startDist < threshold && startDist < endDist) {
+                                    isDraggingStartHandle = true
+                                } else if (endDist < threshold) {
+                                    isDraggingEndHandle = true
+                                }
+                            }
+                        },
+                        onDrag = { change, dragAmount ->
+                            if (isDraggingStartHandle) {
+                                val res = findCharOffset(change.position)
+                                if (res != null) {
+                                    val (page, normOffset) = res
+                                    val newStart = pageSpatialIndices[page]?.query(normOffset.x, normOffset.y)
+                                    if (newStart != null) {
+                                        selectionStart = newStart
+                                    }
+                                }
+                                change.consume()
+                            } else if (isDraggingEndHandle) {
+                                val res = findCharOffset(change.position)
+                                if (res != null) {
+                                    val (page, normOffset) = res
+                                    val newEnd = pageSpatialIndices[page]?.query(normOffset.x, normOffset.y)
+                                    if (newEnd != null) {
+                                        selectionEnd = newEnd
+                                    }
+                                }
+                                change.consume()
+                            }
+                        },
+                        onDragEnd = {
+                            isDraggingStartHandle = false
+                            isDraggingEndHandle = false
+                        },
+                        onDragCancel = {
+                            isDraggingStartHandle = false
+                            isDraggingEndHandle = false
                         }
                     )
                 }
@@ -980,8 +1161,62 @@ fun PdfViewer(
                                 )
                             }
                         }
+
+                        // Draw text selection highlights for this page
+                        val pageSelected = selectedBoxes.filter { it.pageIndex == page }
+                        if (pageSelected.isNotEmpty()) {
+                            val selectionColor = Color(0x33007AFF) // Translucent blue highlight
+                            for (box in pageSelected) {
+                                val x = box.left * size.width
+                                val y = pageTop + box.top * estimatedPageHeight
+                                val w = (box.right - box.left) * size.width
+                                val h = (box.bottom - box.top) * estimatedPageHeight
+                                drawRect(
+                                    color = selectionColor,
+                                    topLeft = Offset(x, y),
+                                    size = androidx.compose.ui.geometry.Size(w, h)
+                                )
+                            }
+                        }
                     }
                 }
+            }
+
+            // Draw Selection Handles (in screen space)
+            val start = selectionStart
+            val end = selectionEnd
+            if (start != null && end != null) {
+                val startPos = getCharacterScreenPosition(start, isStart = true)
+                val endPos = getCharacterScreenPosition(end, isStart = false)
+                
+                // Draw start handle
+                drawCircle(
+                    color = Color(0xFF007AFF),
+                    radius = 8.dp.toPx(),
+                    center = startPos
+                )
+                val estimatedPageHeight = viewSize.width.toFloat() * 1.4f
+                val pageTopStart = state.scrollOffset.y + start.pageIndex * (estimatedPageHeight + spacingPx) * state.zoom
+                drawLine(
+                    color = Color(0xFF007AFF),
+                    start = Offset(startPos.x, pageTopStart + start.top * (estimatedPageHeight * state.zoom)),
+                    end = Offset(startPos.x, pageTopStart + start.bottom * (estimatedPageHeight * state.zoom)),
+                    strokeWidth = 2.dp.toPx()
+                )
+
+                // Draw end handle
+                drawCircle(
+                    color = Color(0xFF007AFF),
+                    radius = 8.dp.toPx(),
+                    center = endPos
+                )
+                val pageTopEnd = state.scrollOffset.y + end.pageIndex * (estimatedPageHeight + spacingPx) * state.zoom
+                drawLine(
+                    color = Color(0xFF007AFF),
+                    start = Offset(endPos.x, pageTopEnd + end.top * (estimatedPageHeight * state.zoom)),
+                    end = Offset(endPos.x, pageTopEnd + end.bottom * (estimatedPageHeight * state.zoom)),
+                    strokeWidth = 2.dp.toPx()
+                )
             }
         }
 
@@ -1471,6 +1706,60 @@ fun PdfViewer(
                                     }
                                 }
                             }
+                        }
+                    }
+                }
+            }
+        }
+
+        // Floating copy bar overlay
+        if (selectionStart != null && selectionEnd != null && selectedBoxes.isNotEmpty()) {
+            val textToCopy = selectedBoxes.map { it.char }.joinToString("")
+            val localClipboardManager = LocalClipboardManager.current
+            
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(bottom = 16.dp),
+                contentAlignment = Alignment.BottomCenter
+            ) {
+                Card(
+                    colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.primaryContainer),
+                    elevation = CardDefaults.cardElevation(defaultElevation = 6.dp),
+                    shape = RoundedCornerShape(8.dp),
+                    modifier = Modifier.height(48.dp)
+                ) {
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
+                    ) {
+                        Text(
+                            text = "${selectedBoxes.size} chars selected",
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = MaterialTheme.colorScheme.onPrimaryContainer
+                        )
+                        Spacer(modifier = Modifier.width(16.dp))
+                        TextButton(
+                            onClick = {
+                                localClipboardManager.setText(AnnotatedString(textToCopy))
+                                selectionStart = null
+                                selectionEnd = null
+                            },
+                            contentPadding = PaddingValues(horizontal = 8.dp),
+                            colors = ButtonDefaults.textButtonColors(contentColor = MaterialTheme.colorScheme.primary)
+                        ) {
+                            Text("Copy", fontWeight = FontWeight.Bold)
+                        }
+                        Spacer(modifier = Modifier.width(8.dp))
+                        TextButton(
+                            onClick = {
+                                selectionStart = null
+                                selectionEnd = null
+                            },
+                            contentPadding = PaddingValues(horizontal = 8.dp),
+                            colors = ButtonDefaults.textButtonColors(contentColor = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.6f))
+                        ) {
+                            Text("Clear")
                         }
                     }
                 }
