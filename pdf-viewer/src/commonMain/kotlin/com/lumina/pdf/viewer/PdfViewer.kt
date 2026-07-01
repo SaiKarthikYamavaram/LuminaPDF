@@ -108,9 +108,10 @@ fun PdfViewer(
     var viewSize by remember { mutableStateOf(IntSize.Zero) }
     var pageCount by remember { mutableStateOf(0) }
     
-    // Memory caches and render queue
-    val thumbCache = remember(document) { LruMemoryCache(maxBytes = 16L * 1024 * 1024) } // Max 16 MB for thumbnails
-    val tileCache = remember(document) { LruMemoryCache(maxBytes = 96L * 1024 * 1024) }  // Max 96 MB for tiles
+    // Unified memory cache and render queue
+    val memoryCache = remember(document) { UnifiedLruCache(maxBytes = 112L * 1024 * 1024) } // Unified 112 MB budget
+    val thumbCache = memoryCache
+    val tileCache = memoryCache
     val diskCache = rememberDiskCache()
     val renderQueue = remember(document) { RenderQueue(document, coroutineScope) }
 
@@ -708,6 +709,7 @@ fun PdfViewer(
                 else -> 5.6f
             }
             val zoomLevelInt = (bucketZoom * 10).toInt()
+            memoryCache.evictByZoomLevel(zoomLevelInt)
             
             for (page in state.visiblePages) {
                 val pageTopPx = page * (estimatedPageHeight + spacingPx) * state.zoom
@@ -766,6 +768,7 @@ fun PdfViewer(
             }
         } else {
             activeTiles.clear()
+            memoryCache.evictByZoomLevel(-1)
         }
 
         val keysToRemove = thumbnails.keys.filter { it !in (firstVisiblePage - 3..lastVisiblePage + 3) }

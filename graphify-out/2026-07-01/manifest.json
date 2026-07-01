@@ -175,8 +175,8 @@
     "semantic_hash": ""
   },
   "pdf-viewer/src/commonMain/kotlin/com/lumina/pdf/viewer/PdfViewer.kt": {
-    "mtime": 1782837748.1791108,
-    "ast_hash": "8a9b84bee40263ab443365bed6a0a0b1",
+    "mtime": 1782887785.1743543,
+    "ast_hash": "04720578526e3a1262655ab6c30a80cd",
     "semantic_hash": ""
   },
   "pdf-viewer/src/commonMain/kotlin/com/lumina/pdf/viewer/PdfViewerConfig.kt": {
@@ -480,8 +480,23 @@
     "semantic_hash": ""
   },
   "perf_improvement.md": {
-    "mtime": 1782837882.6290991,
-    "ast_hash": "a63009ac2310d7b672d4f7f4203f7aa2",
+    "mtime": 1782887728.7743592,
+    "ast_hash": "c430527c62e7bee03e5aebf6b9a2625d",
+    "semantic_hash": ""
+  },
+  "desktopApp/bin/main/com/lumina/pdf/main.kt": {
+    "mtime": 1782818430.229,
+    "ast_hash": "3fa18ce58fa562600b5d43aff4bff868",
+    "semantic_hash": ""
+  },
+  "pdf-core/src/commonMain/kotlin/com/lumina/pdf/core/BoyerMooreHorspool.kt": {
+    "mtime": 1782887662.297365,
+    "ast_hash": "6df034930f85ca7250d0c77e145bad7f",
+    "semantic_hash": ""
+  },
+  "pdf-core/src/commonMain/kotlin/com/lumina/pdf/core/SearchCorpus.kt": {
+    "mtime": 1782887671.7243643,
+    "ast_hash": "df241028f850549013af86db05fd3877",
     "semantic_hash": ""
   }
 }

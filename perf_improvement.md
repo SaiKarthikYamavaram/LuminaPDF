@@ -196,3 +196,19 @@ We introduced a document-wide flat text corpus representation (`SearchCorpus`) c
 
 This reduces total native search calls from $O(P)$ (e.g. 200 calls) to $O(M)$ where $M$ is the number of matching pages (typically 0-5), making full-text Ctrl+F search instantaneous even on massive files.
 
+---
+
+## 9. Unified DLL+HashMap LRU Cache (Phase 3)
+
+### Why we did it
+Previously, `LruMemoryCache` used `LinkedHashMap` for O(1) LRU management, which is not guaranteed to be ordered by access on Kotlin Multiplatform (non-JVM targets). Additionally, the thumbnail cache (16 MB) and the tile cache (96 MB) were separate instances with fixed, non-sharable limits. If the user zoomed heavily, tile memory would exhaust and cause rendering failures or GC stutter while the thumbnail cache remained largely unused (or vice versa), and zoom level transitions retained old tiles in memory until the cache overflowed.
+
+### How we did it
+We implemented `UnifiedLruCache` to manage both page tiles and thumbnails under a single shared 112 MB budget:
+- **Doubly Linked List + HashMap**: Implemented an explicit DLL and node map in common code to guarantee portable, target-independent O(1) LRU eviction order.
+- **Unified Budget**: Replaced the separate caches with a single `UnifiedLruCache` instance, allowing dynamically sharing the 112 MB memory pool between thumbnails and tiles based on current viewport demand.
+- **Surgical Zoom-Aware Eviction**: Enabled clearing tiles from other zoom levels immediately when target zoom shifts, and reclaiming the entire tile memory budget when zoom returns to fit-page view.
+
+This maintains high rendering throughput during panning/zooming while preventing memory exhaustion and GC pauses.
+
+
