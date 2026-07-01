@@ -43,6 +43,7 @@ import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import com.lumina.pdf.core.*
 import com.lumina.pdf.viewer.db.*
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import co.touchlab.kermit.Logger
 import kotlin.math.cos
@@ -116,6 +117,7 @@ fun PdfViewer(
     // State maps for current UI
     val thumbnails = remember { mutableStateMapOf<Int, ImageBitmap>() }
     val activeTiles = remember { mutableStateMapOf<TileKey, ImageBitmap>() }
+    var searchCorpus by remember(document) { mutableStateOf<SearchCorpus?>(null) }
 
     val focusRequester = remember { FocusRequester() }
     val density = LocalDensity.current
@@ -280,8 +282,8 @@ fun PdfViewer(
         }
     }
 
-    // Perform text search page by page
-    LaunchedEffect(debouncedSearchQuery, pageCount, document) {
+    // Perform text search page by page using Boyer-Moore-Horspool algorithm on corpus
+    LaunchedEffect(debouncedSearchQuery, pageCount, document, searchCorpus) {
         if (debouncedSearchQuery.isEmpty()) {
             searchMatches.clear()
             currentMatchIndex = -1
@@ -289,7 +291,16 @@ fun PdfViewer(
         }
         
         searchMatches.clear()
-        for (page in 0 until pageCount) {
+        
+        val corpus = searchCorpus
+        val pagesToSearch = if (corpus != null) {
+            val matches = BoyerMooreHorspool.search(corpus.text, debouncedSearchQuery, ignoreCase = true)
+            matches.map { corpus.findPageForCharIndex(it) }.filter { it != -1 }.toSet()
+        } else {
+            (0 until pageCount).toSet()
+        }
+
+        for (page in pagesToSearch) {
             kotlinx.coroutines.yield()
             try {
                 val results = document.searchText(page, debouncedSearchQuery)
@@ -339,6 +350,29 @@ fun PdfViewer(
                         }
                     )
                 }
+            }
+        }
+
+        // Build search corpus in background using Dispatchers.Default
+        launch(Dispatchers.Default) {
+            try {
+                val textBuilder = StringBuilder()
+                val slices = mutableListOf<PageSlice>()
+                var currentCharOffset = 0
+                
+                val count = document.pageCount()
+                for (p in 0 until count) {
+                    val pageText = document.extractText(p)
+                    val start = currentCharOffset
+                    textBuilder.append(pageText)
+                    textBuilder.append('\u000C') // Form feed as page separator
+                    currentCharOffset = textBuilder.length
+                    slices.add(PageSlice(p, start, currentCharOffset))
+                }
+                searchCorpus = SearchCorpus(textBuilder.toString(), slices)
+                Logger.d(tag = "PdfViewer") { "Search corpus built successfully. Total chars: ${textBuilder.length}, slices: ${slices.size}" }
+            } catch (e: Exception) {
+                Logger.e(e) { "Failed to build search corpus" }
             }
         }
     }

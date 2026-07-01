@@ -180,3 +180,19 @@ We implemented a persistent **L2 Disk Cache** for page thumbnails:
 - **JVM & Android Storage**: Implemented target-specific `DiskCache` classes using local file directories (Android `context.cacheDir` and JVM `java.io.tmpdir`), which store raw PNG files mapped to unique keys.
 - **Two-tier Lookup (L1 -> L2)**: Modified the thumbnail loading pipeline in the viewer: on an L1 memory cache miss (`thumbCache`), the system queries the L2 disk cache. If found, the byte array is decoded, saved to the L1 cache, and drawn immediately, completely bypassing the expensive vector rendering pipeline.
 - **Asynchronous Cache Insertion**: When a thumbnail is rendered, we serialize it to a PNG byte array and write it to the disk cache asynchronously inside the background coroutine workers.
+
+---
+
+## 8. Boyer-Moore-Horspool Search Engine (Phase 2)
+
+### Why we did it
+Previously, search queries triggered a full-document page-by-page sequential scan. For a 200-page document, this meant launching 200 separate blocking native text query/extraction requests (using PDFBox or platform-native search layers). Even with coroutine suspension, querying text layers page by page sequentially introduced substantial lag (over several seconds for large files), because it spent most of the time preparing native page content streams.
+
+### How we did it
+We introduced a document-wide flat text corpus representation (`SearchCorpus`) compiled asynchronously in the background when the document is first loaded. Instead of querying native layers on every search input change, we perform a blazing fast, single-pass Boyer-Moore-Horspool search across the consolidated corpus:
+- **`Boyer-Moore-Horspool` Matching**: By pre-computing a bad-character shift table for the search pattern, we can skip multiple characters upon mismatches, scaling to O(N/M) performance.
+- **Fast Page-Offset Lookup**: Concatenated text pages are separated by a form feed (`\u000C`) character to prevent cross-page boundary false matches. A `PageSlice` index maps character offsets back to the corresponding page index using $O(\log P)$ binary search.
+- **Precise Native Bounding Box Fetching**: Only pages flagged by the Boyer-Moore-Horspool scan as containing matches are queried natively via `document.searchText()`.
+
+This reduces total native search calls from $O(P)$ (e.g. 200 calls) to $O(M)$ where $M$ is the number of matching pages (typically 0-5), making full-text Ctrl+F search instantaneous even on massive files.
+
