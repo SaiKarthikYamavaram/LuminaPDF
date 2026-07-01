@@ -228,5 +228,23 @@ We introduced a KMP-portable, lazy-loaded **Strip-Based Spatial Indexing** model
 
 This enables high-performance, real-time multi-page text selection and copying.
 
+---
+
+## 11. Adaptive RDP Vector Path Simplification (Phase 5)
+
+### Why we did it
+Engineering drawings, architectural floor plans, and complex maps in vector-heavy PDFs are composed of paths containing thousands of coordinate points. Zooming and rendering these massive path arrays repeatedly on the JVM/Desktop graphics engine (Java2D / Graphics2D) consumes excessive CPU/GPU cycles, which results in noticeable frame drops and sluggish rendering.
+
+### How we did it
+We integrated the **Ramer-Douglas-Peucker (RDP)** algorithm to simplify complex vector paths dynamically on the JVM target:
+- **Custom `SimplifyingPageDrawer`**: Subclassed PDFBox `PageDrawer` to intercept PDF path operations (`strokePath` and `fillPath`) before they are drawn onto the `Graphics2D` context.
+- **Adaptive Epsilon**: Computed the distance threshold $\epsilon$ dynamically based on the current zoom scale:
+  $$\epsilon = \frac{2.0}{\text{scale}}$$
+  clamped between $0.3$ and $8.0$. When zoomed out (low scale), $\epsilon$ is larger, allowing aggressive path simplification to save rendering overhead; when zoomed in (high scale), $\epsilon$ is smaller to preserve fine details.
+- **Selective Simplification**: Iterates over segment elements of the `GeneralPath` using `PathIterator`. Consecutive linear sub-paths (`SEG_LINETO` polylines) are accumulated and simplified, while bezier curves and shapes (`SEG_QUADTO`, `SEG_CUBICTO`) are kept exact.
+
+This significantly reduces line vertex count during rendering, improving pan and zoom responsiveness on vector-heavy documents.
+
+
 
 

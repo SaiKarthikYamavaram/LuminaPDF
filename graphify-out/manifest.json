@@ -140,8 +140,8 @@
     "semantic_hash": "064d6ceb88c45a8ae02d3ede646e78fe"
   },
   "pdf-renderer/src/jvmMain/kotlin/com/lumina/pdf/renderer/JvmPdfDocument.kt": {
-    "mtime": 1782891713.3760157,
-    "ast_hash": "341d92ad5d30911e27ff10190429c8f1",
+    "mtime": 1782892013.54399,
+    "ast_hash": "c94681a3fccd082f8618bbc5b6bba9d7",
     "semantic_hash": ""
   },
   "pdf-renderer/src/jvmMain/kotlin/com/lumina/pdf/renderer/PdfDocumentFactory.jvm.kt": {
@@ -480,8 +480,8 @@
     "semantic_hash": ""
   },
   "perf_improvement.md": {
-    "mtime": 1782891777.4050102,
-    "ast_hash": "e7bf6082e16b693d451888523174e3ca",
+    "mtime": 1782892035.9179878,
+    "ast_hash": "c71258297c2c0f4ce339825e5cf197e5",
     "semantic_hash": ""
   },
   "desktopApp/bin/main/com/lumina/pdf/main.kt": {
@@ -512,6 +512,16 @@
   "pdf-core/src/commonMain/kotlin/com/lumina/pdf/core/StripSpatialIndex.kt": {
     "mtime": 1782891689.2420177,
     "ast_hash": "890f67eda608c83e8bca3af034c89b8f",
+    "semantic_hash": ""
+  },
+  "pdf-renderer/src/jvmMain/kotlin/com/lumina/pdf/renderer/RdpPathSimplifier.kt": {
+    "mtime": 1782891989.242992,
+    "ast_hash": "0b06f534ac8991e8f213e2f96f9cf345",
+    "semantic_hash": ""
+  },
+  "pdf-renderer/src/jvmMain/kotlin/com/lumina/pdf/renderer/SimplifyingPageDrawer.kt": {
+    "mtime": 1782891994.8629916,
+    "ast_hash": "fc35e2b6caf11d42ba93dee72cb556f3",
     "semantic_hash": ""
   }
 }

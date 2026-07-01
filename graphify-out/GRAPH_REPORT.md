@@ -1,16 +1,16 @@
 # Graph Report - LuminaPDF  (2026-07-01)
 
 ## Corpus Check
-- 89 files · ~58,461 words
+- 91 files · ~59,087 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 726 nodes · 1055 edges · 65 communities (50 shown, 15 thin omitted)
-- Extraction: 93% EXTRACTED · 7% INFERRED · 0% AMBIGUOUS · INFERRED: 77 edges (avg confidence: 0.8)
+- 747 nodes · 1083 edges · 66 communities (51 shown, 15 thin omitted)
+- Extraction: 93% EXTRACTED · 7% INFERRED · 0% AMBIGUOUS · INFERRED: 79 edges (avg confidence: 0.8)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `f5cfe303`
+- Built from commit: `40eb973e`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -68,6 +68,7 @@
 - [[_COMMUNITY_Community 62|Community 62]]
 - [[_COMMUNITY_Community 63|Community 63]]
 - [[_COMMUNITY_Community 64|Community 64]]
+- [[_COMMUNITY_Community 65|Community 65]]
 
 ## God Nodes (most connected - your core abstractions)
 1. `Modifier` - 28 edges
@@ -84,10 +85,10 @@
 ## Surprising Connections (you probably didn't know these)
 - `PdfViewer()` --calls--> `LruMemoryCache`  [INFERRED]
   pdf-viewer/src/commonMain/kotlin/com/lumina/pdf/viewer/PdfViewer.kt → pdf-core/src/commonMain/kotlin/com/lumina/pdf/core/LruMemoryCache.kt
+- `PdfViewer()` --calls--> `RenderQueue`  [INFERRED]
+  pdf-viewer/src/commonMain/kotlin/com/lumina/pdf/viewer/PdfViewer.kt → pdf-core/src/commonMain/kotlin/com/lumina/pdf/core/RenderQueue.kt
 - `PdfViewer()` --calls--> `PageSlice`  [INFERRED]
   pdf-viewer/src/commonMain/kotlin/com/lumina/pdf/viewer/PdfViewer.kt → pdf-core/src/commonMain/kotlin/com/lumina/pdf/core/SearchCorpus.kt
-- `PdfViewer()` --calls--> `StripSpatialIndex`  [INFERRED]
-  pdf-viewer/src/commonMain/kotlin/com/lumina/pdf/viewer/PdfViewer.kt → pdf-core/src/commonMain/kotlin/com/lumina/pdf/core/StripSpatialIndex.kt
 - `PdfViewer()` --calls--> `UnifiedLruCache`  [INFERRED]
   pdf-viewer/src/commonMain/kotlin/com/lumina/pdf/viewer/PdfViewer.kt → pdf-core/src/commonMain/kotlin/com/lumina/pdf/core/UnifiedLruCache.kt
 - `PdfViewer()` --calls--> `Pair`  [INFERRED]
@@ -96,15 +97,15 @@
 ## Import Cycles
 - None detected.
 
-## Communities (65 total, 15 thin omitted)
+## Communities (66 total, 15 thin omitted)
 
 ### Community 0 - "Community 0"
-Cohesion: 0.07
-Nodes (29): Page, RenderPriority, RenderQueue, RenderRequest, Thumbnail, Tile, PageSlice, SearchCorpus (+21 more)
+Cohesion: 0.08
+Nodes (25): PageSlice, SearchCorpus, StripSpatialIndex, App(), AppHomeScreen, AppPdfViewerScreen, formatSize(), Int (+17 more)
 
 ### Community 1 - "Mutablelist"
-Cohesion: 0.09
-Nodes (22): MutableList, org, Pair, Int, CharacterBox, Float, Int, List (+14 more)
+Cohesion: 0.07
+Nodes (26): MutableList, org, PageDrawer, Pair, Int, CharacterBox, Float, Int (+18 more)
 
 ### Community 2 - "Pdf Viewer Src Commonmain"
 Cohesion: 0.10
@@ -112,7 +113,7 @@ Nodes (54): com, Offset, formatRelativeTime(), HomeScreen(), RecentFile, GridIte
 
 ### Community 3 - "Pdf Renderer Src Androidmain"
 Cohesion: 0.11
-Nodes (14): Int, CharacterBox, Float, Int, List, OutlineItem, PdfBitmap, PdfRect (+6 more)
+Nodes (15): Int, CharacterBox, Float, Int, List, OutlineItem, PdfBitmap, PdfRect (+7 more)
 
 ### Community 4 - "Pdf Platform"
 Cohesion: 0.12
@@ -123,12 +124,12 @@ Cohesion: 0.14
 Nodes (9): LruMemoryCache, DiskCache, MemoryCache, Long, PdfBitmap, String, ByteArray, PdfBitmap (+1 more)
 
 ### Community 6 - "Db Pdfdatabase Jvm"
-Cohesion: 0.09
-Nodes (19): DbNote, getCurrentTimeMillis(), getCurrentTimeMillis(), JvmPdfDatabase, rememberPdfDatabase(), PdfDatabase, PdfOffset, rememberPdfDatabase() (+11 more)
+Cohesion: 0.15
+Nodes (11): getCurrentTimeMillis(), JvmPdfDatabase, rememberPdfDatabase(), LuminaDatabase, LuminaDatabaseQueries, DbNote, List, Long (+3 more)
 
 ### Community 7 - "Db Pdfdatabase Wasmjs"
 Cohesion: 0.17
-Nodes (10): getCurrentTimeMillis(), jsDateNow(), rememberPdfDatabase(), WasmJsPdfDatabase, Double, DbNote, List, Long (+2 more)
+Nodes (10): getCurrentTimeMillis(), jsDateNow(), rememberPdfDatabase(), WasmJsPdfDatabase, DbNote, Double, List, Long (+2 more)
 
 ### Community 8 - "Db Pdfdatabase Android"
 Cohesion: 0.18
@@ -148,15 +149,15 @@ Nodes (47): Android, Annotation Architecture, Cache Architecture, Compose Render
 
 ### Community 12 - "Db Pdfdatabase Js"
 Cohesion: 0.06
-Nodes (31): 10. Strip-Based Spatial Indexing for Text Selection (Phase 4), 1. Thread-Safe LRU Memory Cache (`LruMemoryCache`), 2. Parallel Render Workers in `RenderQueue`, 3. JVM Tile Cache Optimization (`JvmPdfDocument`), 4. Progressive LOD Thumbnails & Background Warmup, 5. Tile Grouping & Viewport Culling, 6. Android GPU Acceleration & Memory Recycling, 7. Persistent L2 Disk Cache (+23 more)
+Nodes (34): 10. Strip-Based Spatial Indexing for Text Selection (Phase 4), 11. Adaptive RDP Vector Path Simplification (Phase 5), 1. Thread-Safe LRU Memory Cache (`LruMemoryCache`), 2. Parallel Render Workers in `RenderQueue`, 3. JVM Tile Cache Optimization (`JvmPdfDocument`), 4. Progressive LOD Thumbnails & Background Warmup, 5. Tile Grouping & Viewport Culling, 6. Android GPU Acceleration & Memory Recycling (+26 more)
 
 ### Community 13 - "Iosapp Contentview"
 Cohesion: 0.20
 Nodes (9): ComposeView, ContentView, SwiftUI, Self, Shared, UIKit, UIViewController, UIViewControllerRepresentable (+1 more)
 
 ### Community 14 - "Community 14"
-Cohesion: 0.19
-Nodes (8): getCurrentTimeMillis(), JsPdfDatabase, rememberPdfDatabase(), DbNote, List, Long, PdfOffset, String
+Cohesion: 0.10
+Nodes (16): DbNote, getCurrentTimeMillis(), getCurrentTimeMillis(), JsPdfDatabase, rememberPdfDatabase(), PdfDatabase, PdfOffset, rememberPdfDatabase() (+8 more)
 
 ### Community 15 - "Pdf Greeting"
 Cohesion: 0.29
@@ -212,7 +213,7 @@ Nodes (3): FilePersistence, ByteArray, String
 
 ### Community 34 - "Pdf Viewer Src Androidmain"
 Cohesion: 0.21
-Nodes (9): ByteArray, ImageBitmap, PdfBitmap, String, asImageBitmap(), decodeByteArrayToPdfBitmap(), JsNoOpDiskCache, rememberDiskCache() (+1 more)
+Nodes (9): ByteArray, ImageBitmap, PdfBitmap, String, AndroidDiskCache, asImageBitmap(), decodeByteArrayToPdfBitmap(), rememberDiskCache() (+1 more)
 
 ### Community 35 - "Pdf Viewer Src Commonmain"
 Cohesion: 0.25
@@ -247,11 +248,15 @@ Cohesion: 0.26
 Nodes (7): CacheEntryType, CacheNode, UnifiedLruCache, Int, Long, PdfBitmap, String
 
 ### Community 63 - "Community 63"
-Cohesion: 0.39
-Nodes (4): StripSpatialIndex, CharacterBox, Float, List
+Cohesion: 0.25
+Nodes (8): Page, RenderPriority, RenderQueue, RenderRequest, Thumbnail, Tile, Int, Set
+
+### Community 65 - "Community 65"
+Cohesion: 0.33
+Nodes (5): GeneralPath, Double, List, Point2D, RdpPathSimplifier
 
 ## Knowledge Gaps
-- **185 isolated node(s):** `String`, `Bundle`, `UIKit`, `SwiftUI`, `Shared` (+180 more)
+- **190 isolated node(s):** `String`, `Bundle`, `UIKit`, `SwiftUI`, `Shared` (+185 more)
   These have ≤1 connection - possible missing edges or undocumented components.
 - **15 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
@@ -259,7 +264,7 @@ Nodes (4): StripSpatialIndex, CharacterBox, Float, List
 _Questions this graph is uniquely positioned to answer:_
 
 - **Why does `PdfViewer()` connect `Community 0` to `Mutablelist`, `Pdf Viewer Src Commonmain`, `Core Lrumemorycache`, `Community 62`, `Community 63`?**
-  _High betweenness centrality (0.097) - this node is a cross-community bridge._
+  _High betweenness centrality (0.095) - this node is a cross-community bridge._
 - **Why does `Pair` connect `Mutablelist` to `Community 0`, `Community 62`?**
   _High betweenness centrality (0.078) - this node is a cross-community bridge._
 - **Why does `JvmPdfBitmap` connect `Mutablelist` to `Pdf Viewer Src Jvmmain`?**
@@ -271,4 +276,4 @@ _Questions this graph is uniquely positioned to answer:_
 - **Are the 17 inferred relationships involving `Offset` (e.g. with `AddIcon()` and `ArrowBackIcon()`) actually correct?**
   _`Offset` has 17 INFERRED edges - model-reasoned connections that need verification._
 - **What connects `String`, `Bundle`, `UIKit` to the rest of the system?**
-  _185 weakly-connected nodes found - possible documentation gaps or missing edges._
+  _190 weakly-connected nodes found - possible documentation gaps or missing edges._

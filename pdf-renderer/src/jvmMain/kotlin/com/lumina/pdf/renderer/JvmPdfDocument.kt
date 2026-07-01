@@ -14,7 +14,6 @@ import kotlinx.coroutines.sync.withLock
 import kotlinx.coroutines.withContext
 
 class JvmPdfDocument(private val document: PDDocument) : PdfDocument {
-    private val renderer = PDFRenderer(document)
     private val renderMutex = Mutex()
 
     override suspend fun pageCount(): Int = renderMutex.withLock {
@@ -26,7 +25,9 @@ class JvmPdfDocument(private val document: PDDocument) : PdfDocument {
             val pdPage = document.getPage(page)
             val cropBox = pdPage.cropBox
             val scale = width.toFloat() / cropBox.width
-            val image = renderer.renderImage(page, scale)
+            val epsilon = (2.0f / scale).toDouble().coerceIn(0.3, 8.0)
+            val customRenderer = SimplifyingPDFRenderer(document, epsilon)
+            val image = customRenderer.renderImage(page, scale)
             JvmPdfBitmap(image)
         }
     }
@@ -45,7 +46,9 @@ class JvmPdfDocument(private val document: PDDocument) : PdfDocument {
             synchronized(pageRenderCache) {
                 pageRenderCache[cacheKey]?.get()
             } ?: run {
-                val rendered = renderer.renderImage(page, scale)
+                val epsilon = (2.0f / scale).toDouble().coerceIn(0.3, 8.0)
+                val customRenderer = SimplifyingPDFRenderer(document, epsilon)
+                val rendered = customRenderer.renderImage(page, scale)
                 synchronized(pageRenderCache) {
                     pageRenderCache[cacheKey] = java.lang.ref.SoftReference(rendered)
                 }
@@ -253,3 +256,13 @@ class PDFCharacterBoxExtractor(
         }
     }
 }
+
+class SimplifyingPDFRenderer(
+    document: PDDocument,
+    private val epsilon: Double
+) : PDFRenderer(document) {
+    override fun createPageDrawer(parameters: org.apache.pdfbox.rendering.PageDrawerParameters): org.apache.pdfbox.rendering.PageDrawer {
+        return SimplifyingPageDrawer(parameters, epsilon)
+    }
+}
+
