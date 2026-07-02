@@ -399,7 +399,7 @@
       "source_file": "pdf-core/src/commonMain/kotlin/com/lumina/pdf/core/BoyerMooreHorspool.kt",
       "source_location": "L4",
       "_origin": "ast",
-      "id": "char",
+      "id": "pdf_core_src_commonmain_kotlin_com_lumina_pdf_core_boyermoorehorspool_kt_char",
       "community": 37,
       "norm_label": "char"
     },
@@ -452,6 +452,96 @@
       "id": "core_characterbox_characterbox",
       "community": 64,
       "norm_label": "characterbox"
+    },
+    {
+      "label": "ImagePyramid.kt",
+      "file_type": "code",
+      "source_file": "pdf-core/src/commonMain/kotlin/com/lumina/pdf/core/ImagePyramid.kt",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "core_imagepyramid",
+      "community": 70,
+      "norm_label": "imagepyramid.kt"
+    },
+    {
+      "label": "PyramidLevel",
+      "file_type": "code",
+      "source_file": "pdf-core/src/commonMain/kotlin/com/lumina/pdf/core/ImagePyramid.kt",
+      "source_location": "L5",
+      "_origin": "ast",
+      "id": "core_imagepyramid_pyramidlevel",
+      "community": 70,
+      "norm_label": "pyramidlevel"
+    },
+    {
+      "label": "ImagePyramid",
+      "file_type": "code",
+      "source_file": "pdf-core/src/commonMain/kotlin/com/lumina/pdf/core/ImagePyramid.kt",
+      "source_location": "L11",
+      "_origin": "ast",
+      "id": "core_imagepyramid_imagepyramid",
+      "community": 70,
+      "norm_label": "imagepyramid"
+    },
+    {
+      "label": ".selectLevel()",
+      "file_type": "code",
+      "source_file": "pdf-core/src/commonMain/kotlin/com/lumina/pdf/core/ImagePyramid.kt",
+      "source_location": "L13",
+      "_origin": "ast",
+      "id": "core_imagepyramid_imagepyramid_selectlevel",
+      "community": 70,
+      "norm_label": ".selectlevel()"
+    },
+    {
+      "label": "Int",
+      "file_type": "code",
+      "source_file": "pdf-core/src/commonMain/kotlin/com/lumina/pdf/core/ImagePyramid.kt",
+      "source_location": "L13",
+      "_origin": "ast",
+      "id": "pdf_core_src_commonmain_kotlin_com_lumina_pdf_core_imagepyramid_kt_int",
+      "community": 70,
+      "norm_label": "int"
+    },
+    {
+      "label": ".sampleBilinear()",
+      "file_type": "code",
+      "source_file": "pdf-core/src/commonMain/kotlin/com/lumina/pdf/core/ImagePyramid.kt",
+      "source_location": "L31",
+      "_origin": "ast",
+      "id": "core_imagepyramid_imagepyramid_samplebilinear",
+      "community": 70,
+      "norm_label": ".samplebilinear()"
+    },
+    {
+      "label": "Float",
+      "file_type": "code",
+      "source_file": "pdf-core/src/commonMain/kotlin/com/lumina/pdf/core/ImagePyramid.kt",
+      "source_location": "L31",
+      "_origin": "ast",
+      "id": "pdf_core_src_commonmain_kotlin_com_lumina_pdf_core_imagepyramid_kt_float",
+      "community": 70,
+      "norm_label": "float"
+    },
+    {
+      "label": ".getPixel()",
+      "file_type": "code",
+      "source_file": "pdf-core/src/commonMain/kotlin/com/lumina/pdf/core/ImagePyramid.kt",
+      "source_location": "L61",
+      "_origin": "ast",
+      "id": "core_imagepyramid_imagepyramid_getpixel",
+      "community": 70,
+      "norm_label": ".getpixel()"
+    },
+    {
+      "label": ".interpolateChannel()",
+      "file_type": "code",
+      "source_file": "pdf-core/src/commonMain/kotlin/com/lumina/pdf/core/ImagePyramid.kt",
+      "source_location": "L73",
+      "_origin": "ast",
+      "id": "core_imagepyramid_imagepyramid_interpolatechannel",
+      "community": 70,
+      "norm_label": ".interpolatechannel()"
     },
     {
       "label": "LruMemoryCache.kt",
@@ -857,7 +947,7 @@
       "label": ".extractText()",
       "file_type": "code",
       "source_file": "pdf-core/src/commonMain/kotlin/com/lumina/pdf/core/PdfDocument.kt",
-      "source_location": "L18",
+      "source_location": "L19",
       "_origin": "ast",
       "id": "core_pdfdocument_pdfdocument_extracttext",
       "community": 10,
@@ -867,7 +957,7 @@
       "label": "String",
       "file_type": "code",
       "source_file": "pdf-core/src/commonMain/kotlin/com/lumina/pdf/core/PdfDocument.kt",
-      "source_location": "L18",
+      "source_location": "L19",
       "_origin": "ast",
       "id": "pdf_core_src_commonmain_kotlin_com_lumina_pdf_core_pdfdocument_kt_string",
       "community": 10,
@@ -877,7 +967,7 @@
       "label": ".extractCharacterBoxes()",
       "file_type": "code",
       "source_file": "pdf-core/src/commonMain/kotlin/com/lumina/pdf/core/PdfDocument.kt",
-      "source_location": "L22",
+      "source_location": "L23",
       "_origin": "ast",
       "id": "core_pdfdocument_pdfdocument_extractcharacterboxes",
       "community": 10,
@@ -887,7 +977,7 @@
       "label": "List",
       "file_type": "code",
       "source_file": "pdf-core/src/commonMain/kotlin/com/lumina/pdf/core/PdfDocument.kt",
-      "source_location": "L22",
+      "source_location": "L23",
       "_origin": "ast",
       "id": "pdf_core_src_commonmain_kotlin_com_lumina_pdf_core_pdfdocument_kt_list",
       "community": 10,
@@ -897,7 +987,7 @@
       "label": "CharacterBox",
       "file_type": "code",
       "source_file": "pdf-core/src/commonMain/kotlin/com/lumina/pdf/core/PdfDocument.kt",
-      "source_location": "L22",
+      "source_location": "L23",
       "_origin": "ast",
       "id": "pdf_core_src_commonmain_kotlin_com_lumina_pdf_core_pdfdocument_kt_characterbox",
       "community": 10,
@@ -907,7 +997,7 @@
       "label": ".searchText()",
       "file_type": "code",
       "source_file": "pdf-core/src/commonMain/kotlin/com/lumina/pdf/core/PdfDocument.kt",
-      "source_location": "L26",
+      "source_location": "L27",
       "_origin": "ast",
       "id": "core_pdfdocument_pdfdocument_searchtext",
       "community": 10,
@@ -917,7 +1007,7 @@
       "label": ".getOutline()",
       "file_type": "code",
       "source_file": "pdf-core/src/commonMain/kotlin/com/lumina/pdf/core/PdfDocument.kt",
-      "source_location": "L31",
+      "source_location": "L32",
       "_origin": "ast",
       "id": "core_pdfdocument_pdfdocument_getoutline",
       "community": 10,
@@ -927,17 +1017,27 @@
       "label": "OutlineItem",
       "file_type": "code",
       "source_file": "pdf-core/src/commonMain/kotlin/com/lumina/pdf/core/PdfDocument.kt",
-      "source_location": "L31",
+      "source_location": "L32",
       "_origin": "ast",
       "id": "pdf_core_src_commonmain_kotlin_com_lumina_pdf_core_pdfdocument_kt_outlineitem",
       "community": 10,
       "norm_label": "outlineitem"
     },
     {
+      "label": ".getPageElementBounds()",
+      "file_type": "code",
+      "source_file": "pdf-core/src/commonMain/kotlin/com/lumina/pdf/core/PdfDocument.kt",
+      "source_location": "L34",
+      "_origin": "ast",
+      "id": "core_pdfdocument_pdfdocument_getpageelementbounds",
+      "community": 10,
+      "norm_label": ".getpageelementbounds()"
+    },
+    {
       "label": ".close()",
       "file_type": "code",
       "source_file": "pdf-core/src/commonMain/kotlin/com/lumina/pdf/core/PdfDocument.kt",
-      "source_location": "L33",
+      "source_location": "L36",
       "_origin": "ast",
       "id": "core_pdfdocument_pdfdocument_close",
       "community": 10,
@@ -972,6 +1072,126 @@
       "id": "pdf_core_src_commonmain_kotlin_com_lumina_pdf_core_pdfrect_kt_float",
       "community": 29,
       "norm_label": "float"
+    },
+    {
+      "label": "Quadtree.kt",
+      "file_type": "code",
+      "source_file": "pdf-core/src/commonMain/kotlin/com/lumina/pdf/core/Quadtree.kt",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "core_quadtree",
+      "community": 0,
+      "norm_label": "quadtree.kt"
+    },
+    {
+      "label": "QuadtreeBounds",
+      "file_type": "code",
+      "source_file": "pdf-core/src/commonMain/kotlin/com/lumina/pdf/core/Quadtree.kt",
+      "source_location": "L3",
+      "_origin": "ast",
+      "id": "core_quadtree_quadtreebounds",
+      "community": 0,
+      "norm_label": "quadtreebounds"
+    },
+    {
+      "label": ".intersects()",
+      "file_type": "code",
+      "source_file": "pdf-core/src/commonMain/kotlin/com/lumina/pdf/core/Quadtree.kt",
+      "source_location": "L9",
+      "_origin": "ast",
+      "id": "core_quadtree_quadtreebounds_intersects",
+      "community": 0,
+      "norm_label": ".intersects()"
+    },
+    {
+      "label": "Boolean",
+      "file_type": "code",
+      "source_file": "pdf-core/src/commonMain/kotlin/com/lumina/pdf/core/Quadtree.kt",
+      "source_location": "L9",
+      "_origin": "ast",
+      "id": "pdf_core_src_commonmain_kotlin_com_lumina_pdf_core_quadtree_kt_boolean",
+      "community": 0,
+      "norm_label": "boolean"
+    },
+    {
+      "label": "PdfRect",
+      "file_type": "code",
+      "source_file": "pdf-core/src/commonMain/kotlin/com/lumina/pdf/core/Quadtree.kt",
+      "source_location": "L13",
+      "_origin": "ast",
+      "id": "pdf_core_src_commonmain_kotlin_com_lumina_pdf_core_quadtree_kt_pdfrect",
+      "community": 0,
+      "norm_label": "pdfrect"
+    },
+    {
+      "label": ".contains()",
+      "file_type": "code",
+      "source_file": "pdf-core/src/commonMain/kotlin/com/lumina/pdf/core/Quadtree.kt",
+      "source_location": "L17",
+      "_origin": "ast",
+      "id": "core_quadtree_quadtreebounds_contains",
+      "community": 0,
+      "norm_label": ".contains()"
+    },
+    {
+      "label": "PageQuadtree",
+      "file_type": "code",
+      "source_file": "pdf-core/src/commonMain/kotlin/com/lumina/pdf/core/Quadtree.kt",
+      "source_location": "L22",
+      "_origin": "ast",
+      "id": "core_quadtree_pagequadtree",
+      "community": 0,
+      "norm_label": "pagequadtree"
+    },
+    {
+      "label": ".insert()",
+      "file_type": "code",
+      "source_file": "pdf-core/src/commonMain/kotlin/com/lumina/pdf/core/Quadtree.kt",
+      "source_location": "L36",
+      "_origin": "ast",
+      "id": "core_quadtree_pagequadtree_insert",
+      "community": 0,
+      "norm_label": ".insert()"
+    },
+    {
+      "label": ".subdivide()",
+      "file_type": "code",
+      "source_file": "pdf-core/src/commonMain/kotlin/com/lumina/pdf/core/Quadtree.kt",
+      "source_location": "L63",
+      "_origin": "ast",
+      "id": "core_quadtree_pagequadtree_subdivide",
+      "community": 0,
+      "norm_label": ".subdivide()"
+    },
+    {
+      "label": ".query()",
+      "file_type": "code",
+      "source_file": "pdf-core/src/commonMain/kotlin/com/lumina/pdf/core/Quadtree.kt",
+      "source_location": "L88",
+      "_origin": "ast",
+      "id": "core_quadtree_pagequadtree_query",
+      "community": 0,
+      "norm_label": ".query()"
+    },
+    {
+      "label": "MutableList",
+      "file_type": "code",
+      "source_file": "pdf-core/src/commonMain/kotlin/com/lumina/pdf/core/Quadtree.kt",
+      "source_location": "L88",
+      "_origin": "ast",
+      "id": "pdf_core_src_commonmain_kotlin_com_lumina_pdf_core_quadtree_kt_mutablelist",
+      "community": 0,
+      "norm_label": "mutablelist"
+    },
+    {
+      "label": "List",
+      "file_type": "code",
+      "source_file": "pdf-core/src/commonMain/kotlin/com/lumina/pdf/core/Quadtree.kt",
+      "source_location": "L88",
+      "_origin": "ast",
+      "id": "pdf_core_src_commonmain_kotlin_com_lumina_pdf_core_quadtree_kt_list",
+      "community": 0,
+      "norm_label": "list"
     },
     {
       "label": "RenderQueue.kt",
@@ -1084,6 +1304,106 @@
       "norm_label": "int"
     },
     {
+      "label": "SdfGlyphAtlas.kt",
+      "file_type": "code",
+      "source_file": "pdf-core/src/commonMain/kotlin/com/lumina/pdf/core/SdfGlyphAtlas.kt",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "core_sdfglyphatlas",
+      "community": 68,
+      "norm_label": "sdfglyphatlas.kt"
+    },
+    {
+      "label": "SdfGlyph",
+      "file_type": "code",
+      "source_file": "pdf-core/src/commonMain/kotlin/com/lumina/pdf/core/SdfGlyphAtlas.kt",
+      "source_location": "L5",
+      "_origin": "ast",
+      "id": "core_sdfglyphatlas_sdfglyph",
+      "community": 68,
+      "norm_label": "sdfglyph"
+    },
+    {
+      "label": "SdfGlyphAtlas",
+      "file_type": "code",
+      "source_file": "pdf-core/src/commonMain/kotlin/com/lumina/pdf/core/SdfGlyphAtlas.kt",
+      "source_location": "L12",
+      "_origin": "ast",
+      "id": "core_sdfglyphatlas_sdfglyphatlas",
+      "community": 68,
+      "norm_label": "sdfglyphatlas"
+    },
+    {
+      "label": ".hasGlyph()",
+      "file_type": "code",
+      "source_file": "pdf-core/src/commonMain/kotlin/com/lumina/pdf/core/SdfGlyphAtlas.kt",
+      "source_location": "L15",
+      "_origin": "ast",
+      "id": "core_sdfglyphatlas_sdfglyphatlas_hasglyph",
+      "community": 68,
+      "norm_label": ".hasglyph()"
+    },
+    {
+      "label": "Char",
+      "file_type": "code",
+      "source_file": "pdf-core/src/commonMain/kotlin/com/lumina/pdf/core/SdfGlyphAtlas.kt",
+      "source_location": "L15",
+      "_origin": "ast",
+      "id": "pdf_core_src_commonmain_kotlin_com_lumina_pdf_core_sdfglyphatlas_kt_char",
+      "community": 68,
+      "norm_label": "char"
+    },
+    {
+      "label": "Boolean",
+      "file_type": "code",
+      "source_file": "pdf-core/src/commonMain/kotlin/com/lumina/pdf/core/SdfGlyphAtlas.kt",
+      "source_location": "L15",
+      "_origin": "ast",
+      "id": "pdf_core_src_commonmain_kotlin_com_lumina_pdf_core_sdfglyphatlas_kt_boolean",
+      "community": 68,
+      "norm_label": "boolean"
+    },
+    {
+      "label": ".getGlyph()",
+      "file_type": "code",
+      "source_file": "pdf-core/src/commonMain/kotlin/com/lumina/pdf/core/SdfGlyphAtlas.kt",
+      "source_location": "L19",
+      "_origin": "ast",
+      "id": "core_sdfglyphatlas_sdfglyphatlas_getglyph",
+      "community": 68,
+      "norm_label": ".getglyph()"
+    },
+    {
+      "label": ".putGlyph()",
+      "file_type": "code",
+      "source_file": "pdf-core/src/commonMain/kotlin/com/lumina/pdf/core/SdfGlyphAtlas.kt",
+      "source_location": "L23",
+      "_origin": "ast",
+      "id": "core_sdfglyphatlas_sdfglyphatlas_putglyph",
+      "community": 68,
+      "norm_label": ".putglyph()"
+    },
+    {
+      "label": ".sampleAt()",
+      "file_type": "code",
+      "source_file": "pdf-core/src/commonMain/kotlin/com/lumina/pdf/core/SdfGlyphAtlas.kt",
+      "source_location": "L27",
+      "_origin": "ast",
+      "id": "core_sdfglyphatlas_sdfglyphatlas_sampleat",
+      "community": 68,
+      "norm_label": ".sampleat()"
+    },
+    {
+      "label": "Float",
+      "file_type": "code",
+      "source_file": "pdf-core/src/commonMain/kotlin/com/lumina/pdf/core/SdfGlyphAtlas.kt",
+      "source_location": "L27",
+      "_origin": "ast",
+      "id": "pdf_core_src_commonmain_kotlin_com_lumina_pdf_core_sdfglyphatlas_kt_float",
+      "community": 68,
+      "norm_label": "float"
+    },
+    {
       "label": "SearchCorpus.kt",
       "file_type": "code",
       "source_file": "pdf-core/src/commonMain/kotlin/com/lumina/pdf/core/SearchCorpus.kt",
@@ -1140,7 +1460,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "core_stripspatialindex",
-      "community": 0,
+      "community": 71,
       "norm_label": "stripspatialindex.kt"
     },
     {
@@ -1150,7 +1470,7 @@
       "source_location": "L3",
       "_origin": "ast",
       "id": "core_stripspatialindex_stripspatialindex",
-      "community": 0,
+      "community": 71,
       "norm_label": "stripspatialindex"
     },
     {
@@ -1160,7 +1480,7 @@
       "source_location": "L6",
       "_origin": "ast",
       "id": "core_stripspatialindex_stripspatialindex_build",
-      "community": 0,
+      "community": 71,
       "norm_label": ".build()"
     },
     {
@@ -1170,7 +1490,7 @@
       "source_location": "L6",
       "_origin": "ast",
       "id": "pdf_core_src_commonmain_kotlin_com_lumina_pdf_core_stripspatialindex_kt_list",
-      "community": 0,
+      "community": 71,
       "norm_label": "list"
     },
     {
@@ -1180,7 +1500,7 @@
       "source_location": "L6",
       "_origin": "ast",
       "id": "pdf_core_src_commonmain_kotlin_com_lumina_pdf_core_stripspatialindex_kt_characterbox",
-      "community": 0,
+      "community": 71,
       "norm_label": "characterbox"
     },
     {
@@ -1190,7 +1510,7 @@
       "source_location": "L20",
       "_origin": "ast",
       "id": "core_stripspatialindex_stripspatialindex_query",
-      "community": 0,
+      "community": 71,
       "norm_label": ".query()"
     },
     {
@@ -1200,7 +1520,7 @@
       "source_location": "L20",
       "_origin": "ast",
       "id": "pdf_core_src_commonmain_kotlin_com_lumina_pdf_core_stripspatialindex_kt_float",
-      "community": 0,
+      "community": 71,
       "norm_label": "float"
     },
     {
@@ -1210,8 +1530,108 @@
       "source_location": "L41",
       "_origin": "ast",
       "id": "core_stripspatialindex_stripspatialindex_queryrange",
-      "community": 0,
+      "community": 71,
       "norm_label": ".queryrange()"
+    },
+    {
+      "label": "SutherlandHodgman.kt",
+      "file_type": "code",
+      "source_file": "pdf-core/src/commonMain/kotlin/com/lumina/pdf/core/SutherlandHodgman.kt",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "core_sutherlandhodgman",
+      "community": 69,
+      "norm_label": "sutherlandhodgman.kt"
+    },
+    {
+      "label": "Point2D",
+      "file_type": "code",
+      "source_file": "pdf-core/src/commonMain/kotlin/com/lumina/pdf/core/SutherlandHodgman.kt",
+      "source_location": "L3",
+      "_origin": "ast",
+      "id": "core_sutherlandhodgman_point2d",
+      "community": 69,
+      "norm_label": "point2d"
+    },
+    {
+      "label": "SutherlandHodgman",
+      "file_type": "code",
+      "source_file": "pdf-core/src/commonMain/kotlin/com/lumina/pdf/core/SutherlandHodgman.kt",
+      "source_location": "L5",
+      "_origin": "ast",
+      "id": "core_sutherlandhodgman_sutherlandhodgman",
+      "community": 69,
+      "norm_label": "sutherlandhodgman"
+    },
+    {
+      "label": ".clipToRect()",
+      "file_type": "code",
+      "source_file": "pdf-core/src/commonMain/kotlin/com/lumina/pdf/core/SutherlandHodgman.kt",
+      "source_location": "L7",
+      "_origin": "ast",
+      "id": "core_sutherlandhodgman_sutherlandhodgman_cliptorect",
+      "community": 69,
+      "norm_label": ".cliptorect()"
+    },
+    {
+      "label": "List",
+      "file_type": "code",
+      "source_file": "pdf-core/src/commonMain/kotlin/com/lumina/pdf/core/SutherlandHodgman.kt",
+      "source_location": "L7",
+      "_origin": "ast",
+      "id": "pdf_core_src_commonmain_kotlin_com_lumina_pdf_core_sutherlandhodgman_kt_list",
+      "community": 69,
+      "norm_label": "list"
+    },
+    {
+      "label": "Float",
+      "file_type": "code",
+      "source_file": "pdf-core/src/commonMain/kotlin/com/lumina/pdf/core/SutherlandHodgman.kt",
+      "source_location": "L7",
+      "_origin": "ast",
+      "id": "pdf_core_src_commonmain_kotlin_com_lumina_pdf_core_sutherlandhodgman_kt_float",
+      "community": 69,
+      "norm_label": "float"
+    },
+    {
+      "label": ".clip()",
+      "file_type": "code",
+      "source_file": "pdf-core/src/commonMain/kotlin/com/lumina/pdf/core/SutherlandHodgman.kt",
+      "source_location": "L117",
+      "_origin": "ast",
+      "id": "core_sutherlandhodgman_sutherlandhodgman_clip",
+      "community": 69,
+      "norm_label": ".clip()"
+    },
+    {
+      "label": ".isInside()",
+      "file_type": "code",
+      "source_file": "pdf-core/src/commonMain/kotlin/com/lumina/pdf/core/SutherlandHodgman.kt",
+      "source_location": "L162",
+      "_origin": "ast",
+      "id": "core_sutherlandhodgman_sutherlandhodgman_isinside",
+      "community": 69,
+      "norm_label": ".isinside()"
+    },
+    {
+      "label": "Boolean",
+      "file_type": "code",
+      "source_file": "pdf-core/src/commonMain/kotlin/com/lumina/pdf/core/SutherlandHodgman.kt",
+      "source_location": "L162",
+      "_origin": "ast",
+      "id": "pdf_core_src_commonmain_kotlin_com_lumina_pdf_core_sutherlandhodgman_kt_boolean",
+      "community": 69,
+      "norm_label": "boolean"
+    },
+    {
+      "label": ".intersection()",
+      "file_type": "code",
+      "source_file": "pdf-core/src/commonMain/kotlin/com/lumina/pdf/core/SutherlandHodgman.kt",
+      "source_location": "L167",
+      "_origin": "ast",
+      "id": "core_sutherlandhodgman_sutherlandhodgman_intersection",
+      "community": 69,
+      "norm_label": ".intersection()"
     },
     {
       "label": "UnifiedLruCache.kt",
@@ -1412,6 +1832,66 @@
       "id": "core_unifiedlrucache_unifiedlrucache_trimtosize",
       "community": 62,
       "norm_label": ".trimtosize()"
+    },
+    {
+      "label": "SutherlandHodgmanTest.kt",
+      "file_type": "code",
+      "source_file": "pdf-core/src/commonTest/kotlin/com/lumina/pdf/core/SutherlandHodgmanTest.kt",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "core_sutherlandhodgmantest",
+      "community": 72,
+      "norm_label": "sutherlandhodgmantest.kt"
+    },
+    {
+      "label": "SutherlandHodgmanTest",
+      "file_type": "code",
+      "source_file": "pdf-core/src/commonTest/kotlin/com/lumina/pdf/core/SutherlandHodgmanTest.kt",
+      "source_location": "L7",
+      "_origin": "ast",
+      "id": "core_sutherlandhodgmantest_sutherlandhodgmantest",
+      "community": 72,
+      "norm_label": "sutherlandhodgmantest"
+    },
+    {
+      "label": ".testFullyInsideRect()",
+      "file_type": "code",
+      "source_file": "pdf-core/src/commonTest/kotlin/com/lumina/pdf/core/SutherlandHodgmanTest.kt",
+      "source_location": "L9",
+      "_origin": "ast",
+      "id": "core_sutherlandhodgmantest_sutherlandhodgmantest_testfullyinsiderect",
+      "community": 72,
+      "norm_label": ".testfullyinsiderect()"
+    },
+    {
+      "label": ".testFullyOutsideRect()",
+      "file_type": "code",
+      "source_file": "pdf-core/src/commonTest/kotlin/com/lumina/pdf/core/SutherlandHodgmanTest.kt",
+      "source_location": "L22",
+      "_origin": "ast",
+      "id": "core_sutherlandhodgmantest_sutherlandhodgmantest_testfullyoutsiderect",
+      "community": 72,
+      "norm_label": ".testfullyoutsiderect()"
+    },
+    {
+      "label": ".testPartialClip()",
+      "file_type": "code",
+      "source_file": "pdf-core/src/commonTest/kotlin/com/lumina/pdf/core/SutherlandHodgmanTest.kt",
+      "source_location": "L33",
+      "_origin": "ast",
+      "id": "core_sutherlandhodgmantest_sutherlandhodgmantest_testpartialclip",
+      "community": 72,
+      "norm_label": ".testpartialclip()"
+    },
+    {
+      "label": ".testPolygonClipping()",
+      "file_type": "code",
+      "source_file": "pdf-core/src/commonTest/kotlin/com/lumina/pdf/core/SutherlandHodgmanTest.kt",
+      "source_location": "L51",
+      "_origin": "ast",
+      "id": "core_sutherlandhodgmantest_sutherlandhodgmantest_testpolygonclipping",
+      "community": 72,
+      "norm_label": ".testpolygonclipping()"
     },
     {
       "label": "build.gradle.kts",
@@ -1654,10 +2134,20 @@
       "norm_label": "outlineitem"
     },
     {
-      "label": ".close()",
+      "label": ".getPageElementBounds()",
       "file_type": "code",
       "source_file": "pdf-renderer/src/androidMain/kotlin/com/lumina/pdf/renderer/AndroidPdfDocument.kt",
       "source_location": "L92",
+      "_origin": "ast",
+      "id": "renderer_androidpdfdocument_androidpdfdocument_getpageelementbounds",
+      "community": 3,
+      "norm_label": ".getpageelementbounds()"
+    },
+    {
+      "label": ".close()",
+      "file_type": "code",
+      "source_file": "pdf-renderer/src/androidMain/kotlin/com/lumina/pdf/renderer/AndroidPdfDocument.kt",
+      "source_location": "L96",
       "_origin": "ast",
       "id": "renderer_androidpdfdocument_androidpdfdocument_close",
       "community": 3,
@@ -1864,6 +2354,296 @@
       "norm_label": "pdfdocument"
     },
     {
+      "label": "ElementBoundsExtractor.kt",
+      "file_type": "code",
+      "source_file": "pdf-renderer/src/jvmMain/kotlin/com/lumina/pdf/renderer/ElementBoundsExtractor.kt",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "renderer_elementboundsextractor",
+      "community": 66,
+      "norm_label": "elementboundsextractor.kt"
+    },
+    {
+      "label": "ElementBoundsExtractor",
+      "file_type": "code",
+      "source_file": "pdf-renderer/src/jvmMain/kotlin/com/lumina/pdf/renderer/ElementBoundsExtractor.kt",
+      "source_location": "L12",
+      "_origin": "ast",
+      "id": "renderer_elementboundsextractor_elementboundsextractor",
+      "community": 66,
+      "norm_label": "elementboundsextractor"
+    },
+    {
+      "label": "PDFGraphicsStreamEngine",
+      "file_type": "code",
+      "source_file": "",
+      "source_location": "",
+      "_origin": "ast",
+      "id": "pdfgraphicsstreamengine",
+      "community": 66,
+      "norm_label": "pdfgraphicsstreamengine"
+    },
+    {
+      "label": "Rectangle2D",
+      "file_type": "code",
+      "source_file": "pdf-renderer/src/jvmMain/kotlin/com/lumina/pdf/renderer/ElementBoundsExtractor.kt",
+      "source_location": "L14",
+      "_origin": "ast",
+      "id": "rectangle2d",
+      "community": 66,
+      "norm_label": "rectangle2d"
+    },
+    {
+      "label": ".getBounds()",
+      "file_type": "code",
+      "source_file": "pdf-renderer/src/jvmMain/kotlin/com/lumina/pdf/renderer/ElementBoundsExtractor.kt",
+      "source_location": "L20",
+      "_origin": "ast",
+      "id": "renderer_elementboundsextractor_elementboundsextractor_getbounds",
+      "community": 66,
+      "norm_label": ".getbounds()"
+    },
+    {
+      "label": "List",
+      "file_type": "code",
+      "source_file": "pdf-renderer/src/jvmMain/kotlin/com/lumina/pdf/renderer/ElementBoundsExtractor.kt",
+      "source_location": "L20",
+      "_origin": "ast",
+      "id": "pdf_renderer_src_jvmmain_kotlin_com_lumina_pdf_renderer_elementboundsextractor_kt_list",
+      "community": 66,
+      "norm_label": "list"
+    },
+    {
+      "label": "PdfRect",
+      "file_type": "code",
+      "source_file": "pdf-renderer/src/jvmMain/kotlin/com/lumina/pdf/renderer/ElementBoundsExtractor.kt",
+      "source_location": "L20",
+      "_origin": "ast",
+      "id": "pdf_renderer_src_jvmmain_kotlin_com_lumina_pdf_renderer_elementboundsextractor_kt_pdfrect",
+      "community": 66,
+      "norm_label": "pdfrect"
+    },
+    {
+      "label": ".transformX()",
+      "file_type": "code",
+      "source_file": "pdf-renderer/src/jvmMain/kotlin/com/lumina/pdf/renderer/ElementBoundsExtractor.kt",
+      "source_location": "L24",
+      "_origin": "ast",
+      "id": "renderer_elementboundsextractor_elementboundsextractor_transformx",
+      "community": 66,
+      "norm_label": ".transformx()"
+    },
+    {
+      "label": "Float",
+      "file_type": "code",
+      "source_file": "pdf-renderer/src/jvmMain/kotlin/com/lumina/pdf/renderer/ElementBoundsExtractor.kt",
+      "source_location": "L24",
+      "_origin": "ast",
+      "id": "pdf_renderer_src_jvmmain_kotlin_com_lumina_pdf_renderer_elementboundsextractor_kt_float",
+      "community": 66,
+      "norm_label": "float"
+    },
+    {
+      "label": ".transformY()",
+      "file_type": "code",
+      "source_file": "pdf-renderer/src/jvmMain/kotlin/com/lumina/pdf/renderer/ElementBoundsExtractor.kt",
+      "source_location": "L29",
+      "_origin": "ast",
+      "id": "renderer_elementboundsextractor_elementboundsextractor_transformy",
+      "community": 66,
+      "norm_label": ".transformy()"
+    },
+    {
+      "label": ".updatePathBounds()",
+      "file_type": "code",
+      "source_file": "pdf-renderer/src/jvmMain/kotlin/com/lumina/pdf/renderer/ElementBoundsExtractor.kt",
+      "source_location": "L34",
+      "_origin": "ast",
+      "id": "renderer_elementboundsextractor_elementboundsextractor_updatepathbounds",
+      "community": 66,
+      "norm_label": ".updatepathbounds()"
+    },
+    {
+      "label": ".addRectToElements()",
+      "file_type": "code",
+      "source_file": "pdf-renderer/src/jvmMain/kotlin/com/lumina/pdf/renderer/ElementBoundsExtractor.kt",
+      "source_location": "L45",
+      "_origin": "ast",
+      "id": "renderer_elementboundsextractor_elementboundsextractor_addrecttoelements",
+      "community": 66,
+      "norm_label": ".addrecttoelements()"
+    },
+    {
+      "label": ".appendRectangle()",
+      "file_type": "code",
+      "source_file": "pdf-renderer/src/jvmMain/kotlin/com/lumina/pdf/renderer/ElementBoundsExtractor.kt",
+      "source_location": "L58",
+      "_origin": "ast",
+      "id": "renderer_elementboundsextractor_elementboundsextractor_appendrectangle",
+      "community": 66,
+      "norm_label": ".appendrectangle()"
+    },
+    {
+      "label": "Point2D",
+      "file_type": "code",
+      "source_file": "pdf-renderer/src/jvmMain/kotlin/com/lumina/pdf/renderer/ElementBoundsExtractor.kt",
+      "source_location": "L58",
+      "_origin": "ast",
+      "id": "pdf_renderer_src_jvmmain_kotlin_com_lumina_pdf_renderer_elementboundsextractor_kt_point2d",
+      "community": 66,
+      "norm_label": "point2d"
+    },
+    {
+      "label": ".drawImage()",
+      "file_type": "code",
+      "source_file": "pdf-renderer/src/jvmMain/kotlin/com/lumina/pdf/renderer/ElementBoundsExtractor.kt",
+      "source_location": "L66",
+      "_origin": "ast",
+      "id": "renderer_elementboundsextractor_elementboundsextractor_drawimage",
+      "community": 66,
+      "norm_label": ".drawimage()"
+    },
+    {
+      "label": "PDImage",
+      "file_type": "code",
+      "source_file": "pdf-renderer/src/jvmMain/kotlin/com/lumina/pdf/renderer/ElementBoundsExtractor.kt",
+      "source_location": "L66",
+      "_origin": "ast",
+      "id": "pdf_renderer_src_jvmmain_kotlin_com_lumina_pdf_renderer_elementboundsextractor_kt_pdimage",
+      "community": 66,
+      "norm_label": "pdimage"
+    },
+    {
+      "label": ".clip()",
+      "file_type": "code",
+      "source_file": "pdf-renderer/src/jvmMain/kotlin/com/lumina/pdf/renderer/ElementBoundsExtractor.kt",
+      "source_location": "L87",
+      "_origin": "ast",
+      "id": "renderer_elementboundsextractor_elementboundsextractor_clip",
+      "community": 66,
+      "norm_label": ".clip()"
+    },
+    {
+      "label": "Int",
+      "file_type": "code",
+      "source_file": "pdf-renderer/src/jvmMain/kotlin/com/lumina/pdf/renderer/ElementBoundsExtractor.kt",
+      "source_location": "L87",
+      "_origin": "ast",
+      "id": "pdf_renderer_src_jvmmain_kotlin_com_lumina_pdf_renderer_elementboundsextractor_kt_int",
+      "community": 66,
+      "norm_label": "int"
+    },
+    {
+      "label": ".moveTo()",
+      "file_type": "code",
+      "source_file": "pdf-renderer/src/jvmMain/kotlin/com/lumina/pdf/renderer/ElementBoundsExtractor.kt",
+      "source_location": "L92",
+      "_origin": "ast",
+      "id": "renderer_elementboundsextractor_elementboundsextractor_moveto",
+      "community": 2,
+      "norm_label": ".moveto()"
+    },
+    {
+      "label": ".lineTo()",
+      "file_type": "code",
+      "source_file": "pdf-renderer/src/jvmMain/kotlin/com/lumina/pdf/renderer/ElementBoundsExtractor.kt",
+      "source_location": "L97",
+      "_origin": "ast",
+      "id": "renderer_elementboundsextractor_elementboundsextractor_lineto",
+      "community": 2,
+      "norm_label": ".lineto()"
+    },
+    {
+      "label": ".curveTo()",
+      "file_type": "code",
+      "source_file": "pdf-renderer/src/jvmMain/kotlin/com/lumina/pdf/renderer/ElementBoundsExtractor.kt",
+      "source_location": "L102",
+      "_origin": "ast",
+      "id": "renderer_elementboundsextractor_elementboundsextractor_curveto",
+      "community": 66,
+      "norm_label": ".curveto()"
+    },
+    {
+      "label": ".getCurrentPoint()",
+      "file_type": "code",
+      "source_file": "pdf-renderer/src/jvmMain/kotlin/com/lumina/pdf/renderer/ElementBoundsExtractor.kt",
+      "source_location": "L109",
+      "_origin": "ast",
+      "id": "renderer_elementboundsextractor_elementboundsextractor_getcurrentpoint",
+      "community": 66,
+      "norm_label": ".getcurrentpoint()"
+    },
+    {
+      "label": ".closePath()",
+      "file_type": "code",
+      "source_file": "pdf-renderer/src/jvmMain/kotlin/com/lumina/pdf/renderer/ElementBoundsExtractor.kt",
+      "source_location": "L114",
+      "_origin": "ast",
+      "id": "renderer_elementboundsextractor_elementboundsextractor_closepath",
+      "community": 66,
+      "norm_label": ".closepath()"
+    },
+    {
+      "label": ".endPath()",
+      "file_type": "code",
+      "source_file": "pdf-renderer/src/jvmMain/kotlin/com/lumina/pdf/renderer/ElementBoundsExtractor.kt",
+      "source_location": "L118",
+      "_origin": "ast",
+      "id": "renderer_elementboundsextractor_elementboundsextractor_endpath",
+      "community": 66,
+      "norm_label": ".endpath()"
+    },
+    {
+      "label": ".strokePath()",
+      "file_type": "code",
+      "source_file": "pdf-renderer/src/jvmMain/kotlin/com/lumina/pdf/renderer/ElementBoundsExtractor.kt",
+      "source_location": "L123",
+      "_origin": "ast",
+      "id": "renderer_elementboundsextractor_elementboundsextractor_strokepath",
+      "community": 66,
+      "norm_label": ".strokepath()"
+    },
+    {
+      "label": ".fillPath()",
+      "file_type": "code",
+      "source_file": "pdf-renderer/src/jvmMain/kotlin/com/lumina/pdf/renderer/ElementBoundsExtractor.kt",
+      "source_location": "L132",
+      "_origin": "ast",
+      "id": "renderer_elementboundsextractor_elementboundsextractor_fillpath",
+      "community": 66,
+      "norm_label": ".fillpath()"
+    },
+    {
+      "label": ".fillAndStrokePath()",
+      "file_type": "code",
+      "source_file": "pdf-renderer/src/jvmMain/kotlin/com/lumina/pdf/renderer/ElementBoundsExtractor.kt",
+      "source_location": "L141",
+      "_origin": "ast",
+      "id": "renderer_elementboundsextractor_elementboundsextractor_fillandstrokepath",
+      "community": 66,
+      "norm_label": ".fillandstrokepath()"
+    },
+    {
+      "label": ".shadingFill()",
+      "file_type": "code",
+      "source_file": "pdf-renderer/src/jvmMain/kotlin/com/lumina/pdf/renderer/ElementBoundsExtractor.kt",
+      "source_location": "L150",
+      "_origin": "ast",
+      "id": "renderer_elementboundsextractor_elementboundsextractor_shadingfill",
+      "community": 66,
+      "norm_label": ".shadingfill()"
+    },
+    {
+      "label": "COSName",
+      "file_type": "code",
+      "source_file": "pdf-renderer/src/jvmMain/kotlin/com/lumina/pdf/renderer/ElementBoundsExtractor.kt",
+      "source_location": "L150",
+      "_origin": "ast",
+      "id": "cosname",
+      "community": 66,
+      "norm_label": "cosname"
+    },
+    {
       "label": "JvmPdfBitmap.kt",
       "file_type": "code",
       "source_file": "pdf-renderer/src/jvmMain/kotlin/com/lumina/pdf/renderer/JvmPdfBitmap.kt",
@@ -1917,17 +2697,27 @@
       "label": "JvmPdfDocument",
       "file_type": "code",
       "source_file": "pdf-renderer/src/jvmMain/kotlin/com/lumina/pdf/renderer/JvmPdfDocument.kt",
-      "source_location": "L16",
+      "source_location": "L17",
       "_origin": "ast",
       "id": "renderer_jvmpdfdocument_jvmpdfdocument",
       "community": 1,
       "norm_label": "jvmpdfdocument"
     },
     {
+      "label": "SdfGlyphAtlas",
+      "file_type": "code",
+      "source_file": "pdf-renderer/src/jvmMain/kotlin/com/lumina/pdf/renderer/JvmPdfDocument.kt",
+      "source_location": "L21",
+      "_origin": "ast",
+      "id": "pdf_renderer_src_jvmmain_kotlin_com_lumina_pdf_renderer_jvmpdfdocument_kt_sdfglyphatlas",
+      "community": 1,
+      "norm_label": "sdfglyphatlas"
+    },
+    {
       "label": ".pageCount()",
       "file_type": "code",
       "source_file": "pdf-renderer/src/jvmMain/kotlin/com/lumina/pdf/renderer/JvmPdfDocument.kt",
-      "source_location": "L19",
+      "source_location": "L25",
       "_origin": "ast",
       "id": "renderer_jvmpdfdocument_jvmpdfdocument_pagecount",
       "community": 1,
@@ -1937,7 +2727,7 @@
       "label": "Int",
       "file_type": "code",
       "source_file": "pdf-renderer/src/jvmMain/kotlin/com/lumina/pdf/renderer/JvmPdfDocument.kt",
-      "source_location": "L19",
+      "source_location": "L25",
       "_origin": "ast",
       "id": "pdf_renderer_src_jvmmain_kotlin_com_lumina_pdf_renderer_jvmpdfdocument_kt_int",
       "community": 1,
@@ -1947,7 +2737,7 @@
       "label": ".renderPage()",
       "file_type": "code",
       "source_file": "pdf-renderer/src/jvmMain/kotlin/com/lumina/pdf/renderer/JvmPdfDocument.kt",
-      "source_location": "L23",
+      "source_location": "L29",
       "_origin": "ast",
       "id": "renderer_jvmpdfdocument_jvmpdfdocument_renderpage",
       "community": 1,
@@ -1957,7 +2747,7 @@
       "label": "PdfBitmap",
       "file_type": "code",
       "source_file": "pdf-renderer/src/jvmMain/kotlin/com/lumina/pdf/renderer/JvmPdfDocument.kt",
-      "source_location": "L23",
+      "source_location": "L29",
       "_origin": "ast",
       "id": "pdf_renderer_src_jvmmain_kotlin_com_lumina_pdf_renderer_jvmpdfdocument_kt_pdfbitmap",
       "community": 1,
@@ -1967,7 +2757,7 @@
       "label": ".renderTile()",
       "file_type": "code",
       "source_file": "pdf-renderer/src/jvmMain/kotlin/com/lumina/pdf/renderer/JvmPdfDocument.kt",
-      "source_location": "L41",
+      "source_location": "L47",
       "_origin": "ast",
       "id": "renderer_jvmpdfdocument_jvmpdfdocument_rendertile",
       "community": 1,
@@ -1977,7 +2767,7 @@
       "label": "PdfRect",
       "file_type": "code",
       "source_file": "pdf-renderer/src/jvmMain/kotlin/com/lumina/pdf/renderer/JvmPdfDocument.kt",
-      "source_location": "L41",
+      "source_location": "L47",
       "_origin": "ast",
       "id": "pdf_renderer_src_jvmmain_kotlin_com_lumina_pdf_renderer_jvmpdfdocument_kt_pdfrect",
       "community": 1,
@@ -1987,7 +2777,7 @@
       "label": "Float",
       "file_type": "code",
       "source_file": "pdf-renderer/src/jvmMain/kotlin/com/lumina/pdf/renderer/JvmPdfDocument.kt",
-      "source_location": "L41",
+      "source_location": "L47",
       "_origin": "ast",
       "id": "pdf_renderer_src_jvmmain_kotlin_com_lumina_pdf_renderer_jvmpdfdocument_kt_float",
       "community": 1,
@@ -1997,7 +2787,7 @@
       "label": ".extractText()",
       "file_type": "code",
       "source_file": "pdf-renderer/src/jvmMain/kotlin/com/lumina/pdf/renderer/JvmPdfDocument.kt",
-      "source_location": "L68",
+      "source_location": "L74",
       "_origin": "ast",
       "id": "renderer_jvmpdfdocument_jvmpdfdocument_extracttext",
       "community": 1,
@@ -2007,7 +2797,7 @@
       "label": "String",
       "file_type": "code",
       "source_file": "pdf-renderer/src/jvmMain/kotlin/com/lumina/pdf/renderer/JvmPdfDocument.kt",
-      "source_location": "L68",
+      "source_location": "L74",
       "_origin": "ast",
       "id": "pdf_renderer_src_jvmmain_kotlin_com_lumina_pdf_renderer_jvmpdfdocument_kt_string",
       "community": 1,
@@ -2017,7 +2807,7 @@
       "label": ".searchText()",
       "file_type": "code",
       "source_file": "pdf-renderer/src/jvmMain/kotlin/com/lumina/pdf/renderer/JvmPdfDocument.kt",
-      "source_location": "L77",
+      "source_location": "L83",
       "_origin": "ast",
       "id": "renderer_jvmpdfdocument_jvmpdfdocument_searchtext",
       "community": 1,
@@ -2027,7 +2817,7 @@
       "label": "List",
       "file_type": "code",
       "source_file": "pdf-renderer/src/jvmMain/kotlin/com/lumina/pdf/renderer/JvmPdfDocument.kt",
-      "source_location": "L77",
+      "source_location": "L83",
       "_origin": "ast",
       "id": "pdf_renderer_src_jvmmain_kotlin_com_lumina_pdf_renderer_jvmpdfdocument_kt_list",
       "community": 1,
@@ -2037,7 +2827,7 @@
       "label": ".extractCharacterBoxes()",
       "file_type": "code",
       "source_file": "pdf-renderer/src/jvmMain/kotlin/com/lumina/pdf/renderer/JvmPdfDocument.kt",
-      "source_location": "L94",
+      "source_location": "L100",
       "_origin": "ast",
       "id": "renderer_jvmpdfdocument_jvmpdfdocument_extractcharacterboxes",
       "community": 1,
@@ -2047,7 +2837,7 @@
       "label": "CharacterBox",
       "file_type": "code",
       "source_file": "pdf-renderer/src/jvmMain/kotlin/com/lumina/pdf/renderer/JvmPdfDocument.kt",
-      "source_location": "L94",
+      "source_location": "L100",
       "_origin": "ast",
       "id": "pdf_renderer_src_jvmmain_kotlin_com_lumina_pdf_renderer_jvmpdfdocument_kt_characterbox",
       "community": 1,
@@ -2057,7 +2847,7 @@
       "label": ".getOutline()",
       "file_type": "code",
       "source_file": "pdf-renderer/src/jvmMain/kotlin/com/lumina/pdf/renderer/JvmPdfDocument.kt",
-      "source_location": "L109",
+      "source_location": "L115",
       "_origin": "ast",
       "id": "renderer_jvmpdfdocument_jvmpdfdocument_getoutline",
       "community": 1,
@@ -2067,7 +2857,7 @@
       "label": "OutlineItem",
       "file_type": "code",
       "source_file": "pdf-renderer/src/jvmMain/kotlin/com/lumina/pdf/renderer/JvmPdfDocument.kt",
-      "source_location": "L109",
+      "source_location": "L115",
       "_origin": "ast",
       "id": "pdf_renderer_src_jvmmain_kotlin_com_lumina_pdf_renderer_jvmpdfdocument_kt_outlineitem",
       "community": 1,
@@ -2077,7 +2867,7 @@
       "label": ".mapOutlineItem()",
       "file_type": "code",
       "source_file": "pdf-renderer/src/jvmMain/kotlin/com/lumina/pdf/renderer/JvmPdfDocument.kt",
-      "source_location": "L125",
+      "source_location": "L131",
       "_origin": "ast",
       "id": "renderer_jvmpdfdocument_jvmpdfdocument_mapoutlineitem",
       "community": 1,
@@ -2087,17 +2877,27 @@
       "label": "org",
       "file_type": "code",
       "source_file": "pdf-renderer/src/jvmMain/kotlin/com/lumina/pdf/renderer/JvmPdfDocument.kt",
-      "source_location": "L125",
+      "source_location": "L131",
       "_origin": "ast",
-      "id": "org",
+      "id": "pdf_renderer_src_jvmmain_kotlin_com_lumina_pdf_renderer_jvmpdfdocument_kt_org",
       "community": 1,
       "norm_label": "org"
+    },
+    {
+      "label": ".getPageElementBounds()",
+      "file_type": "code",
+      "source_file": "pdf-renderer/src/jvmMain/kotlin/com/lumina/pdf/renderer/JvmPdfDocument.kt",
+      "source_location": "L186",
+      "_origin": "ast",
+      "id": "renderer_jvmpdfdocument_jvmpdfdocument_getpageelementbounds",
+      "community": 1,
+      "norm_label": ".getpageelementbounds()"
     },
     {
       "label": ".close()",
       "file_type": "code",
       "source_file": "pdf-renderer/src/jvmMain/kotlin/com/lumina/pdf/renderer/JvmPdfDocument.kt",
-      "source_location": "L180",
+      "source_location": "L209",
       "_origin": "ast",
       "id": "renderer_jvmpdfdocument_jvmpdfdocument_close",
       "community": 1,
@@ -2107,7 +2907,7 @@
       "label": "PDFTextLocator",
       "file_type": "code",
       "source_file": "pdf-renderer/src/jvmMain/kotlin/com/lumina/pdf/renderer/JvmPdfDocument.kt",
-      "source_location": "L185",
+      "source_location": "L214",
       "_origin": "ast",
       "id": "renderer_jvmpdfdocument_pdftextlocator",
       "community": 1,
@@ -2127,7 +2927,7 @@
       "label": ".writeString()",
       "file_type": "code",
       "source_file": "pdf-renderer/src/jvmMain/kotlin/com/lumina/pdf/renderer/JvmPdfDocument.kt",
-      "source_location": "L195",
+      "source_location": "L224",
       "_origin": "ast",
       "id": "renderer_jvmpdfdocument_pdftextlocator_writestring",
       "community": 1,
@@ -2137,9 +2937,9 @@
       "label": "MutableList",
       "file_type": "code",
       "source_file": "pdf-renderer/src/jvmMain/kotlin/com/lumina/pdf/renderer/JvmPdfDocument.kt",
-      "source_location": "L195",
+      "source_location": "L224",
       "_origin": "ast",
-      "id": "mutablelist",
+      "id": "pdf_renderer_src_jvmmain_kotlin_com_lumina_pdf_renderer_jvmpdfdocument_kt_mutablelist",
       "community": 1,
       "norm_label": "mutablelist"
     },
@@ -2147,7 +2947,7 @@
       "label": ".findMatches()",
       "file_type": "code",
       "source_file": "pdf-renderer/src/jvmMain/kotlin/com/lumina/pdf/renderer/JvmPdfDocument.kt",
-      "source_location": "L201",
+      "source_location": "L230",
       "_origin": "ast",
       "id": "renderer_jvmpdfdocument_pdftextlocator_findmatches",
       "community": 1,
@@ -2157,7 +2957,7 @@
       "label": "PDFCharacterBoxExtractor",
       "file_type": "code",
       "source_file": "pdf-renderer/src/jvmMain/kotlin/com/lumina/pdf/renderer/JvmPdfDocument.kt",
-      "source_location": "L226",
+      "source_location": "L255",
       "_origin": "ast",
       "id": "renderer_jvmpdfdocument_pdfcharacterboxextractor",
       "community": 1,
@@ -2167,7 +2967,7 @@
       "label": ".writeString()",
       "file_type": "code",
       "source_file": "pdf-renderer/src/jvmMain/kotlin/com/lumina/pdf/renderer/JvmPdfDocument.kt",
-      "source_location": "L235",
+      "source_location": "L264",
       "_origin": "ast",
       "id": "renderer_jvmpdfdocument_pdfcharacterboxextractor_writestring",
       "community": 1,
@@ -2177,7 +2977,7 @@
       "label": ".getBoxes()",
       "file_type": "code",
       "source_file": "pdf-renderer/src/jvmMain/kotlin/com/lumina/pdf/renderer/JvmPdfDocument.kt",
-      "source_location": "L241",
+      "source_location": "L270",
       "_origin": "ast",
       "id": "renderer_jvmpdfdocument_pdfcharacterboxextractor_getboxes",
       "community": 1,
@@ -2187,7 +2987,7 @@
       "label": "SimplifyingPDFRenderer",
       "file_type": "code",
       "source_file": "pdf-renderer/src/jvmMain/kotlin/com/lumina/pdf/renderer/JvmPdfDocument.kt",
-      "source_location": "L260",
+      "source_location": "L289",
       "_origin": "ast",
       "id": "renderer_jvmpdfdocument_simplifyingpdfrenderer",
       "community": 1,
@@ -2207,7 +3007,7 @@
       "label": ".createPageDrawer()",
       "file_type": "code",
       "source_file": "pdf-renderer/src/jvmMain/kotlin/com/lumina/pdf/renderer/JvmPdfDocument.kt",
-      "source_location": "L264",
+      "source_location": "L294",
       "_origin": "ast",
       "id": "renderer_jvmpdfdocument_simplifyingpdfrenderer_createpagedrawer",
       "community": 1,
@@ -2309,7 +3109,7 @@
       "source_file": "pdf-renderer/src/jvmMain/kotlin/com/lumina/pdf/renderer/RdpPathSimplifier.kt",
       "source_location": "L10",
       "_origin": "ast",
-      "id": "point2d",
+      "id": "pdf_renderer_src_jvmmain_kotlin_com_lumina_pdf_renderer_rdppathsimplifier_kt_point2d",
       "community": 65,
       "norm_label": "point2d"
     },
@@ -2349,9 +3149,109 @@
       "source_file": "pdf-renderer/src/jvmMain/kotlin/com/lumina/pdf/renderer/RdpPathSimplifier.kt",
       "source_location": "L46",
       "_origin": "ast",
-      "id": "generalpath",
+      "id": "pdf_renderer_src_jvmmain_kotlin_com_lumina_pdf_renderer_rdppathsimplifier_kt_generalpath",
       "community": 65,
       "norm_label": "generalpath"
+    },
+    {
+      "label": "SdfGenerator.kt",
+      "file_type": "code",
+      "source_file": "pdf-renderer/src/jvmMain/kotlin/com/lumina/pdf/renderer/SdfGenerator.kt",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "renderer_sdfgenerator",
+      "community": 34,
+      "norm_label": "sdfgenerator.kt"
+    },
+    {
+      "label": "SdfGenerator",
+      "file_type": "code",
+      "source_file": "pdf-renderer/src/jvmMain/kotlin/com/lumina/pdf/renderer/SdfGenerator.kt",
+      "source_location": "L11",
+      "_origin": "ast",
+      "id": "renderer_sdfgenerator_sdfgenerator",
+      "community": 34,
+      "norm_label": "sdfgenerator"
+    },
+    {
+      "label": ".generateGlyph()",
+      "file_type": "code",
+      "source_file": "pdf-renderer/src/jvmMain/kotlin/com/lumina/pdf/renderer/SdfGenerator.kt",
+      "source_location": "L13",
+      "_origin": "ast",
+      "id": "renderer_sdfgenerator_sdfgenerator_generateglyph",
+      "community": 34,
+      "norm_label": ".generateglyph()"
+    },
+    {
+      "label": "Char",
+      "file_type": "code",
+      "source_file": "pdf-renderer/src/jvmMain/kotlin/com/lumina/pdf/renderer/SdfGenerator.kt",
+      "source_location": "L13",
+      "_origin": "ast",
+      "id": "pdf_renderer_src_jvmmain_kotlin_com_lumina_pdf_renderer_sdfgenerator_kt_char",
+      "community": 34,
+      "norm_label": "char"
+    },
+    {
+      "label": "Font",
+      "file_type": "code",
+      "source_file": "pdf-renderer/src/jvmMain/kotlin/com/lumina/pdf/renderer/SdfGenerator.kt",
+      "source_location": "L13",
+      "_origin": "ast",
+      "id": "font",
+      "community": 34,
+      "norm_label": "font"
+    },
+    {
+      "label": "Int",
+      "file_type": "code",
+      "source_file": "pdf-renderer/src/jvmMain/kotlin/com/lumina/pdf/renderer/SdfGenerator.kt",
+      "source_location": "L13",
+      "_origin": "ast",
+      "id": "pdf_renderer_src_jvmmain_kotlin_com_lumina_pdf_renderer_sdfgenerator_kt_int",
+      "community": 34,
+      "norm_label": "int"
+    },
+    {
+      "label": "SdfGlyph",
+      "file_type": "code",
+      "source_file": "pdf-renderer/src/jvmMain/kotlin/com/lumina/pdf/renderer/SdfGenerator.kt",
+      "source_location": "L13",
+      "_origin": "ast",
+      "id": "sdfglyph",
+      "community": 34,
+      "norm_label": "sdfglyph"
+    },
+    {
+      "label": ".buildAtlasForFont()",
+      "file_type": "code",
+      "source_file": "pdf-renderer/src/jvmMain/kotlin/com/lumina/pdf/renderer/SdfGenerator.kt",
+      "source_location": "L100",
+      "_origin": "ast",
+      "id": "renderer_sdfgenerator_sdfgenerator_buildatlasforfont",
+      "community": 34,
+      "norm_label": ".buildatlasforfont()"
+    },
+    {
+      "label": "String",
+      "file_type": "code",
+      "source_file": "pdf-renderer/src/jvmMain/kotlin/com/lumina/pdf/renderer/SdfGenerator.kt",
+      "source_location": "L100",
+      "_origin": "ast",
+      "id": "pdf_renderer_src_jvmmain_kotlin_com_lumina_pdf_renderer_sdfgenerator_kt_string",
+      "community": 34,
+      "norm_label": "string"
+    },
+    {
+      "label": "SdfGlyphAtlas",
+      "file_type": "code",
+      "source_file": "pdf-renderer/src/jvmMain/kotlin/com/lumina/pdf/renderer/SdfGenerator.kt",
+      "source_location": "L100",
+      "_origin": "ast",
+      "id": "pdf_renderer_src_jvmmain_kotlin_com_lumina_pdf_renderer_sdfgenerator_kt_sdfglyphatlas",
+      "community": 34,
+      "norm_label": "sdfglyphatlas"
     },
     {
       "label": "SimplifyingPageDrawer.kt",
@@ -2360,17 +3260,17 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "renderer_simplifyingpagedrawer",
-      "community": 1,
+      "community": 34,
       "norm_label": "simplifyingpagedrawer.kt"
     },
     {
       "label": "SimplifyingPageDrawer",
       "file_type": "code",
       "source_file": "pdf-renderer/src/jvmMain/kotlin/com/lumina/pdf/renderer/SimplifyingPageDrawer.kt",
-      "source_location": "L7",
+      "source_location": "L14",
       "_origin": "ast",
       "id": "renderer_simplifyingpagedrawer_simplifyingpagedrawer",
-      "community": 1,
+      "community": 34,
       "norm_label": "simplifyingpagedrawer"
     },
     {
@@ -2380,38 +3280,158 @@
       "source_location": "",
       "_origin": "ast",
       "id": "pagedrawer",
-      "community": 1,
+      "community": 34,
       "norm_label": "pagedrawer"
     },
     {
       "label": ".strokePath()",
       "file_type": "code",
       "source_file": "pdf-renderer/src/jvmMain/kotlin/com/lumina/pdf/renderer/SimplifyingPageDrawer.kt",
-      "source_location": "L12",
+      "source_location": "L22",
       "_origin": "ast",
       "id": "renderer_simplifyingpagedrawer_simplifyingpagedrawer_strokepath",
-      "community": 1,
+      "community": 34,
       "norm_label": ".strokepath()"
     },
     {
       "label": ".fillPath()",
       "file_type": "code",
       "source_file": "pdf-renderer/src/jvmMain/kotlin/com/lumina/pdf/renderer/SimplifyingPageDrawer.kt",
-      "source_location": "L22",
+      "source_location": "L33",
       "_origin": "ast",
       "id": "renderer_simplifyingpagedrawer_simplifyingpagedrawer_fillpath",
-      "community": 1,
+      "community": 34,
       "norm_label": ".fillpath()"
     },
     {
       "label": "Int",
       "file_type": "code",
       "source_file": "pdf-renderer/src/jvmMain/kotlin/com/lumina/pdf/renderer/SimplifyingPageDrawer.kt",
-      "source_location": "L22",
+      "source_location": "L33",
       "_origin": "ast",
       "id": "pdf_renderer_src_jvmmain_kotlin_com_lumina_pdf_renderer_simplifyingpagedrawer_kt_int",
-      "community": 1,
+      "community": 34,
       "norm_label": "int"
+    },
+    {
+      "label": ".clipPath()",
+      "file_type": "code",
+      "source_file": "pdf-renderer/src/jvmMain/kotlin/com/lumina/pdf/renderer/SimplifyingPageDrawer.kt",
+      "source_location": "L44",
+      "_origin": "ast",
+      "id": "renderer_simplifyingpagedrawer_simplifyingpagedrawer_clippath",
+      "community": 34,
+      "norm_label": ".clippath()"
+    },
+    {
+      "label": "GeneralPath",
+      "file_type": "code",
+      "source_file": "pdf-renderer/src/jvmMain/kotlin/com/lumina/pdf/renderer/SimplifyingPageDrawer.kt",
+      "source_location": "L44",
+      "_origin": "ast",
+      "id": "pdf_renderer_src_jvmmain_kotlin_com_lumina_pdf_renderer_simplifyingpagedrawer_kt_generalpath",
+      "community": 34,
+      "norm_label": "generalpath"
+    },
+    {
+      "label": ".drawImage()",
+      "file_type": "code",
+      "source_file": "pdf-renderer/src/jvmMain/kotlin/com/lumina/pdf/renderer/SimplifyingPageDrawer.kt",
+      "source_location": "L106",
+      "_origin": "ast",
+      "id": "renderer_simplifyingpagedrawer_simplifyingpagedrawer_drawimage",
+      "community": 34,
+      "norm_label": ".drawimage()"
+    },
+    {
+      "label": "PDImage",
+      "file_type": "code",
+      "source_file": "pdf-renderer/src/jvmMain/kotlin/com/lumina/pdf/renderer/SimplifyingPageDrawer.kt",
+      "source_location": "L106",
+      "_origin": "ast",
+      "id": "pdf_renderer_src_jvmmain_kotlin_com_lumina_pdf_renderer_simplifyingpagedrawer_kt_pdimage",
+      "community": 34,
+      "norm_label": "pdimage"
+    },
+    {
+      "label": ".generatePyramid()",
+      "file_type": "code",
+      "source_file": "pdf-renderer/src/jvmMain/kotlin/com/lumina/pdf/renderer/SimplifyingPageDrawer.kt",
+      "source_location": "L143",
+      "_origin": "ast",
+      "id": "renderer_simplifyingpagedrawer_simplifyingpagedrawer_generatepyramid",
+      "community": 34,
+      "norm_label": ".generatepyramid()"
+    },
+    {
+      "label": "ImagePyramid",
+      "file_type": "code",
+      "source_file": "pdf-renderer/src/jvmMain/kotlin/com/lumina/pdf/renderer/SimplifyingPageDrawer.kt",
+      "source_location": "L143",
+      "_origin": "ast",
+      "id": "imagepyramid",
+      "community": 34,
+      "norm_label": "imagepyramid"
+    },
+    {
+      "label": ".createLevel()",
+      "file_type": "code",
+      "source_file": "pdf-renderer/src/jvmMain/kotlin/com/lumina/pdf/renderer/SimplifyingPageDrawer.kt",
+      "source_location": "L169",
+      "_origin": "ast",
+      "id": "renderer_simplifyingpagedrawer_simplifyingpagedrawer_createlevel",
+      "community": 34,
+      "norm_label": ".createlevel()"
+    },
+    {
+      "label": "BufferedImage",
+      "file_type": "code",
+      "source_file": "pdf-renderer/src/jvmMain/kotlin/com/lumina/pdf/renderer/SimplifyingPageDrawer.kt",
+      "source_location": "L169",
+      "_origin": "ast",
+      "id": "bufferedimage",
+      "community": 34,
+      "norm_label": "bufferedimage"
+    },
+    {
+      "label": "PyramidLevel",
+      "file_type": "code",
+      "source_file": "pdf-renderer/src/jvmMain/kotlin/com/lumina/pdf/renderer/SimplifyingPageDrawer.kt",
+      "source_location": "L169",
+      "_origin": "ast",
+      "id": "pyramidlevel",
+      "community": 34,
+      "norm_label": "pyramidlevel"
+    },
+    {
+      "label": ".showGlyph()",
+      "file_type": "code",
+      "source_file": "pdf-renderer/src/jvmMain/kotlin/com/lumina/pdf/renderer/SimplifyingPageDrawer.kt",
+      "source_location": "L189",
+      "_origin": "ast",
+      "id": "renderer_simplifyingpagedrawer_simplifyingpagedrawer_showglyph",
+      "community": 34,
+      "norm_label": ".showglyph()"
+    },
+    {
+      "label": "org",
+      "file_type": "code",
+      "source_file": "pdf-renderer/src/jvmMain/kotlin/com/lumina/pdf/renderer/SimplifyingPageDrawer.kt",
+      "source_location": "L189",
+      "_origin": "ast",
+      "id": "pdf_renderer_src_jvmmain_kotlin_com_lumina_pdf_renderer_simplifyingpagedrawer_kt_org",
+      "community": 34,
+      "norm_label": "org"
+    },
+    {
+      "label": "String",
+      "file_type": "code",
+      "source_file": "pdf-renderer/src/jvmMain/kotlin/com/lumina/pdf/renderer/SimplifyingPageDrawer.kt",
+      "source_location": "L189",
+      "_origin": "ast",
+      "id": "pdf_renderer_src_jvmmain_kotlin_com_lumina_pdf_renderer_simplifyingpagedrawer_kt_string",
+      "community": 34,
+      "norm_label": "string"
     },
     {
       "label": "PdfDocumentFactory.wasmJs.kt",
@@ -2480,7 +3500,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "viewer_pdfbitmapextensions_android",
-      "community": 34,
+      "community": 36,
       "norm_label": "pdfbitmapextensions.android.kt"
     },
     {
@@ -2490,7 +3510,7 @@
       "source_location": "L18",
       "_origin": "ast",
       "id": "viewer_pdfbitmapextensions_android_asimagebitmap",
-      "community": 34,
+      "community": 36,
       "norm_label": "asimagebitmap()"
     },
     {
@@ -2500,7 +3520,7 @@
       "source_location": "L18",
       "_origin": "ast",
       "id": "pdf_viewer_src_androidmain_kotlin_com_lumina_pdf_viewer_pdfbitmapextensions_android_kt_imagebitmap",
-      "community": 34,
+      "community": 36,
       "norm_label": "imagebitmap"
     },
     {
@@ -2510,7 +3530,7 @@
       "source_location": "L26",
       "_origin": "ast",
       "id": "viewer_pdfbitmapextensions_android_tobytearray",
-      "community": 34,
+      "community": 36,
       "norm_label": "tobytearray()"
     },
     {
@@ -2520,7 +3540,7 @@
       "source_location": "L26",
       "_origin": "ast",
       "id": "pdf_viewer_src_androidmain_kotlin_com_lumina_pdf_viewer_pdfbitmapextensions_android_kt_bytearray",
-      "community": 34,
+      "community": 36,
       "norm_label": "bytearray"
     },
     {
@@ -2530,7 +3550,7 @@
       "source_location": "L46",
       "_origin": "ast",
       "id": "viewer_pdfbitmapextensions_android_decodebytearraytopdfbitmap",
-      "community": 34,
+      "community": 36,
       "norm_label": "decodebytearraytopdfbitmap()"
     },
     {
@@ -2540,7 +3560,7 @@
       "source_location": "L46",
       "_origin": "ast",
       "id": "pdf_viewer_src_androidmain_kotlin_com_lumina_pdf_viewer_pdfbitmapextensions_android_kt_pdfbitmap",
-      "community": 34,
+      "community": 36,
       "norm_label": "pdfbitmap"
     },
     {
@@ -2550,7 +3570,7 @@
       "source_location": "L51",
       "_origin": "ast",
       "id": "viewer_pdfbitmapextensions_android_androiddiskcache",
-      "community": 34,
+      "community": 36,
       "norm_label": "androiddiskcache"
     },
     {
@@ -2570,7 +3590,7 @@
       "source_location": "L54",
       "_origin": "ast",
       "id": "viewer_pdfbitmapextensions_android_androiddiskcache_get",
-      "community": 34,
+      "community": 36,
       "norm_label": ".get()"
     },
     {
@@ -2580,7 +3600,7 @@
       "source_location": "L54",
       "_origin": "ast",
       "id": "pdf_viewer_src_androidmain_kotlin_com_lumina_pdf_viewer_pdfbitmapextensions_android_kt_string",
-      "community": 34,
+      "community": 36,
       "norm_label": "string"
     },
     {
@@ -2590,7 +3610,7 @@
       "source_location": "L59",
       "_origin": "ast",
       "id": "viewer_pdfbitmapextensions_android_androiddiskcache_put",
-      "community": 34,
+      "community": 36,
       "norm_label": ".put()"
     },
     {
@@ -2600,7 +3620,7 @@
       "source_location": "L64",
       "_origin": "ast",
       "id": "viewer_pdfbitmapextensions_android_androiddiskcache_remove",
-      "community": 34,
+      "community": 36,
       "norm_label": ".remove()"
     },
     {
@@ -2610,7 +3630,7 @@
       "source_location": "L69",
       "_origin": "ast",
       "id": "viewer_pdfbitmapextensions_android_androiddiskcache_clear",
-      "community": 34,
+      "community": 36,
       "norm_label": ".clear()"
     },
     {
@@ -2620,7 +3640,7 @@
       "source_location": "L74",
       "_origin": "ast",
       "id": "viewer_pdfbitmapextensions_android_rememberdiskcache",
-      "community": 34,
+      "community": 36,
       "norm_label": "rememberdiskcache()"
     },
     {
@@ -3470,7 +4490,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "db_pdfdatabase",
-      "community": 14,
+      "community": 7,
       "norm_label": "pdfdatabase.kt"
     },
     {
@@ -3480,7 +4500,7 @@
       "source_location": "L5",
       "_origin": "ast",
       "id": "db_pdfdatabase_pdfoffset",
-      "community": 14,
+      "community": 7,
       "norm_label": "pdfoffset"
     },
     {
@@ -3490,7 +4510,7 @@
       "source_location": "L12",
       "_origin": "ast",
       "id": "db_pdfdatabase_dbnote",
-      "community": 14,
+      "community": 7,
       "norm_label": "dbnote"
     },
     {
@@ -3500,7 +4520,7 @@
       "source_location": "L20",
       "_origin": "ast",
       "id": "db_pdfdatabase_pdfdatabase",
-      "community": 14,
+      "community": 7,
       "norm_label": "pdfdatabase"
     },
     {
@@ -3510,7 +4530,7 @@
       "source_location": "L21",
       "_origin": "ast",
       "id": "db_pdfdatabase_pdfdatabase_saveoffset",
-      "community": 14,
+      "community": 7,
       "norm_label": ".saveoffset()"
     },
     {
@@ -3520,7 +4540,7 @@
       "source_location": "L21",
       "_origin": "ast",
       "id": "pdf_viewer_src_commonmain_kotlin_com_lumina_pdf_viewer_db_pdfdatabase_kt_string",
-      "community": 14,
+      "community": 7,
       "norm_label": "string"
     },
     {
@@ -3530,7 +4550,7 @@
       "source_location": "L22",
       "_origin": "ast",
       "id": "db_pdfdatabase_pdfdatabase_getoffset",
-      "community": 14,
+      "community": 7,
       "norm_label": ".getoffset()"
     },
     {
@@ -3540,7 +4560,7 @@
       "source_location": "L24",
       "_origin": "ast",
       "id": "db_pdfdatabase_pdfdatabase_insertnote",
-      "community": 14,
+      "community": 7,
       "norm_label": ".insertnote()"
     },
     {
@@ -3550,7 +4570,7 @@
       "source_location": "L25",
       "_origin": "ast",
       "id": "db_pdfdatabase_pdfdatabase_getnotes",
-      "community": 14,
+      "community": 7,
       "norm_label": ".getnotes()"
     },
     {
@@ -3560,7 +4580,7 @@
       "source_location": "L25",
       "_origin": "ast",
       "id": "pdf_viewer_src_commonmain_kotlin_com_lumina_pdf_viewer_db_pdfdatabase_kt_list",
-      "community": 14,
+      "community": 7,
       "norm_label": "list"
     },
     {
@@ -3570,7 +4590,7 @@
       "source_location": "L26",
       "_origin": "ast",
       "id": "db_pdfdatabase_pdfdatabase_deletenote",
-      "community": 14,
+      "community": 7,
       "norm_label": ".deletenote()"
     },
     {
@@ -3580,7 +4600,7 @@
       "source_location": "L28",
       "_origin": "ast",
       "id": "db_pdfdatabase_pdfdatabase_savehighlights",
-      "community": 14,
+      "community": 7,
       "norm_label": ".savehighlights()"
     },
     {
@@ -3590,7 +4610,7 @@
       "source_location": "L29",
       "_origin": "ast",
       "id": "db_pdfdatabase_pdfdatabase_gethighlights",
-      "community": 14,
+      "community": 7,
       "norm_label": ".gethighlights()"
     },
     {
@@ -3600,7 +4620,7 @@
       "source_location": "L32",
       "_origin": "ast",
       "id": "db_pdfdatabase_rememberpdfdatabase",
-      "community": 14,
+      "community": 7,
       "norm_label": "rememberpdfdatabase()"
     },
     {
@@ -3610,7 +4630,7 @@
       "source_location": "L35",
       "_origin": "ast",
       "id": "db_pdfdatabase_getcurrenttimemillis",
-      "community": 14,
+      "community": 7,
       "norm_label": "getcurrenttimemillis()"
     },
     {
@@ -3620,7 +4640,7 @@
       "source_location": "L35",
       "_origin": "ast",
       "id": "pdf_viewer_src_commonmain_kotlin_com_lumina_pdf_viewer_db_pdfdatabase_kt_long",
-      "community": 14,
+      "community": 7,
       "norm_label": "long"
     },
     {
@@ -3940,7 +4960,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "viewer_pdfbitmapextensions_js",
-      "community": 36,
+      "community": 67,
       "norm_label": "pdfbitmapextensions.js.kt"
     },
     {
@@ -3950,7 +4970,7 @@
       "source_location": "L10",
       "_origin": "ast",
       "id": "viewer_pdfbitmapextensions_js_asimagebitmap",
-      "community": 36,
+      "community": 67,
       "norm_label": "asimagebitmap()"
     },
     {
@@ -3960,7 +4980,7 @@
       "source_location": "L10",
       "_origin": "ast",
       "id": "pdf_viewer_src_jsmain_kotlin_com_lumina_pdf_viewer_pdfbitmapextensions_js_kt_imagebitmap",
-      "community": 36,
+      "community": 67,
       "norm_label": "imagebitmap"
     },
     {
@@ -3970,7 +4990,7 @@
       "source_location": "L14",
       "_origin": "ast",
       "id": "viewer_pdfbitmapextensions_js_tobytearray",
-      "community": 36,
+      "community": 67,
       "norm_label": "tobytearray()"
     },
     {
@@ -3980,7 +5000,7 @@
       "source_location": "L14",
       "_origin": "ast",
       "id": "pdf_viewer_src_jsmain_kotlin_com_lumina_pdf_viewer_pdfbitmapextensions_js_kt_bytearray",
-      "community": 36,
+      "community": 67,
       "norm_label": "bytearray"
     },
     {
@@ -3990,7 +5010,7 @@
       "source_location": "L16",
       "_origin": "ast",
       "id": "viewer_pdfbitmapextensions_js_decodebytearraytopdfbitmap",
-      "community": 36,
+      "community": 67,
       "norm_label": "decodebytearraytopdfbitmap()"
     },
     {
@@ -4000,7 +5020,7 @@
       "source_location": "L16",
       "_origin": "ast",
       "id": "pdf_viewer_src_jsmain_kotlin_com_lumina_pdf_viewer_pdfbitmapextensions_js_kt_pdfbitmap",
-      "community": 36,
+      "community": 67,
       "norm_label": "pdfbitmap"
     },
     {
@@ -4010,7 +5030,7 @@
       "source_location": "L18",
       "_origin": "ast",
       "id": "viewer_pdfbitmapextensions_js_jsnoopdiskcache",
-      "community": 36,
+      "community": 67,
       "norm_label": "jsnoopdiskcache"
     },
     {
@@ -4020,7 +5040,7 @@
       "source_location": "L19",
       "_origin": "ast",
       "id": "viewer_pdfbitmapextensions_js_jsnoopdiskcache_get",
-      "community": 36,
+      "community": 67,
       "norm_label": ".get()"
     },
     {
@@ -4030,7 +5050,7 @@
       "source_location": "L19",
       "_origin": "ast",
       "id": "pdf_viewer_src_jsmain_kotlin_com_lumina_pdf_viewer_pdfbitmapextensions_js_kt_string",
-      "community": 36,
+      "community": 67,
       "norm_label": "string"
     },
     {
@@ -4040,7 +5060,7 @@
       "source_location": "L20",
       "_origin": "ast",
       "id": "viewer_pdfbitmapextensions_js_jsnoopdiskcache_put",
-      "community": 36,
+      "community": 67,
       "norm_label": ".put()"
     },
     {
@@ -4050,7 +5070,7 @@
       "source_location": "L21",
       "_origin": "ast",
       "id": "viewer_pdfbitmapextensions_js_jsnoopdiskcache_remove",
-      "community": 36,
+      "community": 67,
       "norm_label": ".remove()"
     },
     {
@@ -4060,7 +5080,7 @@
       "source_location": "L22",
       "_origin": "ast",
       "id": "viewer_pdfbitmapextensions_js_jsnoopdiskcache_clear",
-      "community": 36,
+      "community": 67,
       "norm_label": ".clear()"
     },
     {
@@ -4070,7 +5090,7 @@
       "source_location": "L25",
       "_origin": "ast",
       "id": "viewer_pdfbitmapextensions_js_rememberdiskcache",
-      "community": 36,
+      "community": 67,
       "norm_label": "rememberdiskcache()"
     },
     {
@@ -6550,7 +7570,7 @@
       "source_location": "L52",
       "_origin": "ast",
       "id": "implementation_plan_1_pdf_core",
-      "community": 55,
+      "community": 75,
       "norm_label": "1. `:pdf-core`"
     },
     {
@@ -6560,7 +7580,7 @@
       "source_location": "L64",
       "_origin": "ast",
       "id": "implementation_plan_responsibilities",
-      "community": 55,
+      "community": 75,
       "norm_label": "responsibilities"
     },
     {
@@ -6570,7 +7590,7 @@
       "source_location": "L73",
       "_origin": "ast",
       "id": "implementation_plan_no_ui",
-      "community": 55,
+      "community": 75,
       "norm_label": "no ui"
     },
     {
@@ -6580,7 +7600,7 @@
       "source_location": "L75",
       "_origin": "ast",
       "id": "implementation_plan_no_platform_code",
-      "community": 55,
+      "community": 75,
       "norm_label": "no platform code"
     },
     {
@@ -6590,7 +7610,7 @@
       "source_location": "L77",
       "_origin": "ast",
       "id": "implementation_plan_no_app_features",
-      "community": 55,
+      "community": 75,
       "norm_label": "no app features"
     },
     {
@@ -6690,7 +7710,7 @@
       "source_location": "L239",
       "_origin": "ast",
       "id": "implementation_plan_recommended_tech_stack",
-      "community": 11,
+      "community": 73,
       "norm_label": "recommended tech stack"
     },
     {
@@ -6700,7 +7720,7 @@
       "source_location": "L241",
       "_origin": "ast",
       "id": "implementation_plan_shared_commonmain",
-      "community": 11,
+      "community": 73,
       "norm_label": "shared (`commonmain`)"
     },
     {
@@ -6710,7 +7730,7 @@
       "source_location": "L253",
       "_origin": "ast",
       "id": "implementation_plan_android_253",
-      "community": 11,
+      "community": 73,
       "norm_label": "android"
     },
     {
@@ -6720,7 +7740,7 @@
       "source_location": "L263",
       "_origin": "ast",
       "id": "implementation_plan_ios_263",
-      "community": 11,
+      "community": 73,
       "norm_label": "ios"
     },
     {
@@ -6730,7 +7750,7 @@
       "source_location": "L271",
       "_origin": "ast",
       "id": "implementation_plan_desktop",
-      "community": 11,
+      "community": 73,
       "norm_label": "desktop"
     },
     {
@@ -6740,7 +7760,7 @@
       "source_location": "L279",
       "_origin": "ast",
       "id": "implementation_plan_web",
-      "community": 11,
+      "community": 73,
       "norm_label": "web"
     },
     {
@@ -6750,7 +7770,7 @@
       "source_location": "L287",
       "_origin": "ast",
       "id": "implementation_plan_core_design_principle",
-      "community": 11,
+      "community": 78,
       "norm_label": "core design principle"
     },
     {
@@ -6760,7 +7780,7 @@
       "source_location": "L289",
       "_origin": "ast",
       "id": "implementation_plan_native_rendering_via_expect_actual",
-      "community": 11,
+      "community": 78,
       "norm_label": "native rendering via `expect/actual`"
     },
     {
@@ -6770,7 +7790,7 @@
       "source_location": "L303",
       "_origin": "ast",
       "id": "implementation_plan_shared_interface",
-      "community": 11,
+      "community": 78,
       "norm_label": "shared interface"
     },
     {
@@ -6780,7 +7800,7 @@
       "source_location": "L332",
       "_origin": "ast",
       "id": "implementation_plan_why_rendertile_matters",
-      "community": 11,
+      "community": 78,
       "norm_label": "why `rendertile()` matters"
     },
     {
@@ -6810,7 +7830,7 @@
       "source_location": "L407",
       "_origin": "ast",
       "id": "implementation_plan_rendering_pipeline",
-      "community": 11,
+      "community": 80,
       "norm_label": "rendering pipeline"
     },
     {
@@ -6820,7 +7840,7 @@
       "source_location": "L411",
       "_origin": "ast",
       "id": "implementation_plan_multi_resolution_rendering",
-      "community": 11,
+      "community": 80,
       "norm_label": "multi-resolution rendering"
     },
     {
@@ -6830,7 +7850,7 @@
       "source_location": "L435",
       "_origin": "ast",
       "id": "implementation_plan_smart_zoom_rendering",
-      "community": 11,
+      "community": 80,
       "norm_label": "smart zoom rendering"
     },
     {
@@ -6860,7 +7880,7 @@
       "source_location": "L520",
       "_origin": "ast",
       "id": "implementation_plan_cache_architecture",
-      "community": 11,
+      "community": 77,
       "norm_label": "cache architecture"
     },
     {
@@ -6870,7 +7890,7 @@
       "source_location": "L532",
       "_origin": "ast",
       "id": "implementation_plan_l1_memory_cache",
-      "community": 11,
+      "community": 77,
       "norm_label": "l1 \u2014 memory cache"
     },
     {
@@ -6880,7 +7900,7 @@
       "source_location": "L554",
       "_origin": "ast",
       "id": "implementation_plan_l2_disk_cache",
-      "community": 11,
+      "community": 77,
       "norm_label": "l2 \u2014 disk cache"
     },
     {
@@ -6890,7 +7910,7 @@
       "source_location": "L565",
       "_origin": "ast",
       "id": "implementation_plan_l3_native_handle_cache",
-      "community": 11,
+      "community": 77,
       "norm_label": "l3 \u2014 native handle cache"
     },
     {
@@ -6920,7 +7940,7 @@
       "source_location": "L640",
       "_origin": "ast",
       "id": "implementation_plan_viewer_modes",
-      "community": 11,
+      "community": 74,
       "norm_label": "viewer modes"
     },
     {
@@ -6930,7 +7950,7 @@
       "source_location": "L642",
       "_origin": "ast",
       "id": "implementation_plan_phase_1",
-      "community": 11,
+      "community": 74,
       "norm_label": "phase 1"
     },
     {
@@ -6940,7 +7960,7 @@
       "source_location": "L646",
       "_origin": "ast",
       "id": "implementation_plan_continuous_scroll",
-      "community": 11,
+      "community": 74,
       "norm_label": "continuous scroll"
     },
     {
@@ -6950,7 +7970,7 @@
       "source_location": "L652",
       "_origin": "ast",
       "id": "implementation_plan_paged_mode",
-      "community": 11,
+      "community": 74,
       "norm_label": "paged mode"
     },
     {
@@ -6960,7 +7980,7 @@
       "source_location": "L660",
       "_origin": "ast",
       "id": "implementation_plan_phase_2",
-      "community": 11,
+      "community": 74,
       "norm_label": "phase 2"
     },
     {
@@ -6970,7 +7990,7 @@
       "source_location": "L664",
       "_origin": "ast",
       "id": "implementation_plan_two_page_spread",
-      "community": 11,
+      "community": 74,
       "norm_label": "two-page spread"
     },
     {
@@ -7020,7 +8040,7 @@
       "source_location": "L780",
       "_origin": "ast",
       "id": "implementation_plan_recommended_build_phases",
-      "community": 11,
+      "community": 76,
       "norm_label": "recommended build phases"
     },
     {
@@ -7030,7 +8050,7 @@
       "source_location": "L782",
       "_origin": "ast",
       "id": "implementation_plan_phase_1_mvp_renderer",
-      "community": 11,
+      "community": 76,
       "norm_label": "phase 1 \u2014 mvp renderer"
     },
     {
@@ -7040,7 +8060,7 @@
       "source_location": "L804",
       "_origin": "ast",
       "id": "implementation_plan_phase_2_performance",
-      "community": 11,
+      "community": 76,
       "norm_label": "phase 2 \u2014 performance"
     },
     {
@@ -7050,7 +8070,7 @@
       "source_location": "L816",
       "_origin": "ast",
       "id": "implementation_plan_phase_3_viewer_ux",
-      "community": 11,
+      "community": 76,
       "norm_label": "phase 3 \u2014 viewer ux"
     },
     {
@@ -7060,7 +8080,7 @@
       "source_location": "L828",
       "_origin": "ast",
       "id": "implementation_plan_phase_4_advanced",
-      "community": 11,
+      "community": 76,
       "norm_label": "phase 4 \u2014 advanced"
     },
     {
@@ -7070,7 +8090,7 @@
       "source_location": "L841",
       "_origin": "ast",
       "id": "implementation_plan_testing_strategy",
-      "community": 11,
+      "community": 79,
       "norm_label": "testing strategy"
     },
     {
@@ -7080,7 +8100,7 @@
       "source_location": "L843",
       "_origin": "ast",
       "id": "implementation_plan_unit_tests",
-      "community": 11,
+      "community": 79,
       "norm_label": "unit tests"
     },
     {
@@ -7090,7 +8110,7 @@
       "source_location": "L853",
       "_origin": "ast",
       "id": "implementation_plan_integration_tests",
-      "community": 11,
+      "community": 79,
       "norm_label": "integration tests"
     },
     {
@@ -7100,7 +8120,7 @@
       "source_location": "L863",
       "_origin": "ast",
       "id": "implementation_plan_stress_tests",
-      "community": 11,
+      "community": 79,
       "norm_label": "stress tests"
     },
     {
@@ -7783,17 +8803,6 @@
       "source_file": "pdf-core/src/commonMain/kotlin/com/lumina/pdf/core/BoyerMooreHorspool.kt",
       "source_location": "L4",
       "weight": 1.0,
-      "context": "generic_arg",
-      "confidence_score": 1.0,
-      "source": "core_boyermoorehorspool_boyermoorehorspool_buildshifttable",
-      "target": "char"
-    },
-    {
-      "relation": "references",
-      "confidence": "EXTRACTED",
-      "source_file": "pdf-core/src/commonMain/kotlin/com/lumina/pdf/core/BoyerMooreHorspool.kt",
-      "source_location": "L4",
-      "weight": 1.0,
       "context": "return_type",
       "confidence_score": 1.0,
       "source": "core_boyermoorehorspool_boyermoorehorspool_buildshifttable",
@@ -7809,6 +8818,17 @@
       "confidence_score": 1.0,
       "source": "core_boyermoorehorspool_boyermoorehorspool_buildshifttable",
       "target": "pdf_core_src_commonmain_kotlin_com_lumina_pdf_core_boyermoorehorspool_kt_boolean"
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-core/src/commonMain/kotlin/com/lumina/pdf/core/BoyerMooreHorspool.kt",
+      "source_location": "L4",
+      "weight": 1.0,
+      "context": "generic_arg",
+      "source": "core_boyermoorehorspool_boyermoorehorspool_buildshifttable",
+      "target": "pdf_core_src_commonmain_kotlin_com_lumina_pdf_core_boyermoorehorspool_kt_char",
+      "confidence_score": 1.0
     },
     {
       "relation": "references",
@@ -7896,6 +8916,187 @@
       "confidence_score": 1.0,
       "source": "core_characterbox",
       "target": "core_characterbox_characterbox"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-core/src/commonMain/kotlin/com/lumina/pdf/core/ImagePyramid.kt",
+      "source_location": "L11",
+      "weight": 1.0,
+      "source": "core_imagepyramid",
+      "target": "core_imagepyramid_imagepyramid",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-core/src/commonMain/kotlin/com/lumina/pdf/core/ImagePyramid.kt",
+      "source_location": "L5",
+      "weight": 1.0,
+      "source": "core_imagepyramid",
+      "target": "core_imagepyramid_pyramidlevel",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-core/src/commonMain/kotlin/com/lumina/pdf/core/ImagePyramid.kt",
+      "source_location": "L61",
+      "weight": 1.0,
+      "context": "parameter_type",
+      "source": "core_imagepyramid_imagepyramid_getpixel",
+      "target": "core_imagepyramid_pyramidlevel",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-core/src/commonMain/kotlin/com/lumina/pdf/core/ImagePyramid.kt",
+      "source_location": "L31",
+      "weight": 1.0,
+      "context": "parameter_type",
+      "source": "core_imagepyramid_imagepyramid_samplebilinear",
+      "target": "core_imagepyramid_pyramidlevel",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-core/src/commonMain/kotlin/com/lumina/pdf/core/ImagePyramid.kt",
+      "source_location": "L13",
+      "weight": 1.0,
+      "context": "return_type",
+      "source": "core_imagepyramid_imagepyramid_selectlevel",
+      "target": "core_imagepyramid_pyramidlevel",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-core/src/commonMain/kotlin/com/lumina/pdf/core/ImagePyramid.kt",
+      "source_location": "L61",
+      "weight": 1.0,
+      "source": "core_imagepyramid_imagepyramid",
+      "target": "core_imagepyramid_imagepyramid_getpixel",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-core/src/commonMain/kotlin/com/lumina/pdf/core/ImagePyramid.kt",
+      "source_location": "L73",
+      "weight": 1.0,
+      "source": "core_imagepyramid_imagepyramid",
+      "target": "core_imagepyramid_imagepyramid_interpolatechannel",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-core/src/commonMain/kotlin/com/lumina/pdf/core/ImagePyramid.kt",
+      "source_location": "L31",
+      "weight": 1.0,
+      "source": "core_imagepyramid_imagepyramid",
+      "target": "core_imagepyramid_imagepyramid_samplebilinear",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-core/src/commonMain/kotlin/com/lumina/pdf/core/ImagePyramid.kt",
+      "source_location": "L13",
+      "weight": 1.0,
+      "source": "core_imagepyramid_imagepyramid",
+      "target": "core_imagepyramid_imagepyramid_selectlevel",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-core/src/commonMain/kotlin/com/lumina/pdf/core/ImagePyramid.kt",
+      "source_location": "L13",
+      "weight": 1.0,
+      "context": "parameter_type",
+      "source": "core_imagepyramid_imagepyramid_selectlevel",
+      "target": "pdf_core_src_commonmain_kotlin_com_lumina_pdf_core_imagepyramid_kt_int",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-core/src/commonMain/kotlin/com/lumina/pdf/core/ImagePyramid.kt",
+      "source_location": "L61",
+      "weight": 1.0,
+      "context": "return_type",
+      "source": "core_imagepyramid_imagepyramid_getpixel",
+      "target": "pdf_core_src_commonmain_kotlin_com_lumina_pdf_core_imagepyramid_kt_int",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-core/src/commonMain/kotlin/com/lumina/pdf/core/ImagePyramid.kt",
+      "source_location": "L73",
+      "weight": 1.0,
+      "context": "return_type",
+      "source": "core_imagepyramid_imagepyramid_interpolatechannel",
+      "target": "pdf_core_src_commonmain_kotlin_com_lumina_pdf_core_imagepyramid_kt_int",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-core/src/commonMain/kotlin/com/lumina/pdf/core/ImagePyramid.kt",
+      "source_location": "L31",
+      "weight": 1.0,
+      "context": "return_type",
+      "source": "core_imagepyramid_imagepyramid_samplebilinear",
+      "target": "pdf_core_src_commonmain_kotlin_com_lumina_pdf_core_imagepyramid_kt_int",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-core/src/commonMain/kotlin/com/lumina/pdf/core/ImagePyramid.kt",
+      "source_location": "L47",
+      "weight": 1.0,
+      "source": "core_imagepyramid_imagepyramid_samplebilinear",
+      "target": "core_imagepyramid_imagepyramid_getpixel",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-core/src/commonMain/kotlin/com/lumina/pdf/core/ImagePyramid.kt",
+      "source_location": "L53",
+      "weight": 1.0,
+      "source": "core_imagepyramid_imagepyramid_samplebilinear",
+      "target": "core_imagepyramid_imagepyramid_interpolatechannel",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-core/src/commonMain/kotlin/com/lumina/pdf/core/ImagePyramid.kt",
+      "source_location": "L31",
+      "weight": 1.0,
+      "context": "parameter_type",
+      "source": "core_imagepyramid_imagepyramid_samplebilinear",
+      "target": "pdf_core_src_commonmain_kotlin_com_lumina_pdf_core_imagepyramid_kt_float",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-core/src/commonMain/kotlin/com/lumina/pdf/core/ImagePyramid.kt",
+      "source_location": "L73",
+      "weight": 1.0,
+      "context": "parameter_type",
+      "source": "core_imagepyramid_imagepyramid_interpolatechannel",
+      "target": "pdf_core_src_commonmain_kotlin_com_lumina_pdf_core_imagepyramid_kt_float",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -8457,6 +9658,16 @@
       "relation": "method",
       "confidence": "EXTRACTED",
       "source_file": "pdf-core/src/commonMain/kotlin/com/lumina/pdf/core/PdfDocument.kt",
+      "source_location": "L34",
+      "weight": 1.0,
+      "source": "core_pdfdocument_pdfdocument",
+      "target": "core_pdfdocument_pdfdocument_getpageelementbounds",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-core/src/commonMain/kotlin/com/lumina/pdf/core/PdfDocument.kt",
       "source_location": "L4",
       "weight": 1.0,
       "confidence_score": 1.0,
@@ -8525,6 +9736,17 @@
       "confidence_score": 1.0,
       "source": "core_pdfdocument_pdfdocument_extracttext",
       "target": "pdf_core_src_commonmain_kotlin_com_lumina_pdf_core_pdfdocument_kt_int"
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-core/src/commonMain/kotlin/com/lumina/pdf/core/PdfDocument.kt",
+      "source_location": "L34",
+      "weight": 1.0,
+      "context": "parameter_type",
+      "source": "core_pdfdocument_pdfdocument_getpageelementbounds",
+      "target": "pdf_core_src_commonmain_kotlin_com_lumina_pdf_core_pdfdocument_kt_int",
+      "confidence_score": 1.0
     },
     {
       "relation": "references",
@@ -8607,6 +9829,17 @@
       "relation": "references",
       "confidence": "EXTRACTED",
       "source_file": "pdf-core/src/commonMain/kotlin/com/lumina/pdf/core/PdfDocument.kt",
+      "source_location": "L34",
+      "weight": 1.0,
+      "context": "generic_arg",
+      "source": "core_pdfdocument_pdfdocument_getpageelementbounds",
+      "target": "pdf_core_src_commonmain_kotlin_com_lumina_pdf_core_pdfdocument_kt_pdfrect",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-core/src/commonMain/kotlin/com/lumina/pdf/core/PdfDocument.kt",
       "source_location": "L22",
       "weight": 1.0,
       "context": "generic_arg",
@@ -8673,6 +9906,17 @@
       "relation": "references",
       "confidence": "EXTRACTED",
       "source_file": "pdf-core/src/commonMain/kotlin/com/lumina/pdf/core/PdfDocument.kt",
+      "source_location": "L34",
+      "weight": 1.0,
+      "context": "return_type",
+      "source": "core_pdfdocument_pdfdocument_getpageelementbounds",
+      "target": "pdf_core_src_commonmain_kotlin_com_lumina_pdf_core_pdfdocument_kt_list",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-core/src/commonMain/kotlin/com/lumina/pdf/core/PdfDocument.kt",
       "source_location": "L22",
       "weight": 1.0,
       "context": "return_type",
@@ -8711,6 +9955,254 @@
       "confidence_score": 1.0,
       "source": "core_pdfrect_pdfrect",
       "target": "pdf_core_src_commonmain_kotlin_com_lumina_pdf_core_pdfrect_kt_float"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-core/src/commonMain/kotlin/com/lumina/pdf/core/Quadtree.kt",
+      "source_location": "L22",
+      "weight": 1.0,
+      "source": "core_quadtree",
+      "target": "core_quadtree_pagequadtree",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-core/src/commonMain/kotlin/com/lumina/pdf/core/Quadtree.kt",
+      "source_location": "L3",
+      "weight": 1.0,
+      "source": "core_quadtree",
+      "target": "core_quadtree_quadtreebounds",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-core/src/commonMain/kotlin/com/lumina/pdf/core/Quadtree.kt",
+      "source_location": "L88",
+      "weight": 1.0,
+      "context": "parameter_type",
+      "source": "core_quadtree_pagequadtree_query",
+      "target": "core_quadtree_quadtreebounds",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-core/src/commonMain/kotlin/com/lumina/pdf/core/Quadtree.kt",
+      "source_location": "L67",
+      "weight": 1.0,
+      "source": "core_quadtree_pagequadtree_subdivide",
+      "target": "core_quadtree_quadtreebounds",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-core/src/commonMain/kotlin/com/lumina/pdf/core/Quadtree.kt",
+      "source_location": "L17",
+      "weight": 1.0,
+      "source": "core_quadtree_quadtreebounds",
+      "target": "core_quadtree_quadtreebounds_contains",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-core/src/commonMain/kotlin/com/lumina/pdf/core/Quadtree.kt",
+      "source_location": "L9",
+      "weight": 1.0,
+      "context": "parameter_type",
+      "source": "core_quadtree_quadtreebounds_intersects",
+      "target": "core_quadtree_quadtreebounds",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "pdf-viewer/src/commonMain/kotlin/com/lumina/pdf/viewer/PdfViewer.kt",
+      "source_location": "L245",
+      "weight": 1.0,
+      "source": "viewer_pdfviewer_pdfviewer",
+      "target": "core_quadtree_quadtreebounds"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-core/src/commonMain/kotlin/com/lumina/pdf/core/Quadtree.kt",
+      "source_location": "L38",
+      "weight": 1.0,
+      "source": "core_quadtree_pagequadtree_insert",
+      "target": "core_quadtree_quadtreebounds_intersects",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-core/src/commonMain/kotlin/com/lumina/pdf/core/Quadtree.kt",
+      "source_location": "L89",
+      "weight": 1.0,
+      "source": "core_quadtree_pagequadtree_query",
+      "target": "core_quadtree_quadtreebounds_intersects",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-core/src/commonMain/kotlin/com/lumina/pdf/core/Quadtree.kt",
+      "source_location": "L13",
+      "weight": 1.0,
+      "context": "return_type",
+      "source": "core_quadtree_quadtreebounds_intersects",
+      "target": "pdf_core_src_commonmain_kotlin_com_lumina_pdf_core_quadtree_kt_boolean",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-core/src/commonMain/kotlin/com/lumina/pdf/core/Quadtree.kt",
+      "source_location": "L13",
+      "weight": 1.0,
+      "context": "parameter_type",
+      "source": "core_quadtree_quadtreebounds_intersects",
+      "target": "pdf_core_src_commonmain_kotlin_com_lumina_pdf_core_quadtree_kt_pdfrect",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-core/src/commonMain/kotlin/com/lumina/pdf/core/Quadtree.kt",
+      "source_location": "L36",
+      "weight": 1.0,
+      "context": "return_type",
+      "source": "core_quadtree_pagequadtree_insert",
+      "target": "pdf_core_src_commonmain_kotlin_com_lumina_pdf_core_quadtree_kt_boolean",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-core/src/commonMain/kotlin/com/lumina/pdf/core/Quadtree.kt",
+      "source_location": "L17",
+      "weight": 1.0,
+      "context": "return_type",
+      "source": "core_quadtree_quadtreebounds_contains",
+      "target": "pdf_core_src_commonmain_kotlin_com_lumina_pdf_core_quadtree_kt_boolean",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-core/src/commonMain/kotlin/com/lumina/pdf/core/Quadtree.kt",
+      "source_location": "L36",
+      "weight": 1.0,
+      "context": "parameter_type",
+      "source": "core_quadtree_pagequadtree_insert",
+      "target": "pdf_core_src_commonmain_kotlin_com_lumina_pdf_core_quadtree_kt_pdfrect",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-core/src/commonMain/kotlin/com/lumina/pdf/core/Quadtree.kt",
+      "source_location": "L88",
+      "weight": 1.0,
+      "context": "generic_arg",
+      "source": "core_quadtree_pagequadtree_query",
+      "target": "pdf_core_src_commonmain_kotlin_com_lumina_pdf_core_quadtree_kt_pdfrect",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-core/src/commonMain/kotlin/com/lumina/pdf/core/Quadtree.kt",
+      "source_location": "L17",
+      "weight": 1.0,
+      "context": "parameter_type",
+      "source": "core_quadtree_quadtreebounds_contains",
+      "target": "pdf_core_src_commonmain_kotlin_com_lumina_pdf_core_quadtree_kt_pdfrect",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-core/src/commonMain/kotlin/com/lumina/pdf/core/Quadtree.kt",
+      "source_location": "L36",
+      "weight": 1.0,
+      "source": "core_quadtree_pagequadtree",
+      "target": "core_quadtree_pagequadtree_insert",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-core/src/commonMain/kotlin/com/lumina/pdf/core/Quadtree.kt",
+      "source_location": "L88",
+      "weight": 1.0,
+      "source": "core_quadtree_pagequadtree",
+      "target": "core_quadtree_pagequadtree_query",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-core/src/commonMain/kotlin/com/lumina/pdf/core/Quadtree.kt",
+      "source_location": "L67",
+      "weight": 1.0,
+      "context": "call",
+      "source": "core_quadtree_pagequadtree_subdivide",
+      "target": "core_quadtree_pagequadtree",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "pdf-viewer/src/commonMain/kotlin/com/lumina/pdf/viewer/PdfViewer.kt",
+      "source_location": "L245",
+      "weight": 1.0,
+      "source": "viewer_pdfviewer_pdfviewer",
+      "target": "core_quadtree_pagequadtree"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-core/src/commonMain/kotlin/com/lumina/pdf/core/Quadtree.kt",
+      "source_location": "L47",
+      "weight": 1.0,
+      "source": "core_quadtree_pagequadtree_insert",
+      "target": "core_quadtree_pagequadtree_subdivide",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-core/src/commonMain/kotlin/com/lumina/pdf/core/Quadtree.kt",
+      "source_location": "L88",
+      "weight": 1.0,
+      "context": "return_type",
+      "source": "core_quadtree_pagequadtree_query",
+      "target": "pdf_core_src_commonmain_kotlin_com_lumina_pdf_core_quadtree_kt_list",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-core/src/commonMain/kotlin/com/lumina/pdf/core/Quadtree.kt",
+      "source_location": "L88",
+      "weight": 1.0,
+      "context": "parameter_type",
+      "source": "core_quadtree_pagequadtree_query",
+      "target": "pdf_core_src_commonmain_kotlin_com_lumina_pdf_core_quadtree_kt_mutablelist",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -8865,6 +10357,154 @@
       "confidence_score": 1.0,
       "source": "core_renderqueue_renderqueue_clearobsolete",
       "target": "set"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-core/src/commonMain/kotlin/com/lumina/pdf/core/SdfGlyphAtlas.kt",
+      "source_location": "L5",
+      "weight": 1.0,
+      "source": "core_sdfglyphatlas",
+      "target": "core_sdfglyphatlas_sdfglyph",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-core/src/commonMain/kotlin/com/lumina/pdf/core/SdfGlyphAtlas.kt",
+      "source_location": "L12",
+      "weight": 1.0,
+      "source": "core_sdfglyphatlas",
+      "target": "core_sdfglyphatlas_sdfglyphatlas",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-core/src/commonMain/kotlin/com/lumina/pdf/core/SdfGlyphAtlas.kt",
+      "source_location": "L19",
+      "weight": 1.0,
+      "context": "return_type",
+      "source": "core_sdfglyphatlas_sdfglyphatlas_getglyph",
+      "target": "core_sdfglyphatlas_sdfglyph",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-core/src/commonMain/kotlin/com/lumina/pdf/core/SdfGlyphAtlas.kt",
+      "source_location": "L23",
+      "weight": 1.0,
+      "context": "parameter_type",
+      "source": "core_sdfglyphatlas_sdfglyphatlas_putglyph",
+      "target": "core_sdfglyphatlas_sdfglyph",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-core/src/commonMain/kotlin/com/lumina/pdf/core/SdfGlyphAtlas.kt",
+      "source_location": "L27",
+      "weight": 1.0,
+      "context": "parameter_type",
+      "source": "core_sdfglyphatlas_sdfglyphatlas_sampleat",
+      "target": "core_sdfglyphatlas_sdfglyph",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-core/src/commonMain/kotlin/com/lumina/pdf/core/SdfGlyphAtlas.kt",
+      "source_location": "L19",
+      "weight": 1.0,
+      "source": "core_sdfglyphatlas_sdfglyphatlas",
+      "target": "core_sdfglyphatlas_sdfglyphatlas_getglyph",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-core/src/commonMain/kotlin/com/lumina/pdf/core/SdfGlyphAtlas.kt",
+      "source_location": "L15",
+      "weight": 1.0,
+      "source": "core_sdfglyphatlas_sdfglyphatlas",
+      "target": "core_sdfglyphatlas_sdfglyphatlas_hasglyph",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-core/src/commonMain/kotlin/com/lumina/pdf/core/SdfGlyphAtlas.kt",
+      "source_location": "L23",
+      "weight": 1.0,
+      "source": "core_sdfglyphatlas_sdfglyphatlas",
+      "target": "core_sdfglyphatlas_sdfglyphatlas_putglyph",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-core/src/commonMain/kotlin/com/lumina/pdf/core/SdfGlyphAtlas.kt",
+      "source_location": "L27",
+      "weight": 1.0,
+      "source": "core_sdfglyphatlas_sdfglyphatlas",
+      "target": "core_sdfglyphatlas_sdfglyphatlas_sampleat",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-core/src/commonMain/kotlin/com/lumina/pdf/core/SdfGlyphAtlas.kt",
+      "source_location": "L15",
+      "weight": 1.0,
+      "context": "return_type",
+      "source": "core_sdfglyphatlas_sdfglyphatlas_hasglyph",
+      "target": "pdf_core_src_commonmain_kotlin_com_lumina_pdf_core_sdfglyphatlas_kt_boolean",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-core/src/commonMain/kotlin/com/lumina/pdf/core/SdfGlyphAtlas.kt",
+      "source_location": "L15",
+      "weight": 1.0,
+      "context": "parameter_type",
+      "source": "core_sdfglyphatlas_sdfglyphatlas_hasglyph",
+      "target": "pdf_core_src_commonmain_kotlin_com_lumina_pdf_core_sdfglyphatlas_kt_char",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-core/src/commonMain/kotlin/com/lumina/pdf/core/SdfGlyphAtlas.kt",
+      "source_location": "L19",
+      "weight": 1.0,
+      "context": "parameter_type",
+      "source": "core_sdfglyphatlas_sdfglyphatlas_getglyph",
+      "target": "pdf_core_src_commonmain_kotlin_com_lumina_pdf_core_sdfglyphatlas_kt_char",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-core/src/commonMain/kotlin/com/lumina/pdf/core/SdfGlyphAtlas.kt",
+      "source_location": "L23",
+      "weight": 1.0,
+      "context": "parameter_type",
+      "source": "core_sdfglyphatlas_sdfglyphatlas_putglyph",
+      "target": "pdf_core_src_commonmain_kotlin_com_lumina_pdf_core_sdfglyphatlas_kt_char",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-core/src/commonMain/kotlin/com/lumina/pdf/core/SdfGlyphAtlas.kt",
+      "source_location": "L27",
+      "weight": 1.0,
+      "context": "return_type",
+      "source": "core_sdfglyphatlas_sdfglyphatlas_sampleat",
+      "target": "pdf_core_src_commonmain_kotlin_com_lumina_pdf_core_sdfglyphatlas_kt_float",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -9056,6 +10696,176 @@
       "confidence_score": 1.0,
       "source": "core_stripspatialindex_stripspatialindex_queryrange",
       "target": "pdf_core_src_commonmain_kotlin_com_lumina_pdf_core_stripspatialindex_kt_float"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-core/src/commonMain/kotlin/com/lumina/pdf/core/SutherlandHodgman.kt",
+      "source_location": "L3",
+      "weight": 1.0,
+      "source": "core_sutherlandhodgman",
+      "target": "core_sutherlandhodgman_point2d",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-core/src/commonMain/kotlin/com/lumina/pdf/core/SutherlandHodgman.kt",
+      "source_location": "L5",
+      "weight": 1.0,
+      "source": "core_sutherlandhodgman",
+      "target": "core_sutherlandhodgman_sutherlandhodgman",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-core/src/commonMain/kotlin/com/lumina/pdf/core/SutherlandHodgman.kt",
+      "source_location": "L117",
+      "weight": 1.0,
+      "context": "generic_arg",
+      "source": "core_sutherlandhodgman_sutherlandhodgman_clip",
+      "target": "core_sutherlandhodgman_point2d",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "context": "generic_arg",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-core/src/commonMain/kotlin/com/lumina/pdf/core/SutherlandHodgman.kt",
+      "source_location": "L7",
+      "weight": 1.0,
+      "source": "core_sutherlandhodgman_sutherlandhodgman_cliptorect",
+      "target": "core_sutherlandhodgman_point2d",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "context": "return_type",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-core/src/commonMain/kotlin/com/lumina/pdf/core/SutherlandHodgman.kt",
+      "source_location": "L167",
+      "weight": 1.0,
+      "source": "core_sutherlandhodgman_sutherlandhodgman_intersection",
+      "target": "core_sutherlandhodgman_point2d",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-core/src/commonMain/kotlin/com/lumina/pdf/core/SutherlandHodgman.kt",
+      "source_location": "L162",
+      "weight": 1.0,
+      "context": "parameter_type",
+      "source": "core_sutherlandhodgman_sutherlandhodgman_isinside",
+      "target": "core_sutherlandhodgman_point2d",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-core/src/commonMain/kotlin/com/lumina/pdf/core/SutherlandHodgman.kt",
+      "source_location": "L117",
+      "weight": 1.0,
+      "source": "core_sutherlandhodgman_sutherlandhodgman",
+      "target": "core_sutherlandhodgman_sutherlandhodgman_clip",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-core/src/commonMain/kotlin/com/lumina/pdf/core/SutherlandHodgman.kt",
+      "source_location": "L7",
+      "weight": 1.0,
+      "source": "core_sutherlandhodgman_sutherlandhodgman",
+      "target": "core_sutherlandhodgman_sutherlandhodgman_cliptorect",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-core/src/commonMain/kotlin/com/lumina/pdf/core/SutherlandHodgman.kt",
+      "source_location": "L167",
+      "weight": 1.0,
+      "source": "core_sutherlandhodgman_sutherlandhodgman",
+      "target": "core_sutherlandhodgman_sutherlandhodgman_intersection",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-core/src/commonMain/kotlin/com/lumina/pdf/core/SutherlandHodgman.kt",
+      "source_location": "L162",
+      "weight": 1.0,
+      "source": "core_sutherlandhodgman_sutherlandhodgman",
+      "target": "core_sutherlandhodgman_sutherlandhodgman_isinside",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-core/src/commonMain/kotlin/com/lumina/pdf/core/SutherlandHodgman.kt",
+      "source_location": "L7",
+      "weight": 1.0,
+      "context": "parameter_type",
+      "source": "core_sutherlandhodgman_sutherlandhodgman_cliptorect",
+      "target": "pdf_core_src_commonmain_kotlin_com_lumina_pdf_core_sutherlandhodgman_kt_float",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-core/src/commonMain/kotlin/com/lumina/pdf/core/SutherlandHodgman.kt",
+      "source_location": "L7",
+      "weight": 1.0,
+      "context": "return_type",
+      "source": "core_sutherlandhodgman_sutherlandhodgman_cliptorect",
+      "target": "pdf_core_src_commonmain_kotlin_com_lumina_pdf_core_sutherlandhodgman_kt_list",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-core/src/commonMain/kotlin/com/lumina/pdf/core/SutherlandHodgman.kt",
+      "source_location": "L117",
+      "weight": 1.0,
+      "context": "return_type",
+      "source": "core_sutherlandhodgman_sutherlandhodgman_clip",
+      "target": "pdf_core_src_commonmain_kotlin_com_lumina_pdf_core_sutherlandhodgman_kt_list",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-core/src/commonMain/kotlin/com/lumina/pdf/core/SutherlandHodgman.kt",
+      "source_location": "L147",
+      "weight": 1.0,
+      "source": "core_sutherlandhodgman_sutherlandhodgman_clip",
+      "target": "core_sutherlandhodgman_sutherlandhodgman_intersection",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-core/src/commonMain/kotlin/com/lumina/pdf/core/SutherlandHodgman.kt",
+      "source_location": "L142",
+      "weight": 1.0,
+      "source": "core_sutherlandhodgman_sutherlandhodgman_clip",
+      "target": "core_sutherlandhodgman_sutherlandhodgman_isinside",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-core/src/commonMain/kotlin/com/lumina/pdf/core/SutherlandHodgman.kt",
+      "source_location": "L162",
+      "weight": 1.0,
+      "context": "return_type",
+      "source": "core_sutherlandhodgman_sutherlandhodgman_isinside",
+      "target": "pdf_core_src_commonmain_kotlin_com_lumina_pdf_core_sutherlandhodgman_kt_boolean",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -9422,6 +11232,17 @@
       "context": "call",
       "confidence": "INFERRED",
       "confidence_score": 0.8,
+      "source_file": "pdf-renderer/src/jvmMain/kotlin/com/lumina/pdf/renderer/SdfGenerator.kt",
+      "source_location": "L62",
+      "weight": 1.0,
+      "source": "renderer_sdfgenerator_sdfgenerator_generateglyph",
+      "target": "pair"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
       "source_file": "pdf-viewer/src/commonMain/kotlin/com/lumina/pdf/viewer/PdfViewer.kt",
       "source_location": "L229",
       "weight": 1.0,
@@ -9574,6 +11395,56 @@
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
+      "source_file": "pdf-core/src/commonTest/kotlin/com/lumina/pdf/core/SutherlandHodgmanTest.kt",
+      "source_location": "L7",
+      "weight": 1.0,
+      "source": "core_sutherlandhodgmantest",
+      "target": "core_sutherlandhodgmantest_sutherlandhodgmantest",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-core/src/commonTest/kotlin/com/lumina/pdf/core/SutherlandHodgmanTest.kt",
+      "source_location": "L9",
+      "weight": 1.0,
+      "source": "core_sutherlandhodgmantest_sutherlandhodgmantest",
+      "target": "core_sutherlandhodgmantest_sutherlandhodgmantest_testfullyinsiderect",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-core/src/commonTest/kotlin/com/lumina/pdf/core/SutherlandHodgmanTest.kt",
+      "source_location": "L22",
+      "weight": 1.0,
+      "source": "core_sutherlandhodgmantest_sutherlandhodgmantest",
+      "target": "core_sutherlandhodgmantest_sutherlandhodgmantest_testfullyoutsiderect",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-core/src/commonTest/kotlin/com/lumina/pdf/core/SutherlandHodgmanTest.kt",
+      "source_location": "L33",
+      "weight": 1.0,
+      "source": "core_sutherlandhodgmantest_sutherlandhodgmantest",
+      "target": "core_sutherlandhodgmantest_sutherlandhodgmantest_testpartialclip",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-core/src/commonTest/kotlin/com/lumina/pdf/core/SutherlandHodgmanTest.kt",
+      "source_location": "L51",
+      "weight": 1.0,
+      "source": "core_sutherlandhodgmantest_sutherlandhodgmantest",
+      "target": "core_sutherlandhodgmantest_sutherlandhodgmantest_testpolygonclipping",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
       "source_file": "pdf-renderer/src/androidMain/kotlin/com/lumina/pdf/renderer/AndroidPdfBitmap.kt",
       "source_location": "L6",
       "weight": 1.0,
@@ -9719,6 +11590,16 @@
       "relation": "method",
       "confidence": "EXTRACTED",
       "source_file": "pdf-renderer/src/androidMain/kotlin/com/lumina/pdf/renderer/AndroidPdfDocument.kt",
+      "source_location": "L92",
+      "weight": 1.0,
+      "source": "renderer_androidpdfdocument_androidpdfdocument",
+      "target": "renderer_androidpdfdocument_androidpdfdocument_getpageelementbounds",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-renderer/src/androidMain/kotlin/com/lumina/pdf/renderer/AndroidPdfDocument.kt",
       "source_location": "L22",
       "weight": 1.0,
       "confidence_score": 1.0,
@@ -9808,6 +11689,17 @@
       "confidence_score": 1.0,
       "source": "renderer_androidpdfdocument_androidpdfdocument_extracttext",
       "target": "pdf_renderer_src_androidmain_kotlin_com_lumina_pdf_renderer_androidpdfdocument_kt_int"
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-renderer/src/androidMain/kotlin/com/lumina/pdf/renderer/AndroidPdfDocument.kt",
+      "source_location": "L92",
+      "weight": 1.0,
+      "context": "parameter_type",
+      "source": "renderer_androidpdfdocument_androidpdfdocument_getpageelementbounds",
+      "target": "pdf_renderer_src_androidmain_kotlin_com_lumina_pdf_renderer_androidpdfdocument_kt_int",
+      "confidence_score": 1.0
     },
     {
       "relation": "references",
@@ -9912,6 +11804,17 @@
       "relation": "references",
       "confidence": "EXTRACTED",
       "source_file": "pdf-renderer/src/androidMain/kotlin/com/lumina/pdf/renderer/AndroidPdfDocument.kt",
+      "source_location": "L92",
+      "weight": 1.0,
+      "context": "generic_arg",
+      "source": "renderer_androidpdfdocument_androidpdfdocument_getpageelementbounds",
+      "target": "pdf_renderer_src_androidmain_kotlin_com_lumina_pdf_renderer_androidpdfdocument_kt_pdfrect",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-renderer/src/androidMain/kotlin/com/lumina/pdf/renderer/AndroidPdfDocument.kt",
       "source_location": "L55",
       "weight": 1.0,
       "context": "generic_arg",
@@ -9973,6 +11876,17 @@
       "confidence_score": 1.0,
       "source": "renderer_androidpdfdocument_androidpdfdocument_getoutline",
       "target": "pdf_renderer_src_androidmain_kotlin_com_lumina_pdf_renderer_androidpdfdocument_kt_list"
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-renderer/src/androidMain/kotlin/com/lumina/pdf/renderer/AndroidPdfDocument.kt",
+      "source_location": "L92",
+      "weight": 1.0,
+      "context": "return_type",
+      "source": "renderer_androidpdfdocument_androidpdfdocument_getpageelementbounds",
+      "target": "pdf_renderer_src_androidmain_kotlin_com_lumina_pdf_renderer_androidpdfdocument_kt_list",
+      "confidence_score": 1.0
     },
     {
       "relation": "references",
@@ -10178,6 +12092,877 @@
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
+      "source_file": "pdf-renderer/src/jvmMain/kotlin/com/lumina/pdf/renderer/ElementBoundsExtractor.kt",
+      "source_location": "L12",
+      "weight": 1.0,
+      "source": "renderer_elementboundsextractor",
+      "target": "renderer_elementboundsextractor_elementboundsextractor",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "inherits",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-renderer/src/jvmMain/kotlin/com/lumina/pdf/renderer/ElementBoundsExtractor.kt",
+      "source_location": "L12",
+      "weight": 1.0,
+      "source": "renderer_elementboundsextractor_elementboundsextractor",
+      "target": "pdfgraphicsstreamengine",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-renderer/src/jvmMain/kotlin/com/lumina/pdf/renderer/ElementBoundsExtractor.kt",
+      "source_location": "L14",
+      "weight": 1.0,
+      "context": "field",
+      "source": "renderer_elementboundsextractor_elementboundsextractor",
+      "target": "rectangle2d",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-renderer/src/jvmMain/kotlin/com/lumina/pdf/renderer/ElementBoundsExtractor.kt",
+      "source_location": "L45",
+      "weight": 1.0,
+      "source": "renderer_elementboundsextractor_elementboundsextractor",
+      "target": "renderer_elementboundsextractor_elementboundsextractor_addrecttoelements",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-renderer/src/jvmMain/kotlin/com/lumina/pdf/renderer/ElementBoundsExtractor.kt",
+      "source_location": "L58",
+      "weight": 1.0,
+      "source": "renderer_elementboundsextractor_elementboundsextractor",
+      "target": "renderer_elementboundsextractor_elementboundsextractor_appendrectangle",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-renderer/src/jvmMain/kotlin/com/lumina/pdf/renderer/ElementBoundsExtractor.kt",
+      "source_location": "L87",
+      "weight": 1.0,
+      "source": "renderer_elementboundsextractor_elementboundsextractor",
+      "target": "renderer_elementboundsextractor_elementboundsextractor_clip",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-renderer/src/jvmMain/kotlin/com/lumina/pdf/renderer/ElementBoundsExtractor.kt",
+      "source_location": "L114",
+      "weight": 1.0,
+      "source": "renderer_elementboundsextractor_elementboundsextractor",
+      "target": "renderer_elementboundsextractor_elementboundsextractor_closepath",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-renderer/src/jvmMain/kotlin/com/lumina/pdf/renderer/ElementBoundsExtractor.kt",
+      "source_location": "L102",
+      "weight": 1.0,
+      "source": "renderer_elementboundsextractor_elementboundsextractor",
+      "target": "renderer_elementboundsextractor_elementboundsextractor_curveto",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-renderer/src/jvmMain/kotlin/com/lumina/pdf/renderer/ElementBoundsExtractor.kt",
+      "source_location": "L66",
+      "weight": 1.0,
+      "source": "renderer_elementboundsextractor_elementboundsextractor",
+      "target": "renderer_elementboundsextractor_elementboundsextractor_drawimage",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-renderer/src/jvmMain/kotlin/com/lumina/pdf/renderer/ElementBoundsExtractor.kt",
+      "source_location": "L118",
+      "weight": 1.0,
+      "source": "renderer_elementboundsextractor_elementboundsextractor",
+      "target": "renderer_elementboundsextractor_elementboundsextractor_endpath",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-renderer/src/jvmMain/kotlin/com/lumina/pdf/renderer/ElementBoundsExtractor.kt",
+      "source_location": "L141",
+      "weight": 1.0,
+      "source": "renderer_elementboundsextractor_elementboundsextractor",
+      "target": "renderer_elementboundsextractor_elementboundsextractor_fillandstrokepath",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-renderer/src/jvmMain/kotlin/com/lumina/pdf/renderer/ElementBoundsExtractor.kt",
+      "source_location": "L132",
+      "weight": 1.0,
+      "source": "renderer_elementboundsextractor_elementboundsextractor",
+      "target": "renderer_elementboundsextractor_elementboundsextractor_fillpath",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-renderer/src/jvmMain/kotlin/com/lumina/pdf/renderer/ElementBoundsExtractor.kt",
+      "source_location": "L20",
+      "weight": 1.0,
+      "source": "renderer_elementboundsextractor_elementboundsextractor",
+      "target": "renderer_elementboundsextractor_elementboundsextractor_getbounds",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-renderer/src/jvmMain/kotlin/com/lumina/pdf/renderer/ElementBoundsExtractor.kt",
+      "source_location": "L109",
+      "weight": 1.0,
+      "source": "renderer_elementboundsextractor_elementboundsextractor",
+      "target": "renderer_elementboundsextractor_elementboundsextractor_getcurrentpoint",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-renderer/src/jvmMain/kotlin/com/lumina/pdf/renderer/ElementBoundsExtractor.kt",
+      "source_location": "L97",
+      "weight": 1.0,
+      "source": "renderer_elementboundsextractor_elementboundsextractor",
+      "target": "renderer_elementboundsextractor_elementboundsextractor_lineto",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-renderer/src/jvmMain/kotlin/com/lumina/pdf/renderer/ElementBoundsExtractor.kt",
+      "source_location": "L92",
+      "weight": 1.0,
+      "source": "renderer_elementboundsextractor_elementboundsextractor",
+      "target": "renderer_elementboundsextractor_elementboundsextractor_moveto",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-renderer/src/jvmMain/kotlin/com/lumina/pdf/renderer/ElementBoundsExtractor.kt",
+      "source_location": "L150",
+      "weight": 1.0,
+      "source": "renderer_elementboundsextractor_elementboundsextractor",
+      "target": "renderer_elementboundsextractor_elementboundsextractor_shadingfill",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-renderer/src/jvmMain/kotlin/com/lumina/pdf/renderer/ElementBoundsExtractor.kt",
+      "source_location": "L123",
+      "weight": 1.0,
+      "source": "renderer_elementboundsextractor_elementboundsextractor",
+      "target": "renderer_elementboundsextractor_elementboundsextractor_strokepath",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-renderer/src/jvmMain/kotlin/com/lumina/pdf/renderer/ElementBoundsExtractor.kt",
+      "source_location": "L24",
+      "weight": 1.0,
+      "source": "renderer_elementboundsextractor_elementboundsextractor",
+      "target": "renderer_elementboundsextractor_elementboundsextractor_transformx",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-renderer/src/jvmMain/kotlin/com/lumina/pdf/renderer/ElementBoundsExtractor.kt",
+      "source_location": "L29",
+      "weight": 1.0,
+      "source": "renderer_elementboundsextractor_elementboundsextractor",
+      "target": "renderer_elementboundsextractor_elementboundsextractor_transformy",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-renderer/src/jvmMain/kotlin/com/lumina/pdf/renderer/ElementBoundsExtractor.kt",
+      "source_location": "L34",
+      "weight": 1.0,
+      "source": "renderer_elementboundsextractor_elementboundsextractor",
+      "target": "renderer_elementboundsextractor_elementboundsextractor_updatepathbounds",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "pdf-renderer/src/jvmMain/kotlin/com/lumina/pdf/renderer/JvmPdfDocument.kt",
+      "source_location": "L194",
+      "weight": 1.0,
+      "source": "renderer_jvmpdfdocument_jvmpdfdocument_getpageelementbounds",
+      "target": "renderer_elementboundsextractor_elementboundsextractor"
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-renderer/src/jvmMain/kotlin/com/lumina/pdf/renderer/ElementBoundsExtractor.kt",
+      "source_location": "L45",
+      "weight": 1.0,
+      "context": "parameter_type",
+      "source": "renderer_elementboundsextractor_elementboundsextractor_addrecttoelements",
+      "target": "rectangle2d",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-renderer/src/jvmMain/kotlin/com/lumina/pdf/renderer/ElementBoundsExtractor.kt",
+      "source_location": "L20",
+      "weight": 1.0,
+      "context": "return_type",
+      "source": "renderer_elementboundsextractor_elementboundsextractor_getbounds",
+      "target": "pdf_renderer_src_jvmmain_kotlin_com_lumina_pdf_renderer_elementboundsextractor_kt_list",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-renderer/src/jvmMain/kotlin/com/lumina/pdf/renderer/ElementBoundsExtractor.kt",
+      "source_location": "L20",
+      "weight": 1.0,
+      "context": "generic_arg",
+      "source": "renderer_elementboundsextractor_elementboundsextractor_getbounds",
+      "target": "pdf_renderer_src_jvmmain_kotlin_com_lumina_pdf_renderer_elementboundsextractor_kt_pdfrect",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-renderer/src/jvmMain/kotlin/com/lumina/pdf/renderer/ElementBoundsExtractor.kt",
+      "source_location": "L54",
+      "weight": 1.0,
+      "source": "renderer_elementboundsextractor_elementboundsextractor_addrecttoelements",
+      "target": "pdf_renderer_src_jvmmain_kotlin_com_lumina_pdf_renderer_elementboundsextractor_kt_pdfrect",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-renderer/src/jvmMain/kotlin/com/lumina/pdf/renderer/ElementBoundsExtractor.kt",
+      "source_location": "L70",
+      "weight": 1.0,
+      "source": "renderer_elementboundsextractor_elementboundsextractor_drawimage",
+      "target": "renderer_elementboundsextractor_elementboundsextractor_transformx",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-renderer/src/jvmMain/kotlin/com/lumina/pdf/renderer/ElementBoundsExtractor.kt",
+      "source_location": "L24",
+      "weight": 1.0,
+      "context": "return_type",
+      "source": "renderer_elementboundsextractor_elementboundsextractor_transformx",
+      "target": "pdf_renderer_src_jvmmain_kotlin_com_lumina_pdf_renderer_elementboundsextractor_kt_float",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-renderer/src/jvmMain/kotlin/com/lumina/pdf/renderer/ElementBoundsExtractor.kt",
+      "source_location": "L35",
+      "weight": 1.0,
+      "source": "renderer_elementboundsextractor_elementboundsextractor_updatepathbounds",
+      "target": "renderer_elementboundsextractor_elementboundsextractor_transformx",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-renderer/src/jvmMain/kotlin/com/lumina/pdf/renderer/ElementBoundsExtractor.kt",
+      "source_location": "L102",
+      "weight": 1.0,
+      "context": "parameter_type",
+      "source": "renderer_elementboundsextractor_elementboundsextractor_curveto",
+      "target": "pdf_renderer_src_jvmmain_kotlin_com_lumina_pdf_renderer_elementboundsextractor_kt_float",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-renderer/src/jvmMain/kotlin/com/lumina/pdf/renderer/ElementBoundsExtractor.kt",
+      "source_location": "L79",
+      "weight": 1.0,
+      "source": "renderer_elementboundsextractor_elementboundsextractor_drawimage",
+      "target": "pdf_renderer_src_jvmmain_kotlin_com_lumina_pdf_renderer_elementboundsextractor_kt_float",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-renderer/src/jvmMain/kotlin/com/lumina/pdf/renderer/ElementBoundsExtractor.kt",
+      "source_location": "L111",
+      "weight": 1.0,
+      "source": "renderer_elementboundsextractor_elementboundsextractor_getcurrentpoint",
+      "target": "pdf_renderer_src_jvmmain_kotlin_com_lumina_pdf_renderer_elementboundsextractor_kt_float",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-renderer/src/jvmMain/kotlin/com/lumina/pdf/renderer/ElementBoundsExtractor.kt",
+      "source_location": "L97",
+      "weight": 1.0,
+      "context": "parameter_type",
+      "source": "renderer_elementboundsextractor_elementboundsextractor_lineto",
+      "target": "pdf_renderer_src_jvmmain_kotlin_com_lumina_pdf_renderer_elementboundsextractor_kt_float",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-renderer/src/jvmMain/kotlin/com/lumina/pdf/renderer/ElementBoundsExtractor.kt",
+      "source_location": "L92",
+      "weight": 1.0,
+      "context": "parameter_type",
+      "source": "renderer_elementboundsextractor_elementboundsextractor_moveto",
+      "target": "pdf_renderer_src_jvmmain_kotlin_com_lumina_pdf_renderer_elementboundsextractor_kt_float",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-renderer/src/jvmMain/kotlin/com/lumina/pdf/renderer/ElementBoundsExtractor.kt",
+      "source_location": "L29",
+      "weight": 1.0,
+      "context": "return_type",
+      "source": "renderer_elementboundsextractor_elementboundsextractor_transformy",
+      "target": "pdf_renderer_src_jvmmain_kotlin_com_lumina_pdf_renderer_elementboundsextractor_kt_float",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "context": "parameter_type",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-renderer/src/jvmMain/kotlin/com/lumina/pdf/renderer/ElementBoundsExtractor.kt",
+      "source_location": "L34",
+      "weight": 1.0,
+      "source": "renderer_elementboundsextractor_elementboundsextractor_updatepathbounds",
+      "target": "pdf_renderer_src_jvmmain_kotlin_com_lumina_pdf_renderer_elementboundsextractor_kt_float",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-renderer/src/jvmMain/kotlin/com/lumina/pdf/renderer/ElementBoundsExtractor.kt",
+      "source_location": "L71",
+      "weight": 1.0,
+      "source": "renderer_elementboundsextractor_elementboundsextractor_drawimage",
+      "target": "renderer_elementboundsextractor_elementboundsextractor_transformy",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-renderer/src/jvmMain/kotlin/com/lumina/pdf/renderer/ElementBoundsExtractor.kt",
+      "source_location": "L36",
+      "weight": 1.0,
+      "source": "renderer_elementboundsextractor_elementboundsextractor_updatepathbounds",
+      "target": "renderer_elementboundsextractor_elementboundsextractor_transformy",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-renderer/src/jvmMain/kotlin/com/lumina/pdf/renderer/ElementBoundsExtractor.kt",
+      "source_location": "L60",
+      "weight": 1.0,
+      "source": "renderer_elementboundsextractor_elementboundsextractor_appendrectangle",
+      "target": "renderer_elementboundsextractor_elementboundsextractor_updatepathbounds",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-renderer/src/jvmMain/kotlin/com/lumina/pdf/renderer/ElementBoundsExtractor.kt",
+      "source_location": "L104",
+      "weight": 1.0,
+      "source": "renderer_elementboundsextractor_elementboundsextractor_curveto",
+      "target": "renderer_elementboundsextractor_elementboundsextractor_updatepathbounds",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-renderer/src/jvmMain/kotlin/com/lumina/pdf/renderer/ElementBoundsExtractor.kt",
+      "source_location": "L99",
+      "weight": 1.0,
+      "source": "renderer_elementboundsextractor_elementboundsextractor_lineto",
+      "target": "renderer_elementboundsextractor_elementboundsextractor_updatepathbounds",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-renderer/src/jvmMain/kotlin/com/lumina/pdf/renderer/ElementBoundsExtractor.kt",
+      "source_location": "L94",
+      "weight": 1.0,
+      "source": "renderer_elementboundsextractor_elementboundsextractor_moveto",
+      "target": "renderer_elementboundsextractor_elementboundsextractor_updatepathbounds",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-renderer/src/jvmMain/kotlin/com/lumina/pdf/renderer/ElementBoundsExtractor.kt",
+      "source_location": "L84",
+      "weight": 1.0,
+      "source": "renderer_elementboundsextractor_elementboundsextractor_drawimage",
+      "target": "renderer_elementboundsextractor_elementboundsextractor_addrecttoelements",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-renderer/src/jvmMain/kotlin/com/lumina/pdf/renderer/ElementBoundsExtractor.kt",
+      "source_location": "L145",
+      "weight": 1.0,
+      "source": "renderer_elementboundsextractor_elementboundsextractor_fillandstrokepath",
+      "target": "renderer_elementboundsextractor_elementboundsextractor_addrecttoelements",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-renderer/src/jvmMain/kotlin/com/lumina/pdf/renderer/ElementBoundsExtractor.kt",
+      "source_location": "L136",
+      "weight": 1.0,
+      "source": "renderer_elementboundsextractor_elementboundsextractor_fillpath",
+      "target": "renderer_elementboundsextractor_elementboundsextractor_addrecttoelements",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-renderer/src/jvmMain/kotlin/com/lumina/pdf/renderer/ElementBoundsExtractor.kt",
+      "source_location": "L127",
+      "weight": 1.0,
+      "source": "renderer_elementboundsextractor_elementboundsextractor_strokepath",
+      "target": "renderer_elementboundsextractor_elementboundsextractor_addrecttoelements",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-renderer/src/jvmMain/kotlin/com/lumina/pdf/renderer/ElementBoundsExtractor.kt",
+      "source_location": "L58",
+      "weight": 1.0,
+      "context": "parameter_type",
+      "source": "renderer_elementboundsextractor_elementboundsextractor_appendrectangle",
+      "target": "pdf_renderer_src_jvmmain_kotlin_com_lumina_pdf_renderer_elementboundsextractor_kt_point2d",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-renderer/src/jvmMain/kotlin/com/lumina/pdf/renderer/ElementBoundsExtractor.kt",
+      "source_location": "L109",
+      "weight": 1.0,
+      "context": "return_type",
+      "source": "renderer_elementboundsextractor_elementboundsextractor_getcurrentpoint",
+      "target": "pdf_renderer_src_jvmmain_kotlin_com_lumina_pdf_renderer_elementboundsextractor_kt_point2d",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-renderer/src/jvmMain/kotlin/com/lumina/pdf/renderer/ElementBoundsExtractor.kt",
+      "source_location": "L66",
+      "weight": 1.0,
+      "context": "parameter_type",
+      "source": "renderer_elementboundsextractor_elementboundsextractor_drawimage",
+      "target": "pdf_renderer_src_jvmmain_kotlin_com_lumina_pdf_renderer_elementboundsextractor_kt_pdimage",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-renderer/src/jvmMain/kotlin/com/lumina/pdf/renderer/ElementBoundsExtractor.kt",
+      "source_location": "L87",
+      "weight": 1.0,
+      "context": "parameter_type",
+      "source": "renderer_elementboundsextractor_elementboundsextractor_clip",
+      "target": "pdf_renderer_src_jvmmain_kotlin_com_lumina_pdf_renderer_elementboundsextractor_kt_int",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-renderer/src/jvmMain/kotlin/com/lumina/pdf/renderer/ElementBoundsExtractor.kt",
+      "source_location": "L141",
+      "weight": 1.0,
+      "context": "parameter_type",
+      "source": "renderer_elementboundsextractor_elementboundsextractor_fillandstrokepath",
+      "target": "pdf_renderer_src_jvmmain_kotlin_com_lumina_pdf_renderer_elementboundsextractor_kt_int",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-renderer/src/jvmMain/kotlin/com/lumina/pdf/renderer/ElementBoundsExtractor.kt",
+      "source_location": "L132",
+      "weight": 1.0,
+      "context": "parameter_type",
+      "source": "renderer_elementboundsextractor_elementboundsextractor_fillpath",
+      "target": "pdf_renderer_src_jvmmain_kotlin_com_lumina_pdf_renderer_elementboundsextractor_kt_int",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "shared/src/commonMain/kotlin/com/lumina/pdf/HomeScreenComponents.kt",
+      "source_location": "L96",
+      "weight": 1.0,
+      "source": "pdf_homescreencomponents_griditemcard",
+      "target": "renderer_elementboundsextractor_elementboundsextractor_moveto"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "pdf-viewer/src/commonMain/kotlin/com/lumina/pdf/viewer/SharedComponents.kt",
+      "source_location": "L48",
+      "weight": 1.0,
+      "source": "viewer_sharedcomponents_acrobatpdficon",
+      "target": "renderer_elementboundsextractor_elementboundsextractor_moveto"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "pdf-viewer/src/commonMain/kotlin/com/lumina/pdf/viewer/SharedComponents.kt",
+      "source_location": "L402",
+      "weight": 1.0,
+      "source": "viewer_sharedcomponents_arrowrighticon",
+      "target": "renderer_elementboundsextractor_elementboundsextractor_moveto"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "pdf-viewer/src/commonMain/kotlin/com/lumina/pdf/viewer/SharedComponents.kt",
+      "source_location": "L507",
+      "weight": 1.0,
+      "source": "viewer_sharedcomponents_chevrondownicon",
+      "target": "renderer_elementboundsextractor_elementboundsextractor_moveto"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "pdf-viewer/src/commonMain/kotlin/com/lumina/pdf/viewer/SharedComponents.kt",
+      "source_location": "L491",
+      "weight": 1.0,
+      "source": "viewer_sharedcomponents_chevronupicon",
+      "target": "renderer_elementboundsextractor_elementboundsextractor_moveto"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "pdf-viewer/src/commonMain/kotlin/com/lumina/pdf/viewer/SharedComponents.kt",
+      "source_location": "L176",
+      "weight": 1.0,
+      "source": "viewer_sharedcomponents_cloudicon",
+      "target": "renderer_elementboundsextractor_elementboundsextractor_moveto"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "pdf-viewer/src/commonMain/kotlin/com/lumina/pdf/viewer/SharedComponents.kt",
+      "source_location": "L122",
+      "weight": 1.0,
+      "source": "viewer_sharedcomponents_foldericon",
+      "target": "renderer_elementboundsextractor_elementboundsextractor_moveto"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "pdf-viewer/src/commonMain/kotlin/com/lumina/pdf/viewer/SharedComponents.kt",
+      "source_location": "L75",
+      "weight": 1.0,
+      "source": "viewer_sharedcomponents_homeicon",
+      "target": "renderer_elementboundsextractor_elementboundsextractor_moveto"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "pdf-viewer/src/commonMain/kotlin/com/lumina/pdf/viewer/SharedComponents.kt",
+      "source_location": "L104",
+      "weight": 1.0,
+      "source": "viewer_sharedcomponents_learnicon",
+      "target": "renderer_elementboundsextractor_elementboundsextractor_moveto"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "pdf-viewer/src/commonMain/kotlin/com/lumina/pdf/viewer/SharedComponents.kt",
+      "source_location": "L715",
+      "weight": 1.0,
+      "source": "viewer_sharedcomponents_mockdocumentthumbnail",
+      "target": "renderer_elementboundsextractor_elementboundsextractor_moveto"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "pdf-viewer/src/commonMain/kotlin/com/lumina/pdf/viewer/SharedComponents.kt",
+      "source_location": "L537",
+      "weight": 1.0,
+      "source": "viewer_sharedcomponents_noteicon",
+      "target": "renderer_elementboundsextractor_elementboundsextractor_moveto"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "pdf-viewer/src/commonMain/kotlin/com/lumina/pdf/viewer/SharedComponents.kt",
+      "source_location": "L378",
+      "weight": 1.0,
+      "source": "viewer_sharedcomponents_notesindicatoricon",
+      "target": "renderer_elementboundsextractor_elementboundsextractor_moveto"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "pdf-viewer/src/commonMain/kotlin/com/lumina/pdf/viewer/SharedComponents.kt",
+      "source_location": "L148",
+      "weight": 1.0,
+      "source": "viewer_sharedcomponents_peopleicon",
+      "target": "renderer_elementboundsextractor_elementboundsextractor_moveto"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "pdf-viewer/src/commonMain/kotlin/com/lumina/pdf/viewer/SharedComponents.kt",
+      "source_location": "L349",
+      "weight": 1.0,
+      "source": "viewer_sharedcomponents_synccheckicon",
+      "target": "renderer_elementboundsextractor_elementboundsextractor_moveto"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "pdf-viewer/src/commonMain/kotlin/com/lumina/pdf/viewer/SharedComponents.kt",
+      "source_location": "L197",
+      "weight": 1.0,
+      "source": "viewer_sharedcomponents_trashicon",
+      "target": "renderer_elementboundsextractor_elementboundsextractor_moveto"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "shared/src/commonMain/kotlin/com/lumina/pdf/HomeScreenComponents.kt",
+      "source_location": "L97",
+      "weight": 1.0,
+      "source": "pdf_homescreencomponents_griditemcard",
+      "target": "renderer_elementboundsextractor_elementboundsextractor_lineto"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "pdf-viewer/src/commonMain/kotlin/com/lumina/pdf/viewer/SharedComponents.kt",
+      "source_location": "L61",
+      "weight": 1.0,
+      "source": "viewer_sharedcomponents_acrobatpdficon",
+      "target": "renderer_elementboundsextractor_elementboundsextractor_lineto"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "pdf-viewer/src/commonMain/kotlin/com/lumina/pdf/viewer/SharedComponents.kt",
+      "source_location": "L403",
+      "weight": 1.0,
+      "source": "viewer_sharedcomponents_arrowrighticon",
+      "target": "renderer_elementboundsextractor_elementboundsextractor_lineto"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "pdf-viewer/src/commonMain/kotlin/com/lumina/pdf/viewer/SharedComponents.kt",
+      "source_location": "L508",
+      "weight": 1.0,
+      "source": "viewer_sharedcomponents_chevrondownicon",
+      "target": "renderer_elementboundsextractor_elementboundsextractor_lineto"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "pdf-viewer/src/commonMain/kotlin/com/lumina/pdf/viewer/SharedComponents.kt",
+      "source_location": "L492",
+      "weight": 1.0,
+      "source": "viewer_sharedcomponents_chevronupicon",
+      "target": "renderer_elementboundsextractor_elementboundsextractor_lineto"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "pdf-viewer/src/commonMain/kotlin/com/lumina/pdf/viewer/SharedComponents.kt",
+      "source_location": "L123",
+      "weight": 1.0,
+      "source": "viewer_sharedcomponents_foldericon",
+      "target": "renderer_elementboundsextractor_elementboundsextractor_lineto"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "pdf-viewer/src/commonMain/kotlin/com/lumina/pdf/viewer/SharedComponents.kt",
+      "source_location": "L76",
+      "weight": 1.0,
+      "source": "viewer_sharedcomponents_homeicon",
+      "target": "renderer_elementboundsextractor_elementboundsextractor_lineto"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "pdf-viewer/src/commonMain/kotlin/com/lumina/pdf/viewer/SharedComponents.kt",
+      "source_location": "L105",
+      "weight": 1.0,
+      "source": "viewer_sharedcomponents_learnicon",
+      "target": "renderer_elementboundsextractor_elementboundsextractor_lineto"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "pdf-viewer/src/commonMain/kotlin/com/lumina/pdf/viewer/SharedComponents.kt",
+      "source_location": "L716",
+      "weight": 1.0,
+      "source": "viewer_sharedcomponents_mockdocumentthumbnail",
+      "target": "renderer_elementboundsextractor_elementboundsextractor_lineto"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "pdf-viewer/src/commonMain/kotlin/com/lumina/pdf/viewer/SharedComponents.kt",
+      "source_location": "L538",
+      "weight": 1.0,
+      "source": "viewer_sharedcomponents_noteicon",
+      "target": "renderer_elementboundsextractor_elementboundsextractor_lineto"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "pdf-viewer/src/commonMain/kotlin/com/lumina/pdf/viewer/SharedComponents.kt",
+      "source_location": "L379",
+      "weight": 1.0,
+      "source": "viewer_sharedcomponents_notesindicatoricon",
+      "target": "renderer_elementboundsextractor_elementboundsextractor_lineto"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "pdf-viewer/src/commonMain/kotlin/com/lumina/pdf/viewer/SharedComponents.kt",
+      "source_location": "L350",
+      "weight": 1.0,
+      "source": "viewer_sharedcomponents_synccheckicon",
+      "target": "renderer_elementboundsextractor_elementboundsextractor_lineto"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "pdf-viewer/src/commonMain/kotlin/com/lumina/pdf/viewer/SharedComponents.kt",
+      "source_location": "L198",
+      "weight": 1.0,
+      "source": "viewer_sharedcomponents_trashicon",
+      "target": "renderer_elementboundsextractor_elementboundsextractor_lineto"
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-renderer/src/jvmMain/kotlin/com/lumina/pdf/renderer/ElementBoundsExtractor.kt",
+      "source_location": "L150",
+      "weight": 1.0,
+      "context": "parameter_type",
+      "source": "renderer_elementboundsextractor_elementboundsextractor_shadingfill",
+      "target": "cosname",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
       "source_file": "pdf-renderer/src/jvmMain/kotlin/com/lumina/pdf/renderer/JvmPdfBitmap.kt",
       "source_location": "L6",
       "weight": 1.0,
@@ -10275,8 +13060,19 @@
       "source_file": "pdf-renderer/src/jvmMain/kotlin/com/lumina/pdf/renderer/JvmPdfDocument.kt",
       "source_location": "L260",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "renderer_jvmpdfdocument",
-      "target": "renderer_jvmpdfdocument_simplifyingpdfrenderer",
+      "target": "renderer_jvmpdfdocument_simplifyingpdfrenderer"
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-renderer/src/jvmMain/kotlin/com/lumina/pdf/renderer/JvmPdfDocument.kt",
+      "source_location": "L21",
+      "weight": 1.0,
+      "context": "field",
+      "source": "renderer_jvmpdfdocument_jvmpdfdocument",
+      "target": "pdf_renderer_src_jvmmain_kotlin_com_lumina_pdf_renderer_jvmpdfdocument_kt_sdfglyphatlas",
       "confidence_score": 1.0
     },
     {
@@ -10318,6 +13114,16 @@
       "confidence_score": 1.0,
       "source": "renderer_jvmpdfdocument_jvmpdfdocument",
       "target": "renderer_jvmpdfdocument_jvmpdfdocument_getoutline"
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-renderer/src/jvmMain/kotlin/com/lumina/pdf/renderer/JvmPdfDocument.kt",
+      "source_location": "L186",
+      "weight": 1.0,
+      "source": "renderer_jvmpdfdocument_jvmpdfdocument",
+      "target": "renderer_jvmpdfdocument_jvmpdfdocument_getpageelementbounds",
+      "confidence_score": 1.0
     },
     {
       "relation": "method",
@@ -10417,6 +13223,17 @@
       "relation": "references",
       "confidence": "EXTRACTED",
       "source_file": "pdf-renderer/src/jvmMain/kotlin/com/lumina/pdf/renderer/JvmPdfDocument.kt",
+      "source_location": "L186",
+      "weight": 1.0,
+      "context": "parameter_type",
+      "source": "renderer_jvmpdfdocument_jvmpdfdocument_getpageelementbounds",
+      "target": "pdf_renderer_src_jvmmain_kotlin_com_lumina_pdf_renderer_jvmpdfdocument_kt_int",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-renderer/src/jvmMain/kotlin/com/lumina/pdf/renderer/JvmPdfDocument.kt",
       "source_location": "L18",
       "weight": 1.0,
       "context": "parameter_type",
@@ -10464,9 +13281,9 @@
       "source_file": "pdf-renderer/src/jvmMain/kotlin/com/lumina/pdf/renderer/JvmPdfDocument.kt",
       "source_location": "L29",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "renderer_jvmpdfdocument_jvmpdfdocument_renderpage",
-      "target": "renderer_jvmpdfdocument_simplifyingpdfrenderer",
-      "confidence_score": 1.0
+      "target": "renderer_jvmpdfdocument_simplifyingpdfrenderer"
     },
     {
       "relation": "references",
@@ -10508,8 +13325,19 @@
       "source_file": "pdf-renderer/src/jvmMain/kotlin/com/lumina/pdf/renderer/JvmPdfDocument.kt",
       "source_location": "L50",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "renderer_jvmpdfdocument_jvmpdfdocument_rendertile",
-      "target": "renderer_jvmpdfdocument_simplifyingpdfrenderer",
+      "target": "renderer_jvmpdfdocument_simplifyingpdfrenderer"
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-renderer/src/jvmMain/kotlin/com/lumina/pdf/renderer/JvmPdfDocument.kt",
+      "source_location": "L186",
+      "weight": 1.0,
+      "context": "generic_arg",
+      "source": "renderer_jvmpdfdocument_jvmpdfdocument_getpageelementbounds",
+      "target": "pdf_renderer_src_jvmmain_kotlin_com_lumina_pdf_renderer_jvmpdfdocument_kt_pdfrect",
       "confidence_score": 1.0
     },
     {
@@ -10670,6 +13498,17 @@
       "relation": "references",
       "confidence": "EXTRACTED",
       "source_file": "pdf-renderer/src/jvmMain/kotlin/com/lumina/pdf/renderer/JvmPdfDocument.kt",
+      "source_location": "L186",
+      "weight": 1.0,
+      "context": "return_type",
+      "source": "renderer_jvmpdfdocument_jvmpdfdocument_getpageelementbounds",
+      "target": "pdf_renderer_src_jvmmain_kotlin_com_lumina_pdf_renderer_jvmpdfdocument_kt_list",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-renderer/src/jvmMain/kotlin/com/lumina/pdf/renderer/JvmPdfDocument.kt",
       "source_location": "L238",
       "weight": 1.0,
       "context": "return_type",
@@ -10758,34 +13597,12 @@
       "relation": "references",
       "confidence": "EXTRACTED",
       "source_file": "pdf-renderer/src/jvmMain/kotlin/com/lumina/pdf/renderer/JvmPdfDocument.kt",
-      "source_location": "L76",
+      "source_location": "L131",
       "weight": 1.0,
       "context": "parameter_type",
-      "confidence_score": 1.0,
       "source": "renderer_jvmpdfdocument_jvmpdfdocument_mapoutlineitem",
-      "target": "org"
-    },
-    {
-      "relation": "references",
-      "confidence": "EXTRACTED",
-      "source_file": "pdf-renderer/src/jvmMain/kotlin/com/lumina/pdf/renderer/JvmPdfDocument.kt",
-      "source_location": "L232",
-      "weight": 1.0,
-      "context": "generic_arg",
-      "confidence_score": 1.0,
-      "source": "renderer_jvmpdfdocument_pdfcharacterboxextractor_writestring",
-      "target": "org"
-    },
-    {
-      "relation": "references",
-      "confidence": "EXTRACTED",
-      "source_file": "pdf-renderer/src/jvmMain/kotlin/com/lumina/pdf/renderer/JvmPdfDocument.kt",
-      "source_location": "L146",
-      "weight": 1.0,
-      "context": "generic_arg",
-      "confidence_score": 1.0,
-      "source": "renderer_jvmpdfdocument_pdftextlocator_writestring",
-      "target": "org"
+      "target": "pdf_renderer_src_jvmmain_kotlin_com_lumina_pdf_renderer_jvmpdfdocument_kt_org",
+      "confidence_score": 1.0
     },
     {
       "relation": "references",
@@ -10793,9 +13610,31 @@
       "source_file": "pdf-renderer/src/jvmMain/kotlin/com/lumina/pdf/renderer/JvmPdfDocument.kt",
       "source_location": "L264",
       "weight": 1.0,
+      "context": "generic_arg",
+      "source": "renderer_jvmpdfdocument_pdfcharacterboxextractor_writestring",
+      "target": "pdf_renderer_src_jvmmain_kotlin_com_lumina_pdf_renderer_jvmpdfdocument_kt_org",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-renderer/src/jvmMain/kotlin/com/lumina/pdf/renderer/JvmPdfDocument.kt",
+      "source_location": "L224",
+      "weight": 1.0,
+      "context": "generic_arg",
+      "source": "renderer_jvmpdfdocument_pdftextlocator_writestring",
+      "target": "pdf_renderer_src_jvmmain_kotlin_com_lumina_pdf_renderer_jvmpdfdocument_kt_org",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-renderer/src/jvmMain/kotlin/com/lumina/pdf/renderer/JvmPdfDocument.kt",
+      "source_location": "L294",
+      "weight": 1.0,
       "context": "return_type",
       "source": "renderer_jvmpdfdocument_simplifyingpdfrenderer_createpagedrawer",
-      "target": "org",
+      "target": "pdf_renderer_src_jvmmain_kotlin_com_lumina_pdf_renderer_jvmpdfdocument_kt_org",
       "confidence_score": 1.0
     },
     {
@@ -10842,23 +13681,23 @@
       "relation": "references",
       "confidence": "EXTRACTED",
       "source_file": "pdf-renderer/src/jvmMain/kotlin/com/lumina/pdf/renderer/JvmPdfDocument.kt",
-      "source_location": "L146",
+      "source_location": "L224",
       "weight": 1.0,
       "context": "parameter_type",
-      "confidence_score": 1.0,
       "source": "renderer_jvmpdfdocument_pdftextlocator_writestring",
-      "target": "mutablelist"
+      "target": "pdf_renderer_src_jvmmain_kotlin_com_lumina_pdf_renderer_jvmpdfdocument_kt_mutablelist",
+      "confidence_score": 1.0
     },
     {
       "relation": "references",
       "confidence": "EXTRACTED",
       "source_file": "pdf-renderer/src/jvmMain/kotlin/com/lumina/pdf/renderer/JvmPdfDocument.kt",
-      "source_location": "L232",
+      "source_location": "L264",
       "weight": 1.0,
       "context": "parameter_type",
-      "confidence_score": 1.0,
       "source": "renderer_jvmpdfdocument_pdfcharacterboxextractor_writestring",
-      "target": "mutablelist"
+      "target": "pdf_renderer_src_jvmmain_kotlin_com_lumina_pdf_renderer_jvmpdfdocument_kt_mutablelist",
+      "confidence_score": 1.0
     },
     {
       "relation": "method",
@@ -10886,9 +13725,9 @@
       "source_file": "pdf-renderer/src/jvmMain/kotlin/com/lumina/pdf/renderer/JvmPdfDocument.kt",
       "source_location": "L260",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "renderer_jvmpdfdocument_simplifyingpdfrenderer",
-      "target": "pdfrenderer",
-      "confidence_score": 1.0
+      "target": "pdfrenderer"
     },
     {
       "relation": "method",
@@ -10896,9 +13735,9 @@
       "source_file": "pdf-renderer/src/jvmMain/kotlin/com/lumina/pdf/renderer/JvmPdfDocument.kt",
       "source_location": "L264",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "renderer_jvmpdfdocument_simplifyingpdfrenderer",
-      "target": "renderer_jvmpdfdocument_simplifyingpdfrenderer_createpagedrawer",
-      "confidence_score": 1.0
+      "target": "renderer_jvmpdfdocument_simplifyingpdfrenderer_createpagedrawer"
     },
     {
       "relation": "calls",
@@ -10959,9 +13798,9 @@
       "source_file": "pdf-renderer/src/jvmMain/kotlin/com/lumina/pdf/renderer/RdpPathSimplifier.kt",
       "source_location": "L9",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "renderer_rdppathsimplifier",
-      "target": "renderer_rdppathsimplifier_rdppathsimplifier",
-      "confidence_score": 1.0
+      "target": "renderer_rdppathsimplifier_rdppathsimplifier"
     },
     {
       "relation": "method",
@@ -10969,9 +13808,9 @@
       "source_file": "pdf-renderer/src/jvmMain/kotlin/com/lumina/pdf/renderer/RdpPathSimplifier.kt",
       "source_location": "L34",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "renderer_rdppathsimplifier_rdppathsimplifier",
-      "target": "renderer_rdppathsimplifier_rdppathsimplifier_perpendiculardistance",
-      "confidence_score": 1.0
+      "target": "renderer_rdppathsimplifier_rdppathsimplifier_perpendiculardistance"
     },
     {
       "relation": "method",
@@ -10979,9 +13818,9 @@
       "source_file": "pdf-renderer/src/jvmMain/kotlin/com/lumina/pdf/renderer/RdpPathSimplifier.kt",
       "source_location": "L10",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "renderer_rdppathsimplifier_rdppathsimplifier",
-      "target": "renderer_rdppathsimplifier_rdppathsimplifier_simplify",
-      "confidence_score": 1.0
+      "target": "renderer_rdppathsimplifier_rdppathsimplifier_simplify"
     },
     {
       "relation": "method",
@@ -10989,9 +13828,9 @@
       "source_file": "pdf-renderer/src/jvmMain/kotlin/com/lumina/pdf/renderer/RdpPathSimplifier.kt",
       "source_location": "L46",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "renderer_rdppathsimplifier_rdppathsimplifier",
-      "target": "renderer_rdppathsimplifier_rdppathsimplifier_simplifypath",
-      "confidence_score": 1.0
+      "target": "renderer_rdppathsimplifier_rdppathsimplifier_simplifypath"
     },
     {
       "relation": "references",
@@ -11000,9 +13839,9 @@
       "source_location": "L10",
       "weight": 1.0,
       "context": "parameter_type",
+      "confidence_score": 1.0,
       "source": "renderer_rdppathsimplifier_rdppathsimplifier_simplify",
-      "target": "pdf_renderer_src_jvmmain_kotlin_com_lumina_pdf_renderer_rdppathsimplifier_kt_double",
-      "confidence_score": 1.0
+      "target": "pdf_renderer_src_jvmmain_kotlin_com_lumina_pdf_renderer_rdppathsimplifier_kt_double"
     },
     {
       "relation": "references",
@@ -11011,9 +13850,9 @@
       "source_location": "L10",
       "weight": 1.0,
       "context": "return_type",
+      "confidence_score": 1.0,
       "source": "renderer_rdppathsimplifier_rdppathsimplifier_simplify",
-      "target": "pdf_renderer_src_jvmmain_kotlin_com_lumina_pdf_renderer_rdppathsimplifier_kt_list",
-      "confidence_score": 1.0
+      "target": "pdf_renderer_src_jvmmain_kotlin_com_lumina_pdf_renderer_rdppathsimplifier_kt_list"
     },
     {
       "relation": "references",
@@ -11023,7 +13862,7 @@
       "weight": 1.0,
       "context": "generic_arg",
       "source": "renderer_rdppathsimplifier_rdppathsimplifier_simplify",
-      "target": "point2d",
+      "target": "pdf_renderer_src_jvmmain_kotlin_com_lumina_pdf_renderer_rdppathsimplifier_kt_point2d",
       "confidence_score": 1.0
     },
     {
@@ -11033,9 +13872,9 @@
       "source_file": "pdf-renderer/src/jvmMain/kotlin/com/lumina/pdf/renderer/RdpPathSimplifier.kt",
       "source_location": "L18",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "renderer_rdppathsimplifier_rdppathsimplifier_simplify",
-      "target": "renderer_rdppathsimplifier_rdppathsimplifier_perpendiculardistance",
-      "confidence_score": 1.0
+      "target": "renderer_rdppathsimplifier_rdppathsimplifier_perpendiculardistance"
     },
     {
       "relation": "references",
@@ -11045,7 +13884,7 @@
       "weight": 1.0,
       "context": "parameter_type",
       "source": "renderer_rdppathsimplifier_rdppathsimplifier_perpendiculardistance",
-      "target": "point2d",
+      "target": "pdf_renderer_src_jvmmain_kotlin_com_lumina_pdf_renderer_rdppathsimplifier_kt_point2d",
       "confidence_score": 1.0
     },
     {
@@ -11055,9 +13894,9 @@
       "source_location": "L34",
       "weight": 1.0,
       "context": "return_type",
+      "confidence_score": 1.0,
       "source": "renderer_rdppathsimplifier_rdppathsimplifier_perpendiculardistance",
-      "target": "pdf_renderer_src_jvmmain_kotlin_com_lumina_pdf_renderer_rdppathsimplifier_kt_double",
-      "confidence_score": 1.0
+      "target": "pdf_renderer_src_jvmmain_kotlin_com_lumina_pdf_renderer_rdppathsimplifier_kt_double"
     },
     {
       "relation": "references",
@@ -11066,9 +13905,9 @@
       "source_file": "pdf-renderer/src/jvmMain/kotlin/com/lumina/pdf/renderer/RdpPathSimplifier.kt",
       "source_location": "L46",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "renderer_rdppathsimplifier_rdppathsimplifier_simplifypath",
-      "target": "pdf_renderer_src_jvmmain_kotlin_com_lumina_pdf_renderer_rdppathsimplifier_kt_double",
-      "confidence_score": 1.0
+      "target": "pdf_renderer_src_jvmmain_kotlin_com_lumina_pdf_renderer_rdppathsimplifier_kt_double"
     },
     {
       "relation": "references",
@@ -11078,7 +13917,147 @@
       "source_location": "L46",
       "weight": 1.0,
       "source": "renderer_rdppathsimplifier_rdppathsimplifier_simplifypath",
-      "target": "generalpath",
+      "target": "pdf_renderer_src_jvmmain_kotlin_com_lumina_pdf_renderer_rdppathsimplifier_kt_generalpath",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-renderer/src/jvmMain/kotlin/com/lumina/pdf/renderer/SdfGenerator.kt",
+      "source_location": "L11",
+      "weight": 1.0,
+      "source": "renderer_sdfgenerator",
+      "target": "renderer_sdfgenerator_sdfgenerator",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-renderer/src/jvmMain/kotlin/com/lumina/pdf/renderer/SdfGenerator.kt",
+      "source_location": "L100",
+      "weight": 1.0,
+      "source": "renderer_sdfgenerator_sdfgenerator",
+      "target": "renderer_sdfgenerator_sdfgenerator_buildatlasforfont",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-renderer/src/jvmMain/kotlin/com/lumina/pdf/renderer/SdfGenerator.kt",
+      "source_location": "L13",
+      "weight": 1.0,
+      "source": "renderer_sdfgenerator_sdfgenerator",
+      "target": "renderer_sdfgenerator_sdfgenerator_generateglyph",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-renderer/src/jvmMain/kotlin/com/lumina/pdf/renderer/SdfGenerator.kt",
+      "source_location": "L103",
+      "weight": 1.0,
+      "source": "renderer_sdfgenerator_sdfgenerator_buildatlasforfont",
+      "target": "renderer_sdfgenerator_sdfgenerator_generateglyph",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "pdf-renderer/src/jvmMain/kotlin/com/lumina/pdf/renderer/SdfGenerator.kt",
+      "source_location": "L15",
+      "weight": 1.0,
+      "source": "renderer_sdfgenerator_sdfgenerator_generateglyph",
+      "target": "bufferedimage"
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-renderer/src/jvmMain/kotlin/com/lumina/pdf/renderer/SdfGenerator.kt",
+      "source_location": "L13",
+      "weight": 1.0,
+      "context": "parameter_type",
+      "source": "renderer_sdfgenerator_sdfgenerator_generateglyph",
+      "target": "font",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-renderer/src/jvmMain/kotlin/com/lumina/pdf/renderer/SdfGenerator.kt",
+      "source_location": "L13",
+      "weight": 1.0,
+      "context": "parameter_type",
+      "source": "renderer_sdfgenerator_sdfgenerator_generateglyph",
+      "target": "pdf_renderer_src_jvmmain_kotlin_com_lumina_pdf_renderer_sdfgenerator_kt_char",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-renderer/src/jvmMain/kotlin/com/lumina/pdf/renderer/SdfGenerator.kt",
+      "source_location": "L13",
+      "weight": 1.0,
+      "context": "parameter_type",
+      "source": "renderer_sdfgenerator_sdfgenerator_generateglyph",
+      "target": "pdf_renderer_src_jvmmain_kotlin_com_lumina_pdf_renderer_sdfgenerator_kt_int",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "context": "return_type",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-renderer/src/jvmMain/kotlin/com/lumina/pdf/renderer/SdfGenerator.kt",
+      "source_location": "L13",
+      "weight": 1.0,
+      "source": "renderer_sdfgenerator_sdfgenerator_generateglyph",
+      "target": "sdfglyph",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "shared/src/commonMain/kotlin/com/lumina/pdf/App.kt",
+      "source_location": "L78",
+      "weight": 1.0,
+      "source": "pdf_app_app",
+      "target": "font"
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-renderer/src/jvmMain/kotlin/com/lumina/pdf/renderer/SdfGenerator.kt",
+      "source_location": "L100",
+      "weight": 1.0,
+      "context": "parameter_type",
+      "source": "renderer_sdfgenerator_sdfgenerator_buildatlasforfont",
+      "target": "font",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "context": "return_type",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-renderer/src/jvmMain/kotlin/com/lumina/pdf/renderer/SdfGenerator.kt",
+      "source_location": "L100",
+      "weight": 1.0,
+      "source": "renderer_sdfgenerator_sdfgenerator_buildatlasforfont",
+      "target": "pdf_renderer_src_jvmmain_kotlin_com_lumina_pdf_renderer_sdfgenerator_kt_sdfglyphatlas",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-renderer/src/jvmMain/kotlin/com/lumina/pdf/renderer/SdfGenerator.kt",
+      "source_location": "L100",
+      "weight": 1.0,
+      "context": "parameter_type",
+      "source": "renderer_sdfgenerator_sdfgenerator_buildatlasforfont",
+      "target": "pdf_renderer_src_jvmmain_kotlin_com_lumina_pdf_renderer_sdfgenerator_kt_string",
       "confidence_score": 1.0
     },
     {
@@ -11087,9 +14066,9 @@
       "source_file": "pdf-renderer/src/jvmMain/kotlin/com/lumina/pdf/renderer/SimplifyingPageDrawer.kt",
       "source_location": "L7",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "renderer_simplifyingpagedrawer",
-      "target": "renderer_simplifyingpagedrawer_simplifyingpagedrawer",
-      "confidence_score": 1.0
+      "target": "renderer_simplifyingpagedrawer_simplifyingpagedrawer"
     },
     {
       "relation": "inherits",
@@ -11097,8 +14076,38 @@
       "source_file": "pdf-renderer/src/jvmMain/kotlin/com/lumina/pdf/renderer/SimplifyingPageDrawer.kt",
       "source_location": "L7",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "renderer_simplifyingpagedrawer_simplifyingpagedrawer",
-      "target": "pagedrawer",
+      "target": "pagedrawer"
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-renderer/src/jvmMain/kotlin/com/lumina/pdf/renderer/SimplifyingPageDrawer.kt",
+      "source_location": "L44",
+      "weight": 1.0,
+      "source": "renderer_simplifyingpagedrawer_simplifyingpagedrawer",
+      "target": "renderer_simplifyingpagedrawer_simplifyingpagedrawer_clippath",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-renderer/src/jvmMain/kotlin/com/lumina/pdf/renderer/SimplifyingPageDrawer.kt",
+      "source_location": "L169",
+      "weight": 1.0,
+      "source": "renderer_simplifyingpagedrawer_simplifyingpagedrawer",
+      "target": "renderer_simplifyingpagedrawer_simplifyingpagedrawer_createlevel",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-renderer/src/jvmMain/kotlin/com/lumina/pdf/renderer/SimplifyingPageDrawer.kt",
+      "source_location": "L106",
+      "weight": 1.0,
+      "source": "renderer_simplifyingpagedrawer_simplifyingpagedrawer",
+      "target": "renderer_simplifyingpagedrawer_simplifyingpagedrawer_drawimage",
       "confidence_score": 1.0
     },
     {
@@ -11107,8 +14116,28 @@
       "source_file": "pdf-renderer/src/jvmMain/kotlin/com/lumina/pdf/renderer/SimplifyingPageDrawer.kt",
       "source_location": "L22",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "renderer_simplifyingpagedrawer_simplifyingpagedrawer",
-      "target": "renderer_simplifyingpagedrawer_simplifyingpagedrawer_fillpath",
+      "target": "renderer_simplifyingpagedrawer_simplifyingpagedrawer_fillpath"
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-renderer/src/jvmMain/kotlin/com/lumina/pdf/renderer/SimplifyingPageDrawer.kt",
+      "source_location": "L143",
+      "weight": 1.0,
+      "source": "renderer_simplifyingpagedrawer_simplifyingpagedrawer",
+      "target": "renderer_simplifyingpagedrawer_simplifyingpagedrawer_generatepyramid",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-renderer/src/jvmMain/kotlin/com/lumina/pdf/renderer/SimplifyingPageDrawer.kt",
+      "source_location": "L189",
+      "weight": 1.0,
+      "source": "renderer_simplifyingpagedrawer_simplifyingpagedrawer",
+      "target": "renderer_simplifyingpagedrawer_simplifyingpagedrawer_showglyph",
       "confidence_score": 1.0
     },
     {
@@ -11117,8 +14146,19 @@
       "source_file": "pdf-renderer/src/jvmMain/kotlin/com/lumina/pdf/renderer/SimplifyingPageDrawer.kt",
       "source_location": "L12",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "renderer_simplifyingpagedrawer_simplifyingpagedrawer",
-      "target": "renderer_simplifyingpagedrawer_simplifyingpagedrawer_strokepath",
+      "target": "renderer_simplifyingpagedrawer_simplifyingpagedrawer_strokepath"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-renderer/src/jvmMain/kotlin/com/lumina/pdf/renderer/SimplifyingPageDrawer.kt",
+      "source_location": "L26",
+      "weight": 1.0,
+      "source": "renderer_simplifyingpagedrawer_simplifyingpagedrawer_strokepath",
+      "target": "renderer_simplifyingpagedrawer_simplifyingpagedrawer_clippath",
       "confidence_score": 1.0
     },
     {
@@ -11128,8 +14168,184 @@
       "source_location": "L22",
       "weight": 1.0,
       "context": "parameter_type",
+      "confidence_score": 1.0,
       "source": "renderer_simplifyingpagedrawer_simplifyingpagedrawer_fillpath",
+      "target": "pdf_renderer_src_jvmmain_kotlin_com_lumina_pdf_renderer_simplifyingpagedrawer_kt_int"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-renderer/src/jvmMain/kotlin/com/lumina/pdf/renderer/SimplifyingPageDrawer.kt",
+      "source_location": "L37",
+      "weight": 1.0,
+      "source": "renderer_simplifyingpagedrawer_simplifyingpagedrawer_fillpath",
+      "target": "renderer_simplifyingpagedrawer_simplifyingpagedrawer_clippath",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-renderer/src/jvmMain/kotlin/com/lumina/pdf/renderer/SimplifyingPageDrawer.kt",
+      "source_location": "L189",
+      "weight": 1.0,
+      "context": "parameter_type",
+      "source": "renderer_simplifyingpagedrawer_simplifyingpagedrawer_showglyph",
       "target": "pdf_renderer_src_jvmmain_kotlin_com_lumina_pdf_renderer_simplifyingpagedrawer_kt_int",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "context": "return_type",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-renderer/src/jvmMain/kotlin/com/lumina/pdf/renderer/SimplifyingPageDrawer.kt",
+      "source_location": "L44",
+      "weight": 1.0,
+      "source": "renderer_simplifyingpagedrawer_simplifyingpagedrawer_clippath",
+      "target": "pdf_renderer_src_jvmmain_kotlin_com_lumina_pdf_renderer_simplifyingpagedrawer_kt_generalpath",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-renderer/src/jvmMain/kotlin/com/lumina/pdf/renderer/SimplifyingPageDrawer.kt",
+      "source_location": "L125",
+      "weight": 1.0,
+      "source": "renderer_simplifyingpagedrawer_simplifyingpagedrawer_drawimage",
+      "target": "bufferedimage",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-renderer/src/jvmMain/kotlin/com/lumina/pdf/renderer/SimplifyingPageDrawer.kt",
+      "source_location": "L106",
+      "weight": 1.0,
+      "context": "parameter_type",
+      "source": "renderer_simplifyingpagedrawer_simplifyingpagedrawer_drawimage",
+      "target": "pdf_renderer_src_jvmmain_kotlin_com_lumina_pdf_renderer_simplifyingpagedrawer_kt_pdimage",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-renderer/src/jvmMain/kotlin/com/lumina/pdf/renderer/SimplifyingPageDrawer.kt",
+      "source_location": "L111",
+      "weight": 1.0,
+      "source": "renderer_simplifyingpagedrawer_simplifyingpagedrawer_drawimage",
+      "target": "renderer_simplifyingpagedrawer_simplifyingpagedrawer_generatepyramid",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-renderer/src/jvmMain/kotlin/com/lumina/pdf/renderer/SimplifyingPageDrawer.kt",
+      "source_location": "L247",
+      "weight": 1.0,
+      "source": "renderer_simplifyingpagedrawer_simplifyingpagedrawer_showglyph",
+      "target": "renderer_simplifyingpagedrawer_simplifyingpagedrawer_drawimage",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-renderer/src/jvmMain/kotlin/com/lumina/pdf/renderer/SimplifyingPageDrawer.kt",
+      "source_location": "L143",
+      "weight": 1.0,
+      "context": "parameter_type",
+      "source": "renderer_simplifyingpagedrawer_simplifyingpagedrawer_generatepyramid",
+      "target": "pdf_renderer_src_jvmmain_kotlin_com_lumina_pdf_renderer_simplifyingpagedrawer_kt_pdimage",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-renderer/src/jvmMain/kotlin/com/lumina/pdf/renderer/SimplifyingPageDrawer.kt",
+      "source_location": "L156",
+      "weight": 1.0,
+      "source": "renderer_simplifyingpagedrawer_simplifyingpagedrawer_generatepyramid",
+      "target": "bufferedimage",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "context": "return_type",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-renderer/src/jvmMain/kotlin/com/lumina/pdf/renderer/SimplifyingPageDrawer.kt",
+      "source_location": "L143",
+      "weight": 1.0,
+      "source": "renderer_simplifyingpagedrawer_simplifyingpagedrawer_generatepyramid",
+      "target": "imagepyramid",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-renderer/src/jvmMain/kotlin/com/lumina/pdf/renderer/SimplifyingPageDrawer.kt",
+      "source_location": "L149",
+      "weight": 1.0,
+      "source": "renderer_simplifyingpagedrawer_simplifyingpagedrawer_generatepyramid",
+      "target": "renderer_simplifyingpagedrawer_simplifyingpagedrawer_createlevel",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-renderer/src/jvmMain/kotlin/com/lumina/pdf/renderer/SimplifyingPageDrawer.kt",
+      "source_location": "L169",
+      "weight": 1.0,
+      "context": "parameter_type",
+      "source": "renderer_simplifyingpagedrawer_simplifyingpagedrawer_createlevel",
+      "target": "bufferedimage",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "context": "return_type",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-renderer/src/jvmMain/kotlin/com/lumina/pdf/renderer/SimplifyingPageDrawer.kt",
+      "source_location": "L169",
+      "weight": 1.0,
+      "source": "renderer_simplifyingpagedrawer_simplifyingpagedrawer_createlevel",
+      "target": "pyramidlevel",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-renderer/src/jvmMain/kotlin/com/lumina/pdf/renderer/SimplifyingPageDrawer.kt",
+      "source_location": "L216",
+      "weight": 1.0,
+      "source": "renderer_simplifyingpagedrawer_simplifyingpagedrawer_showglyph",
+      "target": "bufferedimage",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-renderer/src/jvmMain/kotlin/com/lumina/pdf/renderer/SimplifyingPageDrawer.kt",
+      "source_location": "L189",
+      "weight": 1.0,
+      "context": "parameter_type",
+      "source": "renderer_simplifyingpagedrawer_simplifyingpagedrawer_showglyph",
+      "target": "pdf_renderer_src_jvmmain_kotlin_com_lumina_pdf_renderer_simplifyingpagedrawer_kt_org",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "pdf-renderer/src/jvmMain/kotlin/com/lumina/pdf/renderer/SimplifyingPageDrawer.kt",
+      "source_location": "L189",
+      "weight": 1.0,
+      "context": "parameter_type",
+      "source": "renderer_simplifyingpagedrawer_simplifyingpagedrawer_showglyph",
+      "target": "pdf_renderer_src_jvmmain_kotlin_com_lumina_pdf_renderer_simplifyingpagedrawer_kt_string",
       "confidence_score": 1.0
     },
     {
@@ -15843,9 +19059,9 @@
       "source_location": "L78",
       "weight": 1.0,
       "context": "return_type",
+      "confidence_score": 1.0,
       "source": "db_pdfdatabase_wasmjs_jsdatenow",
-      "target": "pdf_viewer_src_wasmjsmain_kotlin_com_lumina_pdf_viewer_db_pdfdatabase_wasmjs_kt_double",
-      "confidence_score": 1.0
+      "target": "pdf_viewer_src_wasmjsmain_kotlin_com_lumina_pdf_viewer_db_pdfdatabase_wasmjs_kt_double"
     },
     {
       "relation": "references",
@@ -18584,9 +21800,9 @@
       "source_file": "perf_improvement.md",
       "source_location": "L233",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "perf_improvement_luminapdf_performance_improvements_phase_1",
-      "target": "perf_improvement_11_adaptive_rdp_vector_path_simplification_phase_5",
-      "confidence_score": 1.0
+      "target": "perf_improvement_11_adaptive_rdp_vector_path_simplification_phase_5"
     },
     {
       "relation": "contains",
@@ -18884,9 +22100,9 @@
       "source_file": "perf_improvement.md",
       "source_location": "L238",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "perf_improvement_11_adaptive_rdp_vector_path_simplification_phase_5",
-      "target": "perf_improvement_how_we_did_it_238",
-      "confidence_score": 1.0
+      "target": "perf_improvement_how_we_did_it_238"
     },
     {
       "relation": "contains",
@@ -18894,11 +22110,11 @@
       "source_file": "perf_improvement.md",
       "source_location": "L235",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "perf_improvement_11_adaptive_rdp_vector_path_simplification_phase_5",
-      "target": "perf_improvement_why_we_did_it_235",
-      "confidence_score": 1.0
+      "target": "perf_improvement_why_we_did_it_235"
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "40eb973e075b6cf96c012ece580dc5f177043678"
+  "built_at_commit": "2513803baeb1015c65aa0f401829215379e733b8"
 }

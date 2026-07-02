@@ -12,7 +12,8 @@ interface PdfDocument {
     suspend fun renderTile(
         page: Int,
         region: PdfRect,
-        scale: Float
+        scale: Float,
+        displayWidth: Int = 0
     ): PdfBitmap
 
     suspend fun extractText(
@@ -30,5 +31,8 @@ interface PdfDocument {
 
     suspend fun getOutline(): List<OutlineItem>
 
+    suspend fun getPageElementBounds(page: Int): List<PdfRect>
+
     fun close()
 }
+

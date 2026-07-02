@@ -121,6 +121,7 @@ fun PdfViewer(
     val thumbnails = remember { mutableStateMapOf<Int, ImageBitmap>() }
     val activeTiles = remember { mutableStateMapOf<TileKey, ImageBitmap>() }
     var searchCorpus by remember(document) { mutableStateOf<SearchCorpus?>(null) }
+    val pageQuadtrees = remember(document) { mutableStateMapOf<Int, PageQuadtree>() }
 
     val focusRequester = remember { FocusRequester() }
     val density = LocalDensity.current
@@ -218,7 +219,7 @@ fun PdfViewer(
     var isDraggingStartHandle by remember { mutableStateOf(false) }
     var isDraggingEndHandle by remember { mutableStateOf(false) }
 
-    // Load character boxes and build spatial indices for visible pages
+    // Load character boxes, build spatial indices and quadtrees for visible pages
     LaunchedEffect(state.visiblePages, document) {
         for (page in state.visiblePages) {
             if (!pageCharacterBoxes.containsKey(page)) {
@@ -233,6 +234,20 @@ fun PdfViewer(
                         }
                     } catch (e: Exception) {
                         Logger.e(e) { "Failed to extract character boxes for page $page" }
+                    }
+                }
+            }
+            if (!pageQuadtrees.containsKey(page)) {
+                coroutineScope.launch(Dispatchers.Default) {
+                    try {
+                        val bounds = document.getPageElementBounds(page)
+                        if (bounds.isNotEmpty()) {
+                            val qt = PageQuadtree(QuadtreeBounds(0f, 0f, 1f, 1f))
+                            bounds.forEach { qt.insert(it) }
+                            pageQuadtrees[page] = qt
+                        }
+                    } catch (e: Exception) {
+                        Logger.e(e) { "Failed to build quadtree for page $page" }
                     }
                 }
             }
@@ -855,26 +870,43 @@ fun PdfViewer(
 
                 for ((row, col) in tilesToRequest) {
                     val key = TileKey(page, row, col, zoomLevelInt)
-                    requestedKeys.add(key)
                     
-                    val cacheKey = "tile_${page}_${row}_${col}_$zoomLevelInt"
-                    if (!activeTiles.containsKey(key)) {
-                        val cachedTile = tileCache.get(cacheKey)
-                        if (cachedTile != null) {
-                            activeTiles[key] = cachedTile.asImageBitmap()
-                        } else {
-                            val tileRect = PdfRect(
-                                left = (col * tileSize).toFloat() / bucketZoom,
-                                top = (row * tileSize).toFloat() / bucketZoom,
-                                right = ((col + 1) * tileSize).toFloat() / bucketZoom,
-                                bottom = ((row + 1) * tileSize).toFloat() / bucketZoom
-                            )
-                            renderQueue.submit(RenderRequest.Tile(page, tileRect, bucketZoom) { bitmap ->
-                                bitmap?.let {
-                                    tileCache.put(cacheKey, it)
-                                    activeTiles[key] = it.asImageBitmap()
-                                }
-                            })
+                    val tileBounds = QuadtreeBounds(
+                        left = (col * tileSize).toFloat() / (viewSize.width * bucketZoom),
+                        top = (row * tileSize).toFloat() / (estimatedPageHeight * bucketZoom),
+                        right = ((col + 1) * tileSize).toFloat() / (viewSize.width * bucketZoom),
+                        bottom = ((row + 1) * tileSize).toFloat() / (estimatedPageHeight * bucketZoom)
+                    )
+                    
+                    val qt = pageQuadtrees[page]
+                    val shouldRender = if (qt != null) {
+                        qt.query(tileBounds).isNotEmpty()
+                    } else {
+                        true
+                    }
+
+                    if (shouldRender) {
+                        requestedKeys.add(key)
+                        
+                        val cacheKey = "tile_${page}_${row}_${col}_$zoomLevelInt"
+                        if (!activeTiles.containsKey(key)) {
+                            val cachedTile = tileCache.get(cacheKey)
+                            if (cachedTile != null) {
+                                activeTiles[key] = cachedTile.asImageBitmap()
+                            } else {
+                                val tileRect = PdfRect(
+                                    left = (col * tileSize).toFloat() / bucketZoom,
+                                    top = (row * tileSize).toFloat() / bucketZoom,
+                                    right = ((col + 1) * tileSize).toFloat() / bucketZoom,
+                                    bottom = ((row + 1) * tileSize).toFloat() / bucketZoom
+                                )
+                                renderQueue.submit(RenderRequest.Tile(page, tileRect, bucketZoom) { bitmap ->
+                                    bitmap?.let {
+                                        tileCache.put(cacheKey, it)
+                                        activeTiles[key] = it.asImageBitmap()
+                                    }
+                                })
+                            }
                         }
                     }
                 }

@@ -45,7 +45,7 @@ class AndroidPdfDocument(
         }
     }
 
-    override suspend fun renderTile(page: Int, region: PdfRect, scale: Float): PdfBitmap = withContext(Dispatchers.IO) {
+    override suspend fun renderTile(page: Int, region: PdfRect, scale: Float, displayWidth: Int): PdfBitmap = withContext(Dispatchers.IO) {
         renderMutex.withLock {
             val pdfPage = renderer.openPage(page)
             val destWidth = (pdfPage.width * scale).toInt()
@@ -86,6 +86,10 @@ class AndroidPdfDocument(
     }
 
     override suspend fun getOutline(): List<OutlineItem> {
+        return emptyList()
+    }
+
+    override suspend fun getPageElementBounds(page: Int): List<PdfRect> {
         return emptyList()
     }
 

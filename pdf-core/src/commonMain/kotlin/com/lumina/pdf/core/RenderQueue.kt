@@ -18,7 +18,7 @@ enum class RenderPriority {
 
 sealed class RenderRequest(val priority: RenderPriority) {
     data class Page(val pageIndex: Int, val width: Int, val height: Int, val onRendered: suspend (PdfBitmap?) -> Unit) : RenderRequest(RenderPriority.VISIBLE_PAGE)
-    data class Tile(val pageIndex: Int, val region: PdfRect, val scale: Float, val onRendered: suspend (PdfBitmap?) -> Unit) : RenderRequest(RenderPriority.VISIBLE_TILE)
+    data class Tile(val pageIndex: Int, val region: PdfRect, val scale: Float, val displayWidth: Int = 0, val onRendered: suspend (PdfBitmap?) -> Unit) : RenderRequest(RenderPriority.VISIBLE_TILE)
     data class Thumbnail(
         val pageIndex: Int, 
         val width: Int, 
@@ -65,7 +65,7 @@ class RenderQueue(
                                     request.onRendered(bitmap)
                                 }
                                 is RenderRequest.Tile -> {
-                                    val bitmap = document.renderTile(request.pageIndex, request.region, request.scale)
+                                    val bitmap = document.renderTile(request.pageIndex, request.region, request.scale, request.displayWidth)
                                     request.onRendered(bitmap)
                                 }
                                 is RenderRequest.Thumbnail -> {

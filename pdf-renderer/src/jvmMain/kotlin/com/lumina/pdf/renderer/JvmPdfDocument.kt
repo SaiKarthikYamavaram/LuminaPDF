@@ -5,6 +5,7 @@ import com.lumina.pdf.core.OutlineItem
 import com.lumina.pdf.core.PdfBitmap
 import com.lumina.pdf.core.PdfDocument
 import com.lumina.pdf.core.PdfRect
+import com.lumina.pdf.core.SdfGlyphAtlas
 import org.apache.pdfbox.pdmodel.PDDocument
 import org.apache.pdfbox.rendering.PDFRenderer
 import org.apache.pdfbox.text.PDFTextStripper
@@ -15,6 +16,11 @@ import kotlinx.coroutines.withContext
 
 class JvmPdfDocument(private val document: PDDocument) : PdfDocument {
     private val renderMutex = Mutex()
+    private val pageElementBoundsCache = LinkedHashMap<Int, List<PdfRect>>()
+    
+    val sdfAtlas: SdfGlyphAtlas by lazy {
+        SdfGenerator.buildAtlasForFont(java.awt.Font("Serif", java.awt.Font.PLAIN, 48))
+    }
 
     override suspend fun pageCount(): Int = renderMutex.withLock {
         document.numberOfPages
@@ -26,7 +32,7 @@ class JvmPdfDocument(private val document: PDDocument) : PdfDocument {
             val cropBox = pdPage.cropBox
             val scale = width.toFloat() / cropBox.width
             val epsilon = (2.0f / scale).toDouble().coerceIn(0.3, 8.0)
-            val customRenderer = SimplifyingPDFRenderer(document, epsilon)
+            val customRenderer = SimplifyingPDFRenderer(document, epsilon, sdfAtlas)
             val image = customRenderer.renderImage(page, scale)
             JvmPdfBitmap(image)
         }
@@ -38,7 +44,7 @@ class JvmPdfDocument(private val document: PDDocument) : PdfDocument {
         }
     }
 
-    override suspend fun renderTile(page: Int, region: PdfRect, scale: Float): PdfBitmap = withContext(Dispatchers.IO) {
+    override suspend fun renderTile(page: Int, region: PdfRect, scale: Float, displayWidth: Int): PdfBitmap = withContext(Dispatchers.IO) {
         val cacheKey = Pair(page, scale)
         val fullImage = synchronized(pageRenderCache) {
             pageRenderCache[cacheKey]?.get()
@@ -47,7 +53,7 @@ class JvmPdfDocument(private val document: PDDocument) : PdfDocument {
                 pageRenderCache[cacheKey]?.get()
             } ?: run {
                 val epsilon = (2.0f / scale).toDouble().coerceIn(0.3, 8.0)
-                val customRenderer = SimplifyingPDFRenderer(document, epsilon)
+                val customRenderer = SimplifyingPDFRenderer(document, epsilon, sdfAtlas)
                 val rendered = customRenderer.renderImage(page, scale)
                 synchronized(pageRenderCache) {
                     pageRenderCache[cacheKey] = java.lang.ref.SoftReference(rendered)
@@ -177,6 +183,29 @@ class JvmPdfDocument(private val document: PDDocument) : PdfDocument {
         return null
     }
 
+    override suspend fun getPageElementBounds(page: Int): List<PdfRect> = withContext(Dispatchers.IO) {
+        synchronized(pageElementBoundsCache) {
+            pageElementBoundsCache[page]
+        } ?: renderMutex.withLock {
+            synchronized(pageElementBoundsCache) {
+                pageElementBoundsCache[page]
+            } ?: run {
+                val pdPage = document.getPage(page)
+                val extractor = ElementBoundsExtractor(pdPage)
+                try {
+                    extractor.processPage(pdPage)
+                } catch (e: Exception) {
+                    // Ignore parsing/extracting errors on single pages
+                }
+                val bounds = extractor.getBounds()
+                synchronized(pageElementBoundsCache) {
+                    pageElementBoundsCache[page] = bounds
+                }
+                bounds
+            }
+        }
+    }
+
     override fun close() {
         document.close()
     }
@@ -259,10 +288,11 @@ class PDFCharacterBoxExtractor(
 
 class SimplifyingPDFRenderer(
     document: PDDocument,
-    private val epsilon: Double
+    private val epsilon: Double,
+    private val sdfAtlas: SdfGlyphAtlas
 ) : PDFRenderer(document) {
     override fun createPageDrawer(parameters: org.apache.pdfbox.rendering.PageDrawerParameters): org.apache.pdfbox.rendering.PageDrawer {
-        return SimplifyingPageDrawer(parameters, epsilon)
+        return SimplifyingPageDrawer(parameters, epsilon, sdfAtlas)
     }
 }
 

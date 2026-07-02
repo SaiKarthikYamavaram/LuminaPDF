@@ -85,8 +85,8 @@
     "semantic_hash": ""
   },
   "pdf-core/src/commonMain/kotlin/com/lumina/pdf/core/PdfDocument.kt": {
-    "mtime": 1782891693.9550173,
-    "ast_hash": "3b8ae52bc60d8c76cb649fba065f30c8",
+    "mtime": 1782965971.5038908,
+    "ast_hash": "bd785faf6de503a8674d7504769dc75d",
     "semantic_hash": ""
   },
   "pdf-core/src/commonMain/kotlin/com/lumina/pdf/core/PdfRect.kt": {
@@ -95,8 +95,8 @@
     "semantic_hash": "62fd14a633447b6f3db63dead230b9b2"
   },
   "pdf-core/src/commonMain/kotlin/com/lumina/pdf/core/RenderQueue.kt": {
-    "mtime": 1782829078.7188582,
-    "ast_hash": "bdbfc481bc66a72fe061f1641ba9d882",
+    "mtime": 1782965979.41089,
+    "ast_hash": "22c73c59c4207a9b86114219223fc83f",
     "semantic_hash": ""
   },
   "pdf-renderer/build.gradle.kts": {
@@ -110,8 +110,8 @@
     "semantic_hash": "4c61ceeded47ab50f99ed505fca92f3a"
   },
   "pdf-renderer/src/androidMain/kotlin/com/lumina/pdf/renderer/AndroidPdfDocument.kt": {
-    "mtime": 1782891718.8940153,
-    "ast_hash": "8ce5c12511e5bbaad2f6047c40220f54",
+    "mtime": 1782965987.4718893,
+    "ast_hash": "f75f92935e5004c50167e9ef135a6ab6",
     "semantic_hash": ""
   },
   "pdf-renderer/src/androidMain/kotlin/com/lumina/pdf/renderer/PdfDocumentFactory.android.kt": {
@@ -140,8 +140,8 @@
     "semantic_hash": "064d6ceb88c45a8ae02d3ede646e78fe"
   },
   "pdf-renderer/src/jvmMain/kotlin/com/lumina/pdf/renderer/JvmPdfDocument.kt": {
-    "mtime": 1782892013.54399,
-    "ast_hash": "c94681a3fccd082f8618bbc5b6bba9d7",
+    "mtime": 1782966263.3968656,
+    "ast_hash": "674df396f2b5d7e68b6b72d796d4dd11",
     "semantic_hash": ""
   },
   "pdf-renderer/src/jvmMain/kotlin/com/lumina/pdf/renderer/PdfDocumentFactory.jvm.kt": {
@@ -175,8 +175,8 @@
     "semantic_hash": ""
   },
   "pdf-viewer/src/commonMain/kotlin/com/lumina/pdf/viewer/PdfViewer.kt": {
-    "mtime": 1782891769.3510108,
-    "ast_hash": "62b3dbee57c11ee0784d87592b234166",
+    "mtime": 1782965825.1719034,
+    "ast_hash": "795795b79b6ab989ee5088214f3ab2d8",
     "semantic_hash": ""
   },
   "pdf-viewer/src/commonMain/kotlin/com/lumina/pdf/viewer/PdfViewerConfig.kt": {
@@ -520,8 +520,43 @@
     "semantic_hash": ""
   },
   "pdf-renderer/src/jvmMain/kotlin/com/lumina/pdf/renderer/SimplifyingPageDrawer.kt": {
-    "mtime": 1782891994.8629916,
-    "ast_hash": "fc35e2b6caf11d42ba93dee72cb556f3",
+    "mtime": 1782966287.8368635,
+    "ast_hash": "42a060045936791cde6c3ea1502a20e4",
+    "semantic_hash": ""
+  },
+  "pdf-core/src/commonMain/kotlin/com/lumina/pdf/core/ImagePyramid.kt": {
+    "mtime": 1782965960.5098917,
+    "ast_hash": "a3e0bb4695dfaccacc8e5933090d6750",
+    "semantic_hash": ""
+  },
+  "pdf-core/src/commonMain/kotlin/com/lumina/pdf/core/Quadtree.kt": {
+    "mtime": 1782906559.184802,
+    "ast_hash": "7375691d370851bae43c3826e1bc2da9",
+    "semantic_hash": ""
+  },
+  "pdf-core/src/commonMain/kotlin/com/lumina/pdf/core/SdfGlyphAtlas.kt": {
+    "mtime": 1782966173.7968733,
+    "ast_hash": "6eb7666533028d80e1ade35b31f586f1",
+    "semantic_hash": ""
+  },
+  "pdf-core/src/commonMain/kotlin/com/lumina/pdf/core/SutherlandHodgman.kt": {
+    "mtime": 1782966041.7728846,
+    "ast_hash": "64928cdc4a0531b48c5db6c95f2d1f4c",
+    "semantic_hash": ""
+  },
+  "pdf-core/src/commonTest/kotlin/com/lumina/pdf/core/SutherlandHodgmanTest.kt": {
+    "mtime": 1782966063.7718828,
+    "ast_hash": "fc4343d4bce98035343fcfabe2a910a5",
+    "semantic_hash": ""
+  },
+  "pdf-renderer/src/jvmMain/kotlin/com/lumina/pdf/renderer/ElementBoundsExtractor.kt": {
+    "mtime": 1782906586.6424706,
+    "ast_hash": "6cff76f42f2ff78a692ec8df3d2d0b08",
+    "semantic_hash": ""
+  },
+  "pdf-renderer/src/jvmMain/kotlin/com/lumina/pdf/renderer/SdfGenerator.kt": {
+    "mtime": 1782966181.2768726,
+    "ast_hash": "ea931e74faa7f729c584217d39ca7af1",
     "semantic_hash": ""
   }
 }
