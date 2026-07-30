@@ -1,76 +1,131 @@
 package com.lumina.pdf.renderer
 
+import com.lumina.pdf.core.CharacterBox
 import com.lumina.pdf.core.OutlineItem
 import com.lumina.pdf.core.PdfBitmap
 import com.lumina.pdf.core.PdfDocument
 import com.lumina.pdf.core.PdfRect
+import com.lumina.pdf.core.SdfGlyphAtlas
 import org.apache.pdfbox.pdmodel.PDDocument
 import org.apache.pdfbox.rendering.PDFRenderer
 import org.apache.pdfbox.text.PDFTextStripper
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
 import kotlinx.coroutines.withContext
 
 class JvmPdfDocument(private val document: PDDocument) : PdfDocument {
-    private val renderer = PDFRenderer(document)
-
-    override suspend fun pageCount(): Int = document.numberOfPages
-
-    override suspend fun renderPage(page: Int, width: Int, height: Int): PdfBitmap = withContext(Dispatchers.IO) {
-        val pdPage = document.getPage(page)
-        val cropBox = pdPage.cropBox
-        val scale = width.toFloat() / cropBox.width
-        val image = renderer.renderImage(page, scale)
-        JvmPdfBitmap(image)
+    private val renderMutex = Mutex()
+    private val pageElementBoundsCache = LinkedHashMap<Int, List<PdfRect>>()
+    
+    val sdfAtlas: SdfGlyphAtlas by lazy {
+        SdfGenerator.buildAtlasForFont(java.awt.Font("Serif", java.awt.Font.PLAIN, 48))
     }
 
-    override suspend fun renderTile(page: Int, region: PdfRect, scale: Float): PdfBitmap = withContext(Dispatchers.IO) {
-        // Basic implementation for MVP, PDFBox rendering might need more specific tile rendering
-        // For now, render full and crop (not efficient, but works for Phase 1 MVP)
-        // Advanced tile rendering is Phase 2.
-        val image = renderer.renderImage(page, scale)
-        val subImage = image.getSubimage(
-            region.left.toInt().coerceAtLeast(0),
-            region.top.toInt().coerceAtLeast(0),
-            region.width.toInt().coerceAtMost(image.width - region.left.toInt()),
-            region.height.toInt().coerceAtMost(image.height - region.top.toInt())
-        )
+    override suspend fun pageCount(): Int = renderMutex.withLock {
+        document.numberOfPages
+    }
+
+    override suspend fun renderPage(page: Int, width: Int, height: Int): PdfBitmap = withContext(Dispatchers.IO) {
+        renderMutex.withLock {
+            val pdPage = document.getPage(page)
+            val cropBox = pdPage.cropBox
+            val scale = width.toFloat() / cropBox.width
+            val epsilon = (2.0f / scale).toDouble().coerceIn(0.3, 8.0)
+            val customRenderer = SimplifyingPDFRenderer(document, epsilon, sdfAtlas)
+            val image = customRenderer.renderImage(page, scale)
+            JvmPdfBitmap(image)
+        }
+    }
+
+    private val pageRenderCache = object : LinkedHashMap<Pair<Int, Float>, java.lang.ref.SoftReference<java.awt.image.BufferedImage>>(4, 0.75f, true) {
+        override fun removeEldestEntry(eldest: Map.Entry<Pair<Int, Float>, java.lang.ref.SoftReference<java.awt.image.BufferedImage>>): Boolean {
+            return size > 3
+        }
+    }
+
+    override suspend fun renderTile(page: Int, region: PdfRect, scale: Float, displayWidth: Int): PdfBitmap = withContext(Dispatchers.IO) {
+        val cacheKey = Pair(page, scale)
+        val fullImage = synchronized(pageRenderCache) {
+            pageRenderCache[cacheKey]?.get()
+        } ?: renderMutex.withLock {
+            synchronized(pageRenderCache) {
+                pageRenderCache[cacheKey]?.get()
+            } ?: run {
+                val epsilon = (2.0f / scale).toDouble().coerceIn(0.3, 8.0)
+                val customRenderer = SimplifyingPDFRenderer(document, epsilon, sdfAtlas)
+                val rendered = customRenderer.renderImage(page, scale)
+                synchronized(pageRenderCache) {
+                    pageRenderCache[cacheKey] = java.lang.ref.SoftReference(rendered)
+                }
+                rendered
+            }
+        }
+
+        val x = region.left.toInt().coerceAtLeast(0)
+        val y = region.top.toInt().coerceAtLeast(0)
+        val w = region.width.toInt().coerceAtMost(fullImage.width - x).coerceAtLeast(1)
+        val h = region.height.toInt().coerceAtMost(fullImage.height - y).coerceAtLeast(1)
+        
+        val subImage = fullImage.getSubimage(x, y, w, h)
         JvmPdfBitmap(subImage)
     }
 
     override suspend fun extractText(page: Int): String = withContext(Dispatchers.IO) {
-        val stripper = PDFTextStripper()
-        stripper.startPage = page + 1
-        stripper.endPage = page + 1
-        stripper.getText(document)
+        renderMutex.withLock {
+            val stripper = PDFTextStripper()
+            stripper.startPage = page + 1
+            stripper.endPage = page + 1
+            stripper.getText(document)
+        }
     }
 
     override suspend fun searchText(page: Int, query: String): List<PdfRect> = withContext(Dispatchers.IO) {
         if (query.isEmpty()) return@withContext emptyList()
-        val pdPage = document.getPage(page)
-        val cropBox = pdPage.cropBox
-        val pageWidth = cropBox.width
-        val pageHeight = cropBox.height
-        
-        val locator = PDFTextLocator(query)
-        locator.startPage = page + 1
-        locator.endPage = page + 1
-        locator.getText(document)
-        locator.findMatches(pageWidth, pageHeight)
-        locator.matches
+        renderMutex.withLock {
+            val pdPage = document.getPage(page)
+            val cropBox = pdPage.cropBox
+            val pageWidth = cropBox.width
+            val pageHeight = cropBox.height
+            
+            val locator = PDFTextLocator(query)
+            locator.startPage = page + 1
+            locator.endPage = page + 1
+            locator.getText(document)
+            locator.findMatches(pageWidth, pageHeight)
+            locator.matches
+        }
+    }
+
+    override suspend fun extractCharacterBoxes(page: Int): List<CharacterBox> = withContext(Dispatchers.IO) {
+        renderMutex.withLock {
+            val pdPage = document.getPage(page)
+            val cropBox = pdPage.cropBox
+            val pageWidth = cropBox.width
+            val pageHeight = cropBox.height
+            
+            val extractor = PDFCharacterBoxExtractor(page)
+            extractor.startPage = page + 1
+            extractor.endPage = page + 1
+            extractor.getText(document)
+            extractor.getBoxes(pageWidth, pageHeight)
+        }
     }
 
     override suspend fun getOutline(): List<OutlineItem> = withContext(Dispatchers.IO) {
-        val outline = document.documentCatalog.documentOutline ?: return@withContext emptyList()
-        val result = mutableListOf<OutlineItem>()
-        var current = outline.firstChild
-        while (current != null) {
-            val mapped = mapOutlineItem(current)
-            if (mapped != null) {
-                result.add(mapped)
+        renderMutex.withLock {
+            val outline = document.documentCatalog.documentOutline ?: return@withLock emptyList()
+            val result = mutableListOf<OutlineItem>()
+            var current = outline.firstChild
+            while (current != null) {
+                val mapped = mapOutlineItem(current)
+                if (mapped != null) {
+                    result.add(mapped)
+                }
+                current = current.nextSibling
             }
-            current = current.nextSibling
+            result
         }
-        result
     }
 
     private fun mapOutlineItem(item: org.apache.pdfbox.pdmodel.interactive.documentnavigation.outline.PDOutlineItem): OutlineItem? {
@@ -128,6 +183,29 @@ class JvmPdfDocument(private val document: PDDocument) : PdfDocument {
         return null
     }
 
+    override suspend fun getPageElementBounds(page: Int): List<PdfRect> = withContext(Dispatchers.IO) {
+        synchronized(pageElementBoundsCache) {
+            pageElementBoundsCache[page]
+        } ?: renderMutex.withLock {
+            synchronized(pageElementBoundsCache) {
+                pageElementBoundsCache[page]
+            } ?: run {
+                val pdPage = document.getPage(page)
+                val extractor = ElementBoundsExtractor(pdPage)
+                try {
+                    extractor.processPage(pdPage)
+                } catch (e: Exception) {
+                    // Ignore parsing/extracting errors on single pages
+                }
+                val bounds = extractor.getBounds()
+                synchronized(pageElementBoundsCache) {
+                    pageElementBoundsCache[page] = bounds
+                }
+                bounds
+            }
+        }
+    }
+
     override fun close() {
         document.close()
     }
@@ -173,3 +251,48 @@ class PDFTextLocator(
         }
     }
 }
+
+class PDFCharacterBoxExtractor(
+    private val pageIndex: Int
+) : PDFTextStripper() {
+    private val characters = mutableListOf<org.apache.pdfbox.text.TextPosition>()
+
+    init {
+        sortByPosition = true
+    }
+
+    override fun writeString(text: String?, textPositions: MutableList<org.apache.pdfbox.text.TextPosition>?) {
+        if (textPositions != null) {
+            characters.addAll(textPositions)
+        }
+    }
+
+    fun getBoxes(pageWidth: Float, pageHeight: Float): List<CharacterBox> {
+        return characters.map { tp ->
+            val left = tp.xDirAdj / pageWidth
+            val right = (tp.xDirAdj + tp.widthDirAdj) / pageWidth
+            val top = (tp.yDirAdj - tp.heightDir) / pageHeight
+            val bottom = tp.yDirAdj / pageHeight
+            val char = if (tp.unicode.isNotEmpty()) tp.unicode[0] else ' '
+            CharacterBox(
+                char = char,
+                pageIndex = pageIndex,
+                left = left.coerceIn(0f, 1f),
+                top = top.coerceIn(0f, 1f),
+                right = right.coerceIn(0f, 1f),
+                bottom = bottom.coerceIn(0f, 1f)
+            )
+        }
+    }
+}
+
+class SimplifyingPDFRenderer(
+    document: PDDocument,
+    private val epsilon: Double,
+    private val sdfAtlas: SdfGlyphAtlas
+) : PDFRenderer(document) {
+    override fun createPageDrawer(parameters: org.apache.pdfbox.rendering.PageDrawerParameters): org.apache.pdfbox.rendering.PageDrawer {
+        return SimplifyingPageDrawer(parameters, epsilon, sdfAtlas)
+    }
+}
+

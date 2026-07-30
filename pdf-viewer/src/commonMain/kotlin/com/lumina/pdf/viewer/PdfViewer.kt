@@ -43,6 +43,9 @@ import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import com.lumina.pdf.core.*
 import com.lumina.pdf.viewer.db.*
+import androidx.compose.ui.platform.LocalClipboardManager
+import androidx.compose.ui.text.AnnotatedString
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import co.touchlab.kermit.Logger
 import kotlin.math.cos
@@ -107,13 +110,18 @@ fun PdfViewer(
     var viewSize by remember { mutableStateOf(IntSize.Zero) }
     var pageCount by remember { mutableStateOf(0) }
     
-    // Memory cache and render queue
-    val cache = remember(document) { LruMemoryCache(maxSize = 100) } // Max 100 bitmaps (thumbnails/tiles)
+    // Unified memory cache and render queue
+    val memoryCache = remember(document) { UnifiedLruCache(maxBytes = 112L * 1024 * 1024) } // Unified 112 MB budget
+    val thumbCache = memoryCache
+    val tileCache = memoryCache
+    val diskCache = rememberDiskCache()
     val renderQueue = remember(document) { RenderQueue(document, coroutineScope) }
 
     // State maps for current UI
     val thumbnails = remember { mutableStateMapOf<Int, ImageBitmap>() }
     val activeTiles = remember { mutableStateMapOf<TileKey, ImageBitmap>() }
+    var searchCorpus by remember(document) { mutableStateOf<SearchCorpus?>(null) }
+    val pageQuadtrees = remember(document) { mutableStateMapOf<Int, PageQuadtree>() }
 
     val focusRequester = remember { FocusRequester() }
     val density = LocalDensity.current
@@ -203,6 +211,133 @@ fun PdfViewer(
     val searchMatches = remember { mutableStateMapOf<Int, List<PdfRect>>() }
     var currentMatchIndex by remember { mutableStateOf(-1) }
 
+    // Selection states
+    val pageCharacterBoxes = remember { mutableStateMapOf<Int, List<CharacterBox>>() }
+    val pageSpatialIndices = remember { mutableStateMapOf<Int, StripSpatialIndex>() }
+    var selectionStart by remember { mutableStateOf<CharacterBox?>(null) }
+    var selectionEnd by remember { mutableStateOf<CharacterBox?>(null) }
+    var isDraggingStartHandle by remember { mutableStateOf(false) }
+    var isDraggingEndHandle by remember { mutableStateOf(false) }
+
+    // Load character boxes, build spatial indices and quadtrees for visible pages
+    LaunchedEffect(state.visiblePages, document) {
+        for (page in state.visiblePages) {
+            if (!pageCharacterBoxes.containsKey(page)) {
+                coroutineScope.launch(Dispatchers.Default) {
+                    try {
+                        val boxes = document.extractCharacterBoxes(page)
+                        if (boxes.isNotEmpty()) {
+                            pageCharacterBoxes[page] = boxes
+                            val index = StripSpatialIndex()
+                            index.build(boxes)
+                            pageSpatialIndices[page] = index
+                        }
+                    } catch (e: Exception) {
+                        Logger.e(e) { "Failed to extract character boxes for page $page" }
+                    }
+                }
+            }
+            if (!pageQuadtrees.containsKey(page)) {
+                coroutineScope.launch(Dispatchers.Default) {
+                    try {
+                        val bounds = document.getPageElementBounds(page)
+                        if (bounds.isNotEmpty()) {
+                            val qt = PageQuadtree(QuadtreeBounds(0f, 0f, 1f, 1f))
+                            bounds.forEach { qt.insert(it) }
+                            pageQuadtrees[page] = qt
+                        }
+                    } catch (e: Exception) {
+                        Logger.e(e) { "Failed to build quadtree for page $page" }
+                    }
+                }
+            }
+        }
+    }
+
+    fun findCharOffset(canvasOffset: Offset): Pair<Int, Offset>? {
+        if (viewSize.width == 0 || viewSize.height == 0) return null
+        val estimatedPageHeight = viewSize.width.toFloat() * 1.4f
+        for (page in 0 until pageCount) {
+            val pageTop = state.scrollOffset.y + page * (estimatedPageHeight + spacingPx) * state.zoom
+            val pageBottom = pageTop + estimatedPageHeight * state.zoom
+            val pageLeft = state.scrollOffset.x
+            val pageRight = pageLeft + viewSize.width.toFloat() * state.zoom
+            
+            if (canvasOffset.y in pageTop..pageBottom && canvasOffset.x in pageLeft..pageRight) {
+                val normalizedX = (canvasOffset.x - pageLeft) / (viewSize.width.toFloat() * state.zoom)
+                val normalizedY = (canvasOffset.y - pageTop) / (estimatedPageHeight * state.zoom)
+                return Pair(page, Offset(normalizedX, normalizedY))
+            }
+        }
+        return null
+    }
+
+    fun getCharacterScreenPosition(charBox: CharacterBox, isStart: Boolean): Offset {
+        val estimatedPageHeight = viewSize.width.toFloat() * 1.4f
+        val pageTop = state.scrollOffset.y + charBox.pageIndex * (estimatedPageHeight + spacingPx) * state.zoom
+        val x = if (isStart) charBox.left else charBox.right
+        val charX = state.scrollOffset.x + x * (viewSize.width.toFloat() * state.zoom)
+        val charY = pageTop + charBox.bottom * (estimatedPageHeight * state.zoom)
+        return Offset(charX, charY)
+    }
+
+    val selectedBoxes by remember {
+        derivedStateOf {
+            val start = selectionStart
+            val end = selectionEnd
+            if (start == null || end == null) return@derivedStateOf emptyList<CharacterBox>()
+            
+            val startPage = start.pageIndex
+            val endPage = end.pageIndex
+            val minPage = minOf(startPage, endPage)
+            val maxPage = maxOf(startPage, endPage)
+            
+            val result = mutableListOf<CharacterBox>()
+            for (p in minPage..maxPage) {
+                val pageBoxes = pageCharacterBoxes[p] ?: continue
+                for (box in pageBoxes) {
+                    val isAfterStart = if (p > startPage) true 
+                                      else if (p < startPage) false
+                                      else {
+                                          if (box.top > start.top + 0.005f) true
+                                          else if (box.bottom < start.bottom - 0.005f) false
+                                          else box.left >= start.left - 0.005f
+                                      }
+                    
+                    val isBeforeEnd = if (p < endPage) true
+                                     else if (p > endPage) false
+                                     else {
+                                         if (box.bottom < end.bottom - 0.005f) true
+                                         else if (box.top > end.top + 0.005f) false
+                                         else box.right <= end.right + 0.005f
+                                     }
+                    
+                    val isAfterEnd = if (p > endPage) true 
+                                     else if (p < endPage) false
+                                     else {
+                                         if (box.top > end.top + 0.005f) true
+                                         else if (box.bottom < end.bottom - 0.005f) false
+                                         else box.left >= end.left - 0.005f
+                                     }
+                    
+                    val isBeforeStart = if (p < startPage) true
+                                        else if (p > startPage) false
+                                        else {
+                                            if (box.bottom < start.bottom - 0.005f) true
+                                            else if (box.top > start.top + 0.005f) false
+                                            else box.right <= start.right + 0.005f
+                                        }
+
+                    val isSelected = (isAfterStart && isBeforeEnd) || (isAfterEnd && isBeforeStart)
+                    if (isSelected) {
+                        result.add(box)
+                    }
+                }
+            }
+            result
+        }
+    }
+
     // Debounce search query updates to make search smooth and non-blocking
     LaunchedEffect(searchQuery) {
         if (searchQuery.isEmpty()) {
@@ -278,8 +413,8 @@ fun PdfViewer(
         }
     }
 
-    // Perform text search page by page
-    LaunchedEffect(debouncedSearchQuery, pageCount, document) {
+    // Perform text search page by page using Boyer-Moore-Horspool algorithm on corpus
+    LaunchedEffect(debouncedSearchQuery, pageCount, document, searchCorpus) {
         if (debouncedSearchQuery.isEmpty()) {
             searchMatches.clear()
             currentMatchIndex = -1
@@ -287,7 +422,16 @@ fun PdfViewer(
         }
         
         searchMatches.clear()
-        for (page in 0 until pageCount) {
+        
+        val corpus = searchCorpus
+        val pagesToSearch = if (corpus != null) {
+            val matches = BoyerMooreHorspool.search(corpus.text, debouncedSearchQuery, ignoreCase = true)
+            matches.map { corpus.findPageForCharIndex(it) }.filter { it != -1 }.toSet()
+        } else {
+            (0 until pageCount).toSet()
+        }
+
+        for (page in pagesToSearch) {
             kotlinx.coroutines.yield()
             try {
                 val results = document.searchText(page, debouncedSearchQuery)
@@ -307,6 +451,61 @@ fun PdfViewer(
     LaunchedEffect(document) {
         pageCount = document.pageCount()
         isInitialZoomSet = false
+        
+        // Warm up first 3 pages as low-res thumbnails in background
+        for (p in 0 until minOf(3, pageCount)) {
+            val lowKey = "thumb_${p}_low"
+            val medKey = "thumb_${p}_med"
+            val fullKey = "thumb_${p}_full"
+            if (thumbCache.get(fullKey) == null && thumbCache.get(medKey) == null && thumbCache.get(lowKey) == null) {
+                val diskBytes = diskCache.get(lowKey)
+                if (diskBytes != null) {
+                    val decoded = decodeByteArrayToPdfBitmap(diskBytes)
+                    if (decoded != null) {
+                        thumbCache.put(lowKey, decoded)
+                    }
+                } else {
+                    renderQueue.submit(
+                        RenderRequest.Thumbnail(
+                            pageIndex = p,
+                            width = 160,
+                            height = 224,
+                            isPrefetch = true
+                        ) { bitmap ->
+                            bitmap?.let {
+                                thumbCache.put(lowKey, it)
+                                it.toByteArray()?.let { bytes ->
+                                    diskCache.put(lowKey, bytes)
+                                }
+                            }
+                        }
+                    )
+                }
+            }
+        }
+
+        // Build search corpus in background using Dispatchers.Default
+        launch(Dispatchers.Default) {
+            try {
+                val textBuilder = StringBuilder()
+                val slices = mutableListOf<PageSlice>()
+                var currentCharOffset = 0
+                
+                val count = document.pageCount()
+                for (p in 0 until count) {
+                    val pageText = document.extractText(p)
+                    val start = currentCharOffset
+                    textBuilder.append(pageText)
+                    textBuilder.append('\u000C') // Form feed as page separator
+                    currentCharOffset = textBuilder.length
+                    slices.add(PageSlice(p, start, currentCharOffset))
+                }
+                searchCorpus = SearchCorpus(textBuilder.toString(), slices)
+                Logger.d(tag = "PdfViewer") { "Search corpus built successfully. Total chars: ${textBuilder.length}, slices: ${slices.size}" }
+            } catch (e: Exception) {
+                Logger.e(e) { "Failed to build search corpus" }
+            }
+        }
     }
 
     // Scrollbar/tooltip visibility
@@ -521,6 +720,9 @@ fun PdfViewer(
             state.currentPage = bestPage
         }
 
+        // Debounce expensive rendering requests by 80ms while scrolling/zooming
+        kotlinx.coroutines.delay(80)
+
         val firstVisiblePage = firstVisible
         val lastVisiblePage = visibleList.lastOrNull() ?: firstVisible
         val pagesToLoad = if (firstVisiblePage != -1) {
@@ -534,24 +736,92 @@ fun PdfViewer(
         // Call clearObsolete to discard pending requests that are no longer needed
         renderQueue.clearObsolete(activePages = pagesToLoad, visiblePages = state.visiblePages.toSet())
 
-        // 1. Request Thumbnails (including prefetch pages)
+        // 1. Request Thumbnails (including prefetch pages with progressive LOD)
         for (page in pagesToLoad) {
-            val thumbKey = "thumb_$page"
-            if (!thumbnails.containsKey(page)) {
-                val cached = cache.get(thumbKey)
-                if (cached != null) {
-                    thumbnails[page] = cached.asImageBitmap()
+            val isVisible = page in state.visiblePages
+            if (isVisible) {
+                val fullKey = "thumb_${page}_full"
+                val cachedFull = thumbCache.get(fullKey)
+                if (cachedFull != null) {
+                    thumbnails[page] = cachedFull.asImageBitmap()
                 } else {
+                    // Try Disk Cache (L2)
+                    val diskBytes = diskCache.get(fullKey)
+                    if (diskBytes != null) {
+                        val decoded = decodeByteArrayToPdfBitmap(diskBytes)
+                        if (decoded != null) {
+                            thumbCache.put(fullKey, decoded)
+                            thumbnails[page] = decoded.asImageBitmap()
+                            continue
+                        }
+                    }
+
+                    // Display fallback if available
+                    val cachedMed = thumbCache.get("thumb_${page}_med")
+                    val cachedLow = thumbCache.get("thumb_${page}_low")
+                    val fallback = cachedMed ?: cachedLow
+                    if (fallback != null) {
+                        thumbnails[page] = fallback.asImageBitmap()
+                    }
+                    
                     renderQueue.submit(
                         RenderRequest.Thumbnail(
                             pageIndex = page,
                             width = viewSize.width / 2,
                             height = (estimatedPageHeight / 2).toInt(),
-                            isPrefetch = page !in state.visiblePages
+                            isPrefetch = false
                         ) { bitmap ->
                             bitmap?.let {
-                                cache.put(thumbKey, it)
+                                thumbCache.put(fullKey, it)
                                 thumbnails[page] = it.asImageBitmap()
+                                it.toByteArray()?.let { bytes ->
+                                    diskCache.put(fullKey, bytes)
+                                }
+                            }
+                        }
+                    )
+                }
+            } else {
+                // Prefetch logic
+                val distance = if (page < firstVisiblePage) firstVisiblePage - page else page - lastVisiblePage
+                val (tierKey, targetWidth, targetHeight) = if (distance <= 1) {
+                    Triple("med", 320, (320 * 1.4f).toInt())
+                } else {
+                    Triple("low", 160, (160 * 1.4f).toInt())
+                }
+                
+                val fullKey = "thumb_${page}_full"
+                val tierKeyFull = "thumb_${page}_$tierKey"
+                
+                if (thumbCache.get(fullKey) == null && thumbCache.get(tierKeyFull) == null) {
+                    // Try Disk Cache (L2)
+                    val diskTierBytes = diskCache.get(tierKeyFull)
+                    if (diskTierBytes != null) {
+                        val decoded = decodeByteArrayToPdfBitmap(diskTierBytes)
+                        if (decoded != null) {
+                            thumbCache.put(tierKeyFull, decoded)
+                            if (!thumbnails.containsKey(page)) {
+                                                            thumbnails[page] = decoded.asImageBitmap()
+                            }
+                            continue
+                        }
+                    }
+
+                    renderQueue.submit(
+                        RenderRequest.Thumbnail(
+                            pageIndex = page,
+                            width = targetWidth,
+                            height = targetHeight,
+                            isPrefetch = true
+                        ) { bitmap ->
+                            bitmap?.let {
+                                thumbCache.put(tierKeyFull, it)
+                                if (!thumbnails.containsKey(page)) {
+                                    thumbnails[page] = it.asImageBitmap()
+                                }
+                                it.toByteArray()?.let { bytes ->
+                                    diskCache.put(tierKeyFull, bytes)
+                                }
                             }
                         }
                     )
@@ -562,36 +832,77 @@ fun PdfViewer(
         // 2. Request Tiles
         if (state.zoom > 1.5f) {
             val tileSize = 512
-            val zoomLevelInt = state.zoom.toInt()
+            val bucketZoom = when {
+                state.zoom <= 2.0f -> 2.0f
+                state.zoom <= 2.8f -> 2.8f
+                state.zoom <= 4.0f -> 4.0f
+                else -> 5.6f
+            }
+            val zoomLevelInt = (bucketZoom * 10).toInt()
+            memoryCache.evictByZoomLevel(zoomLevelInt)
             
             for (page in state.visiblePages) {
-                val localScrollY = (-state.scrollOffset.y - (page * (estimatedPageHeight + spacingPx) * state.zoom)).coerceAtLeast(0f)
+                val pageTopPx = page * (estimatedPageHeight + spacingPx) * state.zoom
+                val localScrollY = ((-state.scrollOffset.y - pageTopPx) / state.zoom * bucketZoom).coerceAtLeast(0f)
+                val localViewportHeight = (viewSize.height / state.zoom * bucketZoom)
+                
                 val startCol = 0
-                val endCol = viewSize.width / tileSize + 1
+                val endCol = ((viewSize.width / state.zoom * bucketZoom) / tileSize).toInt() + 1
                 val startRow = (localScrollY / tileSize).toInt()
-                val endRow = ((localScrollY + viewSize.height) / tileSize).toInt() + 1
+                val endRow = ((localScrollY + localViewportHeight) / tileSize).toInt() + 1
 
                 val requestedKeys = mutableSetOf<TileKey>()
+                
+                // Prioritize tiles closest to the center of the viewport
+                val centerRow = (startRow + endRow) / 2
+                val centerCol = (startCol + endCol) / 2
+                val tilesToRequest = mutableListOf<Pair<Int, Int>>()
                 for (row in startRow..endRow) {
                     for (col in startCol..endCol) {
-                        val key = TileKey(page, row, col, zoomLevelInt)
+                        tilesToRequest.add(Pair(row, col))
+                    }
+                }
+                tilesToRequest.sortBy { (r, c) ->
+                    val dr = r - centerRow
+                    val dc = c - centerCol
+                    dr * dr + dc * dc
+                }
+
+                for ((row, col) in tilesToRequest) {
+                    val key = TileKey(page, row, col, zoomLevelInt)
+                    
+                    val tileBounds = QuadtreeBounds(
+                        left = (col * tileSize).toFloat() / (viewSize.width * bucketZoom),
+                        top = (row * tileSize).toFloat() / (estimatedPageHeight * bucketZoom),
+                        right = ((col + 1) * tileSize).toFloat() / (viewSize.width * bucketZoom),
+                        bottom = ((row + 1) * tileSize).toFloat() / (estimatedPageHeight * bucketZoom)
+                    )
+                    
+                    val qt = pageQuadtrees[page]
+                    val shouldRender = if (qt != null) {
+                        qt.query(tileBounds).isNotEmpty()
+                    } else {
+                        true
+                    }
+
+                    if (shouldRender) {
                         requestedKeys.add(key)
                         
                         val cacheKey = "tile_${page}_${row}_${col}_$zoomLevelInt"
                         if (!activeTiles.containsKey(key)) {
-                            val cachedTile = cache.get(cacheKey)
+                            val cachedTile = tileCache.get(cacheKey)
                             if (cachedTile != null) {
                                 activeTiles[key] = cachedTile.asImageBitmap()
                             } else {
                                 val tileRect = PdfRect(
-                                    left = (col * tileSize).toFloat() / state.zoom,
-                                    top = (row * tileSize).toFloat() / state.zoom,
-                                    right = ((col + 1) * tileSize).toFloat() / state.zoom,
-                                    bottom = ((row + 1) * tileSize).toFloat() / state.zoom
+                                    left = (col * tileSize).toFloat() / bucketZoom,
+                                    top = (row * tileSize).toFloat() / bucketZoom,
+                                    right = ((col + 1) * tileSize).toFloat() / bucketZoom,
+                                    bottom = ((row + 1) * tileSize).toFloat() / bucketZoom
                                 )
-                                renderQueue.submit(RenderRequest.Tile(page, tileRect, state.zoom) { bitmap ->
+                                renderQueue.submit(RenderRequest.Tile(page, tileRect, bucketZoom) { bitmap ->
                                     bitmap?.let {
-                                        cache.put(cacheKey, it)
+                                        tileCache.put(cacheKey, it)
                                         activeTiles[key] = it.asImageBitmap()
                                     }
                                 })
@@ -604,6 +915,7 @@ fun PdfViewer(
             }
         } else {
             activeTiles.clear()
+            memoryCache.evictByZoomLevel(-1)
         }
 
         val keysToRemove = thumbnails.keys.filter { it !in (firstVisiblePage - 3..lastVisiblePage + 3) }
@@ -670,7 +982,7 @@ fun PdfViewer(
             modifier = Modifier
                 .fillMaxSize()
                 .onSizeChanged { viewSize = it }
-                .pointerInput(Unit) {
+                .pointerInput(pageSpatialIndices) {
                     detectTapGestures(
                         onDoubleTap = { offset ->
                             focusRequester.requestFocus()
@@ -680,6 +992,72 @@ fun PdfViewer(
                         },
                         onTap = {
                             focusRequester.requestFocus()
+                            selectionStart = null
+                            selectionEnd = null
+                        },
+                        onLongPress = { offset ->
+                            focusRequester.requestFocus()
+                            val res = findCharOffset(offset)
+                            if (res != null) {
+                                val (page, normOffset) = res
+                                val charBox = pageSpatialIndices[page]?.query(normOffset.x, normOffset.y)
+                                if (charBox != null) {
+                                    selectionStart = charBox
+                                    selectionEnd = charBox
+                                }
+                            }
+                        }
+                    )
+                }
+                .pointerInput(viewSize, pageCount, state.zoom, selectionStart, selectionEnd) {
+                    detectDragGestures(
+                        onDragStart = { offset ->
+                            val start = selectionStart
+                            val end = selectionEnd
+                            if (start != null && end != null) {
+                                val startPos = getCharacterScreenPosition(start, isStart = true)
+                                val endPos = getCharacterScreenPosition(end, isStart = false)
+                                val startDist = (offset - startPos).getDistance()
+                                val endDist = (offset - endPos).getDistance()
+                                
+                                val threshold = 32.dp.toPx()
+                                if (startDist < threshold && startDist < endDist) {
+                                    isDraggingStartHandle = true
+                                } else if (endDist < threshold) {
+                                    isDraggingEndHandle = true
+                                }
+                            }
+                        },
+                        onDrag = { change, dragAmount ->
+                            if (isDraggingStartHandle) {
+                                val res = findCharOffset(change.position)
+                                if (res != null) {
+                                    val (page, normOffset) = res
+                                    val newStart = pageSpatialIndices[page]?.query(normOffset.x, normOffset.y)
+                                    if (newStart != null) {
+                                        selectionStart = newStart
+                                    }
+                                }
+                                change.consume()
+                            } else if (isDraggingEndHandle) {
+                                val res = findCharOffset(change.position)
+                                if (res != null) {
+                                    val (page, normOffset) = res
+                                    val newEnd = pageSpatialIndices[page]?.query(normOffset.x, normOffset.y)
+                                    if (newEnd != null) {
+                                        selectionEnd = newEnd
+                                    }
+                                }
+                                change.consume()
+                            }
+                        },
+                        onDragEnd = {
+                            isDraggingStartHandle = false
+                            isDraggingEndHandle = false
+                        },
+                        onDragCancel = {
+                            isDraggingStartHandle = false
+                            isDraggingEndHandle = false
                         }
                     )
                 }
@@ -731,6 +1109,9 @@ fun PdfViewer(
             val estimatedPageHeight = size.width * 1.4f
             val tileSize = 512
 
+            // Group active tiles by page to optimize O(1) page lookup in loop
+            val groupedTiles = activeTiles.keys.groupBy { it.page }
+
             translate(left = state.scrollOffset.x, top = state.scrollOffset.y) {
                 scale(scale = state.zoom, pivot = Offset.Zero) {
                     for (page in state.visiblePages) {
@@ -752,10 +1133,28 @@ fun PdfViewer(
                         if (state.zoom > 1.5f) {
                             translate(left = 0f, top = pageTop) {
                                 scale(scale = 1f / state.zoom, pivot = Offset.Zero) {
-                                    activeTiles.filter { it.key.page == page }.forEach { (key, tileBitmap) ->
-                                        translate(left = (key.col * tileSize).toFloat(), top = (key.row * tileSize).toFloat()) {
+                                    groupedTiles[page]?.forEach { key ->
+                                        val tileBitmap = activeTiles[key] ?: return@forEach
+                                        val bucketZoom = key.zoomLevel / 10f
+                                        val scaleMultiplier = state.zoom / bucketZoom
+                                        
+                                        // Viewport culling: skip rendering if tile bounds are completely off-screen
+                                        val tileLeft = state.scrollOffset.x + (key.col * tileSize * scaleMultiplier)
+                                        val tileTop = state.scrollOffset.y + (pageTop * state.zoom) + (key.row * tileSize * scaleMultiplier)
+                                        val tileRight = tileLeft + (tileSize * scaleMultiplier)
+                                        val tileBottom = tileTop + (tileSize * scaleMultiplier)
+                                        
+                                        if (tileRight < 0f || tileLeft > viewSize.width || tileBottom < 0f || tileTop > viewSize.height) {
+                                            return@forEach
+                                        }
+
+                                        val left = key.col * tileSize * scaleMultiplier
+                                        val top = key.row * tileSize * scaleMultiplier
+                                        val sizePx = (tileSize * scaleMultiplier).toInt()
+                                        translate(left = left, top = top) {
                                             drawImage(
                                                 image = tileBitmap,
+                                                dstSize = IntSize(sizePx, sizePx),
                                                 colorFilter = colorFilter
                                             )
                                         }
@@ -794,8 +1193,62 @@ fun PdfViewer(
                                 )
                             }
                         }
+
+                        // Draw text selection highlights for this page
+                        val pageSelected = selectedBoxes.filter { it.pageIndex == page }
+                        if (pageSelected.isNotEmpty()) {
+                            val selectionColor = Color(0x33007AFF) // Translucent blue highlight
+                            for (box in pageSelected) {
+                                val x = box.left * size.width
+                                val y = pageTop + box.top * estimatedPageHeight
+                                val w = (box.right - box.left) * size.width
+                                val h = (box.bottom - box.top) * estimatedPageHeight
+                                drawRect(
+                                    color = selectionColor,
+                                    topLeft = Offset(x, y),
+                                    size = androidx.compose.ui.geometry.Size(w, h)
+                                )
+                            }
+                        }
                     }
                 }
+            }
+
+            // Draw Selection Handles (in screen space)
+            val start = selectionStart
+            val end = selectionEnd
+            if (start != null && end != null) {
+                val startPos = getCharacterScreenPosition(start, isStart = true)
+                val endPos = getCharacterScreenPosition(end, isStart = false)
+                
+                // Draw start handle
+                drawCircle(
+                    color = Color(0xFF007AFF),
+                    radius = 8.dp.toPx(),
+                    center = startPos
+                )
+                val estimatedPageHeight = viewSize.width.toFloat() * 1.4f
+                val pageTopStart = state.scrollOffset.y + start.pageIndex * (estimatedPageHeight + spacingPx) * state.zoom
+                drawLine(
+                    color = Color(0xFF007AFF),
+                    start = Offset(startPos.x, pageTopStart + start.top * (estimatedPageHeight * state.zoom)),
+                    end = Offset(startPos.x, pageTopStart + start.bottom * (estimatedPageHeight * state.zoom)),
+                    strokeWidth = 2.dp.toPx()
+                )
+
+                // Draw end handle
+                drawCircle(
+                    color = Color(0xFF007AFF),
+                    radius = 8.dp.toPx(),
+                    center = endPos
+                )
+                val pageTopEnd = state.scrollOffset.y + end.pageIndex * (estimatedPageHeight + spacingPx) * state.zoom
+                drawLine(
+                    color = Color(0xFF007AFF),
+                    start = Offset(endPos.x, pageTopEnd + end.top * (estimatedPageHeight * state.zoom)),
+                    end = Offset(endPos.x, pageTopEnd + end.bottom * (estimatedPageHeight * state.zoom)),
+                    strokeWidth = 2.dp.toPx()
+                )
             }
         }
 
@@ -1285,6 +1738,60 @@ fun PdfViewer(
                                     }
                                 }
                             }
+                        }
+                    }
+                }
+            }
+        }
+
+        // Floating copy bar overlay
+        if (selectionStart != null && selectionEnd != null && selectedBoxes.isNotEmpty()) {
+            val textToCopy = selectedBoxes.map { it.char }.joinToString("")
+            val localClipboardManager = LocalClipboardManager.current
+            
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(bottom = 16.dp),
+                contentAlignment = Alignment.BottomCenter
+            ) {
+                Card(
+                    colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.primaryContainer),
+                    elevation = CardDefaults.cardElevation(defaultElevation = 6.dp),
+                    shape = RoundedCornerShape(8.dp),
+                    modifier = Modifier.height(48.dp)
+                ) {
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
+                    ) {
+                        Text(
+                            text = "${selectedBoxes.size} chars selected",
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = MaterialTheme.colorScheme.onPrimaryContainer
+                        )
+                        Spacer(modifier = Modifier.width(16.dp))
+                        TextButton(
+                            onClick = {
+                                localClipboardManager.setText(AnnotatedString(textToCopy))
+                                selectionStart = null
+                                selectionEnd = null
+                            },
+                            contentPadding = PaddingValues(horizontal = 8.dp),
+                            colors = ButtonDefaults.textButtonColors(contentColor = MaterialTheme.colorScheme.primary)
+                        ) {
+                            Text("Copy", fontWeight = FontWeight.Bold)
+                        }
+                        Spacer(modifier = Modifier.width(8.dp))
+                        TextButton(
+                            onClick = {
+                                selectionStart = null
+                                selectionEnd = null
+                            },
+                            contentPadding = PaddingValues(horizontal = 8.dp),
+                            colors = ButtonDefaults.textButtonColors(contentColor = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.6f))
+                        ) {
+                            Text("Clear")
                         }
                     }
                 }

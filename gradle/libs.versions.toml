@@ -18,7 +18,7 @@ material3 = "1.11.0-alpha07"
 sqldelight = "2.3.2"
 dokka = "2.2.0"
 filekit = "0.8.7"
-voyager = "1.0.1"
+voyager = "1.1.0-beta02"
 kermit = "2.1.0"
 
 
