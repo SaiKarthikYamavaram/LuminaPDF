@@ -11,20 +11,6 @@ plugins {
 }
 
 kotlin {
-    @OptIn(ExperimentalKotlinGradlePluginApi::class)
-    applyHierarchyTemplate {
-        common {
-            group("nonWasm") {
-                withAndroidTarget()
-                withIosArm64()
-                withIosSimulatorArm64()
-                withJvm()
-                withJs()
-            }
-            withWasmJs()
-        }
-    }
-
     listOf(
         iosArm64(),
         iosSimulatorArm64()
@@ -81,12 +67,7 @@ kotlin {
             implementation(libs.androidx.lifecycle.runtimeCompose)
             implementation(libs.filekit.compose)
             implementation(libs.kermit)
-        }
-        // voyager-navigator has no wasmJs artifact — scope it to nonWasmMain only
-        named("nonWasmMain").configure {
-            dependencies {
-                implementation(libs.voyager.navigator)
-            }
+            implementation(libs.voyager.navigator)
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)

@@ -191,9 +191,9 @@ class SimplifyingPageDrawer(
         textRenderingMatrix: org.apache.pdfbox.util.Matrix,
         font: org.apache.pdfbox.pdmodel.font.PDFont,
         code: Int,
-        unicode: String?,
         displacement: org.apache.pdfbox.util.Vector
     ) {
+        val unicode = font.toUnicode(code)
         val char = unicode?.firstOrNull()
         val transform = graphics.transform
         val p0 = transform.transform(Point2D.Double(0.0, 0.0), null)
@@ -251,6 +251,6 @@ class SimplifyingPageDrawer(
             }
         }
 
-        super.showGlyph(textRenderingMatrix, font, code, unicode, displacement)
+        super.showGlyph(textRenderingMatrix, font, code, displacement)
     }
 }

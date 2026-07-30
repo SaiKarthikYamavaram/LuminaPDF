@@ -1,7 +1,9 @@
+@file:OptIn(kotlinx.cinterop.ExperimentalForeignApi::class)
 package com.lumina.pdf
 
 import platform.Foundation.*
 import kotlinx.cinterop.*
+import platform.posix.memcpy
 
 actual object FilePersistence {
     private val fileManager = NSFileManager.defaultManager
@@ -58,7 +60,7 @@ actual object FilePersistence {
 
     // Helpers to convert between ByteArray and NSData
     @OptIn(ExperimentalForeignApi::class)
-    private fun ByteArray.toNSData(): NSData = usePin { pinned ->
+    private fun ByteArray.toNSData(): NSData = usePinned { pinned ->
         NSData.dataWithBytes(pinned.addressOf(0), length = size.toULong())
     }
 
@@ -67,7 +69,7 @@ actual object FilePersistence {
         val bytes = this.bytes ?: return ByteArray(0)
         val length = this.length.toInt()
         val byteArray = ByteArray(length)
-        byteArray.usePin { pinned ->
+        byteArray.usePinned { pinned ->
             memcpy(pinned.addressOf(0), bytes, this.length)
         }
         return byteArray
