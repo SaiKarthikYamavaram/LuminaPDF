@@ -9,6 +9,7 @@ import org.apache.pdfbox.rendering.PDFRenderer
 import org.apache.pdfbox.text.PDFTextStripper
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import java.awt.image.BufferedImage
 
 class JvmPdfDocument(private val document: PDDocument) : PdfDocument {
     private val renderer = PDFRenderer(document)
@@ -24,17 +25,27 @@ class JvmPdfDocument(private val document: PDDocument) : PdfDocument {
     }
 
     override suspend fun renderTile(page: Int, region: PdfRect, scale: Float): PdfBitmap = withContext(Dispatchers.IO) {
-        // Basic implementation for MVP, PDFBox rendering might need more specific tile rendering
-        // For now, render full and crop (not efficient, but works for Phase 1 MVP)
-        // Advanced tile rendering is Phase 2.
-        val image = renderer.renderImage(page, scale)
-        val subImage = image.getSubimage(
-            region.left.toInt().coerceAtLeast(0),
-            region.top.toInt().coerceAtLeast(0),
-            region.width.toInt().coerceAtMost(image.width - region.left.toInt()),
-            region.height.toInt().coerceAtMost(image.height - region.top.toInt())
-        )
-        JvmPdfBitmap(subImage)
+        // PDFBox's PDFRenderer.renderPageToGraphics(page, Graphics2D, scaleX, scaleY) would let us
+        // rasterize only the tile region directly, avoiding a full-page render per tile entirely.
+        // Verified against this repo's PDFBox 3.0.1 + JDK: that call reliably produces a blank/black
+        // image (confirmed via a standalone repro rendering a full page through it with no
+        // translate at all) - not usable as-is. Falling back to rendering the full page once (as
+        // before) and drawing it translated into a tile-sized image. This still fixes the real
+        // memory bug in the old code: BufferedImage.getSubimage() returns a view sharing the
+        // parent's backing buffer, so caching one tile kept the entire full-page raster pinned in
+        // memory. Drawing into a fresh tile-sized BufferedImage avoids that retention, even though
+        // it doesn't avoid the redundant per-tile full-page rendering cost.
+        val tileWidthPx = (region.width * scale).toInt().coerceAtLeast(1)
+        val tileHeightPx = (region.height * scale).toInt().coerceAtLeast(1)
+        val fullImage = renderer.renderImage(page, scale)
+        val tileImage = BufferedImage(tileWidthPx, tileHeightPx, BufferedImage.TYPE_INT_ARGB)
+        val graphics = tileImage.createGraphics()
+        try {
+            graphics.drawImage(fullImage, -(region.left * scale).toInt(), -(region.top * scale).toInt(), null)
+        } finally {
+            graphics.dispose()
+        }
+        JvmPdfBitmap(tileImage)
     }
 
     override suspend fun extractText(page: Int): String = withContext(Dispatchers.IO) {

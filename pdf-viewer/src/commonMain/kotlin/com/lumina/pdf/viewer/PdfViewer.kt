@@ -1,6 +1,10 @@
 package com.lumina.pdf.viewer
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.Animatable
+import androidx.compose.animation.core.LinearOutSlowInEasing
+import androidx.compose.animation.core.VectorConverter
+import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.scaleIn
@@ -106,9 +110,21 @@ fun PdfViewer(
     val db = rememberPdfDatabase()
     var viewSize by remember { mutableStateOf(IntSize.Zero) }
     var pageCount by remember { mutableStateOf(0) }
+
+    // Smooths discrete mouse-wheel/trackpad scroll ticks into a short glide instead of teleporting
+    // scrollOffset instantly per event. Only used by the wheel-scroll handler below; every other
+    // input path (drag, pinch-zoom, scrollbar) already tracks the pointer continuously and sets
+    // state.scrollOffset directly, which is already smooth.
+    val scrollAnimatable = remember(document) { Animatable(state.scrollOffset, Offset.VectorConverter) }
+    // The real cumulative destination of the current wheel gesture. Deliberately separate from
+    // scrollAnimatable.value (the animation's current mid-flight position): retargeting from the
+    // live interpolated value on every tick of a fast burst would throw away whatever distance of
+    // each prior tick hadn't been visually traveled yet before the next tick interrupted it.
+    // Tracking the target independently means every tick's full pan always gets accumulated.
+    var scrollTarget by remember(document) { mutableStateOf(state.scrollOffset) }
     
     // Memory cache and render queue
-    val cache = remember(document) { LruMemoryCache(maxSize = 100) } // Max 100 bitmaps (thumbnails/tiles)
+    val cache = remember(document) { LruMemoryCache() } // 64MB byte budget, 300-entry cap (see LruMemoryCache defaults)
     val renderQueue = remember(document) { RenderQueue(document, coroutineScope) }
 
     // State maps for current UI
@@ -488,10 +504,11 @@ fun PdfViewer(
         )
     }
 
-    // Recalculate and load visible pages/tiles
+    // Recalculate visible pages immediately on every scroll/zoom change (cheap: no cache/queue
+    // work) so the Canvas draw block, which reads state.visiblePages directly, never goes stale.
     LaunchedEffect(document, viewSize, state.zoom, state.scrollOffset) {
         if (viewSize.width == 0 || viewSize.height == 0 || pageCount == 0) return@LaunchedEffect
-        
+
         val estimatedPageHeight = viewSize.width.toFloat() * 1.4f
         val visibleList = mutableListOf<Int>()
         var firstVisible = -1
@@ -506,7 +523,7 @@ fun PdfViewer(
                 if (firstVisible == -1) {
                     firstVisible = page
                 }
-                
+
                 val pageCenter = (yStart + yEnd) / 2f
                 val distance = kotlin.math.abs(pageCenter - viewportCenter)
                 if (distance < minDistance) {
@@ -515,24 +532,39 @@ fun PdfViewer(
                 }
             }
         }
-        
+
         state.visiblePages = visibleList
         if (bestPage != -1) {
             state.currentPage = bestPage
         }
 
-        val firstVisiblePage = firstVisible
-        val lastVisiblePage = visibleList.lastOrNull() ?: firstVisible
+        if (firstVisible != -1) {
+            val lastVisible = visibleList.lastOrNull() ?: firstVisible
+            val keysToRemove = thumbnails.keys.filter { it !in (firstVisible - 3..lastVisible + 3) }
+            for (k in keysToRemove) thumbnails.remove(k)
+        }
+    }
+
+    // Request thumbnails/tiles for the current viewport, debounced so a fast scroll/zoom gesture
+    // doesn't flood the render queue with requests for pages flown past in a few milliseconds.
+    LaunchedEffect(document, viewSize, state.zoom, state.scrollOffset) {
+        if (viewSize.width == 0 || viewSize.height == 0 || pageCount == 0) return@LaunchedEffect
+        kotlinx.coroutines.delay(config.tileRequestDebounceMs)
+
+        val estimatedPageHeight = viewSize.width.toFloat() * 1.4f
+        val visiblePages = state.visiblePages
+        val firstVisiblePage = visiblePages.firstOrNull() ?: -1
+        val lastVisiblePage = visiblePages.lastOrNull() ?: firstVisiblePage
         val pagesToLoad = if (firstVisiblePage != -1) {
             val startPrefetchPage = (firstVisiblePage - 2).coerceAtLeast(0)
             val endPrefetchPage = (lastVisiblePage + 2).coerceAtMost(pageCount - 1)
             (startPrefetchPage..endPrefetchPage).toSet()
         } else {
-            state.visiblePages.toSet()
+            visiblePages.toSet()
         }
 
         // Call clearObsolete to discard pending requests that are no longer needed
-        renderQueue.clearObsolete(activePages = pagesToLoad, visiblePages = state.visiblePages.toSet())
+        renderQueue.clearObsolete(activePages = pagesToLoad, visiblePages = visiblePages.toSet())
 
         // 1. Request Thumbnails (including prefetch pages)
         for (page in pagesToLoad) {
@@ -547,7 +579,7 @@ fun PdfViewer(
                             pageIndex = page,
                             width = viewSize.width / 2,
                             height = (estimatedPageHeight / 2).toInt(),
-                            isPrefetch = page !in state.visiblePages
+                            isPrefetch = page !in visiblePages
                         ) { bitmap ->
                             bitmap?.let {
                                 cache.put(thumbKey, it)
@@ -563,8 +595,8 @@ fun PdfViewer(
         if (state.zoom > 1.5f) {
             val tileSize = 512
             val zoomLevelInt = state.zoom.toInt()
-            
-            for (page in state.visiblePages) {
+
+            for (page in visiblePages) {
                 val localScrollY = (-state.scrollOffset.y - (page * (estimatedPageHeight + spacingPx) * state.zoom)).coerceAtLeast(0f)
                 val startCol = 0
                 val endCol = viewSize.width / tileSize + 1
@@ -576,7 +608,7 @@ fun PdfViewer(
                     for (col in startCol..endCol) {
                         val key = TileKey(page, row, col, zoomLevelInt)
                         requestedKeys.add(key)
-                        
+
                         val cacheKey = "tile_${page}_${row}_${col}_$zoomLevelInt"
                         if (!activeTiles.containsKey(key)) {
                             val cachedTile = cache.get(cacheKey)
@@ -605,9 +637,6 @@ fun PdfViewer(
         } else {
             activeTiles.clear()
         }
-
-        val keysToRemove = thumbnails.keys.filter { it !in (firstVisiblePage - 3..lastVisiblePage + 3) }
-        for (k in keysToRemove) thumbnails.remove(k)
     }
 
     val invertMatrix = floatArrayOf(
@@ -712,12 +741,25 @@ fun PdfViewer(
                                         val zoomChange = if (delta.y > 0) -0.1f else 0.1f
                                         changeZoomWithFocus(state.zoom + zoomChange, change.position)
                                     } else {
-                                        val scrollSpeed = 40f
+                                        val scrollSpeed = 70f
                                         val pan = Offset(-delta.x * scrollSpeed, -delta.y * scrollSpeed)
-                                        state.scrollOffset = clampScrollOffset(
-                                            state.scrollOffset + pan, state.zoom, viewSize.width.toFloat(), viewSize.height.toFloat(),
+                                        // Accumulate onto the real target, not onto scrollAnimatable's current
+                                        // mid-flight value - see scrollTarget's declaration for why.
+                                        val base = if (scrollAnimatable.isRunning) scrollTarget else state.scrollOffset
+                                        val target = clampScrollOffset(
+                                            base + pan, state.zoom, viewSize.width.toFloat(), viewSize.height.toFloat(),
                                             viewSize.width.toFloat() * 1.4f, pageCount, spacingPx, topPaddingPx, bottomPaddingPx, marginPx
                                         )
+                                        scrollTarget = target
+                                        coroutineScope.launch {
+                                            if (!scrollAnimatable.isRunning) scrollAnimatable.snapTo(state.scrollOffset)
+                                            scrollAnimatable.animateTo(
+                                                targetValue = target,
+                                                animationSpec = tween(durationMillis = 90, easing = LinearOutSlowInEasing)
+                                            ) {
+                                                state.scrollOffset = value
+                                            }
+                                        }
                                     }
                                     change.consume()
                                 }
@@ -733,6 +775,11 @@ fun PdfViewer(
 
             translate(left = state.scrollOffset.x, top = state.scrollOffset.y) {
                 scale(scale = state.zoom, pivot = Offset.Zero) {
+                    // Grouped once per draw pass instead of filtering activeTiles per visible page
+                    // (was O(visiblePages x activeTiles.size) per frame during pan/zoom).
+                    val tilesByPage: Map<Int, List<Map.Entry<TileKey, ImageBitmap>>> =
+                        if (state.zoom > 1.5f) activeTiles.entries.groupBy { it.key.page } else emptyMap()
+
                     for (page in state.visiblePages) {
                         val pageTop = page * (estimatedPageHeight + spacingPx)
                         
@@ -752,7 +799,8 @@ fun PdfViewer(
                         if (state.zoom > 1.5f) {
                             translate(left = 0f, top = pageTop) {
                                 scale(scale = 1f / state.zoom, pivot = Offset.Zero) {
-                                    activeTiles.filter { it.key.page == page }.forEach { (key, tileBitmap) ->
+                                    val pageTiles = tilesByPage[page] ?: emptyList()
+                                    pageTiles.forEach { (key, tileBitmap) ->
                                         translate(left = (key.col * tileSize).toFloat(), top = (key.row * tileSize).toFloat()) {
                                             drawImage(
                                                 image = tileBitmap,
