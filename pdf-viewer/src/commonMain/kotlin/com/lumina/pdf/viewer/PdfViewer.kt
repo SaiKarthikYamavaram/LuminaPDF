@@ -577,8 +577,12 @@ fun PdfViewer(
                     renderQueue.submit(
                         RenderRequest.Thumbnail(
                             pageIndex = page,
-                            width = viewSize.width / 2,
-                            height = (estimatedPageHeight / 2).toInt(),
+                            // Rendered at full viewport width - this bitmap is drawn at full page
+                            // size (dstSize below matches viewport size) any time tiles aren't
+                            // active (zoom <= 1.5, i.e. most normal reading), so a downscaled
+                            // source here was visibly blurry text at everyday zoom levels.
+                            width = viewSize.width,
+                            height = estimatedPageHeight.toInt(),
                             isPrefetch = page !in visiblePages
                         ) { bitmap ->
                             bitmap?.let {
