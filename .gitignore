@@ -22,3 +22,7 @@ node_modules/
 *.jks
 *.keystore
 keystore.properties
+
+# Regenerable knowledge-graph output (run `graphify update .` to rebuild).
+# Also holds machine-specific paths (.graphify_python, .graphify_root).
+graphify-out/
