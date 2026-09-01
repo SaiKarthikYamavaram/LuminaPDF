@@ -55,6 +55,7 @@ class AppHomeScreen(
 class AppPdfViewerScreen(
     private val document: PdfDocument,
     private val documentId: String,
+    private val documentTitle: String,
     private val initialPage: Int?,
     private val onClose: () -> Unit
 ) : Screen {
@@ -63,6 +64,7 @@ class AppPdfViewerScreen(
         PdfViewer(
             document = document,
             documentId = documentId,
+            documentTitle = documentTitle,
             initialPage = initialPage,
             onClose = onClose,
             modifier = Modifier.fillMaxSize()
@@ -187,6 +189,7 @@ fun App() {
                         AppPdfViewerScreen(
                             document = currentDocument!!,
                             documentId = recentFile.id,
+                            documentTitle = recentFile.name,
                             initialPage = page,
                             onClose = {
                                 currentDocument?.close()
@@ -244,6 +247,7 @@ fun App() {
                         AppPdfViewerScreen(
                             document = currentDocument!!,
                             documentId = fileToOpen.id,
+                            documentTitle = fileToOpen.name,
                             initialPage = null,
                             onClose = {
                                 currentDocument?.close()

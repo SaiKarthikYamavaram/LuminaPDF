@@ -105,6 +105,7 @@ fun clampScrollOffset(
 fun PdfViewer(
     document: PdfDocument,
     documentId: String? = null,
+    documentTitle: String? = null,
     initialPage: Int? = null,
     state: PdfViewerState = remember { PdfViewerState() },
     config: PdfViewerConfig = PdfViewerConfig(),
@@ -161,7 +162,7 @@ fun PdfViewer(
     var isInitialZoomSet by remember { mutableStateOf(false) }
     var lastViewSize by remember { mutableStateOf(IntSize.Zero) }
 
-    val topBarHeight = 40.dp
+    val topBarHeight = 48.dp
     val topPaddingPx = with(density) { topBarHeight.toPx() + 24.dp.toPx() }
     val bottomPaddingPx = with(density) { 24.dp.toPx() }
     val marginPx = with(density) { 16.dp.toPx() }
@@ -1013,6 +1014,7 @@ fun PdfViewer(
 
         // 2. Top Bar Overlay
         TopBar(
+            title = documentTitle,
             zoomPercent = (state.zoom * 100).toInt(),
             onZoomIn = {
                 changeZoomWithFocusAnimated(state.zoom + 0.2f, Offset(viewSize.width / 2f, viewSize.height / 2f))

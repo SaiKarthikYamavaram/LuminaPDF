@@ -20,8 +20,24 @@ import androidx.compose.ui.unit.dp
 import com.lumina.pdf.core.PdfRect
 import kotlinx.coroutines.delay
 
+private val BarHeight = 48.dp
+private val ButtonSize = 36.dp
+private val IconSize = 18.dp
+
+@Composable
+private fun TopBarDivider() {
+    Box(
+        modifier = Modifier
+            .padding(horizontal = 6.dp)
+            .width(1.dp)
+            .height(22.dp)
+            .background(MaterialTheme.colorScheme.onSurface.copy(alpha = 0.12f))
+    )
+}
+
 @Composable
 fun TopBar(
+    title: String? = null,
     zoomPercent: Int,
     onZoomIn: () -> Unit,
     onZoomOut: () -> Unit,
@@ -107,13 +123,13 @@ fun TopBar(
         shadowElevation = 4.dp,
         modifier = modifier
             .fillMaxWidth()
-            .height(40.dp)
+            .height(BarHeight)
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier
                 .fillMaxSize()
-                .padding(horizontal = 12.dp)
+                .padding(horizontal = 16.dp)
         ) {
             if (isSearchActive) {
                 Row(
@@ -121,8 +137,8 @@ fun TopBar(
                     modifier = Modifier.weight(1f),
                     horizontalArrangement = Arrangement.spacedBy(4.dp)
                 ) {
-                    SearchIcon(color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f), modifier = Modifier.size(16.dp))
-                    
+                    SearchIcon(color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f), modifier = Modifier.size(IconSize))
+
                     androidx.compose.foundation.text.BasicTextField(
                         value = searchQuery,
                         onValueChange = onSearchQueryChange,
@@ -141,12 +157,12 @@ fun TopBar(
                                 } else false
                             }
                             .weight(1f)
-                            .height(28.dp)
+                            .height(32.dp)
                             .background(
                                 color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.06f),
-                                shape = RoundedCornerShape(4.dp)
+                                shape = RoundedCornerShape(6.dp)
                             )
-                            .padding(horizontal = 8.dp, vertical = 4.dp),
+                            .padding(horizontal = 10.dp, vertical = 6.dp),
                         decorationBox = { innerTextField ->
                             Box(contentAlignment = Alignment.CenterStart) {
                                 if (searchQuery.isEmpty()) {
@@ -160,7 +176,7 @@ fun TopBar(
                             }
                         }
                     )
-                    
+
                     if (searchQuery.isNotEmpty()) {
                         val matchText = if (totalMatches > 0) {
                             "${currentMatchIndex + 1} / $totalMatches"
@@ -174,173 +190,186 @@ fun TopBar(
                             modifier = Modifier.padding(horizontal = 4.dp)
                         )
                     }
-                    
+
                     IconButton(
                         onClick = onPrevMatch,
                         enabled = totalMatches > 0,
-                        modifier = Modifier.size(28.dp)
+                        modifier = Modifier.size(ButtonSize)
                     ) {
                         ChevronUpIcon(
                             color = if (totalMatches > 0) MaterialTheme.colorScheme.onSurface else MaterialTheme.colorScheme.onSurface.copy(alpha = 0.3f),
-                            modifier = Modifier.size(16.dp)
+                            modifier = Modifier.size(IconSize)
                         )
                     }
 
                     IconButton(
                         onClick = onNextMatch,
                         enabled = totalMatches > 0,
-                        modifier = Modifier.size(28.dp)
+                        modifier = Modifier.size(ButtonSize)
                     ) {
                         ChevronDownIcon(
                             color = if (totalMatches > 0) MaterialTheme.colorScheme.onSurface else MaterialTheme.colorScheme.onSurface.copy(alpha = 0.3f),
-                            modifier = Modifier.size(16.dp)
+                            modifier = Modifier.size(IconSize)
                         )
                     }
-                    
+
                     IconButton(
                         onClick = {
                             onSearchActiveChange(false)
                             onSearchQueryChange("")
                         },
-                        modifier = Modifier.size(28.dp)
+                        modifier = Modifier.size(ButtonSize)
                     ) {
-                        CloseIcon(color = MaterialTheme.colorScheme.onSurface, modifier = Modifier.size(16.dp))
+                        CloseIcon(color = MaterialTheme.colorScheme.onSurface, modifier = Modifier.size(IconSize))
                     }
                 }
             } else {
-                if (onClose != null) {
-                    IconButton(
-                        onClick = onClose,
-                        modifier = Modifier.size(32.dp)
-                    ) {
-                        ArrowBackIcon(color = MaterialTheme.colorScheme.onSurface, modifier = Modifier.size(16.dp))
+                // Left group: navigation / panel toggles
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(2.dp)
+                ) {
+                    if (onClose != null) {
+                        IconButton(
+                            onClick = onClose,
+                            modifier = Modifier.size(ButtonSize)
+                        ) {
+                            ArrowBackIcon(color = MaterialTheme.colorScheme.onSurface, modifier = Modifier.size(IconSize))
+                        }
                     }
-                    Spacer(modifier = Modifier.width(4.dp))
+
+                    IconButton(
+                        onClick = { onOutlineActiveChange(!isOutlineActive) },
+                        modifier = Modifier.size(ButtonSize)
+                    ) {
+                        MenuIcon(
+                            color = if (isOutlineActive) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface,
+                            modifier = Modifier.size(IconSize)
+                        )
+                    }
+
+                    IconButton(
+                        onClick = { onNotesActiveChange(!isNotesActive) },
+                        modifier = Modifier.size(ButtonSize)
+                    ) {
+                        NoteIcon(
+                            color = if (isNotesActive) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface,
+                            modifier = Modifier.size(IconSize)
+                        )
+                    }
                 }
 
-                // Outline toggle button (Hamburger menu at the far left)
-                IconButton(
-                    onClick = { onOutlineActiveChange(!isOutlineActive) },
-                    modifier = Modifier.size(32.dp)
-                ) {
-                    MenuIcon(
-                        color = if (isOutlineActive) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface,
-                        modifier = Modifier.size(16.dp)
-                    )
-                }
+                TopBarDivider()
 
-                Spacer(modifier = Modifier.width(4.dp))
-
-                // Notes toggle button
-                IconButton(
-                    onClick = { onNotesActiveChange(!isNotesActive) },
-                    modifier = Modifier.size(32.dp)
-                ) {
-                    NoteIcon(
-                        color = if (isNotesActive) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface,
-                        modifier = Modifier.size(16.dp)
-                    )
-                }
-
-                Spacer(modifier = Modifier.width(4.dp))
-
+                // Center: the open document's own name, not static app branding
                 Text(
-                    text = "LuminaPDF",
+                    text = title?.takeIf { it.isNotBlank() } ?: "LuminaPDF",
                     style = MaterialTheme.typography.titleSmall,
-                    fontWeight = FontWeight.ExtraBold,
-                    color = MaterialTheme.colorScheme.primary,
-                    modifier = Modifier.weight(1f)
+                    fontWeight = FontWeight.SemiBold,
+                    color = MaterialTheme.colorScheme.onSurface,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                    modifier = Modifier
+                        .weight(1f)
+                        .padding(horizontal = 4.dp)
                 )
 
-                IconButton(
-                    onClick = { onSearchActiveChange(true) },
-                    modifier = Modifier.size(32.dp)
+                TopBarDivider()
+
+                // Right group: search + view controls, clustered together
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(4.dp)
                 ) {
-                    SearchIcon(color = MaterialTheme.colorScheme.onSurface, modifier = Modifier.size(16.dp))
-                }
-                
-                Spacer(modifier = Modifier.width(4.dp))
-            }
+                    IconButton(
+                        onClick = { onSearchActiveChange(true) },
+                        modifier = Modifier.size(ButtonSize)
+                    ) {
+                        SearchIcon(color = MaterialTheme.colorScheme.onSurface, modifier = Modifier.size(IconSize))
+                    }
 
-            Spacer(modifier = Modifier.width(8.dp))
+                    Spacer(modifier = Modifier.width(8.dp))
 
-            // Zoom controls
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(4.dp)
-            ) {
-                IconButton(
-                    onClick = onZoomOut,
-                    modifier = Modifier.size(32.dp)
-                ) {
-                    RemoveIcon(color = MaterialTheme.colorScheme.onSurface, modifier = Modifier.size(16.dp))
-                }
+                    IconButton(
+                        onClick = onZoomOut,
+                        modifier = Modifier.size(ButtonSize)
+                    ) {
+                        RemoveIcon(color = MaterialTheme.colorScheme.onSurface, modifier = Modifier.size(IconSize))
+                    }
 
-                Surface(
-                    shape = RoundedCornerShape(4.dp),
-                    color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.06f),
-                    modifier = Modifier.width(48.dp)
-                ) {
-                    Text(
-                        text = "$zoomPercent%",
-                        style = MaterialTheme.typography.bodySmall,
-                        fontWeight = FontWeight.SemiBold,
-                        textAlign = TextAlign.Center,
-                        modifier = Modifier.padding(vertical = 2.dp),
-                        color = MaterialTheme.colorScheme.onSurface
-                    )
-                }
+                    Surface(
+                        shape = RoundedCornerShape(6.dp),
+                        color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.06f),
+                        modifier = Modifier.width(52.dp)
+                    ) {
+                        Text(
+                            text = "$zoomPercent%",
+                            style = MaterialTheme.typography.bodySmall,
+                            fontWeight = FontWeight.SemiBold,
+                            textAlign = TextAlign.Center,
+                            modifier = Modifier.padding(vertical = 4.dp),
+                            color = MaterialTheme.colorScheme.onSurface
+                        )
+                    }
 
-                IconButton(
-                    onClick = onZoomIn,
-                    modifier = Modifier.size(32.dp)
-                ) {
-                    AddIcon(color = MaterialTheme.colorScheme.onSurface, modifier = Modifier.size(16.dp))
-                }
+                    IconButton(
+                        onClick = onZoomIn,
+                        modifier = Modifier.size(ButtonSize)
+                    ) {
+                        AddIcon(color = MaterialTheme.colorScheme.onSurface, modifier = Modifier.size(IconSize))
+                    }
 
-                TextButton(
-                    onClick = onFitPage,
-                    modifier = Modifier.height(32.dp),
-                    contentPadding = PaddingValues(horizontal = 8.dp),
-                    colors = ButtonDefaults.textButtonColors(contentColor = MaterialTheme.colorScheme.primary)
-                ) {
-                    Text(
-                        text = "Fit Page",
-                        style = MaterialTheme.typography.labelMedium,
-                        fontWeight = FontWeight.Bold
-                    )
-                }
+                    TextButton(
+                        onClick = onFitPage,
+                        modifier = Modifier.height(ButtonSize),
+                        contentPadding = PaddingValues(horizontal = 10.dp),
+                        colors = ButtonDefaults.textButtonColors(contentColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.75f))
+                    ) {
+                        Text(
+                            text = "Fit Page",
+                            style = MaterialTheme.typography.labelMedium,
+                            fontWeight = FontWeight.SemiBold
+                        )
+                    }
 
-                Spacer(modifier = Modifier.width(4.dp))
+                    Spacer(modifier = Modifier.width(4.dp))
 
-                TextButton(
-                    onClick = {
-                        jumpPageInput = (currentPage + 1).toString()
-                        showJumpDialog = true
-                    },
-                    modifier = Modifier.height(32.dp),
-                    contentPadding = PaddingValues(horizontal = 8.dp),
-                    colors = ButtonDefaults.textButtonColors(contentColor = MaterialTheme.colorScheme.primary)
-                ) {
-                    Text(
-                        text = "Page ${currentPage + 1} / $pageCount",
-                        style = MaterialTheme.typography.labelMedium,
-                        fontWeight = FontWeight.Bold
-                    )
-                }
-            }
+                    // Page indicator, styled as a distinct pill so it reads as its own
+                    // actionable control rather than blending into the zoom cluster.
+                    Surface(
+                        onClick = {
+                            jumpPageInput = (currentPage + 1).toString()
+                            showJumpDialog = true
+                        },
+                        shape = RoundedCornerShape(18.dp),
+                        color = MaterialTheme.colorScheme.primary.copy(alpha = 0.12f),
+                        modifier = Modifier.height(ButtonSize)
+                    ) {
+                        Box(
+                            modifier = Modifier.padding(horizontal = 12.dp),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Text(
+                                text = "Page ${currentPage + 1} / $pageCount",
+                                style = MaterialTheme.typography.labelMedium,
+                                fontWeight = FontWeight.Bold,
+                                color = MaterialTheme.colorScheme.primary
+                            )
+                        }
+                    }
 
-            Spacer(modifier = Modifier.width(4.dp))
+                    TopBarDivider()
 
-            // Night Mode Toggle
-            IconButton(
-                onClick = onToggleNightMode,
-                modifier = Modifier.size(32.dp)
-            ) {
-                if (nightMode) {
-                    SunIcon(color = MaterialTheme.colorScheme.primary, modifier = Modifier.size(16.dp))
-                } else {
-                    MoonIcon(color = MaterialTheme.colorScheme.onSurface, modifier = Modifier.size(16.dp))
+                    IconButton(
+                        onClick = onToggleNightMode,
+                        modifier = Modifier.size(ButtonSize)
+                    ) {
+                        if (nightMode) {
+                            SunIcon(color = MaterialTheme.colorScheme.primary, modifier = Modifier.size(IconSize))
+                        } else {
+                            MoonIcon(color = MaterialTheme.colorScheme.onSurface, modifier = Modifier.size(IconSize))
+                        }
+                    }
                 }
             }
         }
