@@ -28,11 +28,10 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.lumina.pdf.viewer.*
-
-// Deliberately theme-independent status colors (correct in either light/dark scheme)
-private val syncSuccessColor = Color(0xFF0F9D58)
-private val notesIndicatorColor = Color(0xFFFFC107)
-private val pdfBadgeColor = Color(0xFFE53935)
+import com.lumina.pdf.viewer.theme.LuminaRadius
+import com.lumina.pdf.viewer.theme.luminaDangerColor
+import com.lumina.pdf.viewer.theme.luminaNotesColor
+import com.lumina.pdf.viewer.theme.luminaSuccessColor
 
 // --- Component Card for Grid Item ---
 @Composable
@@ -46,7 +45,10 @@ fun GridItemCard(
     modifier: Modifier = Modifier
 ) {
     val colorScheme = MaterialTheme.colorScheme
-    val cardBg = colorScheme.surfaceContainerHigh
+    val cardBg = colorScheme.surfaceContainerLow
+    val cardShape = RoundedCornerShape(LuminaRadius.lg)
+    val successColor = luminaSuccessColor()
+    val notesColor = luminaNotesColor()
     val hasNotes by produceState(initialValue = false, key1 = fileItem.id) {
         value = db.getNotes(fileItem.id).isNotEmpty()
     }
@@ -55,10 +57,10 @@ fun GridItemCard(
         onClick = onClick,
         normalColor = cardBg,
         hoverColor = colorScheme.surfaceContainerHighest,
-        shape = RoundedCornerShape(6.dp),
+        shape = cardShape,
         modifier = modifier
             .fillMaxWidth()
-            .border(1.dp, colorScheme.outlineVariant, RoundedCornerShape(6.dp))
+            .border(1.dp, colorScheme.outlineVariant, cardShape)
     ) { isHovered ->
         Column(
             modifier = Modifier.fillMaxWidth()
@@ -69,7 +71,7 @@ fun GridItemCard(
                     .fillMaxWidth()
                     .height(130.dp)
                     .background(colorScheme.surfaceContainerLowest)
-                    .clip(RoundedCornerShape(topStart = 6.dp, topEnd = 6.dp)),
+                    .clip(RoundedCornerShape(topStart = LuminaRadius.lg, topEnd = LuminaRadius.lg)),
                 contentAlignment = Alignment.Center
             ) {
                 if (fileItem.thumbnail != null) {
@@ -125,7 +127,7 @@ fun GridItemCard(
                 // Green Sync checkmark (mock cloud synced state on bottom left)
                 if (fileItem.isSample || fileItem.fileBytes != null) {
                     SyncCheckIcon(
-                        color = syncSuccessColor,
+                        color = successColor,
                         modifier = Modifier
                             .align(Alignment.BottomStart)
                             .padding(8.dp)
@@ -155,7 +157,7 @@ fun GridItemCard(
                             .background(Color.Black.copy(alpha = 0.6f), RoundedCornerShape(4.dp))
                             .padding(4.dp)
                     ) {
-                        NotesIndicatorIcon(color = notesIndicatorColor, modifier = Modifier.size(12.dp))
+                        NotesIndicatorIcon(color = notesColor, modifier = Modifier.size(12.dp))
                     }
                 }
             }
@@ -197,6 +199,9 @@ fun ListItemRow(
     modifier: Modifier = Modifier
 ) {
     val colorScheme = MaterialTheme.colorScheme
+    val successColor = luminaSuccessColor()
+    val notesColor = luminaNotesColor()
+    val dangerColor = luminaDangerColor()
     val hasNotes by produceState(initialValue = false, key1 = fileItem.id) {
         value = db.getNotes(fileItem.id).isNotEmpty()
     }
@@ -224,7 +229,7 @@ fun ListItemRow(
                 // PDF small badge
                 Box(
                     modifier = Modifier
-                        .background(pdfBadgeColor, RoundedCornerShape(2.dp))
+                        .background(dangerColor, RoundedCornerShape(2.dp))
                         .padding(horizontal = 4.dp, vertical = 1.dp)
                 ) {
                     Text(
@@ -248,7 +253,7 @@ fun ListItemRow(
                 )
                 if (hasNotes) {
                     Spacer(modifier = Modifier.width(6.dp))
-                    NotesIndicatorIcon(color = notesIndicatorColor, modifier = Modifier.size(14.dp))
+                    NotesIndicatorIcon(color = notesColor, modifier = Modifier.size(14.dp))
                 }
             }
             
@@ -286,7 +291,7 @@ fun ListItemRow(
                     }
                 } else {
                     if (fileItem.isSample || fileItem.fileBytes != null) {
-                        SyncCheckIcon(color = syncSuccessColor)
+                        SyncCheckIcon(color = successColor)
                     }
                 }
             }

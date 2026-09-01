@@ -28,6 +28,7 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.input.pointer.*
 import luminapdf.shared.generated.resources.*
 import org.jetbrains.compose.resources.painterResource
+import com.lumina.pdf.viewer.theme.LuminaRadius
 import kotlin.math.PI
 import kotlin.math.cos
 import kotlin.math.sin
@@ -179,7 +180,7 @@ fun HomeScreen(
             Button(
                 onClick = onTriggerFilePicker,
                 colors = ButtonDefaults.buttonColors(containerColor = blueAccent),
-                shape = RoundedCornerShape(8.dp),
+                shape = RoundedCornerShape(LuminaRadius.md),
                 contentPadding = PaddingValues(horizontal = 20.dp, vertical = 10.dp),
                 modifier = Modifier
                     .fillMaxWidth()
@@ -210,11 +211,12 @@ fun HomeScreen(
             
             navigationItems.forEach { (tabName, icon, targetTab) ->
                 val isActive = activeTab == targetTab
+                val activeColor = colorScheme.primary
                 HoverableItem(
                     onClick = { activeTab = targetTab },
-                    normalColor = if (isActive) colorScheme.onSurface.copy(alpha = 0.12f) else Color.Transparent,
-                    hoverColor = if (isActive) colorScheme.onSurface.copy(alpha = 0.12f) else colorScheme.onSurface.copy(alpha = 0.08f),
-                    shape = RoundedCornerShape(4.dp),
+                    normalColor = if (isActive) colorScheme.primaryContainer else Color.Transparent,
+                    hoverColor = if (isActive) colorScheme.primaryContainer else colorScheme.onSurface.copy(alpha = 0.06f),
+                    shape = RoundedCornerShape(LuminaRadius.md),
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(40.dp)
@@ -226,11 +228,11 @@ fun HomeScreen(
                             .fillMaxSize()
                             .padding(horizontal = 12.dp)
                     ) {
-                        icon(if (isActive) textPrimary else textSecondary)
+                        icon(if (isActive) activeColor else textSecondary)
                         Spacer(modifier = Modifier.width(12.dp))
                         Text(
                             text = tabName,
-                            color = if (isActive) textPrimary else textSecondary,
+                            color = if (isActive) activeColor else textSecondary,
                             fontWeight = if (isActive) FontWeight.Bold else FontWeight.Medium,
                             fontSize = 13.sp
                         )
@@ -259,8 +261,8 @@ fun HomeScreen(
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(38.dp)
-                        .background(colorScheme.surfaceContainerHigh, RoundedCornerShape(8.dp))
-                        .border(1.dp, colorScheme.outlineVariant, RoundedCornerShape(8.dp))
+                        .background(colorScheme.surfaceContainerHigh, RoundedCornerShape(LuminaRadius.md))
+                        .border(1.dp, colorScheme.outlineVariant, RoundedCornerShape(LuminaRadius.md))
                         .padding(horizontal = 12.dp)
                 ) {
                     SearchIcon(color = textSecondary, modifier = Modifier.size(16.dp))
@@ -316,8 +318,8 @@ fun HomeScreen(
                             modifier = Modifier
                                 .width(240.dp)
                                 .height(32.dp)
-                                .background(colorScheme.surfaceContainerHigh, RoundedCornerShape(6.dp))
-                                .border(1.dp, colorScheme.outlineVariant, RoundedCornerShape(6.dp))
+                                .background(colorScheme.surfaceContainerHigh, RoundedCornerShape(LuminaRadius.sm))
+                                .border(1.dp, colorScheme.outlineVariant, RoundedCornerShape(LuminaRadius.sm))
                                 .padding(horizontal = 10.dp)
                         ) {
                             Text(
@@ -398,7 +400,7 @@ fun HomeScreen(
                             // Segmented list/grid view switcher
                             Row(
                                 modifier = Modifier
-                                    .background(colorScheme.surfaceContainerHigh, RoundedCornerShape(6.dp))
+                                    .background(colorScheme.surfaceContainerHigh, RoundedCornerShape(LuminaRadius.sm))
                                     .padding(2.dp)
                             ) {
                                 val isList = viewMode == "List"
@@ -548,7 +550,7 @@ fun HomeScreen(
                                             Button(
                                                 onClick = { onOpenFile(file, note.page) },
                                                 colors = ButtonDefaults.buttonColors(containerColor = colorScheme.surfaceContainerHigh),
-                                                shape = RoundedCornerShape(6.dp),
+                                                shape = RoundedCornerShape(LuminaRadius.sm),
                                                 contentPadding = PaddingValues(horizontal = 12.dp, vertical = 6.dp),
                                                 modifier = Modifier.height(28.dp)
                                             ) {
@@ -595,14 +597,14 @@ fun HomeScreen(
                                         Button(
                                             onClick = onTriggerFilePicker,
                                             colors = ButtonDefaults.buttonColors(containerColor = blueAccent),
-                                            shape = RoundedCornerShape(8.dp)
+                                            shape = RoundedCornerShape(LuminaRadius.md)
                                         ) {
                                             Text(text = "Open File", color = colorScheme.onPrimary, fontWeight = FontWeight.Bold, fontSize = 13.sp)
                                         }
                                         if (sampleFile != null) {
                                             OutlinedButton(
                                                 onClick = { onOpenFile(sampleFile, null) },
-                                                shape = RoundedCornerShape(8.dp)
+                                                shape = RoundedCornerShape(LuminaRadius.md)
                                             ) {
                                                 Text(text = "Try a sample PDF", color = textPrimary, fontWeight = FontWeight.Bold, fontSize = 13.sp)
                                             }

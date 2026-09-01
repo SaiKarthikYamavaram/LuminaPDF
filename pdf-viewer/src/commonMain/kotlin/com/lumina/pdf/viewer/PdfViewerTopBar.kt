@@ -8,6 +8,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
@@ -18,6 +19,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.lumina.pdf.core.PdfRect
+import com.lumina.pdf.viewer.theme.LuminaRadius
 import kotlinx.coroutines.delay
 
 private val BarHeight = 48.dp
@@ -160,7 +162,7 @@ fun TopBar(
                             .height(32.dp)
                             .background(
                                 color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.06f),
-                                shape = RoundedCornerShape(6.dp)
+                                shape = RoundedCornerShape(LuminaRadius.sm)
                             )
                             .padding(horizontal = 10.dp, vertical = 6.dp),
                         decorationBox = { innerTextField ->
@@ -240,7 +242,10 @@ fun TopBar(
 
                     IconButton(
                         onClick = { onOutlineActiveChange(!isOutlineActive) },
-                        modifier = Modifier.size(ButtonSize)
+                        modifier = Modifier
+                            .size(ButtonSize)
+                            .clip(RoundedCornerShape(LuminaRadius.sm))
+                            .background(if (isOutlineActive) MaterialTheme.colorScheme.primaryContainer else Color.Transparent)
                     ) {
                         MenuIcon(
                             color = if (isOutlineActive) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface,
@@ -250,7 +255,10 @@ fun TopBar(
 
                     IconButton(
                         onClick = { onNotesActiveChange(!isNotesActive) },
-                        modifier = Modifier.size(ButtonSize)
+                        modifier = Modifier
+                            .size(ButtonSize)
+                            .clip(RoundedCornerShape(LuminaRadius.sm))
+                            .background(if (isNotesActive) MaterialTheme.colorScheme.primaryContainer else Color.Transparent)
                     ) {
                         NoteIcon(
                             color = if (isNotesActive) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface,
@@ -298,7 +306,7 @@ fun TopBar(
                     }
 
                     Surface(
-                        shape = RoundedCornerShape(6.dp),
+                        shape = RoundedCornerShape(LuminaRadius.sm),
                         color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.06f),
                         modifier = Modifier.width(52.dp)
                     ) {
@@ -341,7 +349,7 @@ fun TopBar(
                             jumpPageInput = (currentPage + 1).toString()
                             showJumpDialog = true
                         },
-                        shape = RoundedCornerShape(18.dp),
+                        shape = RoundedCornerShape(LuminaRadius.pill),
                         color = MaterialTheme.colorScheme.primary.copy(alpha = 0.12f),
                         modifier = Modifier.height(ButtonSize)
                     ) {

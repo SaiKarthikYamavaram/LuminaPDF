@@ -11,6 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draganddrop.DragAndDropEvent
 import androidx.compose.ui.draganddrop.DragAndDropTarget
 import androidx.compose.ui.text.TextStyle
+import com.lumina.pdf.viewer.theme.luminaColorScheme
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -76,11 +77,7 @@ class AppPdfViewerScreen(
 @Composable
 fun App() {
     val darkTheme = isSystemInDarkTheme()
-    val colorScheme = if (darkTheme) {
-        darkColorScheme()
-    } else {
-        lightColorScheme()
-    }
+    val colorScheme = luminaColorScheme(darkTheme)
 
     val interFontFamily = FontFamily(
         Font(Res.font.Inter_Regular, FontWeight.Normal, FontStyle.Normal),

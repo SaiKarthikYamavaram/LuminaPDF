@@ -10,6 +10,7 @@ import androidx.compose.foundation.interaction.collectIsHoveredAsState
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -21,6 +22,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.lumina.pdf.viewer.theme.LuminaRadius
 import kotlin.math.PI
 import kotlin.math.cos
 import kotlin.math.sin
@@ -28,17 +30,14 @@ import kotlin.math.sin
 // --- Custom Canvas Icons for Sleek, Dependency-free Rendering ---
 
 @Composable
-fun AppLogoMark(modifier: Modifier = Modifier) {
+fun AppLogoMark(modifier: Modifier = Modifier, color: Color = MaterialTheme.colorScheme.primary) {
     Canvas(modifier = modifier.size(32.dp)) {
-        drawRoundRect(
-            color = Color(0xFF2E2E2E), // Dark rounded rectangle background
-            cornerRadius = androidx.compose.ui.geometry.CornerRadius(6.dp.toPx())
-        )
         val w = size.width
         val h = size.height
         val stroke = 2.dp.toPx()
 
-        // Folded-corner document mark
+        // Folded-corner document mark, drawn directly on the surrounding surface (no badge
+        // background) so it reads as part of the Paper & Ink palette rather than a fixed chip.
         val left = w * 0.30f
         val right = w * 0.70f
         val top = h * 0.22f
@@ -53,14 +52,14 @@ fun AppLogoMark(modifier: Modifier = Modifier) {
             lineTo(left, bottom)
             close()
         }
-        drawPath(path = page, color = Color.White, style = Stroke(width = stroke, cap = StrokeCap.Round, join = StrokeJoin.Round))
+        drawPath(path = page, color = color, style = Stroke(width = stroke, cap = StrokeCap.Round, join = StrokeJoin.Round))
 
         val foldPath = Path().apply {
             moveTo(right - fold, top)
             lineTo(right - fold, top + fold)
             lineTo(right, top + fold)
         }
-        drawPath(path = foldPath, color = Color.White, style = Stroke(width = stroke * 0.7f, cap = StrokeCap.Round, join = StrokeJoin.Round))
+        drawPath(path = foldPath, color = color, style = Stroke(width = stroke * 0.7f, cap = StrokeCap.Round, join = StrokeJoin.Round))
 
         // Text lines
         val lineStroke = stroke * 0.65f
@@ -69,11 +68,11 @@ fun AppLogoMark(modifier: Modifier = Modifier) {
         val lineRightLong = right - (right - left) * 0.14f
         val lineSpacing = (bottom - top - fold) / 4f
         var y = top + fold + lineSpacing
-        drawLine(Color.White, Offset(lineLeft, y), Offset(lineRightLong, y), strokeWidth = lineStroke, cap = StrokeCap.Round)
+        drawLine(color, Offset(lineLeft, y), Offset(lineRightLong, y), strokeWidth = lineStroke, cap = StrokeCap.Round)
         y += lineSpacing
-        drawLine(Color.White, Offset(lineLeft, y), Offset(lineRightShort, y), strokeWidth = lineStroke, cap = StrokeCap.Round)
+        drawLine(color, Offset(lineLeft, y), Offset(lineRightShort, y), strokeWidth = lineStroke, cap = StrokeCap.Round)
         y += lineSpacing
-        drawLine(Color.White, Offset(lineLeft, y), Offset(lineRightLong, y), strokeWidth = lineStroke, cap = StrokeCap.Round)
+        drawLine(color, Offset(lineLeft, y), Offset(lineRightLong, y), strokeWidth = lineStroke, cap = StrokeCap.Round)
     }
 }
 
@@ -585,29 +584,30 @@ fun HoverableItem(
 // --- Canvas Mock Document Page Preview ---
 @Composable
 fun MockDocumentThumbnail(name: String, modifier: Modifier = Modifier) {
+    val colorScheme = MaterialTheme.colorScheme
     Box(
         modifier = modifier
             .fillMaxSize()
-            .background(Color(0xFF151515))
             .padding(8.dp),
         contentAlignment = Alignment.Center
     ) {
-        // White page container
+        // White page container — the surrounding parent already supplies the sunken
+        // theme-aware background, so this frame stays transparent instead of overriding it.
         Box(
             modifier = Modifier
                 .fillMaxHeight()
                 .aspectRatio(1f / 1.414f) // standard A4 aspect ratio
-                .background(Color.White, RoundedCornerShape(1.dp))
-                .border(1.5.dp, Color(0xFFDCDCDC), RoundedCornerShape(1.dp))
+                .background(colorScheme.surfaceContainerLow, RoundedCornerShape(LuminaRadius.sm))
+                .border(1.dp, colorScheme.outlineVariant, RoundedCornerShape(LuminaRadius.sm))
                 .padding(8.dp)
         ) {
             // Generic "no thumbnail yet" placeholder — deliberately does not infer or
             // fabricate document content from the filename.
             Column(verticalArrangement = Arrangement.spacedBy(3.dp)) {
-                Box(modifier = Modifier.fillMaxWidth(0.6f).height(5.dp).background(Color(0xFF333333)))
+                Box(modifier = Modifier.fillMaxWidth(0.6f).height(5.dp).background(colorScheme.onSurface))
                 Spacer(modifier = Modifier.height(4.dp))
                 repeat(8) {
-                    Box(modifier = Modifier.fillMaxWidth().height(2.dp).background(Color(0xFFE0E0E0)))
+                    Box(modifier = Modifier.fillMaxWidth().height(2.dp).background(colorScheme.outlineVariant))
                 }
             }
         }

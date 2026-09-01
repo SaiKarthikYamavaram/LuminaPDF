@@ -52,6 +52,7 @@ import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import com.lumina.pdf.core.*
 import com.lumina.pdf.viewer.db.*
+import com.lumina.pdf.viewer.theme.LuminaColors
 import kotlinx.coroutines.launch
 import co.touchlab.kermit.Logger
 import kotlin.math.cos
@@ -746,9 +747,9 @@ fun PdfViewer(
     }
 
     val backgroundColor = if (localNightMode) {
-        Color(0xFF2E2724)
+        LuminaColors.surfaceBaseDark
     } else {
-        Color(0xFFF1EAE0)
+        LuminaColors.surfaceBaseLight
     }
 
     Box(
@@ -929,7 +930,7 @@ fun PdfViewer(
                             translate(left = 0f, top = pageTop) {
                                 if (renderFailed[page] == true) {
                                     // Failed-render state: distinct warning tint + a small "!" glyph. Tap to retry.
-                                    val warningColor = Color(0xFFB3261E)
+                                    val warningColor = if (localNightMode) LuminaColors.statusDangerDark else LuminaColors.statusDangerLight
                                     drawRect(
                                         color = warningColor.copy(alpha = 0.14f),
                                         size = androidx.compose.ui.geometry.Size(size.width, estimatedPageHeight)
@@ -1141,7 +1142,7 @@ fun PdfViewer(
                     // localNightMode, not the app chrome's MaterialTheme) — using onSurface here
                     // instead could go near-invisible whenever the two themes disagree (e.g. app
                     // in dark system theme with night-mode reading toggled off to a cream page).
-                    val scrollbarInkColor = if (localNightMode) Color(0xFFF1EAE0) else Color(0xFF2E2724)
+                    val scrollbarInkColor = if (localNightMode) LuminaColors.inkPrimaryDark else LuminaColors.inkPrimaryLight
 
                     // Track background
                     Box(
