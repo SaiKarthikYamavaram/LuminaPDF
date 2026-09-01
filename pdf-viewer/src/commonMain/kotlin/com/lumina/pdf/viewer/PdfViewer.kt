@@ -1135,6 +1135,12 @@ fun PdfViewer(
                             )
                         }
                 ) {
+                    // Contrast against the reading pane's own background (which follows
+                    // localNightMode, not the app chrome's MaterialTheme) — using onSurface here
+                    // instead could go near-invisible whenever the two themes disagree (e.g. app
+                    // in dark system theme with night-mode reading toggled off to a cream page).
+                    val scrollbarInkColor = if (localNightMode) Color(0xFFF1EAE0) else Color(0xFF2E2724)
+
                     // Track background
                     Box(
                         modifier = Modifier
@@ -1142,11 +1148,11 @@ fun PdfViewer(
                             .width(4.dp)
                             .fillMaxHeight()
                             .background(
-                                color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.1f),
+                                color = scrollbarInkColor.copy(alpha = 0.18f),
                                 shape = RoundedCornerShape(2.dp)
                             )
                     )
-                    
+
                     // Thumb
                     Box(
                         modifier = Modifier
@@ -1155,7 +1161,7 @@ fun PdfViewer(
                             .width(8.dp)
                             .height(with(density) { thumbHeight.toDp() })
                             .background(
-                                color = if (isDraggingScrollbar) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface.copy(alpha = 0.4f),
+                                color = scrollbarInkColor.copy(alpha = if (isDraggingScrollbar) 0.75f else 0.5f),
                                 shape = RoundedCornerShape(4.dp)
                             )
                     )
