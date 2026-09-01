@@ -3,7 +3,11 @@ package com.lumina.pdf.viewer
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.LinearOutSlowInEasing
+import androidx.compose.animation.core.RepeatMode
 import androidx.compose.animation.core.VectorConverter
+import androidx.compose.animation.core.animateFloat
+import androidx.compose.animation.core.infiniteRepeatable
+import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -32,6 +36,7 @@ import androidx.compose.ui.graphics.ColorMatrix
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.PathOperation
+import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.scale
 import androidx.compose.ui.graphics.drawscope.translate
 import androidx.compose.ui.input.key.*
@@ -122,7 +127,12 @@ fun PdfViewer(
     // each prior tick hadn't been visually traveled yet before the next tick interrupted it.
     // Tracking the target independently means every tick's full pan always gets accumulated.
     var scrollTarget by remember(document) { mutableStateOf(state.scrollOffset) }
-    
+
+    // Drives animated (as opposed to continuous-gesture) zoom changes: double-tap, the +/- and
+    // fit-page toolbar buttons. Pinch-zoom and ctrl+scroll stay instant since those already track
+    // the pointer continuously frame-by-frame and animating on top would fight live input.
+    val zoomAnimatable = remember(document) { Animatable(state.zoom) }
+
     // Memory cache and render queue
     val cache = remember(document) { LruMemoryCache() } // 64MB byte budget, 300-entry cap (see LruMemoryCache defaults)
     val renderQueue = remember(document) { RenderQueue(document, coroutineScope) }
@@ -130,6 +140,8 @@ fun PdfViewer(
     // State maps for current UI
     val thumbnails = remember { mutableStateMapOf<Int, ImageBitmap>() }
     val activeTiles = remember { mutableStateMapOf<TileKey, ImageBitmap>() }
+    // Pages whose thumbnail render failed (RenderQueue delivered a null bitmap) — tap to retry.
+    val renderFailed = remember { mutableStateMapOf<Int, Boolean>() }
 
     val focusRequester = remember { FocusRequester() }
     val density = LocalDensity.current
@@ -504,6 +516,48 @@ fun PdfViewer(
         )
     }
 
+    // Animated counterpart to changeZoomWithFocus, for discrete/button-triggered zoom actions
+    // (double-tap, toolbar +/-). Keeps the same focus point fixed under the cursor throughout
+    // the animation by recomputing scrollOffset from the same anchor at each animated frame.
+    fun changeZoomWithFocusAnimated(newZoom: Float, focus: Offset) {
+        if (viewSize.width == 0 || viewSize.height == 0) return
+        val oldZoom = state.zoom
+        val clampedZoom = newZoom.coerceIn(config.minZoom, config.maxZoom)
+        val documentPoint = (focus - state.scrollOffset) / oldZoom
+
+        coroutineScope.launch {
+            zoomAnimatable.snapTo(oldZoom)
+            zoomAnimatable.animateTo(clampedZoom, tween(durationMillis = 200)) {
+                state.zoom = value
+                state.scrollOffset = clampScrollOffset(
+                    focus - documentPoint * value, value, viewSize.width.toFloat(), viewSize.height.toFloat(),
+                    viewSize.width.toFloat() * 1.4f, pageCount, spacingPx, topPaddingPx, bottomPaddingPx, marginPx
+                )
+            }
+        }
+    }
+
+    // Keyboard-driven scroll (arrow keys / Page Up-Down), same animate-to-target pattern as the
+    // wheel-scroll handler below, so keyboard nav glides instead of teleporting.
+    fun animateScrollByOffset(offsetDelta: Offset) {
+        if (viewSize.width == 0 || viewSize.height == 0) return
+        val base = if (scrollAnimatable.isRunning) scrollTarget else state.scrollOffset
+        val target = clampScrollOffset(
+            base + offsetDelta, state.zoom, viewSize.width.toFloat(), viewSize.height.toFloat(),
+            viewSize.width.toFloat() * 1.4f, pageCount, spacingPx, topPaddingPx, bottomPaddingPx, marginPx
+        )
+        scrollTarget = target
+        coroutineScope.launch {
+            if (!scrollAnimatable.isRunning) scrollAnimatable.snapTo(state.scrollOffset)
+            scrollAnimatable.animateTo(
+                targetValue = target,
+                animationSpec = tween(durationMillis = 180, easing = LinearOutSlowInEasing)
+            ) {
+                state.scrollOffset = value
+            }
+        }
+    }
+
     // Recalculate visible pages immediately on every scroll/zoom change (cheap: no cache/queue
     // work) so the Canvas draw block, which reads state.visiblePages directly, never goes stale.
     LaunchedEffect(document, viewSize, state.zoom, state.scrollOffset) {
@@ -585,9 +639,12 @@ fun PdfViewer(
                             height = estimatedPageHeight.toInt(),
                             isPrefetch = page !in visiblePages
                         ) { bitmap ->
-                            bitmap?.let {
-                                cache.put(thumbKey, it)
-                                thumbnails[page] = it.asImageBitmap()
+                            if (bitmap != null) {
+                                cache.put(thumbKey, bitmap)
+                                thumbnails[page] = bitmap.asImageBitmap()
+                                renderFailed.remove(page)
+                            } else {
+                                renderFailed[page] = true
                             }
                         }
                     )
@@ -643,6 +700,40 @@ fun PdfViewer(
         }
     }
 
+    // Retry a single page's thumbnail render after a failure (invoked by tapping the failed page).
+    fun retryPageRender(page: Int) {
+        renderFailed.remove(page)
+        val estimatedPageHeight = viewSize.width.toFloat() * 1.4f
+        renderQueue.submit(
+            RenderRequest.Thumbnail(
+                pageIndex = page,
+                width = viewSize.width,
+                height = estimatedPageHeight.toInt(),
+                isPrefetch = false
+            ) { bitmap ->
+                if (bitmap != null) {
+                    cache.put("thumb_$page", bitmap)
+                    thumbnails[page] = bitmap.asImageBitmap()
+                    renderFailed.remove(page)
+                } else {
+                    renderFailed[page] = true
+                }
+            }
+        )
+    }
+
+    // Pulsing alpha driving the loading placeholder drawn under pages that haven't rendered yet.
+    val loadingPulseTransition = rememberInfiniteTransition(label = "pdfPageLoadingPulse")
+    val loadingPulseAlpha by loadingPulseTransition.animateFloat(
+        initialValue = 0.35f,
+        targetValue = 0.65f,
+        animationSpec = infiniteRepeatable(
+            animation = tween(durationMillis = 900, easing = LinearOutSlowInEasing),
+            repeatMode = RepeatMode.Reverse
+        ),
+        label = "pdfPageLoadingPulseAlpha"
+    )
+
     val invertMatrix = floatArrayOf(
         -1f, 0f, 0f, 0f, 255f,
         0f, -1f, 0f, 0f, 255f,
@@ -671,13 +762,13 @@ fun PdfViewer(
                     when (keyEvent.key) {
                         Key.Equals -> {
                             if (isCtrl) {
-                                changeZoomWithFocus(state.zoom + 0.15f, Offset(viewSize.width / 2f, viewSize.height / 2f))
+                                changeZoomWithFocusAnimated(state.zoom + 0.15f, Offset(viewSize.width / 2f, viewSize.height / 2f))
                                 true
                             } else false
                         }
                         Key.Minus -> {
                             if (isCtrl) {
-                                changeZoomWithFocus(state.zoom - 0.15f, Offset(viewSize.width / 2f, viewSize.height / 2f))
+                                changeZoomWithFocusAnimated(state.zoom - 0.15f, Offset(viewSize.width / 2f, viewSize.height / 2f))
                                 true
                             } else false
                         }
@@ -687,6 +778,30 @@ fun PdfViewer(
                                 searchQuery = ""
                                 true
                             } else false
+                        }
+                        Key.DirectionDown -> {
+                            animateScrollByOffset(Offset(0f, -80f))
+                            true
+                        }
+                        Key.DirectionUp -> {
+                            animateScrollByOffset(Offset(0f, 80f))
+                            true
+                        }
+                        Key.PageDown -> {
+                            animateScrollByOffset(Offset(0f, -viewSize.height.toFloat()))
+                            true
+                        }
+                        Key.PageUp -> {
+                            animateScrollByOffset(Offset(0f, viewSize.height.toFloat()))
+                            true
+                        }
+                        Key.MoveHome -> {
+                            jumpToPage(0)
+                            true
+                        }
+                        Key.MoveEnd -> {
+                            if (pageCount > 0) jumpToPage(pageCount - 1)
+                            true
                         }
                         else -> false
                     }
@@ -709,10 +824,22 @@ fun PdfViewer(
                             focusRequester.requestFocus()
                             val fitZoom = getFitZoom()
                             val targetZoom = if (state.zoom > fitZoom + 0.1f) fitZoom else 2.5f
-                            changeZoomWithFocus(targetZoom, offset)
+                            changeZoomWithFocusAnimated(targetZoom, offset)
                         },
-                        onTap = {
+                        onTap = { tapOffset ->
                             focusRequester.requestFocus()
+                            val estimatedPageHeight = viewSize.width.toFloat() * 1.4f
+                            for (page in state.visiblePages) {
+                                if (renderFailed[page] == true) {
+                                    val pageTop = page * (estimatedPageHeight + spacingPx)
+                                    val screenTop = state.scrollOffset.y + pageTop * state.zoom
+                                    val screenBottom = screenTop + estimatedPageHeight * state.zoom
+                                    if (tapOffset.y in screenTop..screenBottom) {
+                                        retryPageRender(page)
+                                        break
+                                    }
+                                }
+                            }
                         }
                     )
                 }
@@ -797,6 +924,39 @@ fun PdfViewer(
                                     colorFilter = colorFilter
                                 )
                             }
+                        } else {
+                            translate(left = 0f, top = pageTop) {
+                                if (renderFailed[page] == true) {
+                                    // Failed-render state: distinct warning tint + a small "!" glyph. Tap to retry.
+                                    val warningColor = Color(0xFFB3261E)
+                                    drawRect(
+                                        color = warningColor.copy(alpha = 0.14f),
+                                        size = androidx.compose.ui.geometry.Size(size.width, estimatedPageHeight)
+                                    )
+                                    val cx = size.width / 2f
+                                    val cy = estimatedPageHeight / 2f
+                                    val glyphHalf = 14.dp.toPx()
+                                    drawLine(
+                                        color = warningColor,
+                                        start = Offset(cx, cy - glyphHalf),
+                                        end = Offset(cx, cy + glyphHalf * 0.15f),
+                                        strokeWidth = 3.dp.toPx(),
+                                        cap = StrokeCap.Round
+                                    )
+                                    drawCircle(
+                                        color = warningColor,
+                                        radius = 1.8.dp.toPx(),
+                                        center = Offset(cx, cy + glyphHalf * 0.55f)
+                                    )
+                                } else {
+                                    // Loading placeholder: subtle pulsing tint while the page renders.
+                                    val pulseTint = if (localNightMode) Color.White else Color.Black
+                                    drawRect(
+                                        color = pulseTint.copy(alpha = loadingPulseAlpha * 0.08f),
+                                        size = androidx.compose.ui.geometry.Size(size.width, estimatedPageHeight)
+                                    )
+                                }
+                            }
                         }
 
                         // Draw high-res tiles
@@ -855,19 +1015,18 @@ fun PdfViewer(
         TopBar(
             zoomPercent = (state.zoom * 100).toInt(),
             onZoomIn = {
-                changeZoomWithFocus(state.zoom + 0.2f, Offset(viewSize.width / 2f, viewSize.height / 2f))
+                changeZoomWithFocusAnimated(state.zoom + 0.2f, Offset(viewSize.width / 2f, viewSize.height / 2f))
             },
             onZoomOut = {
-                changeZoomWithFocus(state.zoom - 0.2f, Offset(viewSize.width / 2f, viewSize.height / 2f))
+                changeZoomWithFocusAnimated(state.zoom - 0.2f, Offset(viewSize.width / 2f, viewSize.height / 2f))
             },
             onFitPage = {
                 val fitZoom = getFitZoom()
-                state.zoom = fitZoom
                 val estimatedPageHeight = viewSize.width.toFloat() * 1.4f
                 val pageTop = state.currentPage * (estimatedPageHeight + spacingPx)
                 val targetScrollY = topPaddingPx - pageTop * fitZoom
                 val targetScrollX = (viewSize.width - viewSize.width * fitZoom) / 2f
-                state.scrollOffset = clampScrollOffset(
+                val targetScroll = clampScrollOffset(
                     Offset(targetScrollX, targetScrollY),
                     fitZoom,
                     viewSize.width.toFloat(),
@@ -879,6 +1038,19 @@ fun PdfViewer(
                     bottomPaddingPx,
                     marginPx
                 )
+                val startZoom = state.zoom
+                val startScroll = state.scrollOffset
+                coroutineScope.launch {
+                    zoomAnimatable.snapTo(startZoom)
+                    zoomAnimatable.animateTo(fitZoom, tween(durationMillis = 200)) {
+                        val t = if (fitZoom != startZoom) (value - startZoom) / (fitZoom - startZoom) else 1f
+                        state.zoom = value
+                        state.scrollOffset = Offset(
+                            startScroll.x + (targetScroll.x - startScroll.x) * t,
+                            startScroll.y + (targetScroll.y - startScroll.y) * t
+                        )
+                    }
+                }
             },
             nightMode = localNightMode,
             onToggleNightMode = { localNightMode = !localNightMode },

@@ -63,6 +63,7 @@ fun formatRelativeTime(timestamp: Long): String {
 @Composable
 fun HomeScreen(
     recentFiles: List<RecentFile>,
+    sampleFile: RecentFile? = null,
     onOpenFile: (RecentFile, Int?) -> Unit,
     onRemoveFromRecents: (RecentFile) -> Unit,
     onDeleteDocument: (RecentFile) -> Unit,
@@ -100,12 +101,13 @@ fun HomeScreen(
     var globalSearchQuery by remember { mutableStateOf("") }
     var viewMode by remember { mutableStateOf("Grid") } // Grid, List
 
-    val darkBg = Color(0xFF1E1E1E)
-    val panelBg = Color(0xFF171717)
-    val textPrimary = Color(0xFFE5E5E5)
-    val textSecondary = Color(0xFF999999)
-    val blueAccent = Color(0xFF1473E6)
-    val dividerColor = Color(0xFF2E2E2E)
+    val colorScheme = MaterialTheme.colorScheme
+    val darkBg = colorScheme.background
+    val panelBg = colorScheme.surfaceContainerLow
+    val textPrimary = colorScheme.onSurface
+    val textSecondary = colorScheme.onSurfaceVariant
+    val blueAccent = colorScheme.primary
+    val dividerColor = colorScheme.outlineVariant
 
     // Filter and Sort files
     val filteredFiles by remember(filterQuery, globalSearchQuery, sortKey, sortAscending, activeTab) {
@@ -161,12 +163,12 @@ fun HomeScreen(
                 verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier.padding(bottom = 24.dp)
             ) {
-                AcrobatPdfIcon()
+                AppLogoMark()
                 Spacer(modifier = Modifier.width(10.dp))
                 Text(
                     text = "LuminaPDF",
                     style = TextStyle(
-                        color = Color.White,
+                        color = textPrimary,
                         fontWeight = FontWeight.ExtraBold,
                         fontSize = 16.sp
                     )
@@ -188,11 +190,11 @@ fun HomeScreen(
                     horizontalArrangement = Arrangement.Center,
                     modifier = Modifier.fillMaxWidth()
                 ) {
-                    FolderIcon(color = Color.White, modifier = Modifier.size(16.dp))
+                    FolderIcon(color = colorScheme.onPrimary, modifier = Modifier.size(16.dp))
                     Spacer(modifier = Modifier.width(8.dp))
                     Text(
                         text = "Open File",
-                        color = Color.White,
+                        color = colorScheme.onPrimary,
                         fontWeight = FontWeight.Bold,
                         fontSize = 13.sp
                     )
@@ -210,8 +212,8 @@ fun HomeScreen(
                 val isActive = activeTab == targetTab
                 HoverableItem(
                     onClick = { activeTab = targetTab },
-                    normalColor = if (isActive) Color(0xFF2B2B2B) else Color.Transparent,
-                    hoverColor = if (isActive) Color(0xFF2B2B2B) else Color(0xFF202020),
+                    normalColor = if (isActive) colorScheme.onSurface.copy(alpha = 0.12f) else Color.Transparent,
+                    hoverColor = if (isActive) colorScheme.onSurface.copy(alpha = 0.12f) else colorScheme.onSurface.copy(alpha = 0.08f),
                     shape = RoundedCornerShape(4.dp),
                     modifier = Modifier
                         .fillMaxWidth()
@@ -224,11 +226,11 @@ fun HomeScreen(
                             .fillMaxSize()
                             .padding(horizontal = 12.dp)
                     ) {
-                        icon(if (isActive) Color.White else textSecondary)
+                        icon(if (isActive) textPrimary else textSecondary)
                         Spacer(modifier = Modifier.width(12.dp))
                         Text(
                             text = tabName,
-                            color = if (isActive) Color.White else textSecondary,
+                            color = if (isActive) textPrimary else textSecondary,
                             fontWeight = if (isActive) FontWeight.Bold else FontWeight.Medium,
                             fontSize = 13.sp
                         )
@@ -257,8 +259,8 @@ fun HomeScreen(
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(38.dp)
-                        .background(Color(0xFF252525), RoundedCornerShape(8.dp))
-                        .border(1.dp, Color(0xFF333333), RoundedCornerShape(8.dp))
+                        .background(colorScheme.surfaceContainerHigh, RoundedCornerShape(8.dp))
+                        .border(1.dp, colorScheme.outlineVariant, RoundedCornerShape(8.dp))
                         .padding(horizontal = 12.dp)
                 ) {
                     SearchIcon(color = textSecondary, modifier = Modifier.size(16.dp))
@@ -274,7 +276,7 @@ fun HomeScreen(
                             if (globalSearchQuery.isEmpty()) {
                                 Text(
                                     text = "Search documents...",
-                                    color = Color(0xFF666666),
+                                    color = textSecondary.copy(alpha = 0.7f),
                                     fontSize = 13.sp
                                 )
                             }
@@ -293,7 +295,7 @@ fun HomeScreen(
             ) {
                 Text(
                     text = activeTab,
-                    color = Color.White,
+                    color = textPrimary,
                     fontSize = 22.sp,
                     fontWeight = FontWeight.ExtraBold,
                     modifier = Modifier.padding(bottom = 16.dp)
@@ -314,8 +316,8 @@ fun HomeScreen(
                             modifier = Modifier
                                 .width(240.dp)
                                 .height(32.dp)
-                                .background(Color(0xFF252525), RoundedCornerShape(6.dp))
-                                .border(1.dp, Color(0xFF333333), RoundedCornerShape(6.dp))
+                                .background(colorScheme.surfaceContainerHigh, RoundedCornerShape(6.dp))
+                                .border(1.dp, colorScheme.outlineVariant, RoundedCornerShape(6.dp))
                                 .padding(horizontal = 10.dp)
                         ) {
                             Text(
@@ -336,7 +338,7 @@ fun HomeScreen(
                                     if (filterQuery.isEmpty()) {
                                         Text(
                                             text = "Filter files...",
-                                            color = Color(0xFF666666),
+                                            color = textSecondary.copy(alpha = 0.7f),
                                             fontSize = 12.sp
                                         )
                                     }
@@ -369,7 +371,7 @@ fun HomeScreen(
                                     DropdownMenu(
                                         expanded = showSortDropdown,
                                         onDismissRequest = { showSortDropdown = false },
-                                        modifier = Modifier.background(Color(0xFF252525))
+                                        modifier = Modifier.background(colorScheme.surfaceContainerHigh)
                                     ) {
                                         val sortKeys = listOf("Recent", "Name", "Size")
                                         sortKeys.forEach { key ->
@@ -396,7 +398,7 @@ fun HomeScreen(
                             // Segmented list/grid view switcher
                             Row(
                                 modifier = Modifier
-                                    .background(Color(0xFF252525), RoundedCornerShape(6.dp))
+                                    .background(colorScheme.surfaceContainerHigh, RoundedCornerShape(6.dp))
                                     .padding(2.dp)
                             ) {
                                 val isList = viewMode == "List"
@@ -405,21 +407,21 @@ fun HomeScreen(
                                 Box(
                                     modifier = Modifier
                                         .size(26.dp)
-                                        .background(if (isList) Color(0xFF333333) else Color.Transparent, RoundedCornerShape(4.dp))
+                                        .background(if (isList) colorScheme.outlineVariant else Color.Transparent, RoundedCornerShape(4.dp))
                                         .clickable { viewMode = "List" },
                                     contentAlignment = Alignment.Center
                                 ) {
-                                    ListIcon(color = if (isList) Color.White else textSecondary)
+                                    ListIcon(color = if (isList) textPrimary else textSecondary)
                                 }
-                                
+
                                 Box(
                                     modifier = Modifier
                                         .size(26.dp)
-                                        .background(if (isGrid) Color(0xFF333333) else Color.Transparent, RoundedCornerShape(4.dp))
+                                        .background(if (isGrid) colorScheme.outlineVariant else Color.Transparent, RoundedCornerShape(4.dp))
                                         .clickable { viewMode = "Grid" },
                                     contentAlignment = Alignment.Center
                                 ) {
-                                    GridIcon(color = if (isGrid) Color.White else textSecondary)
+                                    GridIcon(color = if (isGrid) textPrimary else textSecondary)
                                 }
                             }
                         }
@@ -463,7 +465,7 @@ fun HomeScreen(
                                         Box(
                                             modifier = Modifier
                                                 .size(36.dp, 48.dp)
-                                                .background(Color(0xFF151515), RoundedCornerShape(4.dp))
+                                                .background(colorScheme.surfaceContainerLowest, RoundedCornerShape(4.dp))
                                                 .clip(RoundedCornerShape(4.dp)),
                                             contentAlignment = Alignment.Center
                                         ) {
@@ -475,7 +477,7 @@ fun HomeScreen(
                                                     modifier = Modifier.fillMaxSize().padding(2.dp)
                                                 )
                                             } else {
-                                                AcrobatPdfIcon(modifier = Modifier.size(20.dp))
+                                                AppLogoMark(modifier = Modifier.size(20.dp))
                                             }
                                         }
                                         Spacer(modifier = Modifier.width(12.dp))
@@ -545,7 +547,7 @@ fun HomeScreen(
                                             // Take to source button
                                             Button(
                                                 onClick = { onOpenFile(file, note.page) },
-                                                colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF2E2E2E)),
+                                                colors = ButtonDefaults.buttonColors(containerColor = colorScheme.surfaceContainerHigh),
                                                 shape = RoundedCornerShape(6.dp),
                                                 contentPadding = PaddingValues(horizontal = 12.dp, vertical = 6.dp),
                                                 modifier = Modifier.height(28.dp)
@@ -574,13 +576,42 @@ fun HomeScreen(
                 } else {
                     // Grid / List rendering of files
                     if (filteredFiles.isEmpty()) {
+                        val isTrulyEmpty = recentFiles.isEmpty() && filterQuery.isEmpty() && globalSearchQuery.isEmpty()
                         Box(
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .height(160.dp),
+                                .height(220.dp),
                             contentAlignment = Alignment.Center
                         ) {
-                            Text(text = "No files found", color = textSecondary, fontSize = 14.sp)
+                            if (isTrulyEmpty) {
+                                Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                                    FolderIcon(color = textSecondary.copy(alpha = 0.5f), modifier = Modifier.size(40.dp))
+                                    Spacer(modifier = Modifier.height(12.dp))
+                                    Text(text = "No documents yet", color = textPrimary, fontWeight = FontWeight.Bold, fontSize = 15.sp)
+                                    Spacer(modifier = Modifier.height(4.dp))
+                                    Text(text = "Open a PDF to get started", color = textSecondary, fontSize = 13.sp)
+                                    Spacer(modifier = Modifier.height(16.dp))
+                                    Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+                                        Button(
+                                            onClick = onTriggerFilePicker,
+                                            colors = ButtonDefaults.buttonColors(containerColor = blueAccent),
+                                            shape = RoundedCornerShape(8.dp)
+                                        ) {
+                                            Text(text = "Open File", color = colorScheme.onPrimary, fontWeight = FontWeight.Bold, fontSize = 13.sp)
+                                        }
+                                        if (sampleFile != null) {
+                                            OutlinedButton(
+                                                onClick = { onOpenFile(sampleFile, null) },
+                                                shape = RoundedCornerShape(8.dp)
+                                            ) {
+                                                Text(text = "Try a sample PDF", color = textPrimary, fontWeight = FontWeight.Bold, fontSize = 13.sp)
+                                            }
+                                        }
+                                    }
+                                }
+                            } else {
+                                Text(text = "No files found", color = textSecondary, fontSize = 14.sp)
+                            }
                         }
                     } else {
                         if (viewMode == "Grid") {
@@ -622,14 +653,14 @@ fun HomeScreen(
                                 modifier = Modifier
                                     .fillMaxWidth()
                                     .border(1.dp, dividerColor, RoundedCornerShape(4.dp))
-                                    .background(Color(0xFF1D1D1D))
+                                    .background(colorScheme.surfaceContainerLow)
                             ) {
                                 Row(
                                     verticalAlignment = Alignment.CenterVertically,
                                     modifier = Modifier
                                         .fillMaxWidth()
                                         .height(32.dp)
-                                        .background(Color(0xFF222222))
+                                        .background(colorScheme.surfaceContainerHigh)
                                         .padding(horizontal = 16.dp)
                                 ) {
                                     Text(text = "Name", color = textSecondary, fontWeight = FontWeight.Bold, fontSize = 11.sp, modifier = Modifier.weight(1f))

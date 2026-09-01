@@ -7,7 +7,6 @@ data class PdfViewerConfig(
     val minZoom: Float = 0.5f,
     val maxZoom: Float = 5f,
     val pageSpacing: Dp = 12.dp,
-    val continuousScroll: Boolean = true,
     val nightMode: Boolean? = null,
     val tileRequestDebounceMs: Long = 120L
 )

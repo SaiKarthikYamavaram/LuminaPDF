@@ -9,6 +9,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -28,6 +29,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.lumina.pdf.viewer.*
 
+// Deliberately theme-independent status colors (correct in either light/dark scheme)
+private val syncSuccessColor = Color(0xFF0F9D58)
+private val notesIndicatorColor = Color(0xFFFFC107)
+private val pdfBadgeColor = Color(0xFFE53935)
+
 // --- Component Card for Grid Item ---
 @Composable
 fun GridItemCard(
@@ -39,19 +45,20 @@ fun GridItemCard(
     textSecondary: Color,
     modifier: Modifier = Modifier
 ) {
-    val cardBg = Color(0xFF252525)
+    val colorScheme = MaterialTheme.colorScheme
+    val cardBg = colorScheme.surfaceContainerHigh
     val hasNotes by produceState(initialValue = false, key1 = fileItem.id) {
         value = db.getNotes(fileItem.id).isNotEmpty()
     }
-    
+
     HoverableItem(
         onClick = onClick,
         normalColor = cardBg,
-        hoverColor = Color(0xFF2B2B2B),
+        hoverColor = colorScheme.surfaceContainerHighest,
         shape = RoundedCornerShape(6.dp),
         modifier = modifier
             .fillMaxWidth()
-            .border(1.dp, Color(0xFF333333), RoundedCornerShape(6.dp))
+            .border(1.dp, colorScheme.outlineVariant, RoundedCornerShape(6.dp))
     ) { isHovered ->
         Column(
             modifier = Modifier.fillMaxWidth()
@@ -61,7 +68,7 @@ fun GridItemCard(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(130.dp)
-                    .background(Color(0xFF151515))
+                    .background(colorScheme.surfaceContainerLowest)
                     .clip(RoundedCornerShape(topStart = 6.dp, topEnd = 6.dp)),
                 contentAlignment = Alignment.Center
             ) {
@@ -75,7 +82,8 @@ fun GridItemCard(
                             .padding(8.dp)
                     )
                     
-                    // PDF Badge Overlay
+                    // PDF Badge Overlay — fixed dark scrim over the thumbnail image, intentionally
+                    // theme-independent since it always sits on a rendered PDF page preview.
                     Box(
                         modifier = Modifier
                             .align(Alignment.BottomEnd)
@@ -117,7 +125,7 @@ fun GridItemCard(
                 // Green Sync checkmark (mock cloud synced state on bottom left)
                 if (fileItem.isSample || fileItem.fileBytes != null) {
                     SyncCheckIcon(
-                        color = Color(0xFF0F9D58),
+                        color = syncSuccessColor,
                         modifier = Modifier
                             .align(Alignment.BottomStart)
                             .padding(8.dp)
@@ -147,7 +155,7 @@ fun GridItemCard(
                             .background(Color.Black.copy(alpha = 0.6f), RoundedCornerShape(4.dp))
                             .padding(4.dp)
                     ) {
-                        NotesIndicatorIcon(color = Color(0xFFFFC107), modifier = Modifier.size(12.dp))
+                        NotesIndicatorIcon(color = notesIndicatorColor, modifier = Modifier.size(12.dp))
                     }
                 }
             }
@@ -188,14 +196,15 @@ fun ListItemRow(
     textSecondary: Color,
     modifier: Modifier = Modifier
 ) {
+    val colorScheme = MaterialTheme.colorScheme
     val hasNotes by produceState(initialValue = false, key1 = fileItem.id) {
         value = db.getNotes(fileItem.id).isNotEmpty()
     }
-    
+
     HoverableItem(
         onClick = onClick,
         normalColor = Color.Transparent,
-        hoverColor = Color(0xFF252525),
+        hoverColor = colorScheme.surfaceContainerHigh,
         shape = RoundedCornerShape(0.dp),
         modifier = modifier
             .fillMaxWidth()
@@ -215,7 +224,7 @@ fun ListItemRow(
                 // PDF small badge
                 Box(
                     modifier = Modifier
-                        .background(Color(0xFFE53935), RoundedCornerShape(2.dp))
+                        .background(pdfBadgeColor, RoundedCornerShape(2.dp))
                         .padding(horizontal = 4.dp, vertical = 1.dp)
                 ) {
                     Text(
@@ -239,7 +248,7 @@ fun ListItemRow(
                 )
                 if (hasNotes) {
                     Spacer(modifier = Modifier.width(6.dp))
-                    NotesIndicatorIcon(color = Color(0xFFFFC107), modifier = Modifier.size(14.dp))
+                    NotesIndicatorIcon(color = notesIndicatorColor, modifier = Modifier.size(14.dp))
                 }
             }
             
@@ -269,7 +278,7 @@ fun ListItemRow(
                         modifier = Modifier
                             .size(20.dp)
                             .clip(CircleShape)
-                            .background(Color.White.copy(alpha = 0.1f))
+                            .background(colorScheme.onSurface.copy(alpha = 0.1f))
                             .clickable { onRemove() },
                         contentAlignment = Alignment.Center
                     ) {
@@ -277,7 +286,7 @@ fun ListItemRow(
                     }
                 } else {
                     if (fileItem.isSample || fileItem.fileBytes != null) {
-                        SyncCheckIcon(color = Color(0xFF0F9D58))
+                        SyncCheckIcon(color = syncSuccessColor)
                     }
                 }
             }

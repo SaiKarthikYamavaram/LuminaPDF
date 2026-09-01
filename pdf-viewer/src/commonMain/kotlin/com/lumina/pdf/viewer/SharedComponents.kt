@@ -28,7 +28,7 @@ import kotlin.math.sin
 // --- Custom Canvas Icons for Sleek, Dependency-free Rendering ---
 
 @Composable
-fun AcrobatPdfIcon(modifier: Modifier = Modifier) {
+fun AppLogoMark(modifier: Modifier = Modifier) {
     Canvas(modifier = modifier.size(32.dp)) {
         drawRoundRect(
             color = Color(0xFF2E2E2E), // Dark rounded rectangle background
@@ -37,32 +37,43 @@ fun AcrobatPdfIcon(modifier: Modifier = Modifier) {
         val w = size.width
         val h = size.height
         val stroke = 2.dp.toPx()
-        
-        // Acrobat infinity-ribbon logo drawn via triangular tri-loop path
-        val path = Path().apply {
-            val cx = w * 0.5f
-            val cy = h * 0.5f
-            val sizeVal = w * 0.28f
-            
-            // Top loop
-            moveTo(cx, cy - 2.dp.toPx())
-            cubicTo(cx - sizeVal * 0.6f, cy - sizeVal * 1.5f, cx + sizeVal * 0.6f, cy - sizeVal * 1.5f, cx, cy - 2.dp.toPx())
-            
-            // Bottom-left loop
-            moveTo(cx - 2.dp.toPx(), cy + 1.dp.toPx())
-            cubicTo(cx - sizeVal * 1.4f, cy + sizeVal * 0.2f, cx - sizeVal * 0.8f, cy + sizeVal * 1.3f, cx - 2.dp.toPx(), cy + 1.dp.toPx())
-            
-            // Bottom-right loop
-            moveTo(cx + 2.dp.toPx(), cy + 1.dp.toPx())
-            cubicTo(cx + sizeVal * 1.4f, cy + sizeVal * 0.2f, cx + sizeVal * 0.8f, cy + sizeVal * 1.3f, cx + 2.dp.toPx(), cy + 1.dp.toPx())
-            
-            // Connecting center crossovers
-            moveTo(cx, cy - 2.dp.toPx())
-            lineTo(cx - 2.dp.toPx(), cy + 1.dp.toPx())
-            lineTo(cx + 2.dp.toPx(), cy + 1.dp.toPx())
+
+        // Folded-corner document mark
+        val left = w * 0.30f
+        val right = w * 0.70f
+        val top = h * 0.22f
+        val bottom = h * 0.78f
+        val fold = (right - left) * 0.34f
+
+        val page = Path().apply {
+            moveTo(left, top)
+            lineTo(right - fold, top)
+            lineTo(right, top + fold)
+            lineTo(right, bottom)
+            lineTo(left, bottom)
             close()
         }
-        drawPath(path = path, color = Color.White, style = Stroke(width = stroke, cap = StrokeCap.Round, join = StrokeJoin.Round))
+        drawPath(path = page, color = Color.White, style = Stroke(width = stroke, cap = StrokeCap.Round, join = StrokeJoin.Round))
+
+        val foldPath = Path().apply {
+            moveTo(right - fold, top)
+            lineTo(right - fold, top + fold)
+            lineTo(right, top + fold)
+        }
+        drawPath(path = foldPath, color = Color.White, style = Stroke(width = stroke * 0.7f, cap = StrokeCap.Round, join = StrokeJoin.Round))
+
+        // Text lines
+        val lineStroke = stroke * 0.65f
+        val lineLeft = left + (right - left) * 0.18f
+        val lineRightShort = right - (right - left) * 0.28f
+        val lineRightLong = right - (right - left) * 0.14f
+        val lineSpacing = (bottom - top - fold) / 4f
+        var y = top + fold + lineSpacing
+        drawLine(Color.White, Offset(lineLeft, y), Offset(lineRightLong, y), strokeWidth = lineStroke, cap = StrokeCap.Round)
+        y += lineSpacing
+        drawLine(Color.White, Offset(lineLeft, y), Offset(lineRightShort, y), strokeWidth = lineStroke, cap = StrokeCap.Round)
+        y += lineSpacing
+        drawLine(Color.White, Offset(lineLeft, y), Offset(lineRightLong, y), strokeWidth = lineStroke, cap = StrokeCap.Round)
     }
 }
 
@@ -590,105 +601,13 @@ fun MockDocumentThumbnail(name: String, modifier: Modifier = Modifier) {
                 .border(1.5.dp, Color(0xFFDCDCDC), RoundedCornerShape(1.dp))
                 .padding(8.dp)
         ) {
-            when {
-                name.contains("Agreement", ignoreCase = true) -> {
-                    // Vendor Agreement - text lines + signature boxes
-                    Column(verticalArrangement = Arrangement.spacedBy(3.dp)) {
-                        Box(modifier = Modifier.fillMaxWidth(0.5f).height(5.dp).background(Color(0xFF333333)))
-                        Spacer(modifier = Modifier.height(3.dp))
-                        repeat(6) {
-                            Box(modifier = Modifier.fillMaxWidth().height(2.dp).background(Color(0xFFE0E0E0)))
-                        }
-                        Spacer(modifier = Modifier.height(16.dp))
-                        Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                            Box(modifier = Modifier.weight(1f).height(8.dp).background(Color(0xFFF0F0F0)))
-                            Box(modifier = Modifier.weight(1f).height(8.dp).background(Color(0xFFF0F0F0)))
-                        }
-                    }
-                }
-                name.contains("Report", ignoreCase = true) -> {
-                    // Annual Report - corporate layout with blue graphic
-                    Column(verticalArrangement = Arrangement.spacedBy(3.dp)) {
-                        Box(modifier = Modifier.fillMaxWidth().height(16.dp).background(Color(0xFF0073C6)))
-                        Spacer(modifier = Modifier.height(4.dp))
-                        Box(modifier = Modifier.fillMaxWidth(0.7f).height(4.dp).background(Color(0xFF555555)))
-                        Spacer(modifier = Modifier.height(6.dp))
-                        Row(horizontalArrangement = Arrangement.spacedBy(4.dp), modifier = Modifier.fillMaxWidth().height(20.dp)) {
-                            Box(modifier = Modifier.weight(1f).fillMaxHeight().background(Color(0xFF00B294)))
-                            Box(modifier = Modifier.weight(1f).fillMaxHeight().background(Color(0xFFF2C811)))
-                        }
-                    }
-                }
-                name.contains("Manual", ignoreCase = true) -> {
-                    // Product Manual - title + large center block
-                    Column(
-                        verticalArrangement = Arrangement.Center,
-                        horizontalAlignment = Alignment.CenterHorizontally,
-                        modifier = Modifier.fillMaxSize()
-                    ) {
-                        Box(modifier = Modifier.fillMaxWidth(0.8f).height(6.dp).background(Color(0xFF333333)))
-                        Spacer(modifier = Modifier.height(8.dp))
-                        Box(modifier = Modifier.size(24.dp).background(Color(0xFFE53935), RoundedCornerShape(2.dp)))
-                        Spacer(modifier = Modifier.height(8.dp))
-                        Box(modifier = Modifier.fillMaxWidth(0.4f).height(3.dp).background(Color(0xFF888888)))
-                    }
-                }
-                name.contains("Agendas", ignoreCase = true) -> {
-                    // Team Meeting Agendas - lists/bullets
-                    Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
-                        Box(modifier = Modifier.fillMaxWidth(0.7f).height(6.dp).background(Color(0xFF0073C6)))
-                        Spacer(modifier = Modifier.height(6.dp))
-                        repeat(3) {
-                            Row(verticalAlignment = Alignment.CenterVertically) {
-                                Box(modifier = Modifier.size(3.dp).background(Color(0xFF555555), CircleShape))
-                                Spacer(modifier = Modifier.width(4.dp))
-                                Box(modifier = Modifier.fillMaxWidth(0.8f).height(2.dp).background(Color(0xFFE0E0E0)))
-                            }
-                        }
-                    }
-                }
-                name.contains("Brief", ignoreCase = true) -> {
-                    // Creative Brief - minimalist title
-                    Column(
-                        verticalArrangement = Arrangement.Center,
-                        horizontalAlignment = Alignment.CenterHorizontally,
-                        modifier = Modifier.fillMaxSize().padding(horizontal = 4.dp)
-                    ) {
-                        Text(
-                            text = "Creative_Brief",
-                            color = Color.Black,
-                            fontSize = 8.sp,
-                            fontWeight = FontWeight.Bold,
-                            maxLines = 1,
-                            overflow = TextOverflow.Ellipsis
-                        )
-                        Spacer(modifier = Modifier.height(4.dp))
-                        Box(modifier = Modifier.fillMaxWidth(0.5f).height(2.dp).background(Color.Gray))
-                    }
-                }
-                name.contains("Schedule", ignoreCase = true) -> {
-                    // Event Schedule - table style grid
-                    Column(verticalArrangement = Arrangement.spacedBy(3.dp)) {
-                        Box(modifier = Modifier.fillMaxWidth(0.6f).height(5.dp).background(Color(0xFF333333)))
-                        Spacer(modifier = Modifier.height(4.dp))
-                        // Table rows
-                        repeat(4) {
-                            Row(horizontalArrangement = Arrangement.spacedBy(2.dp), modifier = Modifier.fillMaxWidth()) {
-                                Box(modifier = Modifier.weight(1f).height(5.dp).background(Color(0xFFF0F0F0)))
-                                Box(modifier = Modifier.weight(2f).height(5.dp).background(Color(0xFFF9F9F9)))
-                            }
-                        }
-                    }
-                }
-                else -> {
-                    // Generic document page
-                    Column(verticalArrangement = Arrangement.spacedBy(3.dp)) {
-                        Box(modifier = Modifier.fillMaxWidth(0.6f).height(5.dp).background(Color(0xFF333333)))
-                        Spacer(modifier = Modifier.height(4.dp))
-                        repeat(8) {
-                            Box(modifier = Modifier.fillMaxWidth().height(2.dp).background(Color(0xFFE0E0E0)))
-                        }
-                    }
+            // Generic "no thumbnail yet" placeholder — deliberately does not infer or
+            // fabricate document content from the filename.
+            Column(verticalArrangement = Arrangement.spacedBy(3.dp)) {
+                Box(modifier = Modifier.fillMaxWidth(0.6f).height(5.dp).background(Color(0xFF333333)))
+                Spacer(modifier = Modifier.height(4.dp))
+                repeat(8) {
+                    Box(modifier = Modifier.fillMaxWidth().height(2.dp).background(Color(0xFFE0E0E0)))
                 }
             }
         }
