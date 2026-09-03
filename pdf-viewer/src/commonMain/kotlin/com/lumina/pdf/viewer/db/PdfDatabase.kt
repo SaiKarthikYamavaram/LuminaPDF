@@ -23,6 +23,7 @@ interface PdfDatabase {
     
     fun insertNote(note: DbNote)
     fun getNotes(documentId: String): List<DbNote>
+    fun getDocumentIdsWithNotes(): Set<String>
     fun deleteNote(noteId: String)
     
     fun saveHighlights(documentId: String, highlightsJson: String)

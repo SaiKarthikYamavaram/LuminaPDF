@@ -35,6 +35,9 @@ SELECT * FROM PdfViewState WHERE documentId = ?;
 getNotes:
 SELECT * FROM PdfNote WHERE documentId = ? ORDER BY timestamp DESC;
 
+getDocumentIdsWithNotes:
+SELECT DISTINCT documentId FROM PdfNote;
+
 insertNote:
 INSERT OR REPLACE INTO PdfNote (id, documentId, page, noteText, timestamp)
 VALUES (?, ?, ?, ?, ?);

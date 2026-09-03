@@ -42,6 +42,10 @@ class AndroidPdfDatabase(context: Context) : PdfDatabase {
         }
     }
 
+    override fun getDocumentIdsWithNotes(): Set<String> {
+        return queries.getDocumentIdsWithNotes().executeAsList().toSet()
+    }
+
     override fun deleteNote(noteId: String) {
         queries.deleteNote(noteId)
     }

@@ -12,8 +12,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.produceState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -37,7 +35,7 @@ import com.lumina.pdf.viewer.theme.luminaSuccessColor
 @Composable
 fun GridItemCard(
     fileItem: RecentFile,
-    db: com.lumina.pdf.viewer.db.PdfDatabase,
+    hasNotes: Boolean,
     onClick: () -> Unit,
     onRemove: () -> Unit,
     textPrimary: Color,
@@ -49,9 +47,6 @@ fun GridItemCard(
     val cardShape = RoundedCornerShape(LuminaRadius.lg)
     val successColor = luminaSuccessColor()
     val notesColor = luminaNotesColor()
-    val hasNotes by produceState(initialValue = false, key1 = fileItem.id) {
-        value = db.getNotes(fileItem.id).isNotEmpty()
-    }
 
     HoverableItem(
         onClick = onClick,
@@ -191,7 +186,7 @@ fun GridItemCard(
 @Composable
 fun ListItemRow(
     fileItem: RecentFile,
-    db: com.lumina.pdf.viewer.db.PdfDatabase,
+    hasNotes: Boolean,
     onClick: () -> Unit,
     onRemove: () -> Unit,
     textPrimary: Color,
@@ -202,9 +197,6 @@ fun ListItemRow(
     val successColor = luminaSuccessColor()
     val notesColor = luminaNotesColor()
     val dangerColor = luminaDangerColor()
-    val hasNotes by produceState(initialValue = false, key1 = fileItem.id) {
-        value = db.getNotes(fileItem.id).isNotEmpty()
-    }
 
     HoverableItem(
         onClick = onClick,

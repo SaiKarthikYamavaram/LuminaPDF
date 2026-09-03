@@ -569,15 +569,27 @@ fun PdfViewer(
         if (viewSize.width == 0 || viewSize.height == 0 || pageCount == 0) return@LaunchedEffect
 
         val estimatedPageHeight = viewSize.width.toFloat() * 1.4f
+        val viewportHeight = viewSize.height.toFloat()
+        val viewportCenter = viewportHeight / 2f
+        val pageStride = (estimatedPageHeight + spacingPx) * state.zoom
+        val scrollY = state.scrollOffset.y
+
+        // Pages sit at a uniform stride, so the visible range can be solved for directly instead
+        // of scanning every page in the document - this used to be an O(pageCount) loop re-run on
+        // every scroll/zoom animation frame, which got expensive for large documents.
+        val lowerBound = kotlin.math.ceil((-scrollY - estimatedPageHeight * state.zoom) / pageStride).toInt()
+        val upperBound = kotlin.math.floor((viewportHeight - scrollY) / pageStride).toInt()
+        val firstPage = maxOf(lowerBound, 0)
+        val lastPage = minOf(upperBound, pageCount - 1)
+
         val visibleList = mutableListOf<Int>()
         var firstVisible = -1
         var bestPage = -1
         var minDistance = Float.MAX_VALUE
-        val viewportCenter = viewSize.height / 2f
-        for (page in 0 until pageCount) {
-            val yStart = state.scrollOffset.y + page * (estimatedPageHeight + spacingPx) * state.zoom
-            val yEnd = yStart + estimatedPageHeight * state.zoom
-            if (yEnd >= 0f && yStart <= viewSize.height.toFloat()) {
+        if (firstPage <= lastPage) {
+            for (page in firstPage..lastPage) {
+                val yStart = scrollY + page * pageStride
+                val yEnd = yStart + estimatedPageHeight * state.zoom
                 visibleList.add(page)
                 if (firstVisible == -1) {
                     firstVisible = page

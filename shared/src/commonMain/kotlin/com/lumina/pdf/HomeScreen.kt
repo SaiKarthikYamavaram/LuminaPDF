@@ -8,6 +8,10 @@ import co.touchlab.kermit.Logger
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsHoveredAsState
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.GridItemSpan
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
@@ -95,6 +99,11 @@ fun HomeScreen(
         } else {
             value = emptyMap()
         }
+    }
+    // Batched once for every card instead of each GridItemCard/ListItemRow querying the DB itself
+    // (that was N queries fired at once on every home-screen composition for N recent files).
+    val documentIdsWithNotes by produceState(initialValue = emptySet<String>(), key1 = recentFiles) {
+        value = db.getDocumentIdsWithNotes()
     }
     var sortKey by remember { mutableStateOf("Recent") } // Recent, Name, Size
     var sortAscending by remember { mutableStateOf(false) }
@@ -249,13 +258,10 @@ fun HomeScreen(
                 }
             }
 
-            // Workspace Content
-            Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .verticalScroll(rememberScrollState())
-                    .padding(28.dp)
-            ) {
+            // Workspace Content — header + toolbar are shared between the plain scrolling
+            // column (Notes / empty state / List view) and the lazy grid below, since only
+            // the file cards themselves benefit from lazy composition.
+            val workspaceHeader: @Composable () -> Unit = {
                 Text(
                     text = activeTab,
                     color = textPrimary,
@@ -390,6 +396,40 @@ fun HomeScreen(
                         }
                     }
                 }
+            }
+
+            if (activeTab != "Notes" && viewMode == "Grid" && filteredFiles.isNotEmpty()) {
+                // Lazy grid: only the cards actually on screen compose, measure, and query
+                // notes state — the old plain Column/Row grid built every recent-file card
+                // up front regardless of scroll position.
+                LazyVerticalGrid(
+                    columns = GridCells.Fixed(gridColumns),
+                    verticalArrangement = Arrangement.spacedBy(20.dp),
+                    horizontalArrangement = Arrangement.spacedBy(20.dp),
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(28.dp)
+                ) {
+                    item(span = { GridItemSpan(maxLineSpan) }) { workspaceHeader() }
+                    items(filteredFiles, key = { it.id }) { fileItem ->
+                        GridItemCard(
+                            fileItem = fileItem,
+                            hasNotes = fileItem.id in documentIdsWithNotes,
+                            onClick = { onOpenFile(fileItem, null) },
+                            onRemove = { if (activeTab == "Recents") onRemoveFromRecents(fileItem) else onDeleteDocument(fileItem) },
+                            textPrimary = textPrimary,
+                            textSecondary = textSecondary
+                        )
+                    }
+                }
+            } else {
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .verticalScroll(rememberScrollState())
+                    .padding(28.dp)
+            ) {
+                workspaceHeader()
 
                 if (activeTab == "Notes") {
                     if (notesGroupedByFile.isEmpty()) {
@@ -577,47 +617,14 @@ fun HomeScreen(
                             }
                         }
                     } else {
-                        if (viewMode == "Grid") {
-                            val columns = gridColumns
-                            val rows = (filteredFiles.size + columns - 1) / columns
-                            
-                            Column(
-                                verticalArrangement = Arrangement.spacedBy(20.dp),
-                                modifier = Modifier.fillMaxWidth()
-                            ) {
-                                for (r in 0 until rows) {
-                                    Row(
-                                        horizontalArrangement = Arrangement.spacedBy(20.dp),
-                                        modifier = Modifier.fillMaxWidth()
-                                    ) {
-                                        for (c in 0 until columns) {
-                                            val index = r * columns + c
-                                            if (index < filteredFiles.size) {
-                                                val fileItem = filteredFiles[index]
-                                                Box(modifier = Modifier.weight(1f)) {
-                                                    GridItemCard(
-                                                        fileItem = fileItem,
-                                                        db = db,
-                                                        onClick = { onOpenFile(fileItem, null) },
-                                                        onRemove = { if (activeTab == "Recents") onRemoveFromRecents(fileItem) else onDeleteDocument(fileItem) },
-                                                        textPrimary = textPrimary,
-                                                        textSecondary = textSecondary
-                                                    )
-                                                }
-                                            } else {
-                                                Box(modifier = Modifier.weight(1f))
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        } else {
-                            Column(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .border(1.dp, dividerColor, RoundedCornerShape(4.dp))
-                                    .background(colorScheme.surfaceContainerLow)
-                            ) {
+                        // Grid+non-empty is handled above by the lazy grid path; only List
+                        // view reaches here.
+                        Column(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .border(1.dp, dividerColor, RoundedCornerShape(4.dp))
+                                .background(colorScheme.surfaceContainerLow)
+                        ) {
                                 Row(
                                     verticalAlignment = Alignment.CenterVertically,
                                     modifier = Modifier
@@ -638,7 +645,7 @@ fun HomeScreen(
                                     }
                                     ListItemRow(
                                         fileItem = fileItem,
-                                        db = db,
+                                        hasNotes = fileItem.id in documentIdsWithNotes,
                                         onClick = { onOpenFile(fileItem, null) },
                                         onRemove = { if (activeTab == "Recents") onRemoveFromRecents(fileItem) else onDeleteDocument(fileItem) },
                                         textPrimary = textPrimary,
@@ -646,11 +653,11 @@ fun HomeScreen(
                                     )
                                 }
                             }
-                        }
                     }
                 }
             }
             }
+        }
         }
 
         if (isCompact) {

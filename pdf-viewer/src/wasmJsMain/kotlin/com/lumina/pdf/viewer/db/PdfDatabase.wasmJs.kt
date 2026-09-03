@@ -50,6 +50,19 @@ class WasmJsPdfDatabase : PdfDatabase {
         return list.sortedByDescending { it.timestamp }
     }
 
+    override fun getDocumentIdsWithNotes(): Set<String> {
+        val ids = mutableSetOf<String>()
+        val length = window.localStorage.length
+        for (i in 0 until length) {
+            val key = window.localStorage.key(i) ?: continue
+            val noteIndex = key.indexOf("_note_")
+            if (noteIndex >= 0) {
+                ids.add(key.substring(0, noteIndex))
+            }
+        }
+        return ids
+    }
+
     override fun deleteNote(noteId: String) {
         val length = window.localStorage.length
         for (i in 0 until length) {
