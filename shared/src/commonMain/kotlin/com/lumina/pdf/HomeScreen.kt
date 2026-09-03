@@ -420,7 +420,7 @@ fun HomeScreen(
                         GridItemCard(
                             fileItem = fileItem,
                             hasNotes = fileItem.id in documentIdsWithNotes,
-                            onClick = { onOpenFile(fileItem, null) },
+                            onClick = { Logger.i { "[TAP-DEBUG] GridItemCard clicked: ${fileItem.name}" }; onOpenFile(fileItem, null) },
                             onRemove = { if (activeTab == "Recents") onRemoveFromRecents(fileItem) else onDeleteDocument(fileItem) },
                             textPrimary = textPrimary,
                             textSecondary = textSecondary
@@ -650,7 +650,17 @@ fun HomeScreen(
                                         .padding(horizontal = 16.dp)
                                 ) {
                                     Text(text = "Name", color = textSecondary, fontWeight = FontWeight.Bold, fontSize = 11.sp, modifier = Modifier.weight(1f))
-                                    Text(text = "Last Opened", color = textSecondary, fontWeight = FontWeight.Bold, fontSize = 11.sp, modifier = Modifier.width(120.dp))
+                                    // On phone-width screens, Last Opened + Size + the remove-button
+                                    // slot (120+80+32dp, plus this row's own 32dp padding) can eat
+                                    // most of the available width, squeezing Name down to a few
+                                    // characters - confirmed on a 560dpi/~354dp-wide device where it
+                                    // left ~90dp for icon+spacer+name+notes combined. Dropping the
+                                    // least essential column (Last Opened) below 700dp (same
+                                    // threshold the rest of this screen uses for compact layout)
+                                    // gives Name its width back.
+                                    if (!isCompact) {
+                                        Text(text = "Last Opened", color = textSecondary, fontWeight = FontWeight.Bold, fontSize = 11.sp, modifier = Modifier.width(120.dp))
+                                    }
                                     Text(text = "Size", color = textSecondary, fontWeight = FontWeight.Bold, fontSize = 11.sp, modifier = Modifier.width(80.dp))
                                     Spacer(modifier = Modifier.width(32.dp))
                                 }
@@ -662,7 +672,8 @@ fun HomeScreen(
                                     ListItemRow(
                                         fileItem = fileItem,
                                         hasNotes = fileItem.id in documentIdsWithNotes,
-                                        onClick = { onOpenFile(fileItem, null) },
+                                        showLastOpened = !isCompact,
+                                        onClick = { Logger.i { "[TAP-DEBUG] ListItemRow clicked: ${fileItem.name}" }; onOpenFile(fileItem, null) },
                                         onRemove = { if (activeTab == "Recents") onRemoveFromRecents(fileItem) else onDeleteDocument(fileItem) },
                                         textPrimary = textPrimary,
                                         textSecondary = textSecondary

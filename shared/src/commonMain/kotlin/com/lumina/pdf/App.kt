@@ -161,6 +161,7 @@ fun App() {
         }
 
         val onOpenFile: (RecentFile, Int?, Navigator) -> Unit = { recentFile, page, navigator ->
+            Logger.i { "[TAP-DEBUG] onOpenFile invoked for ${recentFile.name}, bytes=${recentFile.fileBytes?.size}" }
             scope.launch {
                 try {
                     val bytesToOpen = recentFile.fileBytes

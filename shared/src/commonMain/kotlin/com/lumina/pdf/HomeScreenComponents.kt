@@ -29,7 +29,6 @@ import com.lumina.pdf.viewer.*
 import com.lumina.pdf.viewer.theme.LuminaRadius
 import com.lumina.pdf.viewer.theme.luminaDangerColor
 import com.lumina.pdf.viewer.theme.luminaNotesColor
-import com.lumina.pdf.viewer.theme.luminaSuccessColor
 
 // --- Component Card for Grid Item ---
 @Composable
@@ -45,7 +44,6 @@ fun GridItemCard(
     val colorScheme = MaterialTheme.colorScheme
     val cardBg = colorScheme.surfaceContainerLow
     val cardShape = RoundedCornerShape(LuminaRadius.lg)
-    val successColor = luminaSuccessColor()
     val notesColor = luminaNotesColor()
 
     HoverableItem(
@@ -123,16 +121,6 @@ fun GridItemCard(
                     MockDocumentThumbnail(name = fileItem.name, modifier = Modifier.fillMaxSize())
                 }
 
-                // Green Sync checkmark (mock cloud synced state on bottom left)
-                if (fileItem.isSample || fileItem.fileBytes != null) {
-                    SyncCheckIcon(
-                        color = successColor,
-                        modifier = Modifier
-                            .align(Alignment.BottomStart)
-                            .padding(8.dp)
-                    )
-                }
-
                 if (isHovered) {
                     Box(
                         modifier = Modifier
@@ -191,6 +179,7 @@ fun GridItemCard(
 fun ListItemRow(
     fileItem: RecentFile,
     hasNotes: Boolean,
+    showLastOpened: Boolean,
     onClick: () -> Unit,
     onRemove: () -> Unit,
     textPrimary: Color,
@@ -198,7 +187,6 @@ fun ListItemRow(
     modifier: Modifier = Modifier
 ) {
     val colorScheme = MaterialTheme.colorScheme
-    val successColor = luminaSuccessColor()
     val notesColor = luminaNotesColor()
     val dangerColor = luminaDangerColor()
 
@@ -222,7 +210,6 @@ fun ListItemRow(
                 verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier.weight(1f)
             ) {
-                // PDF small badge
                 Box(
                     modifier = Modifier
                         .background(dangerColor, RoundedCornerShape(2.dp))
@@ -235,9 +222,7 @@ fun ListItemRow(
                         fontSize = 9.sp
                     )
                 }
-                
                 Spacer(modifier = Modifier.width(12.dp))
-                
                 Text(
                     text = fileItem.name,
                     color = textPrimary,
@@ -252,15 +237,18 @@ fun ListItemRow(
                     NotesIndicatorIcon(color = notesColor, modifier = Modifier.size(14.dp))
                 }
             }
-            
-            // Last Opened timestamp
-            Text(
-                text = fileItem.lastOpened,
-                color = textSecondary,
-                fontSize = 12.sp,
-                modifier = Modifier.width(120.dp)
-            )
-            
+
+            // Last Opened timestamp - dropped on phone-width screens, see showLastOpened's
+            // caller for why.
+            if (showLastOpened) {
+                Text(
+                    text = fileItem.lastOpened,
+                    color = textSecondary,
+                    fontSize = 12.sp,
+                    modifier = Modifier.width(120.dp)
+                )
+            }
+
             // File Size
             Text(
                 text = fileItem.size,
@@ -269,7 +257,8 @@ fun ListItemRow(
                 modifier = Modifier.width(80.dp)
             )
 
-            // Cloud sync checkmark badge
+            // Remove button - reserves its slot's width even when not hovered, so the columns
+            // to its left don't shift when it appears/disappears.
             Box(
                 modifier = Modifier.width(32.dp),
                 contentAlignment = Alignment.Center
@@ -284,10 +273,6 @@ fun ListItemRow(
                         contentAlignment = Alignment.Center
                     ) {
                         CloseIcon(color = textSecondary, modifier = Modifier.size(10.dp))
-                    }
-                } else {
-                    if (fileItem.isSample || fileItem.fileBytes != null) {
-                        SyncCheckIcon(color = successColor)
                     }
                 }
             }

@@ -1,6 +1,7 @@
 package com.lumina.pdf.viewer
 
 import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.LocalIndication
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -582,13 +583,19 @@ fun HoverableItem(
     shape: RoundedCornerShape = RoundedCornerShape(4.dp),
     content: @Composable BoxScope.(Boolean) -> Unit
 ) {
+    // clickable() and hoverable() must share ONE interactionSource - passing none to clickable()
+    // (as this did before) makes it create its own internal, uncoordinated source, so the press
+    // state driving the actual click and the hover state driving isHovered/this background could
+    // desync (e.g. a hover left stuck true from a touch that Compose synthesizes hover events for
+    // without a clean exit) instead of reflecting one consistent interaction.
     val interactionSource = remember { MutableInteractionSource() }
     val isHovered by interactionSource.collectIsHoveredAsState()
-    
+    val indication = LocalIndication.current
+
     Box(
         modifier = modifier
             .background(if (isHovered) hoverColor else normalColor, shape)
-            .clickable(onClick = onClick)
+            .clickable(interactionSource = interactionSource, indication = indication, onClick = onClick)
             .hoverable(interactionSource),
         content = { content(isHovered) }
     )
