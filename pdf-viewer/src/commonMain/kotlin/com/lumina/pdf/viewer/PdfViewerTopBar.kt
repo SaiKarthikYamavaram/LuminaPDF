@@ -1,7 +1,9 @@
 package com.lumina.pdf.viewer
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.*
@@ -125,6 +127,7 @@ fun TopBar(
         shadowElevation = 4.dp,
         modifier = modifier
             .fillMaxWidth()
+            .statusBarsPadding()
             .height(BarHeight)
     ) {
         Row(
@@ -278,16 +281,22 @@ fun TopBar(
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
                     modifier = Modifier
-                        .weight(1f)
+                        .weight(1f, fill = false)
                         .padding(horizontal = 4.dp)
                 )
 
                 TopBarDivider()
 
-                // Right group: search + view controls, clustered together
+                // Right group: search + view controls, clustered together. On narrow
+                // screens this cluster doesn't fit alongside the title, so it gets its
+                // own scrollable lane instead of overflowing off-screen or squeezing
+                // the title to zero width.
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(4.dp)
+                    horizontalArrangement = Arrangement.spacedBy(4.dp),
+                    modifier = Modifier
+                        .weight(2f)
+                        .horizontalScroll(rememberScrollState())
                 ) {
                     IconButton(
                         onClick = { onSearchActiveChange(true) },

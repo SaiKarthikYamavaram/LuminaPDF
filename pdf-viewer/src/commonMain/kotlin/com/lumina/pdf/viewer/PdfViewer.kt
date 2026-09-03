@@ -163,7 +163,10 @@ fun PdfViewer(
     var isInitialZoomSet by remember { mutableStateOf(false) }
     var lastViewSize by remember { mutableStateOf(IntSize.Zero) }
 
-    val topBarHeight = 48.dp
+    // The bar itself adds statusBarsPadding() on top of its 48dp content height,
+    // so the content offset needs to reserve that same inset to avoid overlap.
+    val statusBarInset = WindowInsets.statusBars.asPaddingValues().calculateTopPadding()
+    val topBarHeight = 48.dp + statusBarInset
     val topPaddingPx = with(density) { topBarHeight.toPx() + 24.dp.toPx() }
     val bottomPaddingPx = with(density) { 24.dp.toPx() }
     val marginPx = with(density) { 16.dp.toPx() }
