@@ -17,7 +17,14 @@ enum class RenderPriority {
 
 sealed class RenderRequest(val priority: RenderPriority) {
     data class Page(val pageIndex: Int, val width: Int, val height: Int, val onRendered: (PdfBitmap?) -> Unit) : RenderRequest(RenderPriority.VISIBLE_PAGE)
-    data class Tile(val pageIndex: Int, val region: PdfRect, val scale: Float, val onRendered: (PdfBitmap?) -> Unit) : RenderRequest(RenderPriority.VISIBLE_TILE)
+    data class Tile(
+        val pageIndex: Int,
+        val region: PdfRect,
+        val scale: Float,
+        val fullPageWidthPx: Int,
+        val fullPageHeightPx: Int,
+        val onRendered: (PdfBitmap?) -> Unit
+    ) : RenderRequest(RenderPriority.VISIBLE_TILE)
     data class Thumbnail(
         val pageIndex: Int, 
         val width: Int, 
@@ -32,6 +39,13 @@ class RenderQueue(
     private val coroutineScope: CoroutineScope
 ) {
     private val pendingRequests = mutableListOf<RenderRequest>()
+    // The request currently being rendered (dequeued but not yet completed). submit() must check
+    // this in addition to pendingRequests: without it, a slow render (e.g. a full-resolution tile)
+    // could still be in flight when the same tile is requested again, producing two renders for
+    // the same key. Both eventually call cache.put()/activeTiles[key]=... for that key, and the
+    // second one closes the first bitmap - which may still be mid-draw on screen - crashing with
+    // "Canvas: trying to use a recycled bitmap".
+    private var inFlightRequest: RenderRequest? = null
     private val mutex = Mutex()
     private val wakeUpChannel = Channel<Unit>(Channel.CONFLATED)
 
@@ -49,6 +63,7 @@ class RenderQueue(
                         val bestRequest = pendingRequests.minByOrNull { it.priority.ordinal }
                         if (bestRequest != null) {
                             pendingRequests.remove(bestRequest)
+                            inFlightRequest = bestRequest
                         }
                         bestRequest
                     }
@@ -62,7 +77,10 @@ class RenderQueue(
                                 request.onRendered(bitmap)
                             }
                             is RenderRequest.Tile -> {
-                                val bitmap = document.renderTile(request.pageIndex, request.region, request.scale)
+                                val bitmap = document.renderTile(
+                                    request.pageIndex, request.region, request.scale,
+                                    request.fullPageWidthPx, request.fullPageHeightPx
+                                )
                                 request.onRendered(bitmap)
                             }
                             is RenderRequest.Thumbnail -> {
@@ -77,10 +95,20 @@ class RenderQueue(
                             is RenderRequest.Tile -> request.onRendered(null)
                             is RenderRequest.Thumbnail -> request.onRendered(null)
                         }
+                    } finally {
+                        mutex.withLock {
+                            if (inFlightRequest === request) inFlightRequest = null
+                        }
                     }
                 }
             }
         }
+    }
+
+    private fun isSameTarget(a: RenderRequest, b: RenderRequest): Boolean = when (a) {
+        is RenderRequest.Page -> b is RenderRequest.Page && b.pageIndex == a.pageIndex
+        is RenderRequest.Tile -> b is RenderRequest.Tile && b.pageIndex == a.pageIndex && b.region == a.region
+        is RenderRequest.Thumbnail -> b is RenderRequest.Thumbnail && b.pageIndex == a.pageIndex
     }
 
     fun submit(request: RenderRequest) {
@@ -100,12 +128,10 @@ class RenderQueue(
                     }
                 }
 
-                // Prevent duplicate requests to save rendering overhead
-                val isDuplicate = when (request) {
-                    is RenderRequest.Page -> pendingRequests.any { it is RenderRequest.Page && it.pageIndex == request.pageIndex }
-                    is RenderRequest.Tile -> pendingRequests.any { it is RenderRequest.Tile && it.pageIndex == request.pageIndex && it.region == request.region }
-                    is RenderRequest.Thumbnail -> pendingRequests.any { it is RenderRequest.Thumbnail && it.pageIndex == request.pageIndex }
-                }
+                // Prevent duplicate requests to save rendering overhead - and, critically, to avoid
+                // two renders racing to close/replace the same cache entry (see inFlightRequest doc).
+                val isDuplicate = inFlightRequest?.let { isSameTarget(request, it) } == true ||
+                    pendingRequests.any { isSameTarget(request, it) }
                 if (!isDuplicate) {
                     pendingRequests.add(request)
                     wakeUpChannel.trySend(Unit)

@@ -714,7 +714,7 @@ fun PdfViewer(
                                     right = ((col + 1) * tileSize).toFloat() / state.zoom,
                                     bottom = ((row + 1) * tileSize).toFloat() / state.zoom
                                 )
-                                renderQueue.submit(RenderRequest.Tile(page, tileRect, state.zoom) { bitmap ->
+                                renderQueue.submit(RenderRequest.Tile(page, tileRect, state.zoom, viewSize.width, estimatedPageHeight.toInt()) { bitmap ->
                                     bitmap?.let {
                                         cache.put(cacheKey, it)
                                         activeTiles[key] = it.asImageBitmap()

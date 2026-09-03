@@ -24,7 +24,13 @@ class JvmPdfDocument(private val document: PDDocument) : PdfDocument {
         JvmPdfBitmap(image)
     }
 
-    override suspend fun renderTile(page: Int, region: PdfRect, scale: Float): PdfBitmap = withContext(Dispatchers.IO) {
+    override suspend fun renderTile(
+        page: Int,
+        region: PdfRect,
+        scale: Float,
+        fullPageWidthPx: Int,
+        fullPageHeightPx: Int
+    ): PdfBitmap = withContext(Dispatchers.IO) {
         // PDFBox's PDFRenderer.renderPageToGraphics(page, Graphics2D, scaleX, scaleY) would let us
         // rasterize only the tile region directly, avoiding a full-page render per tile entirely.
         // Verified against this repo's PDFBox 3.0.1 + JDK: that call reliably produces a blank/black
@@ -35,9 +41,23 @@ class JvmPdfDocument(private val document: PDDocument) : PdfDocument {
         // parent's backing buffer, so caching one tile kept the entire full-page raster pinned in
         // memory. Drawing into a fresh tile-sized BufferedImage avoids that retention, even though
         // it doesn't avoid the redundant per-tile full-page rendering cost.
+        val pdPage = document.getPage(page)
+        val cropBox = pdPage.cropBox
+
+        // region's coordinates are pixels in a fullPageWidthPx-wide rendering of the whole page
+        // (the PdfDocument.renderTile contract) - PDFBox's renderImage(page, scale) instead treats
+        // scale as native-points-to-pixels, same mismatch renderPage() above already accounts for
+        // via width/cropBox.width. Using `scale` directly here (as a prior version did) ignored
+        // that conversion entirely, cropping from the wrong location once zoomed in enough to see
+        // tiles. renderImage takes one uniform scale, so this uses the width-based ratio for both
+        // axes - same width-driven approximation this app already makes when it estimates page
+        // height as width * 1.4 rather than using the PDF's true aspect ratio.
+        val baseScale = fullPageWidthPx / cropBox.width
+        val renderScale = scale * baseScale
+
         val tileWidthPx = (region.width * scale).toInt().coerceAtLeast(1)
         val tileHeightPx = (region.height * scale).toInt().coerceAtLeast(1)
-        val fullImage = renderer.renderImage(page, scale)
+        val fullImage = renderer.renderImage(page, renderScale)
         val tileImage = BufferedImage(tileWidthPx, tileHeightPx, BufferedImage.TYPE_INT_ARGB)
         val graphics = tileImage.createGraphics()
         try {
