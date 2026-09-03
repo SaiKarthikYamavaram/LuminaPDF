@@ -633,6 +633,11 @@ fun HomeScreen(
                         Column(
                             modifier = Modifier
                                 .fillMaxWidth()
+                                // clip first: background(color) below has no shape (fills a plain
+                                // rectangle) and the header row inside has its own square
+                                // background, so without clipping both poked past the rounded
+                                // border's corners instead of following it.
+                                .clip(RoundedCornerShape(4.dp))
                                 .border(1.dp, dividerColor, RoundedCornerShape(4.dp))
                                 .background(colorScheme.surfaceContainerLow)
                         ) {

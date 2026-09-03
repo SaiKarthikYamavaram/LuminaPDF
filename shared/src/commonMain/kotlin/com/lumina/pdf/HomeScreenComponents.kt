@@ -65,8 +65,12 @@ fun GridItemCard(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(130.dp)
-                    .background(colorScheme.surfaceContainerLowest)
-                    .clip(RoundedCornerShape(topStart = LuminaRadius.lg, topEnd = LuminaRadius.lg)),
+                    // clip MUST come before background - a modifier only clips what's drawn by
+                    // modifiers after it in the chain, so background() here was painting a full
+                    // square rectangle that the later clip() couldn't retroactively round off,
+                    // poking past the card's rounded border at the top two corners.
+                    .clip(RoundedCornerShape(topStart = LuminaRadius.lg, topEnd = LuminaRadius.lg))
+                    .background(colorScheme.surfaceContainerLowest),
                 contentAlignment = Alignment.Center
             ) {
                 if (fileItem.thumbnail != null) {
