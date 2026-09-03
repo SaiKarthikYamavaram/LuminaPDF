@@ -9,7 +9,6 @@ import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsHoveredAsState
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.CircleShape
@@ -107,9 +106,28 @@ fun HomeScreen(
     }
     var sortKey by remember { mutableStateOf("Recent") } // Recent, Name, Size
     var sortAscending by remember { mutableStateOf(false) }
-    var filterQuery by remember { mutableStateOf("") }
     var globalSearchQuery by remember { mutableStateOf("") }
     var viewMode by remember { mutableStateOf("Grid") } // Grid, List
+
+    // Narrows the Notes tab by the same search bar as Recents/Your documents - matches either the
+    // owning document's name or a note's own text, so searching a document name surfaces all its
+    // notes while searching a phrase surfaces just the notes containing it.
+    val filteredNotesGroupedByFile by remember(notesGroupedByFile, globalSearchQuery) {
+        derivedStateOf {
+            if (globalSearchQuery.isBlank()) {
+                notesGroupedByFile
+            } else {
+                notesGroupedByFile.mapNotNull { (file, notes) ->
+                    val matchingNotes = if (file.name.contains(globalSearchQuery, ignoreCase = true)) {
+                        notes
+                    } else {
+                        notes.filter { it.text.contains(globalSearchQuery, ignoreCase = true) }
+                    }
+                    if (matchingNotes.isNotEmpty()) file to matchingNotes else null
+                }.toMap()
+            }
+        }
+    }
 
     val colorScheme = MaterialTheme.colorScheme
     val darkBg = colorScheme.background
@@ -120,10 +138,9 @@ fun HomeScreen(
     val dividerColor = colorScheme.outlineVariant
 
     // Filter and Sort files
-    val filteredFiles by remember(filterQuery, globalSearchQuery, sortKey, sortAscending, activeTab) {
+    val filteredFiles by remember(globalSearchQuery, sortKey, sortAscending, activeTab) {
         derivedStateOf {
             var list = recentFiles.filter {
-                it.name.contains(filterQuery, ignoreCase = true) &&
                 it.name.contains(globalSearchQuery, ignoreCase = true)
             }
             
@@ -247,7 +264,7 @@ fun HomeScreen(
                         decorationBox = { innerTextField ->
                             if (globalSearchQuery.isEmpty()) {
                                 Text(
-                                    text = "Search documents...",
+                                    text = "Search $activeTab...",
                                     color = textSecondary.copy(alpha = 0.7f),
                                     fontSize = 13.sp
                                 )
@@ -258,113 +275,94 @@ fun HomeScreen(
                 }
             }
 
-            // Workspace Content — header + toolbar are shared between the plain scrolling
-            // column (Notes / empty state / List view) and the lazy grid below, since only
-            // the file cards themselves benefit from lazy composition.
+            // Workspace Content. Header + toolbar are rendered once, as a fixed sibling above
+            // the scrollable body below - not inside either scrollable container itself. Grid
+            // and List view swap between fundamentally different container types (LazyVerticalGrid
+            // vs. a plain scrolling Column), so a header composed as part of *either one* gets
+            // torn down and remounted every time viewMode toggles, which visibly jumped/flickered
+            // the Sort/List/Grid buttons on every switch.
             val workspaceHeader: @Composable () -> Unit = {
-                Text(
-                    text = activeTab,
-                    color = textPrimary,
-                    fontSize = 22.sp,
-                    fontWeight = FontWeight.ExtraBold,
-                    modifier = Modifier.padding(bottom = 16.dp)
-                )
-
-                if (activeTab != "Notes") {
-                    // Toolbar Row (Filter, Sort, View mode switcher)
+                // No repeated "Recents"/"Your documents"/"Notes" title here - the tab bar above
+                // already shows which section is active, so restating it as a heading was
+                // redundant. Sort/List/Grid stay as a toolbar row for the list below.
+                //
+                // The row itself always renders (even empty, on Notes) with a fixed minimum
+                // height matching its tallest control (the switcher pill) - otherwise Notes,
+                // which shows no controls at all, collapsed to zero height here and its content
+                // started right under the search bar while every other tab left a real gap.
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    // Spread the two groups across the full row now that there's no title
+                    // competing for the left side - Sort reads more naturally near the content
+                    // it affects (top-left of the list) than crowded against the view switcher.
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .heightIn(min = 30.dp)
+                        .padding(bottom = 20.dp)
+                ) {
+                    // Left: Sort controls - only "Your documents" supports sorting. Always wrapped
+                    // in a Row (even empty) so this is a stable 2-child SpaceBetween regardless of
+                    // tab; a single real child would collapse to the start instead of staying put.
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.SpaceBetween,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(bottom = 20.dp)
+                        horizontalArrangement = Arrangement.spacedBy(8.dp)
                     ) {
-                        // Filter field
-                        Row(
-                            verticalAlignment = Alignment.CenterVertically,
-                            modifier = Modifier
-                                .width(240.dp)
-                                .height(32.dp)
-                                .background(colorScheme.surfaceContainerHigh, RoundedCornerShape(LuminaRadius.sm))
-                                .border(1.dp, colorScheme.outlineVariant, RoundedCornerShape(LuminaRadius.sm))
-                                .padding(horizontal = 10.dp)
-                        ) {
-                            Text(
-                                text = "Filter",
-                                color = textSecondary,
-                                fontSize = 12.sp,
-                                fontWeight = FontWeight.Bold,
-                                modifier = Modifier.padding(end = 6.dp)
-                            )
-                            BasicTextField(
-                                value = filterQuery,
-                                onValueChange = { filterQuery = it },
-                                singleLine = true,
-                                textStyle = TextStyle(color = textPrimary, fontSize = 12.sp),
-                                cursorBrush = SolidColor(blueAccent),
-                                modifier = Modifier.weight(1f),
-                                decorationBox = { innerTextField ->
-                                    if (filterQuery.isEmpty()) {
-                                        Text(
-                                            text = "Filter files...",
-                                            color = textSecondary.copy(alpha = 0.7f),
-                                            fontSize = 12.sp
+                        if (activeTab != "Notes" && activeTab != "Recents") {
+                            // Sort Dropdown. A plain clickable Row instead of TextButton, and
+                            // a fixed-size Box instead of IconButton below - Material's default
+                            // min touch-target heights on those (~40dp/48dp) made this row
+                            // taller than the plain "Recents" row (title + switcher only,
+                            // ~28dp), which shifted the vertically-centered title down.
+                            var showSortDropdown by remember { mutableStateOf(false) }
+                            Box {
+                                Row(
+                                    verticalAlignment = Alignment.CenterVertically,
+                                    modifier = Modifier
+                                        .clip(RoundedCornerShape(LuminaRadius.sm))
+                                        .clickable { showSortDropdown = true }
+                                        .padding(horizontal = 8.dp, vertical = 4.dp)
+                                ) {
+                                    Text(text = "Sort: $sortKey", fontSize = 13.sp, fontWeight = FontWeight.Bold, color = textPrimary)
+                                    Spacer(modifier = Modifier.width(4.dp))
+                                    Text(text = "▼", fontSize = 9.sp, color = textSecondary)
+                                }
+
+                                DropdownMenu(
+                                    expanded = showSortDropdown,
+                                    onDismissRequest = { showSortDropdown = false },
+                                    modifier = Modifier.background(colorScheme.surfaceContainerHigh)
+                                ) {
+                                    val sortKeys = listOf("Recent", "Name", "Size")
+                                    sortKeys.forEach { key ->
+                                        DropdownMenuItem(
+                                            text = { Text(text = key, color = textPrimary) },
+                                            onClick = {
+                                                sortKey = key
+                                                showSortDropdown = false
+                                            }
                                         )
                                     }
-                                    innerTextField()
-                                }
-                            )
-                        }
-
-                        // Sort options & View switcher
-                        Row(
-                            verticalAlignment = Alignment.CenterVertically,
-                            horizontalArrangement = Arrangement.spacedBy(16.dp)
-                        ) {
-                            if (activeTab != "Recents") {
-                                // Sort Dropdown
-                                var showSortDropdown by remember { mutableStateOf(false) }
-                                Box {
-                                    TextButton(
-                                        onClick = { showSortDropdown = true },
-                                        colors = ButtonDefaults.textButtonColors(contentColor = textPrimary),
-                                        contentPadding = PaddingValues(horizontal = 8.dp)
-                                    ) {
-                                        Row(verticalAlignment = Alignment.CenterVertically) {
-                                            Text(text = "Sort: $sortKey", fontSize = 13.sp, fontWeight = FontWeight.Bold)
-                                            Spacer(modifier = Modifier.width(4.dp))
-                                            Text(text = "▼", fontSize = 9.sp, color = textSecondary)
-                                        }
-                                    }
-
-                                    DropdownMenu(
-                                        expanded = showSortDropdown,
-                                        onDismissRequest = { showSortDropdown = false },
-                                        modifier = Modifier.background(colorScheme.surfaceContainerHigh)
-                                    ) {
-                                        val sortKeys = listOf("Recent", "Name", "Size")
-                                        sortKeys.forEach { key ->
-                                            DropdownMenuItem(
-                                                text = { Text(text = key, color = textPrimary) },
-                                                onClick = {
-                                                    sortKey = key
-                                                    showSortDropdown = false
-                                                }
-                                            )
-                                        }
-                                    }
-                                }
-
-                                // Sort direction toggle
-                                IconButton(
-                                    onClick = { sortAscending = !sortAscending },
-                                    modifier = Modifier.size(28.dp)
-                                ) {
-                                    SortArrowIcon(isAscending = sortAscending, color = textPrimary)
                                 }
                             }
 
-                            // Segmented list/grid view switcher
+                            // Sort direction toggle
+                            Box(
+                                contentAlignment = Alignment.Center,
+                                modifier = Modifier
+                                    .size(26.dp)
+                                    .clip(RoundedCornerShape(LuminaRadius.sm))
+                                    .clickable { sortAscending = !sortAscending }
+                            ) {
+                                SortArrowIcon(isAscending = sortAscending, color = textPrimary)
+                            }
+                        }
+                    }
+
+                    // Right: List/Grid view switcher - same always-a-Row treatment as the Sort
+                    // slot above, so this row has exactly 2 children on every tab.
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        if (activeTab != "Notes") {
                             Row(
                                 modifier = Modifier
                                     .background(colorScheme.surfaceContainerHigh, RoundedCornerShape(LuminaRadius.sm))
@@ -372,7 +370,7 @@ fun HomeScreen(
                             ) {
                                 val isList = viewMode == "List"
                                 val isGrid = viewMode == "Grid"
-                                
+
                                 Box(
                                     modifier = Modifier
                                         .size(26.dp)
@@ -398,6 +396,14 @@ fun HomeScreen(
                 }
             }
 
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(start = 28.dp, end = 28.dp, top = 28.dp)
+            ) {
+                workspaceHeader()
+            }
+
             if (activeTab != "Notes" && viewMode == "Grid" && filteredFiles.isNotEmpty()) {
                 // Lazy grid: only the cards actually on screen compose, measure, and query
                 // notes state — the old plain Column/Row grid built every recent-file card
@@ -408,9 +414,8 @@ fun HomeScreen(
                     horizontalArrangement = Arrangement.spacedBy(20.dp),
                     modifier = Modifier
                         .fillMaxSize()
-                        .padding(28.dp)
+                        .padding(start = 28.dp, end = 28.dp, bottom = 28.dp)
                 ) {
-                    item(span = { GridItemSpan(maxLineSpan) }) { workspaceHeader() }
                     items(filteredFiles, key = { it.id }) { fileItem ->
                         GridItemCard(
                             fileItem = fileItem,
@@ -427,12 +432,10 @@ fun HomeScreen(
                 modifier = Modifier
                     .fillMaxSize()
                     .verticalScroll(rememberScrollState())
-                    .padding(28.dp)
+                    .padding(start = 28.dp, end = 28.dp, bottom = 28.dp)
             ) {
-                workspaceHeader()
-
                 if (activeTab == "Notes") {
-                    if (notesGroupedByFile.isEmpty()) {
+                    if (filteredNotesGroupedByFile.isEmpty()) {
                         Box(
                             modifier = Modifier
                                 .fillMaxWidth()
@@ -442,7 +445,15 @@ fun HomeScreen(
                             Column(horizontalAlignment = Alignment.CenterHorizontally) {
                                 NotesIndicatorIcon(color = textSecondary.copy(alpha = 0.5f), modifier = Modifier.size(48.dp))
                                 Spacer(modifier = Modifier.height(16.dp))
-                                Text(text = "No notes found in your documents", color = textSecondary, fontSize = 14.sp)
+                                Text(
+                                    text = if (globalSearchQuery.isBlank()) {
+                                        "No notes found in your documents"
+                                    } else {
+                                        "No notes match \"$globalSearchQuery\""
+                                    },
+                                    color = textSecondary,
+                                    fontSize = 14.sp
+                                )
                             }
                         }
                     } else {
@@ -450,7 +461,7 @@ fun HomeScreen(
                             verticalArrangement = Arrangement.spacedBy(20.dp),
                             modifier = Modifier.fillMaxWidth()
                         ) {
-                            notesGroupedByFile.forEach { (file, notesList) ->
+                            filteredNotesGroupedByFile.forEach { (file, notesList) ->
                                 Column(
                                     modifier = Modifier
                                         .fillMaxWidth()
@@ -579,7 +590,7 @@ fun HomeScreen(
                 } else {
                     // Grid / List rendering of files
                     if (filteredFiles.isEmpty()) {
-                        val isTrulyEmpty = recentFiles.isEmpty() && filterQuery.isEmpty() && globalSearchQuery.isEmpty()
+                        val isTrulyEmpty = recentFiles.isEmpty() && globalSearchQuery.isEmpty()
                         Box(
                             modifier = Modifier
                                 .fillMaxWidth()
