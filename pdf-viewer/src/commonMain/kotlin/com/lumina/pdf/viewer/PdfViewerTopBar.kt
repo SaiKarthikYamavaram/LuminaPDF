@@ -118,15 +118,24 @@ fun TopBar(
         }
     }
 
-    Surface(
-        color = MaterialTheme.colorScheme.surface.copy(alpha = 0.90f),
-        tonalElevation = 4.dp,
-        shadowElevation = 4.dp,
-        modifier = modifier
-            .fillMaxWidth()
-            .statusBarsPadding()
-            .height(BarHeight)
-    ) {
+    Column(modifier = modifier.fillMaxWidth()) {
+        // Status bar inset: translucent scrim (not a bar in its own right) so the system status
+        // icons stay legible over whatever PDF content is behind it, while the actual toolbar
+        // below is fully solid.
+        Spacer(
+            modifier = Modifier
+                .fillMaxWidth()
+                .windowInsetsTopHeight(WindowInsets.statusBars)
+                .background(MaterialTheme.colorScheme.surface.copy(alpha = 0.5f))
+        )
+        Surface(
+            color = MaterialTheme.colorScheme.surface,
+            tonalElevation = 4.dp,
+            shadowElevation = 4.dp,
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(BarHeight)
+        ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier
@@ -380,6 +389,7 @@ fun TopBar(
                     }
                 }
             }
+        }
         }
     }
 }

@@ -357,9 +357,23 @@ fun PdfViewer(
         isInitialZoomSet = false
     }
 
-    // Scrollbar/tooltip visibility
+    // Scrollbar/tooltip visibility (idle-based: visible while moving, fades out after 1.5s still)
     var isScrolling by remember { mutableStateOf(false) }
+    // Top bar visibility (direction-based, like most reader apps): hides while scrolling down
+    // into the content, comes back as soon as you scroll back up - independent of isScrolling
+    // above, which only tracks whether scrolling is happening at all, not which way.
+    var isTopBarVisible by remember { mutableStateOf(true) }
+    var lastScrollY by remember { mutableStateOf(state.scrollOffset.y) }
     LaunchedEffect(state.scrollOffset) {
+        // scrollOffset.y decreases as you scroll down (content moves up) and increases scrolling
+        // back up - see clampScrollOffset's minScrollY/maxScrollY. A small deadzone avoids
+        // flickering on sub-pixel jitter from animation rounding.
+        val deltaY = state.scrollOffset.y - lastScrollY
+        if (kotlin.math.abs(deltaY) > 2f) {
+            isTopBarVisible = deltaY > 0
+        }
+        lastScrollY = state.scrollOffset.y
+
         isScrolling = true
         kotlinx.coroutines.delay(1500)
         isScrolling = false
@@ -1085,7 +1099,17 @@ fun PdfViewer(
             }
         }
 
-        // 2. Top Bar Overlay
+        // 2. Top Bar Overlay - hides scrolling down into the content, comes back scrolling back
+        // up (see isTopBarVisible above). Forced visible while search/outline/notes are open
+        // regardless of scroll direction, since those overlays' own controls live in this bar
+        // (e.g. centering a search match scrolls the page, which would otherwise hide the search
+        // box the user is actively typing in).
+        AnimatedVisibility(
+            visible = isTopBarVisible || isSearchActive || isOutlineOpen || isNotesOpen,
+            enter = fadeIn(),
+            exit = fadeOut(),
+            modifier = Modifier.align(Alignment.TopCenter)
+        ) {
         TopBar(
             title = documentTitle,
             zoomPercent = (state.zoom * 100).toInt(),
@@ -1158,9 +1182,9 @@ fun PdfViewer(
             currentPage = state.currentPage,
             pageCount = pageCount,
             onJumpToPage = { jumpToPage(it) },
-            onClose = onClose,
-            modifier = Modifier.align(Alignment.TopCenter)
+            onClose = onClose
         )
+        }
 
         // 3. Custom Interactive Scrollbar & Tooltip
         if (viewSize.height > 0 && pageCount > 0) {
@@ -1186,60 +1210,71 @@ fun PdfViewer(
                 val scrollRangeState = rememberUpdatedState(scrollRange)
                 val topPaddingState = rememberUpdatedState(topPaddingPx)
 
-                Box(
+                // Auto-hides like the tooltip below - visible while actively scrolling/dragging,
+                // fades out shortly after (isScrolling flips back to false 1.5s after the last
+                // scrollOffset change, same timer the tooltip already used).
+                AnimatedVisibility(
+                    visible = isScrolling || isDraggingScrollbar,
+                    enter = fadeIn(),
+                    exit = fadeOut(),
                     modifier = Modifier
                         .align(Alignment.TopEnd)
                         .padding(top = topBarHeight, bottom = 16.dp, end = 4.dp)
                         .width(20.dp)
                         .fillMaxHeight()
-                        .pointerInput(Unit) {
-                            detectDragGestures(
-                                onDragStart = { isDraggingScrollbar = true },
-                                onDragEnd = { isDraggingScrollbar = false },
-                                onDragCancel = { isDraggingScrollbar = false },
-                                onDrag = { change, dragAmount ->
-                                    change.consume()
-                                    val currentRatioVal = currentRatioState.value
-                                    val maxTravelVal = maxTravelState.value
-                                    val scrollRangeVal = scrollRangeState.value
-                                    val topPaddingVal = topPaddingState.value
-                                    val newRatio = ((currentRatioVal * maxTravelVal + dragAmount.y) / maxTravelVal).coerceIn(0f, 1f)
-                                    val newScrollOffsetY = topPaddingVal - newRatio * scrollRangeVal
-                                    state.scrollOffset = state.scrollOffset.copy(y = newScrollOffsetY)
-                                }
-                            )
-                        }
                 ) {
-                    // Contrast against the reading pane's own background (which follows
-                    // localNightMode, not the app chrome's MaterialTheme) — using onSurface here
-                    // instead could go near-invisible whenever the two themes disagree (e.g. app
-                    // in dark system theme with night-mode reading toggled off to a cream page).
-                    val scrollbarInkColor = if (localNightMode) LuminaColors.inkPrimaryDark else LuminaColors.inkPrimaryLight
-
-                    // Track background
                     Box(
                         modifier = Modifier
-                            .align(Alignment.Center)
-                            .width(4.dp)
-                            .fillMaxHeight()
-                            .background(
-                                color = scrollbarInkColor.copy(alpha = 0.18f),
-                                shape = RoundedCornerShape(2.dp)
-                            )
-                    )
+                            .fillMaxSize()
+                            .pointerInput(Unit) {
+                                detectDragGestures(
+                                    onDragStart = { isDraggingScrollbar = true },
+                                    onDragEnd = { isDraggingScrollbar = false },
+                                    onDragCancel = { isDraggingScrollbar = false },
+                                    onDrag = { change, dragAmount ->
+                                        change.consume()
+                                        val currentRatioVal = currentRatioState.value
+                                        val maxTravelVal = maxTravelState.value
+                                        val scrollRangeVal = scrollRangeState.value
+                                        val topPaddingVal = topPaddingState.value
+                                        val newRatio = ((currentRatioVal * maxTravelVal + dragAmount.y) / maxTravelVal).coerceIn(0f, 1f)
+                                        val newScrollOffsetY = topPaddingVal - newRatio * scrollRangeVal
+                                        state.scrollOffset = state.scrollOffset.copy(y = newScrollOffsetY)
+                                    }
+                                )
+                            }
+                    ) {
+                        // Contrast against the reading pane's own background (which follows
+                        // localNightMode, not the app chrome's MaterialTheme) — using onSurface here
+                        // instead could go near-invisible whenever the two themes disagree (e.g. app
+                        // in dark system theme with night-mode reading toggled off to a cream page).
+                        val scrollbarInkColor = if (localNightMode) LuminaColors.inkPrimaryDark else LuminaColors.inkPrimaryLight
 
-                    // Thumb
-                    Box(
-                        modifier = Modifier
-                            .offset(y = with(density) { thumbY.toDp() })
-                            .align(Alignment.TopCenter)
-                            .width(8.dp)
-                            .height(with(density) { thumbHeight.toDp() })
-                            .background(
-                                color = scrollbarInkColor.copy(alpha = if (isDraggingScrollbar) 0.75f else 0.5f),
-                                shape = RoundedCornerShape(4.dp)
-                            )
-                    )
+                        // Track background
+                        Box(
+                            modifier = Modifier
+                                .align(Alignment.Center)
+                                .width(4.dp)
+                                .fillMaxHeight()
+                                .background(
+                                    color = scrollbarInkColor.copy(alpha = 0.18f),
+                                    shape = RoundedCornerShape(2.dp)
+                                )
+                        )
+
+                        // Thumb
+                        Box(
+                            modifier = Modifier
+                                .offset(y = with(density) { thumbY.toDp() })
+                                .align(Alignment.TopCenter)
+                                .width(8.dp)
+                                .height(with(density) { thumbHeight.toDp() })
+                                .background(
+                                    color = scrollbarInkColor.copy(alpha = if (isDraggingScrollbar) 0.75f else 0.5f),
+                                    shape = RoundedCornerShape(4.dp)
+                                )
+                        )
+                    }
                 }
 
                 // Tooltip next to scrollbar
