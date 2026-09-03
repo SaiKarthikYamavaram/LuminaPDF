@@ -146,24 +146,30 @@ fun HomeScreen(
         }
     }
 
-    Row(
+    BoxWithConstraints(
         modifier = modifier
             .fillMaxSize()
             .background(darkBg)
+            .safeDrawingPadding()
     ) {
-        // 1. LEFT SIDEBAR PANEL
-        Column(
-            modifier = Modifier
-                .width(240.dp)
-                .fillMaxHeight()
-                .background(panelBg)
-                .padding(vertical = 16.dp, horizontal = 16.dp)
-        ) {
-            // Acrobat Styled Logo
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier.padding(bottom = 24.dp)
-            ) {
+        // Below this width the fixed 240dp sidebar left almost no room for content,
+        // so phones get a single-pane layout with a compact header + scrollable tab row instead.
+        val isCompact = maxWidth < 700.dp
+        val gridColumns = if (isCompact) {
+            (maxWidth / 170.dp).toInt().coerceIn(1, 3)
+        } else {
+            ((maxWidth - 240.dp) / 170.dp).toInt().coerceIn(2, 6)
+        }
+
+        // Nav tabs, shared between the vertical sidebar (wide) and horizontal tab row (compact)
+        val navigationItems = listOf(
+            Triple("Recents", @Composable { color: Color -> HomeIcon(color) }, "Recents"),
+            Triple("Your documents", @Composable { color: Color -> FolderIcon(color) }, "Your documents"),
+            Triple("Notes", @Composable { color: Color -> NotesIndicatorIcon(color) }, "Notes")
+        )
+
+        val logo: @Composable () -> Unit = {
+            Row(verticalAlignment = Alignment.CenterVertically) {
                 AppLogoMark()
                 Spacer(modifier = Modifier.width(10.dp))
                 Text(
@@ -175,22 +181,17 @@ fun HomeScreen(
                     )
                 )
             }
+        }
 
-            // Clean "Open File" button
+        val openFileButton: @Composable (Modifier) -> Unit = { buttonModifier ->
             Button(
                 onClick = onTriggerFilePicker,
                 colors = ButtonDefaults.buttonColors(containerColor = blueAccent),
                 shape = RoundedCornerShape(LuminaRadius.md),
                 contentPadding = PaddingValues(horizontal = 20.dp, vertical = 10.dp),
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(bottom = 24.dp)
+                modifier = buttonModifier
             ) {
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.Center,
-                    modifier = Modifier.fillMaxWidth()
-                ) {
+                Row(verticalAlignment = Alignment.CenterVertically) {
                     FolderIcon(color = colorScheme.onPrimary, modifier = Modifier.size(16.dp))
                     Spacer(modifier = Modifier.width(8.dp))
                     Text(
@@ -201,52 +202,12 @@ fun HomeScreen(
                     )
                 }
             }
-
-            // Sidebar Navigation Tabs
-            val navigationItems = listOf(
-                Triple("Recents", @Composable { color: Color -> HomeIcon(color) }, "Recents"),
-                Triple("Your documents", @Composable { color: Color -> FolderIcon(color) }, "Your documents"),
-                Triple("Notes", @Composable { color: Color -> NotesIndicatorIcon(color) }, "Notes")
-            )
-            
-            navigationItems.forEach { (tabName, icon, targetTab) ->
-                val isActive = activeTab == targetTab
-                val activeColor = colorScheme.primary
-                HoverableItem(
-                    onClick = { activeTab = targetTab },
-                    normalColor = if (isActive) colorScheme.primaryContainer else Color.Transparent,
-                    hoverColor = if (isActive) colorScheme.primaryContainer else colorScheme.onSurface.copy(alpha = 0.06f),
-                    shape = RoundedCornerShape(LuminaRadius.md),
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(40.dp)
-                        .padding(vertical = 2.dp)
-                ) {
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically,
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .padding(horizontal = 12.dp)
-                    ) {
-                        icon(if (isActive) activeColor else textSecondary)
-                        Spacer(modifier = Modifier.width(12.dp))
-                        Text(
-                            text = tabName,
-                            color = if (isActive) activeColor else textSecondary,
-                            fontWeight = if (isActive) FontWeight.Bold else FontWeight.Medium,
-                            fontSize = 13.sp
-                        )
-                    }
-                }
-            }
         }
 
-        // 2. MAIN CONTENT AREA
-        Column(
-            modifier = Modifier
-                .weight(1f)
-                .fillMaxHeight()
-        ) {
+        // Search bar + scrollable workspace (files grid/list or notes) — shared between
+        // the wide two-pane layout and the compact single-pane layout.
+        val mainContent: @Composable (Modifier) -> Unit = { contentModifier ->
+            Column(modifier = contentModifier) {
             // TOP BAR with modern search box
             Row(
                 verticalAlignment = Alignment.CenterVertically,
@@ -617,7 +578,7 @@ fun HomeScreen(
                         }
                     } else {
                         if (viewMode == "Grid") {
-                            val columns = 4
+                            val columns = gridColumns
                             val rows = (filteredFiles.size + columns - 1) / columns
                             
                             Column(
@@ -688,6 +649,130 @@ fun HomeScreen(
                         }
                     }
                 }
+            }
+            }
+        }
+
+        if (isCompact) {
+            // Single-pane phone layout: compact header + a horizontally scrollable tab
+            // row stand in for the permanent 240dp sidebar used on wider screens.
+            Column(modifier = Modifier.fillMaxSize()) {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .background(panelBg)
+                        .padding(horizontal = 16.dp, vertical = 12.dp)
+                ) {
+                    logo()
+                    Spacer(modifier = Modifier.weight(1f))
+                    openFileButton(Modifier)
+                }
+
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .background(panelBg)
+                        .horizontalScroll(rememberScrollState())
+                        .padding(horizontal = 12.dp, vertical = 8.dp),
+                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    navigationItems.forEach { (tabName, icon, targetTab) ->
+                        val isActive = activeTab == targetTab
+                        val activeColor = colorScheme.primary
+                        HoverableItem(
+                            onClick = { activeTab = targetTab },
+                            normalColor = if (isActive) colorScheme.primaryContainer else Color.Transparent,
+                            hoverColor = if (isActive) colorScheme.primaryContainer else colorScheme.onSurface.copy(alpha = 0.06f),
+                            shape = RoundedCornerShape(LuminaRadius.md),
+                            modifier = Modifier.height(36.dp)
+                        ) {
+                            Row(
+                                verticalAlignment = Alignment.CenterVertically,
+                                modifier = Modifier
+                                    .fillMaxHeight()
+                                    .padding(horizontal = 12.dp)
+                            ) {
+                                icon(if (isActive) activeColor else textSecondary)
+                                Spacer(modifier = Modifier.width(8.dp))
+                                Text(
+                                    text = tabName,
+                                    color = if (isActive) activeColor else textSecondary,
+                                    fontWeight = if (isActive) FontWeight.Bold else FontWeight.Medium,
+                                    fontSize = 13.sp
+                                )
+                            }
+                        }
+                    }
+                }
+                HorizontalDivider(color = dividerColor)
+
+                mainContent(
+                    Modifier
+                        .weight(1f)
+                        .fillMaxWidth()
+                )
+            }
+        } else {
+            Row(modifier = Modifier.fillMaxSize()) {
+                // 1. LEFT SIDEBAR PANEL
+                Column(
+                    modifier = Modifier
+                        .width(240.dp)
+                        .fillMaxHeight()
+                        .background(panelBg)
+                        .padding(vertical = 16.dp, horizontal = 16.dp)
+                ) {
+                    // Acrobat Styled Logo
+                    Box(modifier = Modifier.padding(bottom = 24.dp)) {
+                        logo()
+                    }
+
+                    // Clean "Open File" button
+                    openFileButton(
+                        Modifier
+                            .fillMaxWidth()
+                            .padding(bottom = 24.dp)
+                    )
+
+                    navigationItems.forEach { (tabName, icon, targetTab) ->
+                        val isActive = activeTab == targetTab
+                        val activeColor = colorScheme.primary
+                        HoverableItem(
+                            onClick = { activeTab = targetTab },
+                            normalColor = if (isActive) colorScheme.primaryContainer else Color.Transparent,
+                            hoverColor = if (isActive) colorScheme.primaryContainer else colorScheme.onSurface.copy(alpha = 0.06f),
+                            shape = RoundedCornerShape(LuminaRadius.md),
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(40.dp)
+                                .padding(vertical = 2.dp)
+                        ) {
+                            Row(
+                                verticalAlignment = Alignment.CenterVertically,
+                                modifier = Modifier
+                                    .fillMaxSize()
+                                    .padding(horizontal = 12.dp)
+                            ) {
+                                icon(if (isActive) activeColor else textSecondary)
+                                Spacer(modifier = Modifier.width(12.dp))
+                                Text(
+                                    text = tabName,
+                                    color = if (isActive) activeColor else textSecondary,
+                                    fontWeight = if (isActive) FontWeight.Bold else FontWeight.Medium,
+                                    fontSize = 13.sp
+                                )
+                            }
+                        }
+                    }
+                }
+
+                // 2. MAIN CONTENT AREA
+                mainContent(
+                    Modifier
+                        .weight(1f)
+                        .fillMaxHeight()
+                )
             }
         }
     }
