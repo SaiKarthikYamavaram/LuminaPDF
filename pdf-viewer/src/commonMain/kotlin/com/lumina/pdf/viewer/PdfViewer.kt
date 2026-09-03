@@ -13,11 +13,14 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.scaleIn
 import androidx.compose.animation.scaleOut
+import androidx.compose.animation.splineBasedDecay
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.background
 import androidx.compose.foundation.focusable
 import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.foundation.gestures.awaitEachGesture
+import androidx.compose.foundation.gestures.awaitFirstDown
 import androidx.compose.foundation.gestures.detectDragGestures
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.gestures.detectTransformGestures
@@ -41,6 +44,8 @@ import androidx.compose.ui.graphics.drawscope.scale
 import androidx.compose.ui.graphics.drawscope.translate
 import androidx.compose.ui.input.key.*
 import androidx.compose.ui.input.pointer.*
+import androidx.compose.ui.input.pointer.util.VelocityTracker
+import androidx.compose.ui.input.pointer.util.addPointerInputChange
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.foundation.text.KeyboardOptions
@@ -135,15 +140,25 @@ fun PdfViewer(
     // the pointer continuously frame-by-frame and animating on top would fight live input.
     val zoomAnimatable = remember(document) { Animatable(state.zoom) }
 
-    // Memory cache and render queue
-    val cache = remember(document) { LruMemoryCache() } // 64MB byte budget, 300-entry cap (see LruMemoryCache defaults)
-    val renderQueue = remember(document) { RenderQueue(document, coroutineScope) }
-
     // State maps for current UI
     val thumbnails = remember { mutableStateMapOf<Int, ImageBitmap>() }
     val activeTiles = remember { mutableStateMapOf<TileKey, ImageBitmap>() }
     // Pages whose thumbnail render failed (RenderQueue delivered a null bitmap) — tap to retry.
     val renderFailed = remember { mutableStateMapOf<Int, Boolean>() }
+
+    // Memory cache and render queue
+    val cache = remember(document) {
+        LruMemoryCache(
+            // Never evict a bitmap that's still referenced by the on-screen state maps above -
+            // otherwise cache pressure from newly loaded tiles/thumbnails can recycle a bitmap
+            // that's still being drawn, crashing with "Canvas: trying to use a recycled bitmap".
+            isPinned = { key ->
+                thumbnails.keys.any { "thumb_$it" == key } ||
+                    activeTiles.keys.any { "tile_${it.page}_${it.row}_${it.col}_${it.zoomLevel}" == key }
+            }
+        )
+    } // 64MB byte budget, 300-entry cap (see LruMemoryCache defaults)
+    val renderQueue = remember(document) { RenderQueue(document, coroutineScope) }
 
     val focusRequester = remember { FocusRequester() }
     val density = LocalDensity.current
@@ -865,15 +880,57 @@ fun PdfViewer(
                         focusRequester.requestFocus()
                         val oldZoom = state.zoom
                         val newZoom = (state.zoom * zoomMultiplier).coerceIn(config.minZoom, config.maxZoom)
-                        
+
                         val documentPoint = (centroid - state.scrollOffset) / oldZoom
                         val newScrollOffset = centroid - documentPoint * newZoom + pan
-                        
+
                         state.zoom = newZoom
                         state.scrollOffset = clampScrollOffset(
                             newScrollOffset, newZoom, viewSize.width.toFloat(), viewSize.height.toFloat(),
                             viewSize.width.toFloat() * 1.4f, pageCount, spacingPx, topPaddingPx, bottomPaddingPx, marginPx
                         )
+                    }
+                }
+                // Runs alongside detectTransformGestures above (purely observational - never
+                // consumes) purely to track single-finger drag velocity and fling on release.
+                // detectTransformGestures itself only tracks the finger 1:1 and stops dead the
+                // instant it lifts, which is what made touch scrolling feel unlike every native
+                // Android scroll surface (no momentum/deceleration).
+                .pointerInput(viewSize, pageCount, state.zoom) {
+                    awaitEachGesture {
+                        val down = awaitFirstDown(requireUnconsumed = false)
+                        // A fresh touch always takes over from any fling still coasting from
+                        // the previous gesture, so the new drag isn't fighting a decaying one.
+                        coroutineScope.launch { scrollAnimatable.stop() }
+
+                        val velocityTracker = VelocityTracker()
+                        velocityTracker.addPointerInputChange(down)
+                        var isMultiTouch = false
+
+                        do {
+                            val event = awaitPointerEvent()
+                            val pressed = event.changes.filter { it.pressed }
+                            if (pressed.size > 1) isMultiTouch = true
+                            pressed.firstOrNull()?.let { velocityTracker.addPointerInputChange(it) }
+                        } while (event.changes.any { it.pressed })
+
+                        // Pinch-zoom gestures already end wherever the fingers left off; only a
+                        // single-finger pan should coast on.
+                        if (!isMultiTouch) {
+                            val velocity = velocityTracker.calculateVelocity()
+                            if (kotlin.math.hypot(velocity.x, velocity.y) > 200f) {
+                                val decay = splineBasedDecay<Offset>(density)
+                                coroutineScope.launch {
+                                    scrollAnimatable.snapTo(state.scrollOffset)
+                                    scrollAnimatable.animateDecay(Offset(velocity.x, velocity.y), decay) {
+                                        state.scrollOffset = clampScrollOffset(
+                                            value, state.zoom, viewSize.width.toFloat(), viewSize.height.toFloat(),
+                                            viewSize.width.toFloat() * 1.4f, pageCount, spacingPx, topPaddingPx, bottomPaddingPx, marginPx
+                                        )
+                                    }
+                                }
+                            }
+                        }
                     }
                 }
                 .pointerInput(viewSize, pageCount, state.zoom) {

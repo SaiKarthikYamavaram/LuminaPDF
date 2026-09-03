@@ -4,7 +4,12 @@ private const val BYTES_PER_PIXEL = 4L // ARGB approximation; PdfBitmap exposes 
 
 class LruMemoryCache(
     private val maxBytes: Long = 64L * 1024 * 1024, // 64MB default budget
-    private val maxEntries: Int = 300 // belt-and-suspenders cap vs. many-tiny-bitmaps pathology
+    private val maxEntries: Int = 300, // belt-and-suspenders cap vs. many-tiny-bitmaps pathology
+    // Keys this predicate marks true are skipped by eviction even under pressure. Without this,
+    // trimToSize() could recycle a bitmap that a caller is still actively drawing on screen from
+    // a separate reference (e.g. Compose state holding the same ImageBitmap outside the cache),
+    // crashing with "Canvas: trying to use a recycled bitmap".
+    private val isPinned: (String) -> Boolean = { false }
 ) : MemoryCache {
     private val map = LinkedHashMap<String, PdfBitmap>(16, 0.75f)
     private var currentBytes: Long = 0L
@@ -43,11 +48,13 @@ class LruMemoryCache(
         bitmap.width.toLong() * bitmap.height.toLong() * BYTES_PER_PIXEL
 
     private fun trimToSize() {
-        while ((currentBytes > maxBytes || map.size > maxEntries) && map.isNotEmpty()) {
-            val eldestKey = map.keys.firstOrNull() ?: break
-            val eldestValue = map.remove(eldestKey) ?: break
-            currentBytes -= sizeOf(eldestValue)
-            eldestValue.close()
+        val iterator = map.entries.iterator()
+        while ((currentBytes > maxBytes || map.size > maxEntries) && iterator.hasNext()) {
+            val (key, value) = iterator.next()
+            if (isPinned(key)) continue
+            iterator.remove()
+            currentBytes -= sizeOf(value)
+            value.close()
         }
     }
 }
