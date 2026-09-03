@@ -31,12 +31,12 @@ import cafe.adriel.voyager.navigator.currentOrThrow
 import cafe.adriel.voyager.navigator.CurrentScreen
 
 class AppHomeScreen(
-    private val recentFiles: SnapshotStateList<RecentFile>,
-    private val sampleFile: RecentFile?,
-    private val onOpenFile: (RecentFile, Int?, Navigator) -> Unit,
-    private val onRemoveFromRecents: (RecentFile) -> Unit,
-    private val onDeleteDocument: (RecentFile) -> Unit,
-    private val onTriggerFilePicker: () -> Unit
+    @Transient private val recentFiles: SnapshotStateList<RecentFile> = mutableStateListOf(),
+    @Transient private val sampleFile: RecentFile? = null,
+    @Transient private val onOpenFile: (RecentFile, Int?, Navigator) -> Unit = { _, _, _ -> },
+    @Transient private val onRemoveFromRecents: (RecentFile) -> Unit = {},
+    @Transient private val onDeleteDocument: (RecentFile) -> Unit = {},
+    @Transient private val onTriggerFilePicker: () -> Unit = {}
 ) : Screen {
     @Composable
     override fun Content() {
@@ -54,14 +54,15 @@ class AppHomeScreen(
 }
 
 class AppPdfViewerScreen(
-    private val document: PdfDocument,
+    @Transient private val document: PdfDocument? = null,
     private val documentId: String,
     private val documentTitle: String,
     private val initialPage: Int?,
-    private val onClose: () -> Unit
+    @Transient private val onClose: () -> Unit = {}
 ) : Screen {
     @Composable
     override fun Content() {
+        val document = document ?: return
         PdfViewer(
             document = document,
             documentId = documentId,
