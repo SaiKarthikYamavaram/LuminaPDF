@@ -441,6 +441,19 @@ fun RemoveIcon(color: Color, modifier: Modifier = Modifier) {
 }
 
 @Composable
+fun MoreVertIcon(color: Color, modifier: Modifier = Modifier) {
+    Canvas(modifier = modifier.size(20.dp)) {
+        val cx = size.width / 2f
+        val r = size.minDimension * 0.08f
+        val gap = size.height * 0.28f
+        val cy = size.height / 2f
+        drawCircle(color = color, radius = r, center = Offset(cx, cy - gap))
+        drawCircle(color = color, radius = r, center = Offset(cx, cy))
+        drawCircle(color = color, radius = r, center = Offset(cx, cy + gap))
+    }
+}
+
+@Composable
 fun SunIcon(color: Color, modifier: Modifier = Modifier) {
     Canvas(modifier = modifier.size(20.dp)) {
         val r = size.minDimension / 4f

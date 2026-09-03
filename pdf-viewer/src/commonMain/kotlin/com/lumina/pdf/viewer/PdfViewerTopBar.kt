@@ -1,9 +1,7 @@
 package com.lumina.pdf.viewer
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.*
@@ -17,7 +15,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.key.*
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.lumina.pdf.core.PdfRect
@@ -229,12 +226,16 @@ fun TopBar(
                     }
                 }
             } else {
-                // Left group: navigation / panel toggles
+                var showOverflowMenu by remember { mutableStateOf(false) }
+
+                // Left group: navigation / panel toggles. The back arrow is only shown
+                // where there's no equivalent system-provided back navigation (Android
+                // already has its own back gesture/button).
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.spacedBy(2.dp)
                 ) {
-                    if (onClose != null) {
+                    if (onClose != null && shouldShowInAppBackButton()) {
                         IconButton(
                             onClick = onClose,
                             modifier = Modifier.size(ButtonSize)
@@ -281,22 +282,19 @@ fun TopBar(
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
                     modifier = Modifier
-                        .weight(1f, fill = false)
+                        .weight(1f)
                         .padding(horizontal = 4.dp)
                 )
 
                 TopBarDivider()
 
-                // Right group: search + view controls, clustered together. On narrow
-                // screens this cluster doesn't fit alongside the title, so it gets its
-                // own scrollable lane instead of overflowing off-screen or squeezing
-                // the title to zero width.
+                // Right group: kept to a small, fixed set of controls so it never needs
+                // to compete with the title for space or overflow off-screen. Search and
+                // the page indicator are core wayfinding, so they stay one tap away;
+                // zoom/fit/night-mode are secondary and live behind the overflow menu.
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(4.dp),
-                    modifier = Modifier
-                        .weight(2f)
-                        .horizontalScroll(rememberScrollState())
+                    horizontalArrangement = Arrangement.spacedBy(4.dp)
                 ) {
                     IconButton(
                         onClick = { onSearchActiveChange(true) },
@@ -305,54 +303,8 @@ fun TopBar(
                         SearchIcon(color = MaterialTheme.colorScheme.onSurface, modifier = Modifier.size(IconSize))
                     }
 
-                    Spacer(modifier = Modifier.width(8.dp))
-
-                    IconButton(
-                        onClick = onZoomOut,
-                        modifier = Modifier.size(ButtonSize)
-                    ) {
-                        RemoveIcon(color = MaterialTheme.colorScheme.onSurface, modifier = Modifier.size(IconSize))
-                    }
-
-                    Surface(
-                        shape = RoundedCornerShape(LuminaRadius.sm),
-                        color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.06f),
-                        modifier = Modifier.width(52.dp)
-                    ) {
-                        Text(
-                            text = "$zoomPercent%",
-                            style = MaterialTheme.typography.bodySmall,
-                            fontWeight = FontWeight.SemiBold,
-                            textAlign = TextAlign.Center,
-                            modifier = Modifier.padding(vertical = 4.dp),
-                            color = MaterialTheme.colorScheme.onSurface
-                        )
-                    }
-
-                    IconButton(
-                        onClick = onZoomIn,
-                        modifier = Modifier.size(ButtonSize)
-                    ) {
-                        AddIcon(color = MaterialTheme.colorScheme.onSurface, modifier = Modifier.size(IconSize))
-                    }
-
-                    TextButton(
-                        onClick = onFitPage,
-                        modifier = Modifier.height(ButtonSize),
-                        contentPadding = PaddingValues(horizontal = 10.dp),
-                        colors = ButtonDefaults.textButtonColors(contentColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.75f))
-                    ) {
-                        Text(
-                            text = "Fit Page",
-                            style = MaterialTheme.typography.labelMedium,
-                            fontWeight = FontWeight.SemiBold
-                        )
-                    }
-
-                    Spacer(modifier = Modifier.width(4.dp))
-
                     // Page indicator, styled as a distinct pill so it reads as its own
-                    // actionable control rather than blending into the zoom cluster.
+                    // actionable control rather than blending into the icon buttons.
                     Surface(
                         onClick = {
                             jumpPageInput = (currentPage + 1).toString()
@@ -363,11 +315,11 @@ fun TopBar(
                         modifier = Modifier.height(ButtonSize)
                     ) {
                         Box(
-                            modifier = Modifier.padding(horizontal = 12.dp),
+                            modifier = Modifier.padding(horizontal = 10.dp),
                             contentAlignment = Alignment.Center
                         ) {
                             Text(
-                                text = "Page ${currentPage + 1} / $pageCount",
+                                text = "${currentPage + 1}/$pageCount",
                                 style = MaterialTheme.typography.labelMedium,
                                 fontWeight = FontWeight.Bold,
                                 color = MaterialTheme.colorScheme.primary
@@ -375,16 +327,55 @@ fun TopBar(
                         }
                     }
 
-                    TopBarDivider()
+                    Box {
+                        IconButton(
+                            onClick = { showOverflowMenu = true },
+                            modifier = Modifier.size(ButtonSize)
+                        ) {
+                            MoreVertIcon(color = MaterialTheme.colorScheme.onSurface, modifier = Modifier.size(IconSize))
+                        }
 
-                    IconButton(
-                        onClick = onToggleNightMode,
-                        modifier = Modifier.size(ButtonSize)
-                    ) {
-                        if (nightMode) {
-                            SunIcon(color = MaterialTheme.colorScheme.primary, modifier = Modifier.size(IconSize))
-                        } else {
-                            MoonIcon(color = MaterialTheme.colorScheme.onSurface, modifier = Modifier.size(IconSize))
+                        DropdownMenu(
+                            expanded = showOverflowMenu,
+                            onDismissRequest = { showOverflowMenu = false }
+                        ) {
+                            DropdownMenuItem(
+                                text = { Text("Zoom in") },
+                                leadingIcon = { AddIcon(color = MaterialTheme.colorScheme.onSurface, modifier = Modifier.size(IconSize)) },
+                                onClick = {
+                                    onZoomIn()
+                                    showOverflowMenu = false
+                                }
+                            )
+                            DropdownMenuItem(
+                                text = { Text("Zoom out") },
+                                leadingIcon = { RemoveIcon(color = MaterialTheme.colorScheme.onSurface, modifier = Modifier.size(IconSize)) },
+                                onClick = {
+                                    onZoomOut()
+                                    showOverflowMenu = false
+                                }
+                            )
+                            DropdownMenuItem(
+                                text = { Text("Fit page ($zoomPercent%)") },
+                                onClick = {
+                                    onFitPage()
+                                    showOverflowMenu = false
+                                }
+                            )
+                            DropdownMenuItem(
+                                text = { Text(if (nightMode) "Light mode" else "Night mode") },
+                                leadingIcon = {
+                                    if (nightMode) {
+                                        SunIcon(color = MaterialTheme.colorScheme.onSurface, modifier = Modifier.size(IconSize))
+                                    } else {
+                                        MoonIcon(color = MaterialTheme.colorScheme.onSurface, modifier = Modifier.size(IconSize))
+                                    }
+                                },
+                                onClick = {
+                                    onToggleNightMode()
+                                    showOverflowMenu = false
+                                }
+                            )
                         }
                     }
                 }
