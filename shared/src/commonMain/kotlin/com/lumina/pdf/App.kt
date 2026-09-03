@@ -113,6 +113,13 @@ fun App() {
         var sampleFile by remember { mutableStateOf<RecentFile?>(null) }
         val scope = rememberCoroutineScope()
         var navigatorRef by remember { mutableStateOf<Navigator?>(null) }
+        // Guards onOpenFile against rapid repeat taps: opening involves file I/O
+        // (PdfDocumentFactory.open, saveRecentFilesList) with no loading indicator in between, so
+        // a user tapping again before the first tap's effect is visible was firing onOpenFile
+        // dozens of times in a few seconds - each one opening its own PdfDocument and pushing its
+        // own AppPdfViewerScreen, none of which ever got a chance to settle. Confirmed via
+        // [TAP-DEBUG] logging: 21 invocations for one file in 4.5s of tapping.
+        var isOpeningFile by remember { mutableStateOf(false) }
 
         LaunchedEffect(Unit) {
             try {
@@ -161,46 +168,53 @@ fun App() {
         }
 
         val onOpenFile: (RecentFile, Int?, Navigator) -> Unit = { recentFile, page, navigator ->
-            Logger.i { "[TAP-DEBUG] onOpenFile invoked for ${recentFile.name}, bytes=${recentFile.fileBytes?.size}" }
-            scope.launch {
-                try {
-                    val bytesToOpen = recentFile.fileBytes
-                    if (bytesToOpen == null) {
-                        error = "\"${recentFile.name}\" is no longer available. It may not have been saved on this device."
-                        return@launch
-                    }
-                    val factory = PdfDocumentFactory()
-                    currentDocument = factory.open(bytesToOpen)
-                    currentDocumentName = recentFile.id
-                    initialPageToOpen = page
+            if (isOpeningFile) {
+                Logger.i { "[TAP-DEBUG] onOpenFile ignored (already opening): ${recentFile.name}" }
+            } else {
+                isOpeningFile = true
+                Logger.i { "[TAP-DEBUG] onOpenFile invoked for ${recentFile.name}, bytes=${recentFile.fileBytes?.size}" }
+                scope.launch {
+                    try {
+                        val bytesToOpen = recentFile.fileBytes
+                        if (bytesToOpen == null) {
+                            error = "\"${recentFile.name}\" is no longer available. It may not have been saved on this device."
+                            return@launch
+                        }
+                        val factory = PdfDocumentFactory()
+                        currentDocument = factory.open(bytesToOpen)
+                        currentDocumentName = recentFile.id
+                        initialPageToOpen = page
 
-                    // Move the opened file to the top of the list, update lastOpened, and mark inRecents = true
-                    // (also covers the first time the sample file is opened, adding it honestly)
-                    val existing = recentFiles.find { it.id == recentFile.id }
-                    val updated = (existing ?: recentFile).copy(lastOpened = "Just now", inRecents = true)
-                    if (existing != null) {
-                        recentFiles.remove(existing)
-                    }
-                    recentFiles.add(0, updated)
-                    RecentFilesStore.saveRecentFilesList(recentFiles)
+                        // Move the opened file to the top of the list, update lastOpened, and mark inRecents = true
+                        // (also covers the first time the sample file is opened, adding it honestly)
+                        val existing = recentFiles.find { it.id == recentFile.id }
+                        val updated = (existing ?: recentFile).copy(lastOpened = "Just now", inRecents = true)
+                        if (existing != null) {
+                            recentFiles.remove(existing)
+                        }
+                        recentFiles.add(0, updated)
+                        RecentFilesStore.saveRecentFilesList(recentFiles)
 
-                    navigator.push(
-                        AppPdfViewerScreen(
-                            document = currentDocument!!,
-                            documentId = recentFile.id,
-                            documentTitle = recentFile.name,
-                            initialPage = page,
-                            onClose = {
-                                currentDocument?.close()
-                                currentDocument = null
-                                initialPageToOpen = null
-                                navigator.pop()
-                            }
+                        navigator.push(
+                            AppPdfViewerScreen(
+                                document = currentDocument!!,
+                                documentId = recentFile.id,
+                                documentTitle = recentFile.name,
+                                initialPage = page,
+                                onClose = {
+                                    currentDocument?.close()
+                                    currentDocument = null
+                                    initialPageToOpen = null
+                                    navigator.pop()
+                                }
+                            )
                         )
-                    )
-                } catch (e: Exception) {
-                    Logger.e(e) { "Failed to open recent file: ${recentFile.id}" }
-                    error = e.message ?: "Error opening file"
+                    } catch (e: Exception) {
+                        Logger.e(e) { "Failed to open recent file: ${recentFile.id}" }
+                        error = e.message ?: "Error opening file"
+                    } finally {
+                        isOpeningFile = false
+                    }
                 }
             }
         }
