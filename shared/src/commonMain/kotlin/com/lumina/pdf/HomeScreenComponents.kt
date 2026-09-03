@@ -9,15 +9,9 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.DropdownMenu
-import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -43,7 +37,6 @@ fun GridItemCard(
     hasNotes: Boolean,
     onClick: () -> Unit,
     onRemove: () -> Unit,
-    removeLabel: String,
     textPrimary: Color,
     textSecondary: Color,
     modifier: Modifier = Modifier
@@ -52,23 +45,16 @@ fun GridItemCard(
     val cardBg = colorScheme.surfaceContainerLow
     val cardShape = RoundedCornerShape(LuminaRadius.lg)
     val notesColor = luminaNotesColor()
-    // Hovering to reveal the remove (X) icon only works with a mouse - on touch there is no
-    // hover state, so long-press opens this menu as the touch-reachable way to remove an item.
-    var showMenu by remember { mutableStateOf(false) }
 
     HoverableItem(
         onClick = onClick,
-        onLongClick = { showMenu = true },
         normalColor = cardBg,
         hoverColor = colorScheme.surfaceContainerHighest,
         shape = cardShape,
         modifier = modifier
             .fillMaxWidth()
             .border(1.dp, colorScheme.outlineVariant, cardShape)
-    ) { isHovered ->
-        DropdownMenu(expanded = showMenu, onDismissRequest = { showMenu = false }) {
-            DropdownMenuItem(text = { Text(removeLabel) }, onClick = { showMenu = false; onRemove() })
-        }
+    ) {
         Column(
             modifier = Modifier.fillMaxWidth()
         ) {
@@ -135,19 +121,19 @@ fun GridItemCard(
                     MockDocumentThumbnail(name = fileItem.name, modifier = Modifier.fillMaxSize())
                 }
 
-                if (isHovered) {
-                    Box(
-                        modifier = Modifier
-                            .align(Alignment.TopEnd)
-                            .padding(8.dp)
-                            .size(20.dp)
-                            .clip(CircleShape)
-                            .background(Color.Black.copy(alpha = 0.6f))
-                            .clickable { onRemove() },
-                        contentAlignment = Alignment.Center
-                    ) {
-                        CloseIcon(color = Color.White, modifier = Modifier.size(10.dp))
-                    }
+                // Always visible (not hover-gated) - hover has no equivalent on touch, so gating
+                // this behind isHovered left no way to remove an item on Android at all.
+                Box(
+                    modifier = Modifier
+                        .align(Alignment.TopEnd)
+                        .padding(8.dp)
+                        .size(20.dp)
+                        .clip(CircleShape)
+                        .background(Color.Black.copy(alpha = 0.6f))
+                        .clickable { onRemove() },
+                    contentAlignment = Alignment.Center
+                ) {
+                    CloseIcon(color = Color.White, modifier = Modifier.size(10.dp))
                 }
 
                 if (hasNotes) {
@@ -196,7 +182,6 @@ fun ListItemRow(
     showLastOpened: Boolean,
     onClick: () -> Unit,
     onRemove: () -> Unit,
-    removeLabel: String,
     textPrimary: Color,
     textSecondary: Color,
     modifier: Modifier = Modifier
@@ -204,23 +189,16 @@ fun ListItemRow(
     val colorScheme = MaterialTheme.colorScheme
     val notesColor = luminaNotesColor()
     val dangerColor = luminaDangerColor()
-    // Hovering to reveal the remove (X) icon only works with a mouse - on touch there is no
-    // hover state, so long-press opens this menu as the touch-reachable way to remove an item.
-    var showMenu by remember { mutableStateOf(false) }
 
     HoverableItem(
         onClick = onClick,
-        onLongClick = { showMenu = true },
         normalColor = Color.Transparent,
         hoverColor = colorScheme.surfaceContainerHigh,
         shape = RoundedCornerShape(0.dp),
         modifier = modifier
             .fillMaxWidth()
             .height(48.dp)
-    ) { isHovered ->
-        DropdownMenu(expanded = showMenu, onDismissRequest = { showMenu = false }) {
-            DropdownMenuItem(text = { Text(removeLabel) }, onClick = { showMenu = false; onRemove() })
-        }
+    ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier
@@ -279,23 +257,21 @@ fun ListItemRow(
                 modifier = Modifier.width(80.dp)
             )
 
-            // Remove button - reserves its slot's width even when not hovered, so the columns
-            // to its left don't shift when it appears/disappears.
+            // Remove button - always visible (not hover-gated); hover has no equivalent on
+            // touch, so gating this behind isHovered left no way to remove an item on Android.
             Box(
                 modifier = Modifier.width(32.dp),
                 contentAlignment = Alignment.Center
             ) {
-                if (isHovered) {
-                    Box(
-                        modifier = Modifier
-                            .size(20.dp)
-                            .clip(CircleShape)
-                            .background(colorScheme.onSurface.copy(alpha = 0.1f))
-                            .clickable { onRemove() },
-                        contentAlignment = Alignment.Center
-                    ) {
-                        CloseIcon(color = textSecondary, modifier = Modifier.size(10.dp))
-                    }
+                Box(
+                    modifier = Modifier
+                        .size(20.dp)
+                        .clip(CircleShape)
+                        .background(colorScheme.onSurface.copy(alpha = 0.1f))
+                        .clickable { onRemove() },
+                    contentAlignment = Alignment.Center
+                ) {
+                    CloseIcon(color = textSecondary, modifier = Modifier.size(10.dp))
                 }
             }
         }

@@ -1,12 +1,10 @@
 package com.lumina.pdf.viewer
 
 import androidx.compose.foundation.Canvas
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.LocalIndication
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.hoverable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsHoveredAsState
@@ -576,12 +574,10 @@ fun NoteIcon(color: Color, modifier: Modifier = Modifier) {
 }
 
 // --- Hoverable Item Wrapper ---
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun HoverableItem(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
-    onLongClick: (() -> Unit)? = null,
     normalColor: Color = Color.Transparent,
     hoverColor: Color = Color(0xFF252525),
     shape: RoundedCornerShape = RoundedCornerShape(4.dp),
@@ -599,12 +595,7 @@ fun HoverableItem(
     Box(
         modifier = modifier
             .background(if (isHovered) hoverColor else normalColor, shape)
-            .combinedClickable(
-                interactionSource = interactionSource,
-                indication = indication,
-                onClick = onClick,
-                onLongClick = onLongClick
-            )
+            .clickable(interactionSource = interactionSource, indication = indication, onClick = onClick)
             .hoverable(interactionSource),
         content = { content(isHovered) }
     )
