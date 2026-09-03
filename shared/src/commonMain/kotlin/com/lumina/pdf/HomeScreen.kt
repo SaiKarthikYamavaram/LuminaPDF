@@ -422,6 +422,7 @@ fun HomeScreen(
                             hasNotes = fileItem.id in documentIdsWithNotes,
                             onClick = { Logger.i { "[TAP-DEBUG] GridItemCard clicked: ${fileItem.name}" }; onOpenFile(fileItem, null) },
                             onRemove = { if (activeTab == "Recents") onRemoveFromRecents(fileItem) else onDeleteDocument(fileItem) },
+                            removeLabel = if (activeTab == "Recents") "Remove from Recents" else "Delete",
                             textPrimary = textPrimary,
                             textSecondary = textSecondary
                         )
@@ -675,6 +676,7 @@ fun HomeScreen(
                                         showLastOpened = !isCompact,
                                         onClick = { Logger.i { "[TAP-DEBUG] ListItemRow clicked: ${fileItem.name}" }; onOpenFile(fileItem, null) },
                                         onRemove = { if (activeTab == "Recents") onRemoveFromRecents(fileItem) else onDeleteDocument(fileItem) },
+                                        removeLabel = if (activeTab == "Recents") "Remove from Recents" else "Delete",
                                         textPrimary = textPrimary,
                                         textSecondary = textSecondary
                                     )

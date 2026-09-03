@@ -9,9 +9,15 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -37,6 +43,7 @@ fun GridItemCard(
     hasNotes: Boolean,
     onClick: () -> Unit,
     onRemove: () -> Unit,
+    removeLabel: String,
     textPrimary: Color,
     textSecondary: Color,
     modifier: Modifier = Modifier
@@ -45,9 +52,13 @@ fun GridItemCard(
     val cardBg = colorScheme.surfaceContainerLow
     val cardShape = RoundedCornerShape(LuminaRadius.lg)
     val notesColor = luminaNotesColor()
+    // Hovering to reveal the remove (X) icon only works with a mouse - on touch there is no
+    // hover state, so long-press opens this menu as the touch-reachable way to remove an item.
+    var showMenu by remember { mutableStateOf(false) }
 
     HoverableItem(
         onClick = onClick,
+        onLongClick = { showMenu = true },
         normalColor = cardBg,
         hoverColor = colorScheme.surfaceContainerHighest,
         shape = cardShape,
@@ -55,6 +66,9 @@ fun GridItemCard(
             .fillMaxWidth()
             .border(1.dp, colorScheme.outlineVariant, cardShape)
     ) { isHovered ->
+        DropdownMenu(expanded = showMenu, onDismissRequest = { showMenu = false }) {
+            DropdownMenuItem(text = { Text(removeLabel) }, onClick = { showMenu = false; onRemove() })
+        }
         Column(
             modifier = Modifier.fillMaxWidth()
         ) {
@@ -182,6 +196,7 @@ fun ListItemRow(
     showLastOpened: Boolean,
     onClick: () -> Unit,
     onRemove: () -> Unit,
+    removeLabel: String,
     textPrimary: Color,
     textSecondary: Color,
     modifier: Modifier = Modifier
@@ -189,9 +204,13 @@ fun ListItemRow(
     val colorScheme = MaterialTheme.colorScheme
     val notesColor = luminaNotesColor()
     val dangerColor = luminaDangerColor()
+    // Hovering to reveal the remove (X) icon only works with a mouse - on touch there is no
+    // hover state, so long-press opens this menu as the touch-reachable way to remove an item.
+    var showMenu by remember { mutableStateOf(false) }
 
     HoverableItem(
         onClick = onClick,
+        onLongClick = { showMenu = true },
         normalColor = Color.Transparent,
         hoverColor = colorScheme.surfaceContainerHigh,
         shape = RoundedCornerShape(0.dp),
@@ -199,6 +218,9 @@ fun ListItemRow(
             .fillMaxWidth()
             .height(48.dp)
     ) { isHovered ->
+        DropdownMenu(expanded = showMenu, onDismissRequest = { showMenu = false }) {
+            DropdownMenuItem(text = { Text(removeLabel) }, onClick = { showMenu = false; onRemove() })
+        }
         Row(
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier
