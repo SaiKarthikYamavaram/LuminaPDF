@@ -85,6 +85,7 @@ kotlin {
             implementation(libs.androidx.lifecycle.runtimeCompose)
             implementation(libs.filekit.compose)
             implementation(libs.kermit)
+            implementation(libs.koin.core)
         }
         // voyager-navigator has no wasmJs artifact — scope it to nonWasmMain only
         named("nonWasmMain").configure {
