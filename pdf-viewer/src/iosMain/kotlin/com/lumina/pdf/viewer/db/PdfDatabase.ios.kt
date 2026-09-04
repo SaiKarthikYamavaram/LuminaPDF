@@ -50,12 +50,25 @@ class IosPdfDatabase : PdfDatabase {
         queries.deleteNote(noteId)
     }
 
-    override fun saveHighlights(documentId: String, highlightsJson: String) {
-        // Future implementation
+    override fun insertHighlight(highlight: DbHighlight) {
+        queries.insertHighlight(highlight.id, highlight.documentId, highlight.page.toLong(), highlight.rectsText, highlight.color, highlight.timestamp)
     }
 
-    override fun getHighlights(documentId: String): String? {
-        return null
+    override fun getHighlights(documentId: String): List<DbHighlight> {
+        return queries.getHighlights(documentId).executeAsList().map {
+            DbHighlight(
+                id = it.id,
+                documentId = it.documentId,
+                page = it.page.toInt(),
+                rectsText = it.rectsText,
+                color = it.color,
+                timestamp = it.timestamp
+            )
+        }
+    }
+
+    override fun deleteHighlight(highlightId: String) {
+        queries.deleteHighlight(highlightId)
     }
 }
 

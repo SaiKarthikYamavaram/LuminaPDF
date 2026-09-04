@@ -209,6 +209,60 @@ fun PdfViewer(
         }
     }
 
+    // Persisted highlights. There's no positioned-text API to build real drag-to-select
+    // from yet, so v1 highlighting piggybacks on search: tapping a search match toggles a
+    // saved highlight for that match's rect.
+    val highlights = remember { mutableStateListOf<DbHighlight>() }
+    val savedHighlightColor = Color(0xFFFFD54F)
+
+    // Fetch highlights on document load
+    LaunchedEffect(document, documentId) {
+        if (documentId != null) {
+            highlights.clear()
+            try {
+                highlights.addAll(db.getHighlights(documentId))
+            } catch (e: Exception) {
+                Logger.e(e) { "Failed to load highlights for document $documentId" }
+            }
+        }
+    }
+
+    fun parseHighlightRect(rectsText: String): PdfRect? {
+        val parts = rectsText.split(",").mapNotNull { it.toFloatOrNull() }
+        if (parts.size != 4) return null
+        return PdfRect(left = parts[0], top = parts[1], right = parts[2], bottom = parts[3])
+    }
+
+    // Toggles a saved highlight for a tapped search-match rect: removes it if that exact
+    // match is already highlighted, otherwise adds and persists a new one.
+    fun toggleHighlightAt(page: Int, rect: PdfRect, matchedText: String) {
+        if (documentId == null) return
+        val tolerance = 0.005f
+        val existing = highlights.find { saved ->
+            if (saved.page != page) return@find false
+            val savedRect = parseHighlightRect(saved.rectsText) ?: return@find false
+            kotlin.math.abs(savedRect.left - rect.left) < tolerance &&
+                kotlin.math.abs(savedRect.top - rect.top) < tolerance &&
+                kotlin.math.abs(savedRect.right - rect.right) < tolerance &&
+                kotlin.math.abs(savedRect.bottom - rect.bottom) < tolerance
+        }
+        if (existing != null) {
+            db.deleteHighlight(existing.id)
+            highlights.remove(existing)
+        } else {
+            val newHighlight = DbHighlight(
+                id = "hl_${documentId}_${getCurrentTimeMillis()}",
+                documentId = documentId,
+                page = page,
+                rectsText = "${rect.left},${rect.top},${rect.right},${rect.bottom}",
+                color = "#FFEB3B",
+                timestamp = getCurrentTimeMillis()
+            )
+            db.insertHighlight(newHighlight)
+            highlights.add(newHighlight)
+        }
+    }
+
     // Fetch outline on document load
     LaunchedEffect(document) {
         try {
@@ -888,6 +942,22 @@ fun PdfViewer(
                                     }
                                 }
                             }
+
+                            // Tapping a search match toggles a saved highlight for it.
+                            val documentPoint = (tapOffset - state.scrollOffset) / state.zoom
+                            for (page in state.visiblePages) {
+                                val pageTop = page * (estimatedPageHeight + spacingPx)
+                                if (documentPoint.y < pageTop || documentPoint.y > pageTop + estimatedPageHeight) continue
+                                val localX = documentPoint.x / viewSize.width.toFloat()
+                                val localY = (documentPoint.y - pageTop) / estimatedPageHeight
+                                val hit = searchMatches[page]?.firstOrNull { r ->
+                                    localX in r.left..r.right && localY in r.top..r.bottom
+                                }
+                                if (hit != null) {
+                                    toggleHighlightAt(page, hit, debouncedSearchQuery)
+                                    break
+                                }
+                            }
                         }
                     )
                 }
@@ -1064,6 +1134,26 @@ fun PdfViewer(
                                     }
                                 }
                             }
+                        }
+
+                        // Draw saved highlights (persisted, drawn under any live search match)
+                        for (saved in highlights) {
+                            if (saved.page != page) continue
+                            val rect = parseHighlightRect(saved.rectsText) ?: continue
+                            val paddingX = 3.dp.toPx()
+                            val paddingY = 2.dp.toPx()
+                            drawRoundRect(
+                                color = savedHighlightColor.copy(alpha = 0.45f),
+                                topLeft = Offset(
+                                    rect.left * size.width - paddingX,
+                                    pageTop + rect.top * estimatedPageHeight - paddingY
+                                ),
+                                size = androidx.compose.ui.geometry.Size(
+                                    (rect.right - rect.left) * size.width + 2 * paddingX,
+                                    (rect.bottom - rect.top) * estimatedPageHeight + 2 * paddingY
+                                ),
+                                cornerRadius = androidx.compose.ui.geometry.CornerRadius(3.dp.toPx(), 3.dp.toPx())
+                            )
                         }
 
                         // Draw highlights

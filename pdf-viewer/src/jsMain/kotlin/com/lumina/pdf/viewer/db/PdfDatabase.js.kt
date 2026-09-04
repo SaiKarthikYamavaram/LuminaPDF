@@ -74,12 +74,43 @@ class JsPdfDatabase : PdfDatabase {
         }
     }
 
-    override fun saveHighlights(documentId: String, highlightsJson: String) {
-        window.localStorage.setItem("${documentId}_highlights", highlightsJson)
+    override fun insertHighlight(highlight: DbHighlight) {
+        window.localStorage.setItem(
+            "${highlight.documentId}_highlight_${highlight.id}",
+            "${highlight.page}|${highlight.timestamp}|${highlight.color}|${highlight.rectsText}"
+        )
     }
 
-    override fun getHighlights(documentId: String): String? {
-        return window.localStorage.getItem("${documentId}_highlights")
+    override fun getHighlights(documentId: String): List<DbHighlight> {
+        val list = mutableListOf<DbHighlight>()
+        val length = window.localStorage.length
+        for (i in 0 until length) {
+            val key = window.localStorage.key(i) ?: continue
+            if (key.startsWith("${documentId}_highlight_")) {
+                val value = window.localStorage.getItem(key) ?: continue
+                val parts = value.split("|", limit = 4)
+                if (parts.size == 4) {
+                    val page = parts[0].toIntOrNull() ?: 0
+                    val timestamp = parts[1].toLongOrNull() ?: 0L
+                    val color = parts[2]
+                    val rectsText = parts[3]
+                    val id = key.removePrefix("${documentId}_highlight_")
+                    list.add(DbHighlight(id, documentId, page, rectsText, color, timestamp))
+                }
+            }
+        }
+        return list.sortedByDescending { it.timestamp }
+    }
+
+    override fun deleteHighlight(highlightId: String) {
+        val length = window.localStorage.length
+        for (i in 0 until length) {
+            val key = window.localStorage.key(i) ?: continue
+            if (key.endsWith("_highlight_$highlightId")) {
+                window.localStorage.removeItem(key)
+                break
+            }
+        }
     }
 }
 

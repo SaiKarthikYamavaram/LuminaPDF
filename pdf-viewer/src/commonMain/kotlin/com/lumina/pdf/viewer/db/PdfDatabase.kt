@@ -17,17 +17,30 @@ data class DbNote(
     val timestamp: Long
 )
 
+data class DbHighlight(
+    val id: String,
+    val documentId: String,
+    val page: Int,
+    // "left,top,right,bottom" in the same 0..1 normalized page-fraction space as PdfRect.
+    // Holds one rect for now; a future highlight spanning a line wrap could extend this to
+    // multiple ";"-separated rect groups without a schema change.
+    val rectsText: String,
+    val color: String,
+    val timestamp: Long
+)
+
 interface PdfDatabase {
     fun saveOffset(documentId: String, offset: PdfOffset)
     fun getOffset(documentId: String): PdfOffset?
-    
+
     fun insertNote(note: DbNote)
     fun getNotes(documentId: String): List<DbNote>
     fun getDocumentIdsWithNotes(): Set<String>
     fun deleteNote(noteId: String)
-    
-    fun saveHighlights(documentId: String, highlightsJson: String)
-    fun getHighlights(documentId: String): String?
+
+    fun insertHighlight(highlight: DbHighlight)
+    fun getHighlights(documentId: String): List<DbHighlight>
+    fun deleteHighlight(highlightId: String)
 }
 
 @Composable

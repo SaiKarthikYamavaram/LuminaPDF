@@ -51,3 +51,6 @@ SELECT * FROM PdfHighlight WHERE documentId = ? ORDER BY timestamp DESC;
 insertHighlight:
 INSERT OR REPLACE INTO PdfHighlight (id, documentId, page, rectsText, color, timestamp)
 VALUES (?, ?, ?, ?, ?, ?);
+
+deleteHighlight:
+DELETE FROM PdfHighlight WHERE id = ?;
