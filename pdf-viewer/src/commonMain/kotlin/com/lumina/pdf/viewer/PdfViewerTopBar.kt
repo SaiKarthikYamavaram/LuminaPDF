@@ -13,6 +13,8 @@ import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.key.*
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextOverflow
@@ -205,7 +207,7 @@ fun TopBar(
                     IconButton(
                         onClick = onPrevMatch,
                         enabled = totalMatches > 0,
-                        modifier = Modifier.size(ButtonSize)
+                        modifier = Modifier.size(ButtonSize).semantics { contentDescription = "Previous match" }
                     ) {
                         ChevronUpIcon(
                             color = if (totalMatches > 0) MaterialTheme.colorScheme.onSurface else MaterialTheme.colorScheme.onSurface.copy(alpha = 0.3f),
@@ -216,7 +218,7 @@ fun TopBar(
                     IconButton(
                         onClick = onNextMatch,
                         enabled = totalMatches > 0,
-                        modifier = Modifier.size(ButtonSize)
+                        modifier = Modifier.size(ButtonSize).semantics { contentDescription = "Next match" }
                     ) {
                         ChevronDownIcon(
                             color = if (totalMatches > 0) MaterialTheme.colorScheme.onSurface else MaterialTheme.colorScheme.onSurface.copy(alpha = 0.3f),
@@ -229,7 +231,7 @@ fun TopBar(
                             onSearchActiveChange(false)
                             onSearchQueryChange("")
                         },
-                        modifier = Modifier.size(ButtonSize)
+                        modifier = Modifier.size(ButtonSize).semantics { contentDescription = "Close search" }
                     ) {
                         CloseIcon(color = MaterialTheme.colorScheme.onSurface, modifier = Modifier.size(IconSize))
                     }
@@ -247,7 +249,7 @@ fun TopBar(
                     if (onClose != null && shouldShowInAppBackButton()) {
                         IconButton(
                             onClick = onClose,
-                            modifier = Modifier.size(ButtonSize)
+                            modifier = Modifier.size(ButtonSize).semantics { contentDescription = "Back" }
                         ) {
                             ArrowBackIcon(color = MaterialTheme.colorScheme.onSurface, modifier = Modifier.size(IconSize))
                         }
@@ -259,6 +261,7 @@ fun TopBar(
                             .size(ButtonSize)
                             .clip(RoundedCornerShape(LuminaRadius.sm))
                             .background(if (isOutlineActive) MaterialTheme.colorScheme.primaryContainer else Color.Transparent)
+                            .semantics { contentDescription = if (isOutlineActive) "Hide outline" else "Show outline" }
                     ) {
                         MenuIcon(
                             color = if (isOutlineActive) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface,
@@ -272,6 +275,7 @@ fun TopBar(
                             .size(ButtonSize)
                             .clip(RoundedCornerShape(LuminaRadius.sm))
                             .background(if (isNotesActive) MaterialTheme.colorScheme.primaryContainer else Color.Transparent)
+                            .semantics { contentDescription = if (isNotesActive) "Hide notes" else "Show notes" }
                     ) {
                         NoteIcon(
                             color = if (isNotesActive) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface,
@@ -307,7 +311,7 @@ fun TopBar(
                 ) {
                     IconButton(
                         onClick = { onSearchActiveChange(true) },
-                        modifier = Modifier.size(ButtonSize)
+                        modifier = Modifier.size(ButtonSize).semantics { contentDescription = "Search" }
                     ) {
                         SearchIcon(color = MaterialTheme.colorScheme.onSurface, modifier = Modifier.size(IconSize))
                     }
@@ -321,7 +325,9 @@ fun TopBar(
                         },
                         shape = RoundedCornerShape(LuminaRadius.pill),
                         color = MaterialTheme.colorScheme.primary.copy(alpha = 0.12f),
-                        modifier = Modifier.height(ButtonSize)
+                        modifier = Modifier
+                            .height(ButtonSize)
+                            .semantics { contentDescription = "Page ${currentPage + 1} of $pageCount, jump to page" }
                     ) {
                         Box(
                             modifier = Modifier.padding(horizontal = 10.dp),
@@ -339,7 +345,7 @@ fun TopBar(
                     Box {
                         IconButton(
                             onClick = { showOverflowMenu = true },
-                            modifier = Modifier.size(ButtonSize)
+                            modifier = Modifier.size(ButtonSize).semantics { contentDescription = "More options" }
                         ) {
                             MoreVertIcon(color = MaterialTheme.colorScheme.onSurface, modifier = Modifier.size(IconSize))
                         }

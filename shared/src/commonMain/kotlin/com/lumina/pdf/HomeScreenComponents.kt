@@ -130,7 +130,7 @@ fun GridItemCard(
                         .size(20.dp)
                         .clip(CircleShape)
                         .background(Color.Black.copy(alpha = 0.6f))
-                        .clickable { onRemove() },
+                        .clickable(onClickLabel = "Remove ${fileItem.name} from recents") { onRemove() },
                     contentAlignment = Alignment.Center
                 ) {
                     CloseIcon(color = Color.White, modifier = Modifier.size(10.dp))
@@ -268,7 +268,7 @@ fun ListItemRow(
                         .size(20.dp)
                         .clip(CircleShape)
                         .background(colorScheme.onSurface.copy(alpha = 0.1f))
-                        .clickable { onRemove() },
+                        .clickable(onClickLabel = "Remove ${fileItem.name} from recents") { onRemove() },
                     contentAlignment = Alignment.Center
                 ) {
                     CloseIcon(color = textSecondary, modifier = Modifier.size(10.dp))

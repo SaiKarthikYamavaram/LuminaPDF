@@ -30,6 +30,8 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.geometry.Offset
@@ -1346,7 +1348,7 @@ fun PdfViewer(
                         )
                         IconButton(
                             onClick = { isOutlineOpen = false },
-                            modifier = Modifier.size(24.dp)
+                            modifier = Modifier.size(24.dp).semantics { contentDescription = "Close outline" }
                         ) {
                             CloseIcon(
                                 color = MaterialTheme.colorScheme.onSurface,
@@ -1354,7 +1356,7 @@ fun PdfViewer(
                             )
                         }
                     }
-                    
+
                     if (outlineItems.isEmpty()) {
                         Box(
                             modifier = Modifier.fillMaxSize(),
@@ -1395,10 +1397,12 @@ fun PdfViewer(
                                         )
                                         .then(
                                             if (item.pageNumber >= 0) {
-                                                Modifier.clickable {
-                                                    jumpToPage(item.pageNumber)
-                                                    isOutlineOpen = false
-                                                }
+                                                Modifier
+                                                    .semantics(mergeDescendants = true) {}
+                                                    .clickable {
+                                                        jumpToPage(item.pageNumber)
+                                                        isOutlineOpen = false
+                                                    }
                                             } else Modifier
                                         )
                                         .padding(
@@ -1481,7 +1485,7 @@ fun PdfViewer(
                         )
                         IconButton(
                             onClick = { isNotesOpen = false },
-                            modifier = Modifier.size(24.dp)
+                            modifier = Modifier.size(24.dp).semantics { contentDescription = "Close notes" }
                         ) {
                             CloseIcon(
                                 color = MaterialTheme.colorScheme.onSurface,
@@ -1608,7 +1612,7 @@ fun PdfViewer(
                                                     db.deleteNote(note.id)
                                                     notes.remove(note)
                                                 },
-                                                modifier = Modifier.size(20.dp)
+                                                modifier = Modifier.size(20.dp).semantics { contentDescription = "Delete note" }
                                             ) {
                                                 CloseIcon(
                                                     color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.4f),

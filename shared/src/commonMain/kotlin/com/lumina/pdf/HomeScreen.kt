@@ -23,6 +23,10 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.*
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.semantics.role
+import androidx.compose.ui.semantics.selected
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
@@ -331,6 +335,10 @@ fun HomeScreen(
                                     verticalAlignment = Alignment.CenterVertically,
                                     modifier = Modifier
                                         .clip(RoundedCornerShape(LuminaRadius.sm))
+                                        // Merges the "Sort: $sortKey" text below into this
+                                        // control's own accessible node instead of TalkBack
+                                        // treating them as separate, disconnected stops.
+                                        .semantics(mergeDescendants = true) {}
                                         .clickable { showSortDropdown = true }
                                         .padding(horizontal = 8.dp, vertical = 4.dp)
                                 ) {
@@ -363,7 +371,9 @@ fun HomeScreen(
                                 modifier = Modifier
                                     .size(26.dp)
                                     .clip(RoundedCornerShape(LuminaRadius.sm))
-                                    .clickable { sortAscending = !sortAscending }
+                                    .clickable(
+                                        onClickLabel = if (sortAscending) "Sort descending" else "Sort ascending"
+                                    ) { sortAscending = !sortAscending }
                             ) {
                                 SortArrowIcon(isAscending = sortAscending, color = textPrimary)
                             }
@@ -386,7 +396,8 @@ fun HomeScreen(
                                     modifier = Modifier
                                         .size(26.dp)
                                         .background(if (isList) colorScheme.outlineVariant else Color.Transparent, RoundedCornerShape(4.dp))
-                                        .clickable { viewMode = "List" },
+                                        .semantics { role = Role.RadioButton; selected = isList }
+                                        .clickable(onClickLabel = "List view") { viewMode = "List" },
                                     contentAlignment = Alignment.Center
                                 ) {
                                     ListIcon(color = if (isList) textPrimary else textSecondary)
@@ -396,7 +407,8 @@ fun HomeScreen(
                                     modifier = Modifier
                                         .size(26.dp)
                                         .background(if (isGrid) colorScheme.outlineVariant else Color.Transparent, RoundedCornerShape(4.dp))
-                                        .clickable { viewMode = "Grid" },
+                                        .semantics { role = Role.RadioButton; selected = isGrid }
+                                        .clickable(onClickLabel = "Grid view") { viewMode = "Grid" },
                                     contentAlignment = Alignment.Center
                                 ) {
                                     GridIcon(color = if (isGrid) textPrimary else textSecondary)
@@ -730,7 +742,9 @@ fun HomeScreen(
                             normalColor = if (isActive) colorScheme.primaryContainer else Color.Transparent,
                             hoverColor = if (isActive) colorScheme.primaryContainer else colorScheme.onSurface.copy(alpha = 0.06f),
                             shape = RoundedCornerShape(LuminaRadius.md),
-                            modifier = Modifier.height(36.dp)
+                            modifier = Modifier
+                                .height(36.dp)
+                                .semantics { role = Role.Tab; selected = isActive }
                         ) {
                             Row(
                                 verticalAlignment = Alignment.CenterVertically,
@@ -796,6 +810,7 @@ fun HomeScreen(
                                 .fillMaxWidth()
                                 .height(40.dp)
                                 .padding(vertical = 2.dp)
+                                .semantics { role = Role.Tab; selected = isActive }
                         ) {
                             Row(
                                 verticalAlignment = Alignment.CenterVertically,

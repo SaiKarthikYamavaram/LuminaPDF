@@ -19,6 +19,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.*
 import androidx.compose.ui.graphics.drawscope.Stroke
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -595,6 +596,10 @@ fun HoverableItem(
     Box(
         modifier = modifier
             .background(if (isHovered) hoverColor else normalColor, shape)
+            // Merges this row's child Text/Icon nodes into one accessible node on the
+            // clickable itself, instead of TalkBack/VoiceOver traversing an unlabeled
+            // "button" and its text children as separate, disconnected stops.
+            .semantics(mergeDescendants = true) {}
             .clickable(interactionSource = interactionSource, indication = indication, onClick = onClick)
             .hoverable(interactionSource),
         content = { content(isHovered) }
