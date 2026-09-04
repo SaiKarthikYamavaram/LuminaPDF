@@ -209,6 +209,17 @@ fun HomeScreen(
             }
         }
 
+        val versionFooter: @Composable () -> Unit = {
+            val versionLabel = remember { appVersionLabel() }
+            if (versionLabel.isNotEmpty()) {
+                Text(
+                    text = versionLabel,
+                    style = TextStyle(color = textSecondary, fontSize = 10.sp),
+                    modifier = Modifier.padding(top = 8.dp, bottom = 20.dp)
+                )
+            }
+        }
+
         val openFileButton: @Composable (Modifier) -> Unit = { buttonModifier ->
             Button(
                 onClick = onTriggerFilePicker,
@@ -746,6 +757,10 @@ fun HomeScreen(
                         .weight(1f)
                         .fillMaxWidth()
                 )
+
+                Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
+                    versionFooter()
+                }
             }
         } else {
             Row(modifier = Modifier.fillMaxSize()) {
@@ -799,6 +814,9 @@ fun HomeScreen(
                             }
                         }
                     }
+
+                    Spacer(modifier = Modifier.weight(1f))
+                    versionFooter()
                 }
 
                 // 2. MAIN CONTENT AREA
