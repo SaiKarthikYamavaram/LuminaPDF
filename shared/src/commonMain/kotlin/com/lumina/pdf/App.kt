@@ -1,9 +1,9 @@
 package com.lumina.pdf
 
 import androidx.compose.foundation.draganddrop.dragAndDropTarget
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.snapshots.SnapshotStateList
@@ -11,11 +11,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draganddrop.DragAndDropEvent
 import androidx.compose.ui.draganddrop.DragAndDropTarget
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.unit.dp
 import com.lumina.pdf.viewer.theme.luminaColorScheme
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import com.lumina.pdf.core.PdfDocument
+import com.lumina.pdf.core.PdfPasswordRequiredException
+import com.lumina.pdf.core.PdfPasswordUnsupportedException
 import com.lumina.pdf.renderer.PdfDocumentFactory
 import com.lumina.pdf.viewer.PdfViewer
 import com.lumina.pdf.viewer.asImageBitmap
@@ -121,6 +126,14 @@ fun App() {
         // [TAP-DEBUG] logging: 21 invocations for one file in 4.5s of tapping.
         var isOpeningFile by remember { mutableStateOf(false) }
 
+        // Password-protected PDF handling: when opening a document throws
+        // PdfPasswordRequiredException, pendingPasswordRetry holds a closure that re-attempts
+        // the exact same open with a newly entered password, so the dialog doesn't need to know
+        // whether the file came from Recents or a fresh pick/drop.
+        var pendingPasswordRetry by remember { mutableStateOf<(suspend (String) -> Unit)?>(null) }
+        var passwordInput by remember { mutableStateOf("") }
+        var passwordError by remember { mutableStateOf<String?>(null) }
+
         LaunchedEffect(Unit) {
             try {
                 val loaded = RecentFilesStore.loadRecentFilesList()
@@ -167,6 +180,56 @@ fun App() {
             }
         }
 
+        suspend fun openRecentFile(recentFile: RecentFile, page: Int?, navigator: Navigator, password: String?) {
+            try {
+                val bytesToOpen = recentFile.fileBytes
+                if (bytesToOpen == null) {
+                    error = "\"${recentFile.name}\" is no longer available. It may not have been saved on this device."
+                    return
+                }
+                val factory = PdfDocumentFactory()
+                currentDocument = factory.open(bytesToOpen, password)
+                currentDocumentName = recentFile.id
+                initialPageToOpen = page
+
+                // Move the opened file to the top of the list, update lastOpened, and mark inRecents = true
+                // (also covers the first time the sample file is opened, adding it honestly)
+                val existing = recentFiles.find { it.id == recentFile.id }
+                val updated = (existing ?: recentFile).copy(lastOpened = "Just now", inRecents = true)
+                if (existing != null) {
+                    recentFiles.remove(existing)
+                }
+                recentFiles.add(0, updated)
+                RecentFilesStore.saveRecentFilesList(recentFiles)
+
+                navigator.push(
+                    AppPdfViewerScreen(
+                        document = currentDocument!!,
+                        documentId = recentFile.id,
+                        documentTitle = recentFile.name,
+                        initialPage = page,
+                        onClose = {
+                            currentDocument?.close()
+                            currentDocument = null
+                            initialPageToOpen = null
+                            navigator.pop()
+                        }
+                    )
+                )
+                pendingPasswordRetry = null
+                passwordError = null
+            } catch (e: PdfPasswordRequiredException) {
+                passwordInput = ""
+                passwordError = if (e.wrongPasswordTried) e.message else null
+                pendingPasswordRetry = { pw -> openRecentFile(recentFile, page, navigator, pw) }
+            } catch (e: PdfPasswordUnsupportedException) {
+                error = e.message
+            } catch (e: Exception) {
+                Logger.e(e) { "Failed to open recent file: ${recentFile.id}" }
+                error = e.message ?: "Error opening file"
+            }
+        }
+
         val onOpenFile: (RecentFile, Int?, Navigator) -> Unit = { recentFile, page, navigator ->
             if (isOpeningFile) {
                 Logger.i { "[TAP-DEBUG] onOpenFile ignored (already opening): ${recentFile.name}" }
@@ -175,43 +238,7 @@ fun App() {
                 Logger.i { "[TAP-DEBUG] onOpenFile invoked for ${recentFile.name}, bytes=${recentFile.fileBytes?.size}" }
                 scope.launch {
                     try {
-                        val bytesToOpen = recentFile.fileBytes
-                        if (bytesToOpen == null) {
-                            error = "\"${recentFile.name}\" is no longer available. It may not have been saved on this device."
-                            return@launch
-                        }
-                        val factory = PdfDocumentFactory()
-                        currentDocument = factory.open(bytesToOpen)
-                        currentDocumentName = recentFile.id
-                        initialPageToOpen = page
-
-                        // Move the opened file to the top of the list, update lastOpened, and mark inRecents = true
-                        // (also covers the first time the sample file is opened, adding it honestly)
-                        val existing = recentFiles.find { it.id == recentFile.id }
-                        val updated = (existing ?: recentFile).copy(lastOpened = "Just now", inRecents = true)
-                        if (existing != null) {
-                            recentFiles.remove(existing)
-                        }
-                        recentFiles.add(0, updated)
-                        RecentFilesStore.saveRecentFilesList(recentFiles)
-
-                        navigator.push(
-                            AppPdfViewerScreen(
-                                document = currentDocument!!,
-                                documentId = recentFile.id,
-                                documentTitle = recentFile.name,
-                                initialPage = page,
-                                onClose = {
-                                    currentDocument?.close()
-                                    currentDocument = null
-                                    initialPageToOpen = null
-                                    navigator.pop()
-                                }
-                            )
-                        )
-                    } catch (e: Exception) {
-                        Logger.e(e) { "Failed to open recent file: ${recentFile.id}" }
-                        error = e.message ?: "Error opening file"
+                        openRecentFile(recentFile, page, navigator, password = null)
                     } finally {
                         isOpeningFile = false
                     }
@@ -219,38 +246,10 @@ fun App() {
             }
         }
 
-        // Shared by the file picker and drag-and-drop: adds/updates a recent entry for the
-        // given bytes, opens it in the viewer, and renders its thumbnail in the background.
-        suspend fun openPickedFile(bytes: ByteArray, name: String) {
+        suspend fun openResolvedPickedFile(bytes: ByteArray, fileToOpen: RecentFile, password: String?) {
             try {
-                val sizeFormatted = formatSize(bytes.size)
-
-                // Check if file already exists in recents (same name and size)
-                val existing = recentFiles.find { it.name == name && it.size == sizeFormatted }
-                val fileToOpen = if (existing != null) {
-                    val updated = existing.copy(
-                        lastOpened = "Just now",
-                        fileBytes = bytes,
-                        inRecents = true
-                    )
-                    recentFiles.remove(existing)
-                    recentFiles.add(0, updated)
-                    updated
-                } else {
-                    val newFile = RecentFile(
-                        id = name + "_" + bytes.size,
-                        name = name,
-                        lastOpened = "Just now",
-                        size = sizeFormatted,
-                        fileBytes = bytes
-                    )
-                    recentFiles.add(0, newFile)
-                    newFile
-                }
-                RecentFilesStore.saveRecentFilesList(recentFiles)
-
                 val factory = PdfDocumentFactory()
-                currentDocument = factory.open(bytes)
+                currentDocument = factory.open(bytes, password)
                 currentDocumentName = fileToOpen.id
                 initialPageToOpen = null
 
@@ -273,17 +272,57 @@ fun App() {
                 }
 
                 // Render thumbnail in background
-                val doc = factory.open(bytes)
+                val doc = factory.open(bytes, password)
                 val bitmap = doc.renderPage(0, 180, 240)
                 val idx = recentFiles.indexOfFirst { it.id == fileToOpen.id }
                 if (idx != -1) {
                     recentFiles[idx] = recentFiles[idx].copy(thumbnail = bitmap.asImageBitmap())
                 }
                 doc.close()
+                pendingPasswordRetry = null
+                passwordError = null
+            } catch (e: PdfPasswordRequiredException) {
+                passwordInput = ""
+                passwordError = if (e.wrongPasswordTried) e.message else null
+                pendingPasswordRetry = { pw -> openResolvedPickedFile(bytes, fileToOpen, pw) }
+            } catch (e: PdfPasswordUnsupportedException) {
+                error = e.message
             } catch (e: Exception) {
-                Logger.e(e) { "Failed to open file: $name" }
+                Logger.e(e) { "Failed to open file: ${fileToOpen.name}" }
                 error = e.message ?: "Error opening file"
             }
+        }
+
+        // Shared by the file picker and drag-and-drop: adds/updates a recent entry for the
+        // given bytes, opens it in the viewer, and renders its thumbnail in the background.
+        suspend fun openPickedFile(bytes: ByteArray, name: String) {
+            val sizeFormatted = formatSize(bytes.size)
+
+            // Check if file already exists in recents (same name and size)
+            val existing = recentFiles.find { it.name == name && it.size == sizeFormatted }
+            val fileToOpen = if (existing != null) {
+                val updated = existing.copy(
+                    lastOpened = "Just now",
+                    fileBytes = bytes,
+                    inRecents = true
+                )
+                recentFiles.remove(existing)
+                recentFiles.add(0, updated)
+                updated
+            } else {
+                val newFile = RecentFile(
+                    id = name + "_" + bytes.size,
+                    name = name,
+                    lastOpened = "Just now",
+                    size = sizeFormatted,
+                    fileBytes = bytes
+                )
+                recentFiles.add(0, newFile)
+                newFile
+            }
+            RecentFilesStore.saveRecentFilesList(recentFiles)
+
+            openResolvedPickedFile(bytes, fileToOpen, password = null)
         }
 
         val pickFileLauncher = io.github.vinceglb.filekit.compose.rememberFilePickerLauncher(
@@ -306,6 +345,55 @@ fun App() {
                 confirmButton = {
                     TextButton(onClick = { error = null }) {
                         Text("OK")
+                    }
+                }
+            )
+        }
+
+        if (pendingPasswordRetry != null) {
+            AlertDialog(
+                onDismissRequest = {
+                    pendingPasswordRetry = null
+                    passwordInput = ""
+                    passwordError = null
+                },
+                title = { Text("Password required") },
+                text = {
+                    Column {
+                        Text("This PDF is password protected. Enter the password to open it.")
+                        Spacer(modifier = Modifier.height(12.dp))
+                        OutlinedTextField(
+                            value = passwordInput,
+                            onValueChange = {
+                                passwordInput = it
+                                passwordError = null
+                            },
+                            label = { Text("Password") },
+                            singleLine = true,
+                            isError = passwordError != null,
+                            supportingText = passwordError?.let { msg -> { Text(msg) } },
+                            visualTransformation = PasswordVisualTransformation(),
+                            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password)
+                        )
+                    }
+                },
+                confirmButton = {
+                    TextButton(onClick = {
+                        val retry = pendingPasswordRetry
+                        if (retry != null) {
+                            scope.launch { retry(passwordInput) }
+                        }
+                    }) {
+                        Text("Unlock")
+                    }
+                },
+                dismissButton = {
+                    TextButton(onClick = {
+                        pendingPasswordRetry = null
+                        passwordInput = ""
+                        passwordError = null
+                    }) {
+                        Text("Cancel")
                     }
                 }
             )
