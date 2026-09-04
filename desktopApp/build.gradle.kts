@@ -22,7 +22,7 @@ compose.desktop {
         nativeDistributions {
             targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb, TargetFormat.Exe)
             packageName = "Lumina"
-            packageVersion = "1.0.1"
+            packageVersion = "1.0.2"
 
             modules("java.sql", "java.naming", "java.instrument", "jdk.unsupported", "jdk.security.auth")
 
