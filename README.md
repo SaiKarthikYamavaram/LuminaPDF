@@ -25,6 +25,20 @@ Use the run configurations provided by the run widget in your IDE's toolbar. You
   - JS target (slower, supports older browsers): `./gradlew :webApp:jsBrowserDevelopmentRun`
 - iOS app: open the [/iosApp](./iosApp) directory in Xcode and run it from there.
 
+### Building release variants
+
+- Android app:
+  - APK: `./gradlew :androidApp:assembleRelease`
+  - App Bundle (AAB): `./gradlew :androidApp:bundleRelease`
+  - Signed builds need a `keystore.properties` file in `/androidApp` (keys: `keyAlias`, `keyPassword`,
+    `storeFile`, `storePassword`) or the equivalent `KEY_ALIAS`, `KEY_PASSWORD`, `STORE_FILE`,
+    `STORE_PASSWORD` environment variables. Without these the release build is unsigned.
+- Desktop app (native installer for the current OS): `./gradlew :desktopApp:packageReleaseDistributionForCurrentOS`
+  - Or a specific format: `packageDmg` (macOS), `packageMsi` / `packageExe` (Windows), `packageDeb` (Linux)
+- Web app (production bundle):
+  - Wasm target: `./gradlew :webApp:wasmJsBrowserDistribution`
+  - JS target: `./gradlew :webApp:jsBrowserDistribution`
+
 ### Running tests
 
 Use the run button in your IDE's editor gutter, or run tests using Gradle tasks:
