@@ -23,6 +23,9 @@ node_modules/
 *.keystore
 keystore.properties
 
+# Kotzilla SDK config (contains API key)
+shared/kotzilla.json
+
 # Regenerable knowledge-graph output (run `graphify update .` to rebuild).
 # Also holds machine-specific paths (.graphify_python, .graphify_root).
 graphify-out/

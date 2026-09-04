@@ -9,6 +9,7 @@ plugins {
     alias(libs.plugins.kotlinMultiplatform) apply false
     alias(libs.plugins.sqldelight) apply false
     alias(libs.plugins.dokka)
+    alias(libs.plugins.kotzilla) apply true
 }
 
 subprojects {
