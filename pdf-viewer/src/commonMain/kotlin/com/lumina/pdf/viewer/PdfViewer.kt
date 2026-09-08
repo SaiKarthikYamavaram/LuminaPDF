@@ -980,7 +980,8 @@ fun PdfViewer(
                                 }
                             }
 
-                            // Tapping a search match toggles a saved highlight for it.
+                            // Tapping a search match toggles a saved highlight for it; tapping an
+                            // existing highlight directly (no search needed) removes it.
                             val documentPoint = (tapOffset - state.scrollOffset) / state.zoom
                             for (page in state.visiblePages) {
                                 val pageTop = page * (estimatedPageHeight + spacingPx)
@@ -992,6 +993,16 @@ fun PdfViewer(
                                 }
                                 if (hit != null) {
                                     toggleHighlightAt(page, hit, debouncedSearchQuery)
+                                    break
+                                }
+                                val existingHighlight = highlights.firstOrNull { saved ->
+                                    if (saved.page != page) return@firstOrNull false
+                                    val r = parseHighlightRect(saved.rectsText) ?: return@firstOrNull false
+                                    localX in r.left..r.right && localY in r.top..r.bottom
+                                }
+                                if (existingHighlight != null) {
+                                    db.deleteHighlight(existingHighlight.id)
+                                    highlights.remove(existingHighlight)
                                     break
                                 }
                             }
