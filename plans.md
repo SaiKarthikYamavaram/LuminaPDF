@@ -20,13 +20,34 @@ most-impactful first.
 
 ## Phase 2 — Viewer feature completeness
 
-4. **Share / print / export.** `PdfViewerTopBar.kt` menu is just zoom in/out, fit page, night
-   mode — no share-file, print, or export.
-5. **Page manipulation.** No rotate, delete-page, reorder, or merge/split tools.
-6. **Jump to page.** Navigation only via outline/notes/first-last buttons — no typed
-   "go to page N" field.
-7. **User bookmarks.** No bookmarks distinct from the PDF's own outline; the Notes feature
-   already has the exact pattern (page + timestamp + DB row) to copy for this.
+4. ~~**Share / print / export.**~~ Done (2026-09-08): "Export / Save a copy" in the overflow
+   menu, via the already-installed FileKit save-file dialog (cross-platform, no new dependency).
+   True OS share-sheet and native print remain unimplemented — see below.
+5. **Page manipulation.** No rotate, delete-page, reorder, or merge/split tools. Scoped out for
+   now, on purpose — see "Deferred" below.
+6. ~~**Jump to page.**~~ Already implemented (predates this plan) — page pill / dialog in
+   `PdfViewerTopBar.kt`.
+7. ~~**User bookmarks.**~~ Done (2026-09-08): star toggle in the top bar, bookmarked-pages list
+   in the outline panel. Copied the Notes DB pattern across all 5 platform `PdfDatabase` actuals.
+
+### Deferred: page manipulation, OS share-sheet, print
+
+`PdfViewer.kt`'s page display is a single hand-rolled `Canvas` DrawScope with custom
+virtualization (fixed `estimatedPageHeight = width * 1.4f` aspect), tile-based zoom rendering
+keyed by row/col, and tap/search/highlight hit-testing all computed against that fixed unrotated
+geometry. Two different kinds of gaps here, both real work, neither a quick add:
+
+* **View-only rotate** would touch the virtualization math, tile row/col mapping, and every
+  hit-test (tap, search-match, highlight), since a rotated page's on-screen box isn't
+  `width x width*1.4` anymore. Structural change to the riskiest file in the app — do it as its
+  own task with device testing, not bundled into something else.
+* **Real delete/reorder/merge/split** needs a write-capable PDF library per platform. Exists for
+  JVM only (PDFBox, already a dependency); Android's `PdfRenderer` is read-only and iOS/JS have
+  no write lib in this repo yet. Needs a new dependency (at least on Android) before it can even
+  start, and would silently not exist on whichever platforms lack one.
+* **OS share-sheet** ("send to another app") and **native print** need per-platform
+  Intent/`UIActivityViewController`/`PrintManager` code — no shared library covers either, unlike
+  export which FileKit already handles.
 
 ## Phase 3 — Document organization
 
