@@ -29,6 +29,13 @@ data class DbHighlight(
     val timestamp: Long
 )
 
+data class DbBookmark(
+    val id: String,
+    val documentId: String,
+    val page: Int,
+    val timestamp: Long
+)
+
 interface PdfDatabase {
     fun saveOffset(documentId: String, offset: PdfOffset)
     fun getOffset(documentId: String): PdfOffset?
@@ -41,6 +48,10 @@ interface PdfDatabase {
     fun insertHighlight(highlight: DbHighlight)
     fun getHighlights(documentId: String): List<DbHighlight>
     fun deleteHighlight(highlightId: String)
+
+    fun insertBookmark(bookmark: DbBookmark)
+    fun getBookmarks(documentId: String): List<DbBookmark>
+    fun deleteBookmark(bookmarkId: String)
 }
 
 @Composable

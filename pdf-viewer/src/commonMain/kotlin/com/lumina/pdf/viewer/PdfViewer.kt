@@ -18,6 +18,8 @@ import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.background
 import androidx.compose.foundation.focusable
+import androidx.compose.foundation.horizontalScroll
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.gestures.awaitEachGesture
 import androidx.compose.foundation.gestures.awaitFirstDown
@@ -60,6 +62,7 @@ import androidx.compose.ui.unit.dp
 import com.lumina.pdf.core.*
 import com.lumina.pdf.viewer.db.*
 import com.lumina.pdf.viewer.theme.LuminaColors
+import com.lumina.pdf.viewer.theme.LuminaRadius
 import kotlinx.coroutines.launch
 import co.touchlab.kermit.Logger
 import kotlin.math.cos
@@ -196,6 +199,39 @@ fun PdfViewer(
     // Notes states
     var isNotesOpen by remember { mutableStateOf(false) }
     val notes = remember { mutableStateListOf<DbNote>() }
+
+    // Bookmark states
+    val bookmarks = remember { mutableStateListOf<DbBookmark>() }
+
+    // Fetch bookmarks on document load
+    LaunchedEffect(document, documentId) {
+        if (documentId != null) {
+            bookmarks.clear()
+            try {
+                bookmarks.addAll(db.getBookmarks(documentId))
+            } catch (e: Exception) {
+                Logger.e(e) { "Failed to load bookmarks for document $documentId" }
+            }
+        }
+    }
+
+    fun toggleBookmark(page: Int) {
+        if (documentId == null) return
+        val existing = bookmarks.find { it.page == page }
+        if (existing != null) {
+            db.deleteBookmark(existing.id)
+            bookmarks.remove(existing)
+        } else {
+            val bookmark = DbBookmark(
+                id = (0..10000000).random().toString(),
+                documentId = documentId,
+                page = page,
+                timestamp = getCurrentTimeMillis()
+            )
+            db.insertBookmark(bookmark)
+            bookmarks.add(bookmark)
+        }
+    }
 
     // Fetch notes on document load
     LaunchedEffect(document, documentId) {
@@ -1274,6 +1310,8 @@ fun PdfViewer(
             currentPage = state.currentPage,
             pageCount = pageCount,
             onJumpToPage = { jumpToPage(it) },
+            isCurrentPageBookmarked = bookmarks.any { it.page == state.currentPage },
+            onToggleBookmark = { toggleBookmark(state.currentPage) },
             onClose = onClose
         )
         }
@@ -1444,6 +1482,63 @@ fun PdfViewer(
                                 color = MaterialTheme.colorScheme.onSurface,
                                 modifier = Modifier.size(14.dp)
                             )
+                        }
+                    }
+
+                    if (bookmarks.isNotEmpty()) {
+                        Text(
+                            text = "Bookmarks",
+                            style = MaterialTheme.typography.labelMedium,
+                            fontWeight = FontWeight.Bold,
+                            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f),
+                            modifier = Modifier.padding(bottom = 6.dp)
+                        )
+                        Row(
+                            horizontalArrangement = Arrangement.spacedBy(8.dp),
+                            modifier = Modifier
+                                .padding(bottom = 12.dp)
+                                .horizontalScroll(rememberScrollState())
+                        ) {
+                            bookmarks.sortedBy { it.page }.forEach { bookmark ->
+                                Surface(
+                                    onClick = {
+                                        jumpToPage(bookmark.page)
+                                        isOutlineOpen = false
+                                    },
+                                    shape = RoundedCornerShape(LuminaRadius.pill),
+                                    color = MaterialTheme.colorScheme.primary.copy(alpha = 0.12f),
+                                    modifier = Modifier.semantics {
+                                        contentDescription = "Jump to bookmarked page ${bookmark.page + 1}"
+                                    }
+                                ) {
+                                    Row(
+                                        verticalAlignment = Alignment.CenterVertically,
+                                        modifier = Modifier.padding(horizontal = 10.dp, vertical = 6.dp)
+                                    ) {
+                                        Text(
+                                            text = "${bookmark.page + 1}",
+                                            style = MaterialTheme.typography.labelMedium,
+                                            fontWeight = FontWeight.Bold,
+                                            color = MaterialTheme.colorScheme.primary
+                                        )
+                                        Spacer(modifier = Modifier.width(6.dp))
+                                        IconButton(
+                                            onClick = {
+                                                db.deleteBookmark(bookmark.id)
+                                                bookmarks.remove(bookmark)
+                                            },
+                                            modifier = Modifier.size(16.dp).semantics {
+                                                contentDescription = "Remove bookmark for page ${bookmark.page + 1}"
+                                            }
+                                        ) {
+                                            CloseIcon(
+                                                color = MaterialTheme.colorScheme.primary,
+                                                modifier = Modifier.size(10.dp)
+                                            )
+                                        }
+                                    }
+                                }
+                            }
                         }
                     }
 

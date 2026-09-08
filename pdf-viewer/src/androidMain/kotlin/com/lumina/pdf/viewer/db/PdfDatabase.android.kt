@@ -70,6 +70,25 @@ class AndroidPdfDatabase(context: Context) : PdfDatabase {
     override fun deleteHighlight(highlightId: String) {
         queries.deleteHighlight(highlightId)
     }
+
+    override fun insertBookmark(bookmark: DbBookmark) {
+        queries.insertBookmark(bookmark.id, bookmark.documentId, bookmark.page.toLong(), bookmark.timestamp)
+    }
+
+    override fun getBookmarks(documentId: String): List<DbBookmark> {
+        return queries.getBookmarks(documentId).executeAsList().map {
+            DbBookmark(
+                id = it.id,
+                documentId = it.documentId,
+                page = it.page.toInt(),
+                timestamp = it.timestamp
+            )
+        }
+    }
+
+    override fun deleteBookmark(bookmarkId: String) {
+        queries.deleteBookmark(bookmarkId)
+    }
 }
 
 @Composable

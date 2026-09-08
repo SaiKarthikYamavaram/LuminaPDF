@@ -112,6 +112,40 @@ class WasmJsPdfDatabase : PdfDatabase {
             }
         }
     }
+
+    override fun insertBookmark(bookmark: DbBookmark) {
+        window.localStorage.setItem("${bookmark.documentId}_bookmark_${bookmark.id}", "${bookmark.page}|${bookmark.timestamp}")
+    }
+
+    override fun getBookmarks(documentId: String): List<DbBookmark> {
+        val list = mutableListOf<DbBookmark>()
+        val length = window.localStorage.length
+        for (i in 0 until length) {
+            val key = window.localStorage.key(i) ?: continue
+            if (key.startsWith("${documentId}_bookmark_")) {
+                val value = window.localStorage.getItem(key) ?: continue
+                val parts = value.split("|", limit = 2)
+                if (parts.size == 2) {
+                    val page = parts[0].toIntOrNull() ?: 0
+                    val timestamp = parts[1].toLongOrNull() ?: 0L
+                    val id = key.removePrefix("${documentId}_bookmark_")
+                    list.add(DbBookmark(id, documentId, page, timestamp))
+                }
+            }
+        }
+        return list.sortedBy { it.page }
+    }
+
+    override fun deleteBookmark(bookmarkId: String) {
+        val length = window.localStorage.length
+        for (i in 0 until length) {
+            val key = window.localStorage.key(i) ?: continue
+            if (key.endsWith("_bookmark_$bookmarkId")) {
+                window.localStorage.removeItem(key)
+                break
+            }
+        }
+    }
 }
 
 @Composable

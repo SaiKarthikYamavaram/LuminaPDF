@@ -23,6 +23,13 @@ CREATE TABLE PdfHighlight (
     timestamp INTEGER NOT NULL
 );
 
+CREATE TABLE PdfBookmark (
+    id TEXT NOT NULL PRIMARY KEY,
+    documentId TEXT NOT NULL,
+    page INTEGER NOT NULL,
+    timestamp INTEGER NOT NULL
+);
+
 -- Queries
 saveOffset:
 INSERT OR REPLACE INTO PdfViewState (documentId, page, zoom, scrollX, scrollY)
@@ -54,3 +61,13 @@ VALUES (?, ?, ?, ?, ?, ?);
 
 deleteHighlight:
 DELETE FROM PdfHighlight WHERE id = ?;
+
+getBookmarks:
+SELECT * FROM PdfBookmark WHERE documentId = ? ORDER BY page ASC;
+
+insertBookmark:
+INSERT OR REPLACE INTO PdfBookmark (id, documentId, page, timestamp)
+VALUES (?, ?, ?, ?);
+
+deleteBookmark:
+DELETE FROM PdfBookmark WHERE id = ?;

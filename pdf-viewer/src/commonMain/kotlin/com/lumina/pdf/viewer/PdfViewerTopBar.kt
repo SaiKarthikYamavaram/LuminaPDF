@@ -62,6 +62,8 @@ fun TopBar(
     currentPage: Int,
     pageCount: Int,
     onJumpToPage: (Int) -> Unit,
+    isCurrentPageBookmarked: Boolean,
+    onToggleBookmark: () -> Unit,
     onClose: (() -> Unit)? = null,
     modifier: Modifier = Modifier
 ) {
@@ -314,6 +316,19 @@ fun TopBar(
                         modifier = Modifier.size(ButtonSize).semantics { contentDescription = "Search" }
                     ) {
                         SearchIcon(color = MaterialTheme.colorScheme.onSurface, modifier = Modifier.size(IconSize))
+                    }
+
+                    IconButton(
+                        onClick = onToggleBookmark,
+                        modifier = Modifier.size(ButtonSize).semantics {
+                            contentDescription = if (isCurrentPageBookmarked) "Remove bookmark" else "Add bookmark"
+                        }
+                    ) {
+                        BookmarkIcon(
+                            color = if (isCurrentPageBookmarked) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface,
+                            filled = isCurrentPageBookmarked,
+                            modifier = Modifier.size(IconSize)
+                        )
                     }
 
                     // Page indicator, styled as a distinct pill so it reads as its own

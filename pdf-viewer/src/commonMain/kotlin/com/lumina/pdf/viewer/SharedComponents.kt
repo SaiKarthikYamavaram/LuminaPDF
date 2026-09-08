@@ -574,6 +574,27 @@ fun NoteIcon(color: Color, modifier: Modifier = Modifier) {
     }
 }
 
+@Composable
+fun BookmarkIcon(color: Color, filled: Boolean, modifier: Modifier = Modifier) {
+    Canvas(modifier = modifier.size(20.dp)) {
+        val w = size.width
+        val h = size.height
+        val path = Path().apply {
+            moveTo(w * 0.25f, h * 0.1f)
+            lineTo(w * 0.75f, h * 0.1f)
+            lineTo(w * 0.75f, h * 0.9f)
+            lineTo(w * 0.5f, h * 0.7f)
+            lineTo(w * 0.25f, h * 0.9f)
+            close()
+        }
+        if (filled) {
+            drawPath(path = path, color = color)
+        } else {
+            drawPath(path = path, color = color, style = Stroke(width = 2.dp.toPx()))
+        }
+    }
+}
+
 // --- Hoverable Item Wrapper ---
 @Composable
 fun HoverableItem(
