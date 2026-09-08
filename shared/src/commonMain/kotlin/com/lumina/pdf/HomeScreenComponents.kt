@@ -37,6 +37,7 @@ fun GridItemCard(
     hasNotes: Boolean,
     onClick: () -> Unit,
     onRemove: () -> Unit,
+    onRename: () -> Unit,
     textPrimary: Color,
     textSecondary: Color,
     modifier: Modifier = Modifier
@@ -123,17 +124,30 @@ fun GridItemCard(
 
                 // Always visible (not hover-gated) - hover has no equivalent on touch, so gating
                 // this behind isHovered left no way to remove an item on Android at all.
-                Box(
-                    modifier = Modifier
-                        .align(Alignment.TopEnd)
-                        .padding(8.dp)
-                        .size(20.dp)
-                        .clip(CircleShape)
-                        .background(Color.Black.copy(alpha = 0.6f))
-                        .clickable(onClickLabel = "Remove ${fileItem.name} from recents") { onRemove() },
-                    contentAlignment = Alignment.Center
+                Row(
+                    modifier = Modifier.align(Alignment.TopEnd).padding(8.dp),
+                    horizontalArrangement = Arrangement.spacedBy(6.dp)
                 ) {
-                    CloseIcon(color = Color.White, modifier = Modifier.size(10.dp))
+                    Box(
+                        modifier = Modifier
+                            .size(20.dp)
+                            .clip(CircleShape)
+                            .background(Color.Black.copy(alpha = 0.6f))
+                            .clickable(onClickLabel = "Rename ${fileItem.name}") { onRename() },
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Text("✎", color = Color.White, fontSize = 10.sp)
+                    }
+                    Box(
+                        modifier = Modifier
+                            .size(20.dp)
+                            .clip(CircleShape)
+                            .background(Color.Black.copy(alpha = 0.6f))
+                            .clickable(onClickLabel = "Remove ${fileItem.name} from recents") { onRemove() },
+                        contentAlignment = Alignment.Center
+                    ) {
+                        CloseIcon(color = Color.White, modifier = Modifier.size(10.dp))
+                    }
                 }
 
                 if (hasNotes) {
@@ -182,6 +196,7 @@ fun ListItemRow(
     showLastOpened: Boolean,
     onClick: () -> Unit,
     onRemove: () -> Unit,
+    onRename: () -> Unit,
     textPrimary: Color,
     textSecondary: Color,
     modifier: Modifier = Modifier
@@ -257,8 +272,23 @@ fun ListItemRow(
                 modifier = Modifier.width(80.dp)
             )
 
-            // Remove button - always visible (not hover-gated); hover has no equivalent on
-            // touch, so gating this behind isHovered left no way to remove an item on Android.
+            // Rename + remove buttons - always visible (not hover-gated); hover has no equivalent
+            // on touch, so gating this behind isHovered left no way to act on an item on Android.
+            Box(
+                modifier = Modifier.width(32.dp),
+                contentAlignment = Alignment.Center
+            ) {
+                Box(
+                    modifier = Modifier
+                        .size(20.dp)
+                        .clip(CircleShape)
+                        .background(colorScheme.onSurface.copy(alpha = 0.1f))
+                        .clickable(onClickLabel = "Rename ${fileItem.name}") { onRename() },
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text("✎", color = textSecondary, fontSize = 10.sp)
+                }
+            }
             Box(
                 modifier = Modifier.width(32.dp),
                 contentAlignment = Alignment.Center

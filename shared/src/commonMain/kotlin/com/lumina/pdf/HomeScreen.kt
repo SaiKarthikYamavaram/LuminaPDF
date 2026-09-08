@@ -75,10 +75,41 @@ fun HomeScreen(
     onOpenFile: (RecentFile, Int?) -> Unit,
     onRemoveFromRecents: (RecentFile) -> Unit,
     onDeleteDocument: (RecentFile) -> Unit,
+    onRenameDocument: (RecentFile, String) -> Unit,
     onTriggerFilePicker: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     val db = rememberPdfDatabase()
+    var renamingFile by remember { mutableStateOf<RecentFile?>(null) }
+    var renameInput by remember { mutableStateOf("") }
+
+    renamingFile?.let { file ->
+        AlertDialog(
+            onDismissRequest = { renamingFile = null },
+            title = { Text("Rename") },
+            text = {
+                OutlinedTextField(
+                    value = renameInput,
+                    onValueChange = { renameInput = it },
+                    singleLine = true,
+                    modifier = Modifier.fillMaxWidth()
+                )
+            },
+            confirmButton = {
+                TextButton(
+                    onClick = {
+                        val newName = renameInput.trim()
+                        if (newName.isNotEmpty()) onRenameDocument(file, newName)
+                        renamingFile = null
+                    },
+                    enabled = renameInput.isNotBlank()
+                ) { Text("Rename") }
+            },
+            dismissButton = {
+                TextButton(onClick = { renamingFile = null }) { Text("Cancel") }
+            }
+        )
+    }
     var activeTab by remember { mutableStateOf("Recents") }
     
     val notesGroupedByFile by produceState<Map<RecentFile, List<com.lumina.pdf.viewer.db.DbNote>>>(
@@ -445,6 +476,7 @@ fun HomeScreen(
                             hasNotes = fileItem.id in documentIdsWithNotes,
                             onClick = { Logger.i { "[TAP-DEBUG] GridItemCard clicked: ${fileItem.name}" }; onOpenFile(fileItem, null) },
                             onRemove = { if (activeTab == "Recents") onRemoveFromRecents(fileItem) else onDeleteDocument(fileItem) },
+                            onRename = { renamingFile = fileItem; renameInput = fileItem.name },
                             textPrimary = textPrimary,
                             textSecondary = textSecondary
                         )
@@ -698,6 +730,7 @@ fun HomeScreen(
                                         showLastOpened = !isCompact,
                                         onClick = { Logger.i { "[TAP-DEBUG] ListItemRow clicked: ${fileItem.name}" }; onOpenFile(fileItem, null) },
                                         onRemove = { if (activeTab == "Recents") onRemoveFromRecents(fileItem) else onDeleteDocument(fileItem) },
+                                        onRename = { renamingFile = fileItem; renameInput = fileItem.name },
                                         textPrimary = textPrimary,
                                         textSecondary = textSecondary
                                     )

@@ -41,6 +41,7 @@ class AppHomeScreen(
     @Transient private val onOpenFile: (RecentFile, Int?, Navigator) -> Unit = { _, _, _ -> },
     @Transient private val onRemoveFromRecents: (RecentFile) -> Unit = {},
     @Transient private val onDeleteDocument: (RecentFile) -> Unit = {},
+    @Transient private val onRenameDocument: (RecentFile, String) -> Unit = { _, _ -> },
     @Transient private val onTriggerFilePicker: () -> Unit = {}
 ) : Screen {
     @Composable
@@ -52,6 +53,7 @@ class AppHomeScreen(
             onOpenFile = { recentFile, page -> onOpenFile(recentFile, page, navigator) },
             onRemoveFromRecents = onRemoveFromRecents,
             onDeleteDocument = onDeleteDocument,
+            onRenameDocument = onRenameDocument,
             onTriggerFilePicker = onTriggerFilePicker,
             modifier = Modifier.fillMaxSize()
         )
@@ -444,6 +446,16 @@ fun App() {
                         recentFiles.removeAll { it.id == recentFile.id }
                         RecentFilesStore.deleteRecentFile(recentFile.id)
                         RecentFilesStore.saveRecentFilesList(recentFiles)
+                    },
+                    onRenameDocument = { recentFile, newName ->
+                        // RecentFilesStore's metadata format is "|"-delimited; a typed name could
+                        // otherwise corrupt every row after it.
+                        val safeName = newName.replace("|", " ").replace("\n", " ")
+                        val idx = recentFiles.indexOfFirst { it.id == recentFile.id }
+                        if (idx != -1) {
+                            recentFiles[idx] = recentFiles[idx].copy(name = safeName)
+                            RecentFilesStore.saveRecentFilesList(recentFiles)
+                        }
                     },
                     onTriggerFilePicker = pickFile
                 )
