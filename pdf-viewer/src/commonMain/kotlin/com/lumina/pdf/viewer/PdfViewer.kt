@@ -121,6 +121,7 @@ fun PdfViewer(
     state: PdfViewerState = remember { PdfViewerState() },
     config: PdfViewerConfig = PdfViewerConfig(),
     onClose: (() -> Unit)? = null,
+    onExport: (() -> Unit)? = null,
     modifier: Modifier = Modifier
 ) {
     val coroutineScope = rememberCoroutineScope()
@@ -1312,6 +1313,7 @@ fun PdfViewer(
             onJumpToPage = { jumpToPage(it) },
             isCurrentPageBookmarked = bookmarks.any { it.page == state.currentPage },
             onToggleBookmark = { toggleBookmark(state.currentPage) },
+            onExport = onExport,
             onClose = onClose
         )
         }

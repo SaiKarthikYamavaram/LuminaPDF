@@ -63,7 +63,8 @@ class AppPdfViewerScreen(
     private val documentId: String,
     private val documentTitle: String,
     private val initialPage: Int?,
-    @Transient private val onClose: () -> Unit = {}
+    @Transient private val onClose: () -> Unit = {},
+    @Transient private val onExport: (() -> Unit)? = null
 ) : Screen {
     @Composable
     override fun Content() {
@@ -74,6 +75,7 @@ class AppPdfViewerScreen(
             documentTitle = documentTitle,
             initialPage = initialPage,
             onClose = onClose,
+            onExport = onExport,
             modifier = Modifier.fillMaxSize()
         )
     }
@@ -180,6 +182,11 @@ fun App() {
             }
         }
 
+        val exportLauncher = io.github.vinceglb.filekit.compose.rememberFileSaverLauncher { }
+        val exportFile: (ByteArray, String) -> Unit = { bytes, name ->
+            exportLauncher.launch(bytes, name.removeSuffix(".pdf"), "pdf")
+        }
+
         suspend fun openRecentFile(recentFile: RecentFile, page: Int?, navigator: Navigator, password: String?) {
             try {
                 val bytesToOpen = recentFile.fileBytes
@@ -213,7 +220,8 @@ fun App() {
                             currentDocument = null
                             initialPageToOpen = null
                             navigator.pop()
-                        }
+                        },
+                        onExport = { exportFile(bytesToOpen, recentFile.name) }
                     )
                 )
                 pendingPasswordRetry = null
@@ -266,7 +274,8 @@ fun App() {
                                 currentDocument = null
                                 initialPageToOpen = null
                                 navigator.pop()
-                            }
+                            },
+                            onExport = { exportFile(bytes, fileToOpen.name) }
                         )
                     )
                 }

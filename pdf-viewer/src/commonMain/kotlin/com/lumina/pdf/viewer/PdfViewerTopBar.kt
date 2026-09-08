@@ -64,6 +64,7 @@ fun TopBar(
     onJumpToPage: (Int) -> Unit,
     isCurrentPageBookmarked: Boolean,
     onToggleBookmark: () -> Unit,
+    onExport: (() -> Unit)? = null,
     onClose: (() -> Unit)? = null,
     modifier: Modifier = Modifier
 ) {
@@ -406,6 +407,15 @@ fun TopBar(
                                     showOverflowMenu = false
                                 }
                             )
+                            if (onExport != null) {
+                                DropdownMenuItem(
+                                    text = { Text("Export / Save a copy") },
+                                    onClick = {
+                                        onExport()
+                                        showOverflowMenu = false
+                                    }
+                                )
+                            }
                         }
                     }
                 }
