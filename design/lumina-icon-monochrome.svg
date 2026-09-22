@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024">
+  <!--
+    Android 13+ themed-icon layer: the same mark as a single-color silhouette, with the L and
+    the dog-ear knocked out so the shape still reads once the launcher tints it.
+  -->
+  <defs>
+    <mask id="knockout">
+      <g transform="translate(512 512) scale(0.82) translate(-512 -512)">
+        <path d="M312 176 H600 L740 316 V820 A30 30 0 0 1 710 850 H312 A30 30 0 0 1 282 820 V206 A30 30 0 0 1 312 176 Z"
+              fill="#fff"/>
+        <path d="M600 176 L740 316 H628 A28 28 0 0 1 600 288 Z" fill="#000"/>
+        <path d="M424 392 V668 H626" fill="none" stroke="#000" stroke-width="104"
+              stroke-linecap="round" stroke-linejoin="round"/>
+      </g>
+    </mask>
+  </defs>
+  <rect width="1024" height="1024" fill="#000" mask="url(#knockout)"/>
+</svg>

@@ -26,9 +26,18 @@ compose.desktop {
 
             modules("java.sql", "java.naming", "java.instrument", "jdk.unsupported", "jdk.security.auth")
 
+            macOS {
+                iconFile.set(project.file("icons/lumina.icns"))
+            }
+
             windows {
                 shortcut = true
                 menu = true
+                iconFile.set(project.file("icons/lumina.ico"))
+            }
+
+            linux {
+                iconFile.set(project.file("icons/lumina.png"))
             }
 
             buildTypes.release.proguard {

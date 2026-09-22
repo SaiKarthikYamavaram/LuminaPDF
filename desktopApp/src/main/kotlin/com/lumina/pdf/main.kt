@@ -1,6 +1,7 @@
 package com.lumina.pdf
 
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Window
@@ -18,6 +19,7 @@ fun main() {
         Window(
             onCloseRequest = ::exitApplication,
             title = "LuminaPDF",
+            icon = painterResource("lumina.png"),
             state = windowState
         ) {
             App()
