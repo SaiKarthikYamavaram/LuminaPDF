@@ -16,12 +16,17 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.geometry.Rect
+import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.*
+import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.lumina.pdf.viewer.theme.LuminaRadius
@@ -29,570 +34,204 @@ import kotlin.math.PI
 import kotlin.math.cos
 import kotlin.math.sin
 
-// --- Custom Canvas Icons for Sleek, Dependency-free Rendering ---
+// --- Icons ---
+//
+// Every icon is drawn on one 24x24 unit grid with a ~2-unit keyline margin, a single stroke
+// weight and round caps and joins, so the set reads as one family (each icon used to pick its
+// own weight between 1.5dp and 2dp, its own extents and its own caps). The weight scales with
+// the icon, so a 14dp badge and a 32dp logo keep the same optical density.
+//
+// Coordinates below are grid units: the draw lambda gets `u`, one unit in pixels.
+
+private const val IconGrid = 24f
+
+/** Stroke weight in grid units, shared by the whole set. */
+private const val IconWeight = 1.8f
+
+/** Default drawn size. Callers can still pass a smaller `Modifier.size(...)`, which wins. */
+private val IconSizeDefault = 20.dp
 
 @Composable
-fun AppLogoMark(modifier: Modifier = Modifier, color: Color = MaterialTheme.colorScheme.primary) {
-    Canvas(modifier = modifier.size(32.dp)) {
-        val w = size.width
-        val h = size.height
-        val stroke = 2.dp.toPx()
-
-        // Folded-corner document mark, drawn directly on the surrounding surface (no badge
-        // background) so it reads as part of the Paper & Ink palette rather than a fixed chip.
-        val left = w * 0.30f
-        val right = w * 0.70f
-        val top = h * 0.22f
-        val bottom = h * 0.78f
-        val fold = (right - left) * 0.34f
-
-        val page = Path().apply {
-            moveTo(left, top)
-            lineTo(right - fold, top)
-            lineTo(right, top + fold)
-            lineTo(right, bottom)
-            lineTo(left, bottom)
-            close()
-        }
-        drawPath(path = page, color = color, style = Stroke(width = stroke, cap = StrokeCap.Round, join = StrokeJoin.Round))
-
-        val foldPath = Path().apply {
-            moveTo(right - fold, top)
-            lineTo(right - fold, top + fold)
-            lineTo(right, top + fold)
-        }
-        drawPath(path = foldPath, color = color, style = Stroke(width = stroke * 0.7f, cap = StrokeCap.Round, join = StrokeJoin.Round))
-
-        // Text lines
-        val lineStroke = stroke * 0.65f
-        val lineLeft = left + (right - left) * 0.18f
-        val lineRightShort = right - (right - left) * 0.28f
-        val lineRightLong = right - (right - left) * 0.14f
-        val lineSpacing = (bottom - top - fold) / 4f
-        var y = top + fold + lineSpacing
-        drawLine(color, Offset(lineLeft, y), Offset(lineRightLong, y), strokeWidth = lineStroke, cap = StrokeCap.Round)
-        y += lineSpacing
-        drawLine(color, Offset(lineLeft, y), Offset(lineRightShort, y), strokeWidth = lineStroke, cap = StrokeCap.Round)
-        y += lineSpacing
-        drawLine(color, Offset(lineLeft, y), Offset(lineRightLong, y), strokeWidth = lineStroke, cap = StrokeCap.Round)
+private fun IconCanvas(
+    modifier: Modifier,
+    size: Dp = IconSizeDefault,
+    weight: Float = IconWeight,
+    draw: DrawScope.(u: Float, stroke: Stroke) -> Unit
+) {
+    Canvas(modifier = modifier.size(size)) {
+        val u = this.size.minDimension / IconGrid
+        draw(u, Stroke(width = weight * u, cap = StrokeCap.Round, join = StrokeJoin.Round))
     }
 }
 
-@Composable
-fun HomeIcon(color: Color, modifier: Modifier = Modifier) {
-    Canvas(modifier = modifier.size(20.dp)) {
-        val w = size.width
-        val h = size.height
-        val path = Path().apply {
-            moveTo(w * 0.15f, h * 0.85f)
-            lineTo(w * 0.15f, h * 0.45f)
-            lineTo(w * 0.5f, h * 0.15f)
-            lineTo(w * 0.85f, h * 0.45f)
-            lineTo(w * 0.85f, h * 0.85f)
-            close()
-            // Door
-            moveTo(w * 0.4f, h * 0.85f)
-            lineTo(w * 0.4f, h * 0.55f)
-            lineTo(w * 0.6f, h * 0.55f)
-            lineTo(w * 0.6f, h * 0.85f)
-        }
-        drawPath(path = path, color = color, style = Stroke(width = 1.8.dp.toPx(), join = StrokeJoin.Round))
-    }
+/** Open path through alternating x/y grid coordinates. */
+private fun polyline(u: Float, vararg xy: Float): Path = Path().apply {
+    moveTo(xy[0] * u, xy[1] * u)
+    for (i in 2 until xy.size step 2) lineTo(xy[i] * u, xy[i + 1] * u)
 }
 
-@Composable
-fun LearnIcon(color: Color, modifier: Modifier = Modifier) {
-    Canvas(modifier = modifier.size(20.dp)) {
-        val w = size.width
-        val h = size.height
-        // Lightbulb
-        drawCircle(
-            color = color,
-            radius = w * 0.22f,
-            center = Offset(w * 0.5f, h * 0.4f),
-            style = Stroke(width = 1.8.dp.toPx())
-        )
-        val path = Path().apply {
-            moveTo(w * 0.38f, h * 0.62f)
-            lineTo(w * 0.38f, h * 0.78f)
-            lineTo(w * 0.62f, h * 0.78f)
-            lineTo(w * 0.62f, h * 0.62f)
-            
-            moveTo(w * 0.44f, h * 0.84f)
-            lineTo(w * 0.56f, h * 0.84f)
-        }
-        drawPath(path = path, color = color, style = Stroke(width = 1.8.dp.toPx()))
-    }
+/** Closed path through alternating x/y grid coordinates. */
+private fun polygon(u: Float, vararg xy: Float): Path = polyline(u, *xy).apply { close() }
+
+private fun DrawScope.gridLine(color: Color, u: Float, stroke: Stroke, x1: Float, y1: Float, x2: Float, y2: Float) {
+    drawLine(color, Offset(x1 * u, y1 * u), Offset(x2 * u, y2 * u), stroke.width, StrokeCap.Round)
 }
 
+/**
+ * The app mark: the page-and-L from the launcher icon (see design/lumina-icon.svg), drawn in a
+ * single color so it sits on any surface.
+ */
 @Composable
-fun FolderIcon(color: Color, modifier: Modifier = Modifier) {
-    Canvas(modifier = modifier.size(20.dp)) {
-        val w = size.width
-        val h = size.height
-        val path = Path().apply {
-            moveTo(w * 0.1f, h * 0.22f)
-            lineTo(w * 0.4f, h * 0.22f)
-            lineTo(w * 0.52f, h * 0.35f)
-            lineTo(w * 0.9f, h * 0.35f)
-            lineTo(w * 0.9f, h * 0.82f)
-            lineTo(w * 0.1f, h * 0.82f)
-            close()
-        }
-        drawPath(path = path, color = color, style = Stroke(width = 1.8.dp.toPx(), join = StrokeJoin.Round))
-    }
-}
-
-@Composable
-fun PeopleIcon(color: Color, modifier: Modifier = Modifier) {
-    Canvas(modifier = modifier.size(20.dp)) {
-        val w = size.width
-        val h = size.height
-        // Left person head
-        drawCircle(
-            color = color,
-            radius = w * 0.11f,
-            center = Offset(w * 0.38f, h * 0.38f),
-            style = Stroke(width = 1.6.dp.toPx())
-        )
-        // Left person shoulders
-        val pathL = Path().apply {
-            moveTo(w * 0.15f, h * 0.75f)
-            quadraticTo(w * 0.18f, h * 0.58f, w * 0.38f, h * 0.58f)
-            quadraticTo(w * 0.58f, h * 0.58f, w * 0.61f, h * 0.75f)
-        }
-        drawPath(path = pathL, color = color, style = Stroke(width = 1.6.dp.toPx()))
-        
-        // Right person head (smaller, background)
-        drawCircle(
-            color = color,
-            radius = w * 0.09f,
-            center = Offset(w * 0.65f, h * 0.45f),
-            style = Stroke(width = 1.6.dp.toPx())
-        )
-        val pathR = Path().apply {
-            moveTo(w * 0.48f, h * 0.75f)
-            quadraticTo(w * 0.52f, h * 0.64f, w * 0.65f, h * 0.64f)
-            quadraticTo(w * 0.78f, h * 0.64f, w * 0.82f, h * 0.75f)
-        }
-        drawPath(path = pathR, color = color, style = Stroke(width = 1.6.dp.toPx()))
-    }
-}
-
-@Composable
-fun CloudIcon(color: Color, modifier: Modifier = Modifier) {
-    Canvas(modifier = modifier.size(20.dp)) {
-        val w = size.width
-        val h = size.height
-        val path = Path().apply {
-            moveTo(w * 0.25f, h * 0.7f)
-            quadraticTo(w * 0.12f, h * 0.7f, w * 0.12f, h * 0.55f)
-            quadraticTo(w * 0.12f, h * 0.42f, w * 0.28f, h * 0.42f)
-            quadraticTo(w * 0.35f, h * 0.25f, w * 0.52f, h * 0.25f)
-            quadraticTo(w * 0.72f, h * 0.25f, w * 0.72f, h * 0.42f)
-            quadraticTo(w * 0.88f, h * 0.42f, w * 0.88f, h * 0.58f)
-            quadraticTo(w * 0.88f, h * 0.7f, w * 0.75f, h * 0.7f)
-            close()
-        }
-        drawPath(path = path, color = color, style = Stroke(width = 1.8.dp.toPx(), join = StrokeJoin.Round))
-    }
-}
-
-@Composable
-fun TrashIcon(color: Color, modifier: Modifier = Modifier) {
-    Canvas(modifier = modifier.size(20.dp)) {
-        val w = size.width
-        val h = size.height
-        val stroke = 1.8.dp.toPx()
-        // Bin outline
-        val pathBin = Path().apply {
-            moveTo(w * 0.22f, h * 0.32f)
-            lineTo(w * 0.26f, h * 0.85f)
-            lineTo(w * 0.74f, h * 0.85f)
-            lineTo(w * 0.78f, h * 0.32f)
-        }
-        drawPath(path = pathBin, color = color, style = Stroke(width = stroke, join = StrokeJoin.Round))
-        // Lid
-        drawLine(color = color, start = Offset(w * 0.12f, h * 0.32f), end = Offset(w * 0.88f, h * 0.32f), strokeWidth = stroke)
-        // Handle
-        val pathHandle = Path().apply {
-            moveTo(w * 0.38f, h * 0.32f)
-            lineTo(w * 0.38f, h * 0.22f)
-            lineTo(w * 0.62f, h * 0.22f)
-            lineTo(w * 0.62f, h * 0.32f)
-        }
-        drawPath(path = pathHandle, color = color, style = Stroke(width = stroke, join = StrokeJoin.Round))
-    }
-}
-
-@Composable
-fun SearchIcon(color: Color, modifier: Modifier = Modifier) {
-    Canvas(modifier = modifier.size(20.dp)) {
-        val stroke = 2.dp.toPx()
-        val r = size.minDimension / 4f
-        val cx = size.width * 0.45f
-        val cy = size.height * 0.45f
-        drawCircle(
-            color = color,
-            radius = r,
-            center = Offset(cx, cy),
-            style = Stroke(width = stroke)
-        )
-        val startX = (cx + r * cos(PI/4)).toFloat()
-        val startY = (cy + r * sin(PI/4)).toFloat()
-        val endX = size.width * 0.8f
-        val endY = size.height * 0.8f
-        drawLine(color = color, start = Offset(startX, startY), end = Offset(endX, endY), strokeWidth = stroke)
-    }
-}
-
-@Composable
-fun GiftIcon(color: Color, modifier: Modifier = Modifier) {
-    Canvas(modifier = modifier.size(20.dp)) {
-        val w = size.width
-        val h = size.height
-        val stroke = 1.8.dp.toPx()
-        // Gift Box
-        drawRect(
-            color = color,
-            topLeft = Offset(w * 0.2f, h * 0.4f),
-            size = androidx.compose.ui.geometry.Size(w * 0.6f, h * 0.45f),
-            style = Stroke(width = stroke)
-        )
-        // Lid
-        drawRect(
-            color = color,
-            topLeft = Offset(w * 0.15f, h * 0.3f),
-            size = androidx.compose.ui.geometry.Size(w * 0.7f, h * 0.12f),
-            style = Stroke(width = stroke)
-        )
-        // Ribbon Vertical
-        drawLine(color = color, start = Offset(w * 0.5f, h * 0.3f), end = Offset(w * 0.5f, h * 0.85f), strokeWidth = stroke)
-        // Bow (Left & Right loops)
-        drawCircle(
-            color = color,
-            radius = w * 0.1f,
-            center = Offset(w * 0.4f, h * 0.22f),
-            style = Stroke(width = stroke)
-        )
-        drawCircle(
-            color = color,
-            radius = w * 0.1f,
-            center = Offset(w * 0.6f, h * 0.22f),
-            style = Stroke(width = stroke)
+fun AppLogoMark(modifier: Modifier = Modifier, color: Color = MaterialTheme.colorScheme.primary) =
+    IconCanvas(modifier, size = 32.dp) { u, stroke ->
+        drawPath(polygon(u, 5f, 3f, 14f, 3f, 19f, 8f, 19f, 21f, 5f, 21f), color, style = stroke)
+        drawPath(polyline(u, 14f, 3f, 14f, 8f, 19f, 8f), color, style = stroke)
+        drawPath(
+            polyline(u, 9.5f, 9.5f, 9.5f, 16.5f, 15f, 16.5f),
+            color,
+            style = Stroke(width = 2.6f * u, cap = StrokeCap.Round, join = StrokeJoin.Round)
         )
     }
+
+@Composable
+fun FolderIcon(color: Color, modifier: Modifier = Modifier) = IconCanvas(modifier) { u, stroke ->
+    drawPath(polygon(u, 3.5f, 19.5f, 3.5f, 5f, 9.4f, 5f, 11.6f, 7.6f, 20.5f, 7.6f, 20.5f, 19.5f), color, style = stroke)
 }
 
 @Composable
-fun GridIcon(color: Color, modifier: Modifier = Modifier) {
-    Canvas(modifier = modifier.size(18.dp)) {
-        val w = size.width
-        val h = size.height
-        val stroke = 1.6.dp.toPx()
-        val sizeVal = w * 0.35f
-        
-        drawRect(color = color, topLeft = Offset(w * 0.1f, h * 0.1f), size = androidx.compose.ui.geometry.Size(sizeVal, sizeVal), style = Stroke(width = stroke))
-        drawRect(color = color, topLeft = Offset(w * 0.55f, h * 0.1f), size = androidx.compose.ui.geometry.Size(sizeVal, sizeVal), style = Stroke(width = stroke))
-        drawRect(color = color, topLeft = Offset(w * 0.1f, h * 0.55f), size = androidx.compose.ui.geometry.Size(sizeVal, sizeVal), style = Stroke(width = stroke))
-        drawRect(color = color, topLeft = Offset(w * 0.55f, h * 0.55f), size = androidx.compose.ui.geometry.Size(sizeVal, sizeVal), style = Stroke(width = stroke))
-    }
+fun SearchIcon(color: Color, modifier: Modifier = Modifier) = IconCanvas(modifier) { u, stroke ->
+    drawCircle(color, radius = 6.2f * u, center = Offset(10.4f * u, 10.4f * u), style = stroke)
+    gridLine(color, u, stroke, 14.9f, 14.9f, 20.3f, 20.3f)
 }
 
 @Composable
-fun ListIcon(color: Color, modifier: Modifier = Modifier) {
-    Canvas(modifier = modifier.size(18.dp)) {
-        val w = size.width
-        val h = size.height
-        val stroke = 1.8.dp.toPx()
-        
-        // Rows
-        for (i in 0 until 3) {
-            val y = h * (0.2f + i * 0.3f)
-            // Bullet point
-            drawCircle(color = color, radius = 2.dp.toPx(), center = Offset(w * 0.18f, y))
-            // Line
-            drawLine(color = color, start = Offset(w * 0.35f, y), end = Offset(w * 0.85f, y), strokeWidth = stroke)
+fun GridIcon(color: Color, modifier: Modifier = Modifier) = IconCanvas(modifier, size = 18.dp) { u, stroke ->
+    for (x in listOf(4f, 13f)) {
+        for (y in listOf(4f, 13f)) {
+            drawRoundRect(
+                color,
+                topLeft = Offset(x * u, y * u),
+                size = Size(7f * u, 7f * u),
+                cornerRadius = CornerRadius(1.6f * u),
+                style = stroke
+            )
         }
     }
 }
 
 @Composable
-fun SortArrowIcon(isAscending: Boolean, color: Color, modifier: Modifier = Modifier) {
-    Canvas(modifier = modifier.size(16.dp)) {
-        val w = size.width
-        val h = size.height
-        val stroke = 1.8.dp.toPx()
-        
-        // Arrow shaft
-        drawLine(color = color, start = Offset(w * 0.5f, h * 0.15f), end = Offset(w * 0.5f, h * 0.85f), strokeWidth = stroke)
-        
-        if (isAscending) {
-            // Pointing up
-            drawLine(color = color, start = Offset(w * 0.5f, h * 0.15f), end = Offset(w * 0.3f, h * 0.4f), strokeWidth = stroke)
-            drawLine(color = color, start = Offset(w * 0.5f, h * 0.15f), end = Offset(w * 0.7f, h * 0.4f), strokeWidth = stroke)
+fun ListIcon(color: Color, modifier: Modifier = Modifier) = IconCanvas(modifier, size = 18.dp) { u, stroke ->
+    for (y in listOf(6.5f, 12f, 17.5f)) {
+        drawCircle(color, radius = 1.2f * u, center = Offset(5f * u, y * u))
+        gridLine(color, u, stroke, 9f, y, 19.5f, y)
+    }
+}
+
+@Composable
+fun SortArrowIcon(isAscending: Boolean, color: Color, modifier: Modifier = Modifier) =
+    IconCanvas(modifier, size = 16.dp) { u, stroke ->
+        gridLine(color, u, stroke, 12f, 4.2f, 12f, 19.8f)
+        val head = if (isAscending) {
+            polyline(u, 7.8f, 8.4f, 12f, 4.2f, 16.2f, 8.4f)
         } else {
-            // Pointing down
-            drawLine(color = color, start = Offset(w * 0.5f, h * 0.85f), end = Offset(w * 0.3f, h * 0.6f), strokeWidth = stroke)
-            drawLine(color = color, start = Offset(w * 0.5f, h * 0.85f), end = Offset(w * 0.7f, h * 0.6f), strokeWidth = stroke)
+            polyline(u, 7.8f, 15.6f, 12f, 19.8f, 16.2f, 15.6f)
         }
+        drawPath(head, color, style = stroke)
+    }
+
+@Composable
+fun CloseIcon(color: Color, modifier: Modifier = Modifier) = IconCanvas(modifier) { u, stroke ->
+    gridLine(color, u, stroke, 6.8f, 6.8f, 17.2f, 17.2f)
+    gridLine(color, u, stroke, 17.2f, 6.8f, 6.8f, 17.2f)
+}
+
+@Composable
+fun NotesIndicatorIcon(color: Color, modifier: Modifier = Modifier) = IconCanvas(modifier, size = 16.dp) { u, stroke ->
+    drawPath(
+        polygon(u, 3.5f, 4.6f, 20.5f, 4.6f, 20.5f, 15f, 10.4f, 15f, 7f, 18.8f, 7f, 15f, 3.5f, 15f),
+        color,
+        style = stroke
+    )
+    gridLine(color, u, stroke, 6.9f, 8f, 17.1f, 8f)
+    gridLine(color, u, stroke, 6.9f, 11.4f, 14f, 11.4f)
+}
+
+@Composable
+fun ArrowRightIcon(color: Color, modifier: Modifier = Modifier) = IconCanvas(modifier, size = 16.dp) { u, stroke ->
+    drawPath(polyline(u, 9.6f, 5.6f, 16f, 12f, 9.6f, 18.4f), color, style = stroke)
+}
+
+@Composable
+fun AddIcon(color: Color, modifier: Modifier = Modifier) = IconCanvas(modifier) { u, stroke ->
+    gridLine(color, u, stroke, 12f, 5.5f, 12f, 18.5f)
+    gridLine(color, u, stroke, 5.5f, 12f, 18.5f, 12f)
+}
+
+@Composable
+fun RemoveIcon(color: Color, modifier: Modifier = Modifier) = IconCanvas(modifier) { u, stroke ->
+    gridLine(color, u, stroke, 5.5f, 12f, 18.5f, 12f)
+}
+
+@Composable
+fun MoreVertIcon(color: Color, modifier: Modifier = Modifier) = IconCanvas(modifier) { u, _ ->
+    for (y in listOf(5.6f, 12f, 18.4f)) {
+        drawCircle(color, radius = 1.55f * u, center = Offset(12f * u, y * u))
     }
 }
 
 @Composable
-fun InfoIcon(color: Color, modifier: Modifier = Modifier) {
-    Canvas(modifier = modifier.size(16.dp)) {
-        val stroke = 1.6.dp.toPx()
-        drawCircle(color = color, radius = size.minDimension / 2.2f, center = center, style = Stroke(width = stroke))
-        // Dot
-        drawCircle(color = color, radius = 1.2f.dp.toPx(), center = Offset(size.width / 2f, size.height * 0.32f))
-        // Body of 'i'
-        drawLine(color = color, start = Offset(size.width / 2f, size.height * 0.48f), end = Offset(size.width / 2f, size.height * 0.75f), strokeWidth = stroke + 0.5f)
+fun SunIcon(color: Color, modifier: Modifier = Modifier) = IconCanvas(modifier) { u, stroke ->
+    drawCircle(color, radius = 4.3f * u, center = Offset(12f * u, 12f * u))
+    for (i in 0 until 8) {
+        val angle = i * (2.0 * PI / 8.0)
+        val dx = cos(angle).toFloat()
+        val dy = sin(angle).toFloat()
+        gridLine(color, u, stroke, 12f + 6.4f * dx, 12f + 6.4f * dy, 12f + 9.4f * dx, 12f + 9.4f * dy)
     }
 }
 
 @Composable
-fun SyncCheckIcon(color: Color, modifier: Modifier = Modifier) {
-    Canvas(modifier = modifier.size(14.dp)) {
-        // Draw green circle
-        drawCircle(color = color)
-        // Draw white checkmark
-        val path = Path().apply {
-            moveTo(size.width * 0.3f, size.height * 0.5f)
-            lineTo(size.width * 0.45f, size.height * 0.65f)
-            lineTo(size.width * 0.75f, size.height * 0.35f)
-        }
-        drawPath(path = path, color = Color.White, style = Stroke(width = 1.5.dp.toPx(), cap = StrokeCap.Round, join = StrokeJoin.Round))
+fun MoonIcon(color: Color, modifier: Modifier = Modifier) = IconCanvas(modifier) { u, _ ->
+    val disc = Path().apply { addOval(Rect(center = Offset(12f * u, 12f * u), radius = 8.6f * u)) }
+    val bite = Path().apply { addOval(Rect(center = Offset(6.6f * u, 8.2f * u), radius = 8.6f * u)) }
+    drawPath(Path.combine(PathOperation.Difference, disc, bite), color)
+}
+
+@Composable
+fun ArrowBackIcon(color: Color, modifier: Modifier = Modifier) = IconCanvas(modifier) { u, stroke ->
+    gridLine(color, u, stroke, 4.6f, 12f, 19.4f, 12f)
+    drawPath(polyline(u, 10.4f, 6.2f, 4.6f, 12f, 10.4f, 17.8f), color, style = stroke)
+}
+
+@Composable
+fun ChevronUpIcon(color: Color, modifier: Modifier = Modifier) = IconCanvas(modifier) { u, stroke ->
+    drawPath(polyline(u, 6.6f, 14.6f, 12f, 9.2f, 17.4f, 14.6f), color, style = stroke)
+}
+
+@Composable
+fun ChevronDownIcon(color: Color, modifier: Modifier = Modifier) = IconCanvas(modifier) { u, stroke ->
+    drawPath(polyline(u, 6.6f, 9.4f, 12f, 14.8f, 17.4f, 9.4f), color, style = stroke)
+}
+
+@Composable
+fun MenuIcon(color: Color, modifier: Modifier = Modifier) = IconCanvas(modifier) { u, stroke ->
+    for (y in listOf(6.6f, 12f, 17.4f)) {
+        gridLine(color, u, stroke, 4f, y, 20f, y)
     }
 }
 
 @Composable
-fun CloseIcon(color: Color, modifier: Modifier = Modifier) {
-    Canvas(modifier = modifier.size(20.dp)) {
-        val stroke = 2.dp.toPx()
-        val len = size.minDimension * 0.25f
-        val cx = size.width / 2f
-        val cy = size.height / 2f
-        drawLine(color = color, start = Offset(cx - len, cy - len), end = Offset(cx + len, cy + len), strokeWidth = stroke)
-        drawLine(color = color, start = Offset(cx - len, cy + len), end = Offset(cx + len, cy - len), strokeWidth = stroke)
-    }
+fun NoteIcon(color: Color, modifier: Modifier = Modifier) = IconCanvas(modifier) { u, stroke ->
+    drawPath(polygon(u, 5f, 3f, 14f, 3f, 19f, 8f, 19f, 21f, 5f, 21f), color, style = stroke)
+    drawPath(polyline(u, 14f, 3f, 14f, 8f, 19f, 8f), color, style = stroke)
+    gridLine(color, u, stroke, 8.2f, 12.6f, 15.8f, 12.6f)
+    gridLine(color, u, stroke, 8.2f, 16.4f, 13.4f, 16.4f)
 }
 
 @Composable
-fun NotesIndicatorIcon(color: Color, modifier: Modifier = Modifier) {
-    Canvas(modifier = modifier.size(16.dp)) {
-        val w = size.width
-        val h = size.height
-        val stroke = 1.5.dp.toPx()
-        
-        // Chat bubble shape
-        val path = Path().apply {
-            moveTo(w * 0.15f, h * 0.15f)
-            lineTo(w * 0.85f, h * 0.15f)
-            lineTo(w * 0.85f, h * 0.65f)
-            lineTo(w * 0.5f, h * 0.65f)
-            lineTo(w * 0.3f, h * 0.85f)
-            lineTo(w * 0.3f, h * 0.65f)
-            lineTo(w * 0.15f, h * 0.65f)
-            close()
-        }
-        drawPath(path = path, color = color, style = Stroke(width = stroke, join = StrokeJoin.Round))
-        
-        // Horizontal lines inside bubble
-        drawLine(color = color, start = Offset(w * 0.32f, h * 0.35f), end = Offset(w * 0.68f, h * 0.35f), strokeWidth = stroke)
-        drawLine(color = color, start = Offset(w * 0.32f, h * 0.5f), end = Offset(w * 0.58f, h * 0.5f), strokeWidth = stroke)
-    }
-}
-
-@Composable
-fun ArrowRightIcon(color: Color, modifier: Modifier = Modifier) {
-    Canvas(modifier = modifier.size(16.dp)) {
-        val w = size.width
-        val h = size.height
-        val stroke = 1.5.dp.toPx()
-        val path = Path().apply {
-            moveTo(w * 0.35f, h * 0.25f)
-            lineTo(w * 0.65f, h * 0.5f)
-            lineTo(w * 0.35f, h * 0.75f)
-        }
-        drawPath(path = path, color = color, style = Stroke(width = stroke, cap = StrokeCap.Round, join = StrokeJoin.Round))
-    }
-}
-
-@Composable
-fun AddIcon(color: Color, modifier: Modifier = Modifier) {
-    Canvas(modifier = modifier.size(20.dp)) {
-        val cx = size.width / 2f
-        val cy = size.height / 2f
-        val len = size.minDimension * 0.3f
-        val stroke = 2.dp.toPx()
-        drawLine(color = color, start = Offset(cx - len, cy), end = Offset(cx + len, cy), strokeWidth = stroke)
-        drawLine(color = color, start = Offset(cx, cy - len), end = Offset(cx, cy + len), strokeWidth = stroke)
-    }
-}
-
-@Composable
-fun RemoveIcon(color: Color, modifier: Modifier = Modifier) {
-    Canvas(modifier = modifier.size(20.dp)) {
-        val cx = size.width / 2f
-        val cy = size.height / 2f
-        val len = size.minDimension * 0.3f
-        val stroke = 2.dp.toPx()
-        drawLine(color = color, start = Offset(cx - len, cy), end = Offset(cx + len, cy), strokeWidth = stroke)
-    }
-}
-
-@Composable
-fun MoreVertIcon(color: Color, modifier: Modifier = Modifier) {
-    Canvas(modifier = modifier.size(20.dp)) {
-        val cx = size.width / 2f
-        val r = size.minDimension * 0.08f
-        val gap = size.height * 0.28f
-        val cy = size.height / 2f
-        drawCircle(color = color, radius = r, center = Offset(cx, cy - gap))
-        drawCircle(color = color, radius = r, center = Offset(cx, cy))
-        drawCircle(color = color, radius = r, center = Offset(cx, cy + gap))
-    }
-}
-
-@Composable
-fun SunIcon(color: Color, modifier: Modifier = Modifier) {
-    Canvas(modifier = modifier.size(20.dp)) {
-        val r = size.minDimension / 4f
-        drawCircle(color = color, radius = r)
-        val center = center
-        val rayLength = size.minDimension / 6f
-        for (i in 0 until 8) {
-            val angle = i * (2.0 * PI / 8.0)
-            val startX = (center.x + r * cos(angle)).toFloat()
-            val startY = (center.y + r * sin(angle)).toFloat()
-            val endX = (center.x + (r + rayLength) * cos(angle)).toFloat()
-            val endY = (center.y + (r + rayLength) * sin(angle)).toFloat()
-            drawLine(color = color, start = Offset(startX, startY), end = Offset(endX, endY), strokeWidth = 2.dp.toPx())
-        }
-    }
-}
-
-@Composable
-fun MoonIcon(color: Color, modifier: Modifier = Modifier) {
-    Canvas(modifier = modifier.size(20.dp)) {
-        val radius = size.minDimension / 3f
-        val path = Path().apply {
-            addOval(androidx.compose.ui.geometry.Rect(center = center, radius = radius))
-        }
-        val subPath = Path().apply {
-            addOval(androidx.compose.ui.geometry.Rect(center = center - Offset(6f, 3f), radius = radius))
-        }
-        val moonPath = Path.combine(
-            PathOperation.Difference,
-            path,
-            subPath
-        )
-        drawPath(path = moonPath, color = color)
-    }
-}
-
-@Composable
-fun ArrowBackIcon(color: Color, modifier: Modifier = Modifier) {
-    Canvas(modifier = modifier.size(20.dp)) {
-        val stroke = 2.dp.toPx()
-        val cx = size.width / 2f
-        val cy = size.height / 2f
-        val len = size.minDimension * 0.25f
-        drawLine(color = color, start = Offset(cx - len, cy), end = Offset(cx + len, cy), strokeWidth = stroke)
-        drawLine(color = color, start = Offset(cx - len, cy), end = Offset(cx - len + len * 0.7f, cy - len * 0.7f), strokeWidth = stroke)
-        drawLine(color = color, start = Offset(cx - len, cy), end = Offset(cx - len + len * 0.7f, cy + len * 0.7f), strokeWidth = stroke)
-    }
-}
-
-@Composable
-fun ChevronUpIcon(color: Color, modifier: Modifier = Modifier) {
-    Canvas(modifier = modifier.size(20.dp)) {
-        val stroke = 2.dp.toPx()
-        val cx = size.width / 2f
-        val cy = size.height / 2f
-        val len = size.minDimension * 0.2f
-        val path = Path().apply {
-            moveTo(cx - len, cy + len / 2f)
-            lineTo(cx, cy - len / 2f)
-            lineTo(cx + len, cy + len / 2f)
-        }
-        drawPath(path = path, color = color, style = Stroke(width = stroke))
-    }
-}
-
-@Composable
-fun ChevronDownIcon(color: Color, modifier: Modifier = Modifier) {
-    Canvas(modifier = modifier.size(20.dp)) {
-        val stroke = 2.dp.toPx()
-        val cx = size.width / 2f
-        val cy = size.height / 2f
-        val len = size.minDimension * 0.2f
-        val path = Path().apply {
-            moveTo(cx - len, cy - len / 2f)
-            lineTo(cx, cy + len / 2f)
-            lineTo(cx + len, cy - len / 2f)
-        }
-        drawPath(path = path, color = color, style = Stroke(width = stroke))
-    }
-}
-
-@Composable
-fun MenuIcon(color: Color, modifier: Modifier = Modifier) {
-    Canvas(modifier = modifier.size(20.dp)) {
-        val w = size.width
-        val h = size.height
-        val startX = w * 0.15f
-        val endX = w * 0.85f
-        
-        val strokeWidth = 2.dp.toPx()
-        drawLine(color = color, start = Offset(startX, h * 0.25f), end = Offset(endX, h * 0.25f), strokeWidth = strokeWidth)
-        drawLine(color = color, start = Offset(startX, h * 0.50f), end = Offset(endX, h * 0.50f), strokeWidth = strokeWidth)
-        drawLine(color = color, start = Offset(startX, h * 0.75f), end = Offset(endX, h * 0.75f), strokeWidth = strokeWidth)
-    }
-}
-
-@Composable
-fun NoteIcon(color: Color, modifier: Modifier = Modifier) {
-    Canvas(modifier = modifier.size(20.dp)) {
-        val w = size.width
-        val h = size.height
-        val stroke = 2.dp.toPx()
-        val path = Path().apply {
-            moveTo(w * 0.15f, h * 0.15f)
-            lineTo(w * 0.6f, h * 0.15f)
-            lineTo(w * 0.85f, h * 0.4f)
-            lineTo(w * 0.85f, h * 0.85f)
-            lineTo(w * 0.15f, h * 0.85f)
-            close()
-            // Folded corner
-            moveTo(w * 0.6f, h * 0.15f)
-            lineTo(w * 0.6f, h * 0.4f)
-            lineTo(w * 0.85f, h * 0.4f)
-        }
-        drawPath(path = path, color = color, style = Stroke(width = stroke))
-    }
-}
-
-@Composable
-fun BookmarkIcon(color: Color, filled: Boolean, modifier: Modifier = Modifier) {
-    Canvas(modifier = modifier.size(20.dp)) {
-        val w = size.width
-        val h = size.height
-        val path = Path().apply {
-            moveTo(w * 0.25f, h * 0.1f)
-            lineTo(w * 0.75f, h * 0.1f)
-            lineTo(w * 0.75f, h * 0.9f)
-            lineTo(w * 0.5f, h * 0.7f)
-            lineTo(w * 0.25f, h * 0.9f)
-            close()
-        }
-        if (filled) {
-            drawPath(path = path, color = color)
-        } else {
-            drawPath(path = path, color = color, style = Stroke(width = 2.dp.toPx()))
-        }
-    }
+fun BookmarkIcon(color: Color, filled: Boolean, modifier: Modifier = Modifier) = IconCanvas(modifier) { u, stroke ->
+    val mark = polygon(u, 6.8f, 3.4f, 17.2f, 3.4f, 17.2f, 20.6f, 12f, 16.4f, 6.8f, 20.6f)
+    if (filled) drawPath(mark, color) else drawPath(mark, color, style = stroke)
 }
 
 // --- Hoverable Item Wrapper ---
