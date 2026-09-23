@@ -4,10 +4,10 @@ object RecentFilesStore {
     fun saveRecentFilesList(files: List<RecentFile>) {
         val sb = StringBuilder()
         files.forEach { file ->
-            // Format: id|name|lastOpened|size|isSample|inRecents
+            // Format: id|name|lastOpened|size|isSample|inRecents|folder
             val sampleStr = if (file.isSample) "1" else "0"
             val recentsStr = if (file.inRecents) "1" else "0"
-            sb.append("${file.id}|${file.name}|${file.lastOpened}|${file.size}|$sampleStr|$recentsStr\n")
+            sb.append("${file.id}|${file.name}|${file.lastOpened}|${file.size}|$sampleStr|$recentsStr|${file.folder}\n")
             
             // Save file bytes if they are loaded and it's not a sample
             if (!file.isSample && file.fileBytes != null) {
@@ -30,6 +30,7 @@ object RecentFilesStore {
                 val size = parts[3]
                 val isSample = parts[4] == "1"
                 val inRecents = if (parts.size >= 6) parts[5] == "1" else true
+                val folder = if (parts.size >= 7) parts[6] else ""
                 
                 // Load file bytes if not sample
                 val bytes = if (isSample) {
@@ -46,7 +47,8 @@ object RecentFilesStore {
                         size = size,
                         isSample = isSample,
                         fileBytes = bytes,
-                        inRecents = inRecents
+                        inRecents = inRecents,
+                        folder = folder
                     )
                 )
             }

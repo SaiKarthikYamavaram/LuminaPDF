@@ -51,11 +51,15 @@ geometry. Two different kinds of gaps here, both real work, neither a quick add:
 
 ## Phase 3 — Document organization
 
-8. **Folders/tags/collections.** "Your documents" is the same flat list as Recents, filtered by
-   one bool (`HomeScreen.kt:148`, `inRecents`) — no real organization.
-9. **Rename** for stored documents — not currently possible.
-10. **Storage usage UI.** Files are fully copied into app storage (`FilePersistence`), dedup only
-    by name+size, no size cap, no "free up space" screen.
+8. ~~**Folders/tags/collections.**~~ Done (2026-09-23): one optional folder per document (flat,
+   no nesting), set from the edit dialog (the ✎ button, now "Edit document": name + folder, with
+   existing folders as tap-to-fill chips). "Your documents" shows folder filter chips once any
+   folder exists. Stored as a 7th `|` column in `RecentFilesStore` metadata; older rows load as
+   unfiled.
+9. ~~**Rename**~~ Done (2026-09-08, `b041228`).
+10. ~~**Storage usage UI.**~~ Done (2026-09-23), minimal: "N documents · X MB stored" line under
+    the "Your documents" heading. Freeing space = existing Sort: Size + remove. No size cap or
+    dedicated cleanup screen - add if storage complaints show up.
 
 ## Phase 4 — Engineering health & platform completeness
 

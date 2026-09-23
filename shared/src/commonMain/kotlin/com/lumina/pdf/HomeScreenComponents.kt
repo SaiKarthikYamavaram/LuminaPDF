@@ -133,7 +133,7 @@ fun GridItemCard(
                             .size(20.dp)
                             .clip(CircleShape)
                             .background(Color.Black.copy(alpha = 0.6f))
-                            .clickable(onClickLabel = "Rename ${fileItem.name}") { onRename() },
+                            .clickable(onClickLabel = "Rename or move ${fileItem.name}") { onRename() },
                         contentAlignment = Alignment.Center
                     ) {
                         Text("✎", color = Color.White, fontSize = 10.sp)
@@ -283,7 +283,7 @@ fun ListItemRow(
                         .size(20.dp)
                         .clip(CircleShape)
                         .background(colorScheme.onSurface.copy(alpha = 0.1f))
-                        .clickable(onClickLabel = "Rename ${fileItem.name}") { onRename() },
+                        .clickable(onClickLabel = "Rename or move ${fileItem.name}") { onRename() },
                     contentAlignment = Alignment.Center
                 ) {
                     Text("✎", color = textSecondary, fontSize = 10.sp)

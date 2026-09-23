@@ -48,7 +48,9 @@ data class RecentFile(
     val isSample: Boolean = false,
     val fileBytes: ByteArray? = null,
     val thumbnail: ImageBitmap? = null,
-    val inRecents: Boolean = true
+    val inRecents: Boolean = true,
+    // Single optional folder name; "" = unfiled. One level only - no nesting.
+    val folder: String = ""
 )
 
 
@@ -75,35 +77,66 @@ fun HomeScreen(
     onOpenFile: (RecentFile, Int?) -> Unit,
     onRemoveFromRecents: (RecentFile) -> Unit,
     onDeleteDocument: (RecentFile) -> Unit,
-    onRenameDocument: (RecentFile, String) -> Unit,
+    onEditDocument: (file: RecentFile, name: String, folder: String) -> Unit,
     onTriggerFilePicker: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     val db = rememberPdfDatabase()
     var renamingFile by remember { mutableStateOf<RecentFile?>(null) }
     var renameInput by remember { mutableStateOf("") }
+    var folderInput by remember { mutableStateOf("") }
+    var selectedFolder by remember { mutableStateOf<String?>(null) }
+    val folders = recentFiles.map { it.folder }.filter { it.isNotEmpty() }.distinct().sorted()
+    // Falls back to "All" once the last document leaves the selected folder, instead of
+    // stranding the user on an empty, chip-less filter.
+    val activeFolder = selectedFolder?.takeIf { it in folders }
+    val startEditing: (RecentFile) -> Unit = { file ->
+        renamingFile = file
+        renameInput = file.name
+        folderInput = file.folder
+    }
 
     renamingFile?.let { file ->
         AlertDialog(
             onDismissRequest = { renamingFile = null },
-            title = { Text("Rename") },
+            title = { Text("Edit document") },
             text = {
-                OutlinedTextField(
-                    value = renameInput,
-                    onValueChange = { renameInput = it },
-                    singleLine = true,
-                    modifier = Modifier.fillMaxWidth()
-                )
+                Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                    OutlinedTextField(
+                        value = renameInput,
+                        onValueChange = { renameInput = it },
+                        label = { Text("Name") },
+                        singleLine = true,
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                    OutlinedTextField(
+                        value = folderInput,
+                        onValueChange = { folderInput = it },
+                        label = { Text("Folder (optional)") },
+                        singleLine = true,
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                    if (folders.isNotEmpty()) {
+                        Row(
+                            horizontalArrangement = Arrangement.spacedBy(6.dp),
+                            modifier = Modifier.horizontalScroll(rememberScrollState())
+                        ) {
+                            folders.forEach { name ->
+                                SuggestionChip(onClick = { folderInput = name }, label = { Text(name) })
+                            }
+                        }
+                    }
+                }
             },
             confirmButton = {
                 TextButton(
                     onClick = {
                         val newName = renameInput.trim()
-                        if (newName.isNotEmpty()) onRenameDocument(file, newName)
+                        if (newName.isNotEmpty()) onEditDocument(file, newName, folderInput.trim())
                         renamingFile = null
                     },
                     enabled = renameInput.isNotBlank()
-                ) { Text("Rename") }
+                ) { Text("Save") }
             },
             dismissButton = {
                 TextButton(onClick = { renamingFile = null }) { Text("Cancel") }
@@ -173,7 +206,7 @@ fun HomeScreen(
     val dividerColor = colorScheme.outlineVariant
 
     // Filter and Sort files
-    val filteredFiles by remember(globalSearchQuery, sortKey, sortAscending, activeTab) {
+    val filteredFiles by remember(globalSearchQuery, sortKey, sortAscending, activeTab, activeFolder) {
         derivedStateOf {
             var list = recentFiles.filter {
                 it.name.contains(globalSearchQuery, ignoreCase = true)
@@ -181,6 +214,9 @@ fun HomeScreen(
             
             if (activeTab == "Recents") {
                 list = list.filter { it.inRecents }
+            }
+            if (activeTab == "Your documents" && activeFolder != null) {
+                list = list.filter { it.folder == activeFolder }
             }
             
             if (activeTab != "Recents") {
@@ -337,6 +373,41 @@ fun HomeScreen(
                 modifier = Modifier.padding(start = 28.dp, end = 28.dp, top = 24.dp)
             )
 
+            if (activeTab == "Your documents") {
+                // Storage usage: every stored document is a full copy in app storage, so this
+                // is the real on-disk footprint. Freeing space = Sort: Size, then remove.
+                val storedFiles = recentFiles.filter { !it.isSample }
+                Text(
+                    text = "${storedFiles.size} document${if (storedFiles.size == 1) "" else "s"} · " +
+                        "${formatSize(storedFiles.sumOf { it.fileBytes?.size ?: 0 })} stored",
+                    color = textSecondary,
+                    fontSize = 12.sp,
+                    modifier = Modifier.padding(start = 28.dp, end = 28.dp, top = 4.dp)
+                )
+                if (folders.isNotEmpty()) {
+                    Row(
+                        horizontalArrangement = Arrangement.spacedBy(8.dp),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .horizontalScroll(rememberScrollState())
+                            .padding(start = 28.dp, end = 28.dp, top = 12.dp)
+                    ) {
+                        FilterChip(
+                            selected = activeFolder == null,
+                            onClick = { selectedFolder = null },
+                            label = { Text("All") }
+                        )
+                        folders.forEach { name ->
+                            FilterChip(
+                                selected = activeFolder == name,
+                                onClick = { selectedFolder = name },
+                                label = { Text(name) }
+                            )
+                        }
+                    }
+                }
+            }
+
             // Workspace Content. Header + toolbar are rendered once, as a fixed sibling above
             // the scrollable body below - not inside either scrollable container itself. Grid
             // and List view swap between fundamentally different container types (LazyVerticalGrid
@@ -492,7 +563,7 @@ fun HomeScreen(
                             hasNotes = fileItem.id in documentIdsWithNotes,
                             onClick = { Logger.i { "[TAP-DEBUG] GridItemCard clicked: ${fileItem.name}" }; onOpenFile(fileItem, null) },
                             onRemove = { if (activeTab == "Recents") onRemoveFromRecents(fileItem) else onDeleteDocument(fileItem) },
-                            onRename = { renamingFile = fileItem; renameInput = fileItem.name },
+                            onRename = { startEditing(fileItem) },
                             textPrimary = textPrimary,
                             textSecondary = textSecondary
                         )
@@ -746,7 +817,7 @@ fun HomeScreen(
                                         showLastOpened = !isCompact,
                                         onClick = { Logger.i { "[TAP-DEBUG] ListItemRow clicked: ${fileItem.name}" }; onOpenFile(fileItem, null) },
                                         onRemove = { if (activeTab == "Recents") onRemoveFromRecents(fileItem) else onDeleteDocument(fileItem) },
-                                        onRename = { renamingFile = fileItem; renameInput = fileItem.name },
+                                        onRename = { startEditing(fileItem) },
                                         textPrimary = textPrimary,
                                         textSecondary = textSecondary
                                     )

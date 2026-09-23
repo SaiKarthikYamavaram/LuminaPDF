@@ -48,7 +48,7 @@ class AppHomeScreen(
     @Transient private val onOpenFile: (RecentFile, Int?, Navigator) -> Unit = { _, _, _ -> },
     @Transient private val onRemoveFromRecents: (RecentFile) -> Unit = {},
     @Transient private val onDeleteDocument: (RecentFile) -> Unit = {},
-    @Transient private val onRenameDocument: (RecentFile, String) -> Unit = { _, _ -> },
+    @Transient private val onEditDocument: (RecentFile, String, String) -> Unit = { _, _, _ -> },
     @Transient private val onTriggerFilePicker: () -> Unit = {}
 ) : Screen {
     @Composable
@@ -60,7 +60,7 @@ class AppHomeScreen(
             onOpenFile = { recentFile, page -> onOpenFile(recentFile, page, navigator) },
             onRemoveFromRecents = onRemoveFromRecents,
             onDeleteDocument = onDeleteDocument,
-            onRenameDocument = onRenameDocument,
+            onEditDocument = onEditDocument,
             onTriggerFilePicker = onTriggerFilePicker,
             modifier = Modifier.fillMaxSize()
         )
@@ -468,13 +468,13 @@ fun App() {
                             RecentFilesStore.deleteRecentFile(recentFile.id)
                             RecentFilesStore.saveRecentFilesList(recentFiles)
                         },
-                        onRenameDocument = { recentFile, newName ->
+                        onEditDocument = { recentFile, newName, newFolder ->
                             // RecentFilesStore's metadata format is "|"-delimited; a typed name could
                             // otherwise corrupt every row after it.
-                            val safeName = newName.replace("|", " ").replace("\n", " ")
+                            val sanitize = { text: String -> text.replace("|", " ").replace("\n", " ") }
                             val idx = recentFiles.indexOfFirst { it.id == recentFile.id }
                             if (idx != -1) {
-                                recentFiles[idx] = recentFiles[idx].copy(name = safeName)
+                                recentFiles[idx] = recentFiles[idx].copy(name = sanitize(newName), folder = sanitize(newFolder))
                                 RecentFilesStore.saveRecentFilesList(recentFiles)
                             }
                         },
@@ -512,7 +512,7 @@ private fun SplashScreen() {
     }
 }
 
-private fun formatSize(bytes: Int): String {
+internal fun formatSize(bytes: Int): String {
     if (bytes < 1024) return "$bytes B"
     val kb = bytes / 1024
     if (kb < 1024) return "$kb KB"
