@@ -1,6 +1,7 @@
 package com.lumina.pdf.viewer
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
@@ -41,6 +42,7 @@ private fun TopBarDivider() {
 @Composable
 fun TopBar(
     title: String? = null,
+    wide: Boolean = false,
     zoomPercent: Int,
     onZoomIn: () -> Unit,
     onZoomOut: () -> Unit,
@@ -304,6 +306,129 @@ fun TopBar(
 
                 TopBarDivider()
 
+                if (wide) {
+                    // Desktop-width layout per the Figma revamp: zoom out/in, the fit-page
+                    // action, and night mode are always-visible icons instead of living behind
+                    // the overflow menu - there's room for them without crowding the title.
+                    // Bookmark and export aren't part of that mock, so they're appended after
+                    // the design's own controls rather than dropped.
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(4.dp)
+                    ) {
+                        IconButton(
+                            onClick = { onSearchActiveChange(true) },
+                            modifier = Modifier.size(ButtonSize).semantics { contentDescription = "Search" }
+                        ) {
+                            SearchIcon(color = MaterialTheme.colorScheme.onSurface, modifier = Modifier.size(IconSize))
+                        }
+
+                        IconButton(
+                            onClick = onZoomOut,
+                            modifier = Modifier.size(ButtonSize).semantics { contentDescription = "Zoom out" }
+                        ) {
+                            RemoveIcon(color = MaterialTheme.colorScheme.onSurface, modifier = Modifier.size(IconSize))
+                        }
+
+                        Surface(
+                            shape = RoundedCornerShape(LuminaRadius.sm),
+                            color = MaterialTheme.colorScheme.surfaceContainerHigh
+                        ) {
+                            Box(
+                                modifier = Modifier
+                                    .height(28.dp)
+                                    .padding(horizontal = 10.dp),
+                                contentAlignment = Alignment.Center
+                            ) {
+                                Text(
+                                    text = "$zoomPercent%",
+                                    style = MaterialTheme.typography.labelMedium,
+                                    fontWeight = FontWeight.SemiBold,
+                                    color = MaterialTheme.colorScheme.onSurface
+                                )
+                            }
+                        }
+
+                        IconButton(
+                            onClick = onZoomIn,
+                            modifier = Modifier.size(ButtonSize).semantics { contentDescription = "Zoom in" }
+                        ) {
+                            AddIcon(color = MaterialTheme.colorScheme.onSurface, modifier = Modifier.size(IconSize))
+                        }
+
+                        Text(
+                            text = "Fit Page",
+                            style = MaterialTheme.typography.labelMedium,
+                            fontWeight = FontWeight.SemiBold,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            modifier = Modifier
+                                .clip(RoundedCornerShape(LuminaRadius.sm))
+                                .clickable { onFitPage() }
+                                .padding(horizontal = 8.dp, vertical = 8.dp)
+                        )
+
+                        TopBarDivider()
+
+                        Surface(
+                            onClick = {
+                                jumpPageInput = (currentPage + 1).toString()
+                                showJumpDialog = true
+                            },
+                            shape = RoundedCornerShape(LuminaRadius.pill),
+                            color = MaterialTheme.colorScheme.primaryContainer,
+                            modifier = Modifier
+                                .height(ButtonSize)
+                                .semantics { contentDescription = "Page ${currentPage + 1} of $pageCount, jump to page" }
+                        ) {
+                            Box(
+                                modifier = Modifier.padding(horizontal = 12.dp),
+                                contentAlignment = Alignment.Center
+                            ) {
+                                Text(
+                                    text = "Page ${currentPage + 1} / $pageCount",
+                                    style = MaterialTheme.typography.labelMedium,
+                                    fontWeight = FontWeight.Bold,
+                                    color = MaterialTheme.colorScheme.primary
+                                )
+                            }
+                        }
+
+                        IconButton(
+                            onClick = onToggleBookmark,
+                            modifier = Modifier.size(ButtonSize).semantics {
+                                contentDescription = if (isCurrentPageBookmarked) "Remove bookmark" else "Add bookmark"
+                            }
+                        ) {
+                            BookmarkIcon(
+                                color = if (isCurrentPageBookmarked) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface,
+                                filled = isCurrentPageBookmarked,
+                                modifier = Modifier.size(IconSize)
+                            )
+                        }
+
+                        IconButton(
+                            onClick = onToggleNightMode,
+                            modifier = Modifier.size(ButtonSize).semantics {
+                                contentDescription = if (nightMode) "Light mode" else "Night mode"
+                            }
+                        ) {
+                            if (nightMode) {
+                                SunIcon(color = MaterialTheme.colorScheme.onSurface, modifier = Modifier.size(IconSize))
+                            } else {
+                                MoonIcon(color = MaterialTheme.colorScheme.onSurface, modifier = Modifier.size(IconSize))
+                            }
+                        }
+
+                        if (onExport != null) {
+                            IconButton(
+                                onClick = onExport,
+                                modifier = Modifier.size(ButtonSize).semantics { contentDescription = "Export / Save a copy" }
+                            ) {
+                                MoreVertIcon(color = MaterialTheme.colorScheme.onSurface, modifier = Modifier.size(IconSize))
+                            }
+                        }
+                    }
+                } else {
                 // Right group: kept to a small, fixed set of controls so it never needs
                 // to compete with the title for space or overflow off-screen. Search and
                 // the page indicator are core wayfinding, so they stay one tap away;
@@ -418,6 +543,7 @@ fun TopBar(
                             }
                         }
                     }
+                }
                 }
             }
         }

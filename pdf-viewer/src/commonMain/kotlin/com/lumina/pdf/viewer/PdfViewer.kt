@@ -1252,6 +1252,10 @@ fun PdfViewer(
         ) {
         TopBar(
             title = documentTitle,
+            // Desktop-width toolbar per the Figma revamp: zoom/fit/night-mode promoted to
+            // always-visible icons instead of hiding behind the overflow menu. Same 700dp
+            // threshold HomeScreen uses for its own compact/wide split.
+            wide = with(density) { viewSize.width.toDp() } >= 700.dp,
             zoomPercent = (state.zoom * 100).toInt(),
             onZoomIn = {
                 changeZoomWithFocusAnimated(state.zoom + 0.2f, Offset(viewSize.width / 2f, viewSize.height / 2f))

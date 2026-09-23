@@ -222,11 +222,16 @@ fun HomeScreen(
             ((maxWidth - 240.dp) / 170.dp).toInt().coerceIn(2, 6)
         }
 
-        // Nav tabs, shared between the vertical sidebar (wide) and horizontal tab row (compact)
+        // Nav tabs, shared between the vertical sidebar (wide) and horizontal tab row (compact).
+        // A plain dot per the Figma revamp (nav-item glyphs replaced with a status-style bullet)
+        // rather than a distinct icon per tab.
+        val navDot: @Composable (Color) -> Unit = { color ->
+            Box(modifier = Modifier.size(6.dp).clip(CircleShape).background(color))
+        }
         val navigationItems = listOf(
-            Triple("Recents", @Composable { color: Color -> HomeIcon(color) }, "Recents"),
-            Triple("Your documents", @Composable { color: Color -> FolderIcon(color) }, "Your documents"),
-            Triple("Notes", @Composable { color: Color -> NotesIndicatorIcon(color) }, "Notes")
+            Triple("Recents", navDot, "Recents"),
+            Triple("Your documents", navDot, "Your documents"),
+            Triple("Notes", navDot, "Notes")
         )
 
         val logo: @Composable () -> Unit = {
@@ -310,7 +315,7 @@ fun HomeScreen(
                         decorationBox = { innerTextField ->
                             if (globalSearchQuery.isEmpty()) {
                                 Text(
-                                    text = "Search $activeTab...",
+                                    text = "Search documents...",
                                     color = textSecondary.copy(alpha = 0.7f),
                                     fontSize = 13.sp
                                 )
@@ -320,6 +325,17 @@ fun HomeScreen(
                     )
                 }
             }
+
+            // Section title (Recents / Your documents / Notes) - the Figma revamp restores a
+            // page heading here; it was previously dropped as redundant with the tab bar above,
+            // but the design now expects it as the first thing under the search bar.
+            Text(
+                text = activeTab,
+                color = textPrimary,
+                fontWeight = FontWeight.ExtraBold,
+                fontSize = 22.sp,
+                modifier = Modifier.padding(start = 28.dp, end = 28.dp, top = 24.dp)
+            )
 
             // Workspace Content. Header + toolbar are rendered once, as a fixed sibling above
             // the scrollable body below - not inside either scrollable container itself. Grid
@@ -453,7 +469,7 @@ fun HomeScreen(
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(start = 28.dp, end = 28.dp, top = 28.dp)
+                    .padding(start = 28.dp, end = 28.dp, top = 12.dp)
             ) {
                 workspaceHeader()
             }

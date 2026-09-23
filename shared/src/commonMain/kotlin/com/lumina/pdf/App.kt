@@ -1,5 +1,8 @@
 package com.lumina.pdf
 
+import androidx.compose.animation.Crossfade
+import androidx.compose.animation.core.tween
+import androidx.compose.foundation.background
 import androidx.compose.foundation.draganddrop.dragAndDropTarget
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.isSystemInDarkTheme
@@ -7,6 +10,7 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.snapshots.SnapshotStateList
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draganddrop.DragAndDropEvent
 import androidx.compose.ui.draganddrop.DragAndDropTarget
@@ -14,6 +18,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.lumina.pdf.viewer.theme.luminaColorScheme
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontStyle
@@ -22,8 +27,10 @@ import com.lumina.pdf.core.PdfDocument
 import com.lumina.pdf.core.PdfPasswordRequiredException
 import com.lumina.pdf.core.PdfPasswordUnsupportedException
 import com.lumina.pdf.renderer.PdfDocumentFactory
+import com.lumina.pdf.viewer.AppLogoMark
 import com.lumina.pdf.viewer.PdfViewer
 import com.lumina.pdf.viewer.asImageBitmap
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import co.touchlab.kermit.Logger
 import luminapdf.shared.generated.resources.*
@@ -137,6 +144,15 @@ fun App() {
         var pendingPasswordRetry by remember { mutableStateOf<(suspend (String) -> Unit)?>(null) }
         var passwordInput by remember { mutableStateOf("") }
         var passwordError by remember { mutableStateOf<String?>(null) }
+
+        // Fixed-duration splash: cold start otherwise jumps straight to an empty Recents list
+        // before the disk read below resolves. Time-based rather than gated on that read, so a
+        // slow disk never leaves the splash on screen indefinitely.
+        var showSplash by remember { mutableStateOf(true) }
+        LaunchedEffect(Unit) {
+            delay(900)
+            showSplash = false
+        }
 
         LaunchedEffect(Unit) {
             try {
@@ -430,39 +446,68 @@ fun App() {
                 .fillMaxSize()
                 .dragAndDropTarget(shouldStartDragAndDrop = { true }, target = dragAndDropTarget)
         ) {
-            Navigator(
-                screen = AppHomeScreen(
-                    recentFiles = recentFiles,
-                    sampleFile = sampleFile,
-                    onOpenFile = onOpenFile,
-                    onRemoveFromRecents = { recentFile ->
-                        val idx = recentFiles.indexOfFirst { it.id == recentFile.id }
-                        if (idx != -1) {
-                            recentFiles[idx] = recentFiles[idx].copy(inRecents = false)
+            Crossfade(targetState = showSplash, animationSpec = tween(300)) { splashVisible ->
+                if (splashVisible) {
+                    SplashScreen()
+                    return@Crossfade
+                }
+                Navigator(
+                    screen = AppHomeScreen(
+                        recentFiles = recentFiles,
+                        sampleFile = sampleFile,
+                        onOpenFile = onOpenFile,
+                        onRemoveFromRecents = { recentFile ->
+                            val idx = recentFiles.indexOfFirst { it.id == recentFile.id }
+                            if (idx != -1) {
+                                recentFiles[idx] = recentFiles[idx].copy(inRecents = false)
+                                RecentFilesStore.saveRecentFilesList(recentFiles)
+                            }
+                        },
+                        onDeleteDocument = { recentFile ->
+                            recentFiles.removeAll { it.id == recentFile.id }
+                            RecentFilesStore.deleteRecentFile(recentFile.id)
                             RecentFilesStore.saveRecentFilesList(recentFiles)
-                        }
-                    },
-                    onDeleteDocument = { recentFile ->
-                        recentFiles.removeAll { it.id == recentFile.id }
-                        RecentFilesStore.deleteRecentFile(recentFile.id)
-                        RecentFilesStore.saveRecentFilesList(recentFiles)
-                    },
-                    onRenameDocument = { recentFile, newName ->
-                        // RecentFilesStore's metadata format is "|"-delimited; a typed name could
-                        // otherwise corrupt every row after it.
-                        val safeName = newName.replace("|", " ").replace("\n", " ")
-                        val idx = recentFiles.indexOfFirst { it.id == recentFile.id }
-                        if (idx != -1) {
-                            recentFiles[idx] = recentFiles[idx].copy(name = safeName)
-                            RecentFilesStore.saveRecentFilesList(recentFiles)
-                        }
-                    },
-                    onTriggerFilePicker = pickFile
-                )
-            ) { navigator ->
-                navigatorRef = navigator
-                CurrentScreen()
+                        },
+                        onRenameDocument = { recentFile, newName ->
+                            // RecentFilesStore's metadata format is "|"-delimited; a typed name could
+                            // otherwise corrupt every row after it.
+                            val safeName = newName.replace("|", " ").replace("\n", " ")
+                            val idx = recentFiles.indexOfFirst { it.id == recentFile.id }
+                            if (idx != -1) {
+                                recentFiles[idx] = recentFiles[idx].copy(name = safeName)
+                                RecentFilesStore.saveRecentFilesList(recentFiles)
+                            }
+                        },
+                        onTriggerFilePicker = pickFile
+                    )
+                ) { navigator ->
+                    navigatorRef = navigator
+                    CurrentScreen()
+                }
             }
+        }
+    }
+}
+
+@Composable
+private fun SplashScreen() {
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(MaterialTheme.colorScheme.background),
+        contentAlignment = Alignment.Center
+    ) {
+        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+            AppLogoMark(modifier = Modifier.size(56.dp))
+            Spacer(modifier = Modifier.height(12.dp))
+            Text(
+                text = "LuminaPDF",
+                style = TextStyle(
+                    color = MaterialTheme.colorScheme.onBackground,
+                    fontWeight = FontWeight.ExtraBold,
+                    fontSize = 20.sp
+                )
+            )
         }
     }
 }
