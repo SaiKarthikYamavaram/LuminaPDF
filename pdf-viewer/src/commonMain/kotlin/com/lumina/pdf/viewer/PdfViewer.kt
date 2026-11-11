@@ -572,10 +572,11 @@ fun PdfViewer(
         if (documentId == null || !isInitialZoomSet) return@LaunchedEffect
         // Debounce saves to prevent high frequency SQLite writes
         kotlinx.coroutines.delay(1000)
-        db.saveOffset(
-            documentId,
-            PdfOffset(state.currentPage, state.zoom, state.scrollOffset.x, state.scrollOffset.y)
-        )
+        val offset = PdfOffset(state.currentPage, state.zoom, state.scrollOffset.x, state.scrollOffset.y)
+        // Off the main thread: a disk write once a second during reading can drop frames.
+        kotlinx.coroutines.withContext(kotlinx.coroutines.Dispatchers.Default) {
+            db.saveOffset(documentId, offset)
+        }
     }
 
     // Save state synchronously when viewer is closed or disposed

@@ -51,10 +51,8 @@ import androidx.navigationevent.compose.rememberNavigationEventState
 // navigation library: App() shows the viewer while this is non-null, home otherwise.
 private class OpenDocument(
     val document: PdfDocument,
-    val id: String,
-    val title: String,
-    val initialPage: Int?,
-    val bytes: ByteArray
+    val file: RecentFile,
+    val initialPage: Int?
 )
 
 @OptIn(ExperimentalResourceApi::class, ExperimentalComposeUiApi::class)
@@ -151,8 +149,16 @@ fun App() {
         }
 
         val exportLauncher = io.github.vinceglb.filekit.compose.rememberFileSaverLauncher { }
-        val exportFile: (ByteArray, String) -> Unit = { bytes, name ->
-            exportLauncher.launch(bytes, name.removeSuffix(".pdf"), "pdf")
+        // Read from disk on demand, so the whole PDF isn't held in memory just in case.
+        val exportDocument: (RecentFile) -> Unit = { file ->
+            scope.launch {
+                val bytes = readDocumentBytes(file)
+                if (bytes == null) {
+                    error = "\"${file.name}\" is no longer available."
+                } else {
+                    exportLauncher.launch(bytes, file.name.removeSuffix(".pdf"), "pdf")
+                }
+            }
         }
 
         val closeViewer: () -> Unit = {
@@ -185,7 +191,7 @@ fun App() {
                 recentFiles.add(0, updated)
                 RecentFilesStore.saveRecentFilesList(recentFiles)
 
-                showViewer(OpenDocument(document, recentFile.id, recentFile.name, page, bytesToOpen))
+                showViewer(OpenDocument(document, updated, page))
                 pendingPasswordRetry = null
                 passwordError = null
             } catch (e: PdfPasswordRequiredException) {
@@ -216,7 +222,7 @@ fun App() {
         suspend fun openResolvedPickedFile(bytes: ByteArray, fileToOpen: RecentFile, password: String?) {
             try {
                 val factory = PdfDocumentFactory()
-                showViewer(OpenDocument(factory.open(bytes, password), fileToOpen.id, fileToOpen.name, null, bytes))
+                showViewer(OpenDocument(factory.open(bytes, password), fileToOpen, null))
                 pendingPasswordRetry = null
                 passwordError = null
 
@@ -404,11 +410,11 @@ fun App() {
                     key(doc) {
                         PdfViewer(
                             document = doc.document,
-                            documentId = doc.id,
-                            documentTitle = doc.title,
+                            documentId = doc.file.id,
+                            documentTitle = doc.file.name,
                             initialPage = doc.initialPage,
                             onClose = closeViewer,
-                            onExport = { exportFile(doc.bytes, doc.title) },
+                            onExport = { exportDocument(doc.file) },
                             modifier = Modifier.fillMaxSize()
                         )
                     }

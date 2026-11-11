@@ -17,6 +17,8 @@ import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -156,18 +158,22 @@ fun HomeScreen(
         key2 = activeTab
     ) {
         if (activeTab == "Notes") {
-            val map = mutableMapOf<RecentFile, List<com.lumina.pdf.viewer.db.DbNote>>()
-            recentFiles.forEach { file ->
-                try {
-                    val fileNotes = db.getNotes(file.id)
-                    if (fileNotes.isNotEmpty()) {
-                        map[file] = fileNotes
+            val files = recentFiles.toList()
+            // Off the main thread: one query per document adds up with a large library.
+            value = withContext(Dispatchers.Default) {
+                val map = mutableMapOf<RecentFile, List<com.lumina.pdf.viewer.db.DbNote>>()
+                files.forEach { file ->
+                    try {
+                        val fileNotes = db.getNotes(file.id)
+                        if (fileNotes.isNotEmpty()) {
+                            map[file] = fileNotes
+                        }
+                    } catch (e: Exception) {
+                        Logger.e(e) { "Failed to get notes for file: ${file.id}" }
                     }
-                } catch (e: Exception) {
-                    Logger.e(e) { "Failed to get notes for file: ${file.id}" }
                 }
+                map
             }
-            value = map
         } else {
             value = emptyMap()
         }
