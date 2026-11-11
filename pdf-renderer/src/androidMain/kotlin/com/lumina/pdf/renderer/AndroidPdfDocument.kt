@@ -1,6 +1,7 @@
 package com.lumina.pdf.renderer
 
 import android.graphics.Bitmap
+import android.graphics.Color
 import android.graphics.Matrix
 import android.graphics.Rect
 import android.graphics.pdf.PdfRenderer
@@ -52,6 +53,11 @@ class AndroidPdfDocument(
         textDocument.value?.let(block) ?: fallback
     }
 
+    // PdfRenderer only paints what the PDF draws, and most PDFs assume white paper. Without this
+    // fill, pages take on the app's background and their edges disappear.
+    private fun newPageBitmap(width: Int, height: Int): Bitmap =
+        Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888).apply { eraseColor(Color.WHITE) }
+
     override suspend fun pageCount(): Int = renderer.pageCount
 
     override suspend fun pageAspectRatio(page: Int): Float = withContext(Dispatchers.IO) {
@@ -59,7 +65,7 @@ class AndroidPdfDocument(
     }
 
     override suspend fun renderPage(page: Int, width: Int, height: Int): PdfBitmap = withContext(Dispatchers.IO) {
-        val bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
+        val bitmap = newPageBitmap(width, height)
         withPage(page) { pdfPage ->
             pdfPage.render(bitmap, null, null, PdfRenderer.Page.RENDER_MODE_FOR_DISPLAY)
         }
@@ -80,7 +86,7 @@ class AndroidPdfDocument(
             // tile's slot blank (showing the blurry full-page thumbnail underneath instead).
             val tileWidthPx = (region.width * scale).toInt().coerceAtLeast(1)
             val tileHeightPx = (region.height * scale).toInt().coerceAtLeast(1)
-            val bitmap = Bitmap.createBitmap(tileWidthPx, tileHeightPx, Bitmap.Config.ARGB_8888)
+            val bitmap = newPageBitmap(tileWidthPx, tileHeightPx)
 
             // region's coordinates are pixels in a fullPageWidthPx x fullPageHeightPx rendering of the
             // whole page (the PdfDocument.renderTile contract), NOT the page's own point-space that

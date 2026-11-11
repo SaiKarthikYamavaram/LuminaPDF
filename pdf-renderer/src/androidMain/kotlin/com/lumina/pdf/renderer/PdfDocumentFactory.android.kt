@@ -46,5 +46,18 @@ actual class PdfDocumentFactory actual constructor() {
     }
 }
 
-// PDFBox reads its font and character tables from app assets, so it needs a Context first.
-fun initPdfRenderer(context: Context) = PDFBoxResourceLoader.init(context)
+private var rendererInitialized = false
+
+// Runs once per process, before any document opens. An Activity recreated later must not delete
+// the temp files of documents that are still open.
+fun initPdfRenderer(context: Context) {
+    if (rendererInitialized) return
+    rendererInitialized = true
+
+    // PDFBox reads its font and character tables from app assets, so it needs a Context first.
+    PDFBoxResourceLoader.init(context)
+
+    // deleteOnExit never runs on Android, so a killed process leaves its PDF copies behind.
+    context.cacheDir.listFiles { file -> file.name.startsWith("pdf_doc_") || file.name.startsWith("PDFBox") }
+        ?.forEach { it.delete() }
+}
