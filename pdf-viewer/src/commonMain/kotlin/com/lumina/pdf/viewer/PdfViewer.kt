@@ -71,6 +71,9 @@ import kotlin.math.min
 import kotlin.math.PI
 
 // Represents a unique tile key for caching
+private const val TILE_ZOOM_STEPS_PER_UNIT = 4f
+
+// zoomLevel counts TILE_ZOOM_STEPS_PER_UNIT steps, so 10 means the tile was rendered at 2.5x.
 data class TileKey(val page: Int, val row: Int, val col: Int, val zoomLevel: Int)
 
 
@@ -743,40 +746,49 @@ fun PdfViewer(
         // 2. Request Tiles
         if (state.zoom > 1.5f) {
             val tileSize = 512
-            val zoomLevelInt = state.zoom.toInt()
+            // Tiles render at quarter-step zooms: fine enough to stay sharp, coarse enough that
+            // small zoom changes reuse them. The draw pass scales each tile from its own step.
+            val tileZoomSteps = kotlin.math.round(state.zoom * TILE_ZOOM_STEPS_PER_UNIT).toInt()
+            val tileZoom = tileZoomSteps / TILE_ZOOM_STEPS_PER_UNIT
 
             for (page in visiblePages) {
                 val pageHeight = layout.height(page)
-                val localScrollY = (-state.scrollOffset.y - (layout.top(page) * state.zoom)).coerceAtLeast(0f)
-                val startCol = 0
-                val endCol = viewSize.width / tileSize + 1
+                // The visible part of this page, measured in the tile grid's coordinates.
+                val toTileSpace = tileZoom / state.zoom
+                val localScrollY = (-state.scrollOffset.y - (layout.top(page) * state.zoom)).coerceAtLeast(0f) * toTileSpace
+                val localScrollX = (-state.scrollOffset.x).coerceAtLeast(0f) * toTileSpace
+                val startCol = (localScrollX / tileSize).toInt()
+                val endCol = minOf(
+                    ((localScrollX + viewSize.width * toTileSpace) / tileSize).toInt() + 1,
+                    (viewSize.width * tileZoom / tileSize).toInt()
+                )
                 val startRow = (localScrollY / tileSize).toInt()
                 // Capped at the page's last row: a short page would otherwise request rows past
                 // its own bottom edge, which render nothing.
                 val endRow = minOf(
-                    ((localScrollY + viewSize.height) / tileSize).toInt() + 1,
-                    (pageHeight * state.zoom / tileSize).toInt()
+                    ((localScrollY + viewSize.height * toTileSpace) / tileSize).toInt() + 1,
+                    (pageHeight * tileZoom / tileSize).toInt()
                 )
 
                 val requestedKeys = mutableSetOf<TileKey>()
                 for (row in startRow..endRow) {
                     for (col in startCol..endCol) {
-                        val key = TileKey(page, row, col, zoomLevelInt)
+                        val key = TileKey(page, row, col, tileZoomSteps)
                         requestedKeys.add(key)
 
-                        val cacheKey = "tile_${page}_${row}_${col}_$zoomLevelInt"
+                        val cacheKey = "tile_${page}_${row}_${col}_$tileZoomSteps"
                         if (!activeTiles.containsKey(key)) {
                             val cachedTile = cache.get(cacheKey)
                             if (cachedTile != null) {
                                 activeTiles[key] = cachedTile.asImageBitmap()
                             } else {
                                 val tileRect = PdfRect(
-                                    left = (col * tileSize).toFloat() / state.zoom,
-                                    top = (row * tileSize).toFloat() / state.zoom,
-                                    right = ((col + 1) * tileSize).toFloat() / state.zoom,
-                                    bottom = ((row + 1) * tileSize).toFloat() / state.zoom
+                                    left = (col * tileSize).toFloat() / tileZoom,
+                                    top = (row * tileSize).toFloat() / tileZoom,
+                                    right = ((col + 1) * tileSize).toFloat() / tileZoom,
+                                    bottom = ((row + 1) * tileSize).toFloat() / tileZoom
                                 )
-                                renderQueue.submit(RenderRequest.Tile(page, tileRect, state.zoom, viewSize.width, pageHeight.toInt()) { bitmap ->
+                                renderQueue.submit(RenderRequest.Tile(page, tileRect, tileZoom, viewSize.width, pageHeight.toInt()) { bitmap ->
                                     bitmap?.let {
                                         cache.put(cacheKey, it)
                                         activeTiles[key] = it.asImageBitmap()
@@ -1114,12 +1126,15 @@ fun PdfViewer(
                         // Draw high-res tiles
                         if (state.zoom > 1.5f) {
                             translate(left = 0f, top = pageTop) {
-                                scale(scale = 1f / state.zoom, pivot = Offset.Zero) {
-                                    val pageTiles = tilesByPage[page] ?: emptyList()
-                                    pageTiles.forEach { (key, tileBitmap) ->
+                                val pageTiles = tilesByPage[page] ?: emptyList()
+                                pageTiles.forEach { (key, tileBitmap) ->
+                                    scale(scale = TILE_ZOOM_STEPS_PER_UNIT / key.zoomLevel, pivot = Offset.Zero) {
                                         translate(left = (key.col * tileSize).toFloat(), top = (key.row * tileSize).toFloat()) {
                                             drawImage(
                                                 image = tileBitmap,
+                                                // One pixel of overlap hides the hairline seam
+                                                // tiles show at fractional scroll offsets.
+                                                dstSize = androidx.compose.ui.unit.IntSize(tileBitmap.width + 1, tileBitmap.height + 1),
                                                 colorFilter = colorFilter
                                             )
                                         }
