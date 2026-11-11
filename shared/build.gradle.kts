@@ -1,8 +1,5 @@
-import com.android.build.api.dsl.KotlinMultiplatformAndroidCompilation
 import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
-import org.jetbrains.kotlin.gradle.plugin.KotlinHierarchyTemplate
-import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
@@ -17,23 +14,6 @@ kotzilla {
 }
 
 kotlin {
-    @OptIn(ExperimentalKotlinGradlePluginApi::class)
-    applyHierarchyTemplate {
-        common {
-            group("nonWasm") {
-                // withAndroidTarget() doesn't recognize the androidLibrary KMP target
-                // (com.android.kotlin.multiplatform.library); use withCompilations instead.
-                // https://youtrack.jetbrains.com/issue/KT-80409
-                withCompilations { it is KotlinMultiplatformAndroidCompilation }
-                withIosArm64()
-                withIosSimulatorArm64()
-                withJvm()
-                withJs()
-            }
-            withWasmJs()
-        }
-    }
-
     listOf(
         iosArm64(),
         iosSimulatorArm64()
@@ -84,6 +64,7 @@ kotlin {
             implementation(libs.compose.foundation)
             implementation(libs.compose.material3)
             implementation(libs.compose.ui)
+            implementation(libs.compose.ui.backhandler)
             implementation(libs.compose.components.resources)
             implementation(libs.compose.uiToolingPreview)
             implementation(libs.androidx.lifecycle.viewmodelCompose)
@@ -91,12 +72,6 @@ kotlin {
             implementation(libs.filekit.compose)
             implementation(libs.kermit)
             implementation(libs.koin.core)
-        }
-        // voyager-navigator has no wasmJs artifact — scope it to nonWasmMain only
-        named("nonWasmMain").configure {
-            dependencies {
-                implementation(libs.voyager.navigator)
-            }
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)

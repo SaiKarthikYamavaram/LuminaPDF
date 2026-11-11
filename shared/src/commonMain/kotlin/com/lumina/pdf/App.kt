@@ -36,61 +36,20 @@ import co.touchlab.kermit.Logger
 import luminapdf.shared.generated.resources.*
 import org.jetbrains.compose.resources.Font
 import org.jetbrains.compose.resources.ExperimentalResourceApi
-import cafe.adriel.voyager.core.screen.Screen
-import cafe.adriel.voyager.navigator.Navigator
-import cafe.adriel.voyager.navigator.LocalNavigator
-import cafe.adriel.voyager.navigator.currentOrThrow
-import cafe.adriel.voyager.navigator.CurrentScreen
+import androidx.compose.ui.ExperimentalComposeUiApi
+import androidx.compose.ui.backhandler.BackHandler
 
-class AppHomeScreen(
-    @Transient private val recentFiles: SnapshotStateList<RecentFile> = mutableStateListOf(),
-    @Transient private val sampleFile: RecentFile? = null,
-    @Transient private val onOpenFile: (RecentFile, Int?, Navigator) -> Unit = { _, _, _ -> },
-    @Transient private val onRemoveFromRecents: (RecentFile) -> Unit = {},
-    @Transient private val onDeleteDocument: (RecentFile) -> Unit = {},
-    @Transient private val onEditDocument: (RecentFile, String, String) -> Unit = { _, _, _ -> },
-    @Transient private val onTriggerFilePicker: () -> Unit = {}
-) : Screen {
-    @Composable
-    override fun Content() {
-        val navigator = LocalNavigator.currentOrThrow
-        HomeScreen(
-            recentFiles = recentFiles,
-            sampleFile = sampleFile,
-            onOpenFile = { recentFile, page -> onOpenFile(recentFile, page, navigator) },
-            onRemoveFromRecents = onRemoveFromRecents,
-            onDeleteDocument = onDeleteDocument,
-            onEditDocument = onEditDocument,
-            onTriggerFilePicker = onTriggerFilePicker,
-            modifier = Modifier.fillMaxSize()
-        )
-    }
-}
+// The document currently shown in the viewer. Two screens (home, viewer) don't need a
+// navigation library: App() shows the viewer while this is non-null, home otherwise.
+private class OpenDocument(
+    val document: PdfDocument,
+    val id: String,
+    val title: String,
+    val initialPage: Int?,
+    val bytes: ByteArray
+)
 
-class AppPdfViewerScreen(
-    @Transient private val document: PdfDocument? = null,
-    private val documentId: String,
-    private val documentTitle: String,
-    private val initialPage: Int?,
-    @Transient private val onClose: () -> Unit = {},
-    @Transient private val onExport: (() -> Unit)? = null
-) : Screen {
-    @Composable
-    override fun Content() {
-        val document = document ?: return
-        PdfViewer(
-            document = document,
-            documentId = documentId,
-            documentTitle = documentTitle,
-            initialPage = initialPage,
-            onClose = onClose,
-            onExport = onExport,
-            modifier = Modifier.fillMaxSize()
-        )
-    }
-}
-
-@OptIn(ExperimentalResourceApi::class)
+@OptIn(ExperimentalResourceApi::class, ExperimentalComposeUiApi::class)
 @Composable
 fun App() {
     val darkTheme = isSystemInDarkTheme()
@@ -122,18 +81,15 @@ fun App() {
 
     MaterialTheme(colorScheme = colorScheme, typography = typography) {
         val recentFiles = remember { mutableStateListOf<RecentFile>() }
-        var currentDocument by remember { mutableStateOf<PdfDocument?>(null) }
-        var currentDocumentName by remember { mutableStateOf("") }
-        var initialPageToOpen by remember { mutableStateOf<Int?>(null) }
+        var openDocument by remember { mutableStateOf<OpenDocument?>(null) }
         var error by remember { mutableStateOf<String?>(null) }
         var sampleFile by remember { mutableStateOf<RecentFile?>(null) }
         val scope = rememberCoroutineScope()
-        var navigatorRef by remember { mutableStateOf<Navigator?>(null) }
         // Guards onOpenFile against rapid repeat taps: opening involves file I/O
         // (PdfDocumentFactory.open, saveRecentFilesList) with no loading indicator in between, so
         // a user tapping again before the first tap's effect is visible was firing onOpenFile
         // dozens of times in a few seconds - each one opening its own PdfDocument and pushing its
-        // own AppPdfViewerScreen, none of which ever got a chance to settle. Confirmed via
+        // own viewer screen, none of which ever got a chance to settle. Confirmed via
         // [TAP-DEBUG] logging: 21 invocations for one file in 4.5s of tapping.
         var isOpeningFile by remember { mutableStateOf(false) }
 
@@ -205,17 +161,25 @@ fun App() {
             exportLauncher.launch(bytes, name.removeSuffix(".pdf"), "pdf")
         }
 
-        suspend fun openRecentFile(recentFile: RecentFile, page: Int?, navigator: Navigator, password: String?) {
+        val closeViewer: () -> Unit = {
+            openDocument?.document?.close()
+            openDocument = null
+        }
+        // Closes whatever was open before (e.g. a PDF dropped onto the viewer), so a replaced
+        // document never leaks its native handle.
+        val showViewer: (OpenDocument) -> Unit = { doc ->
+            openDocument?.document?.close()
+            openDocument = doc
+        }
+
+        suspend fun openRecentFile(recentFile: RecentFile, page: Int?, password: String?) {
             try {
                 val bytesToOpen = recentFile.fileBytes
                 if (bytesToOpen == null) {
                     error = "\"${recentFile.name}\" is no longer available. It may not have been saved on this device."
                     return
                 }
-                val factory = PdfDocumentFactory()
-                currentDocument = factory.open(bytesToOpen, password)
-                currentDocumentName = recentFile.id
-                initialPageToOpen = page
+                val document = PdfDocumentFactory().open(bytesToOpen, password)
 
                 // Move the opened file to the top of the list, update lastOpened, and mark inRecents = true
                 // (also covers the first time the sample file is opened, adding it honestly)
@@ -227,27 +191,13 @@ fun App() {
                 recentFiles.add(0, updated)
                 RecentFilesStore.saveRecentFilesList(recentFiles)
 
-                navigator.push(
-                    AppPdfViewerScreen(
-                        document = currentDocument!!,
-                        documentId = recentFile.id,
-                        documentTitle = recentFile.name,
-                        initialPage = page,
-                        onClose = {
-                            currentDocument?.close()
-                            currentDocument = null
-                            initialPageToOpen = null
-                            navigator.pop()
-                        },
-                        onExport = { exportFile(bytesToOpen, recentFile.name) }
-                    )
-                )
+                showViewer(OpenDocument(document, recentFile.id, recentFile.name, page, bytesToOpen))
                 pendingPasswordRetry = null
                 passwordError = null
             } catch (e: PdfPasswordRequiredException) {
                 passwordInput = ""
                 passwordError = if (e.wrongPasswordTried) e.message else null
-                pendingPasswordRetry = { pw -> openRecentFile(recentFile, page, navigator, pw) }
+                pendingPasswordRetry = { pw -> openRecentFile(recentFile, page, pw) }
             } catch (e: PdfPasswordUnsupportedException) {
                 error = e.message
             } catch (e: Exception) {
@@ -256,7 +206,7 @@ fun App() {
             }
         }
 
-        val onOpenFile: (RecentFile, Int?, Navigator) -> Unit = { recentFile, page, navigator ->
+        val onOpenFile: (RecentFile, Int?) -> Unit = { recentFile, page ->
             if (isOpeningFile) {
                 Logger.i { "[TAP-DEBUG] onOpenFile ignored (already opening): ${recentFile.name}" }
             } else {
@@ -264,7 +214,7 @@ fun App() {
                 Logger.i { "[TAP-DEBUG] onOpenFile invoked for ${recentFile.name}, bytes=${recentFile.fileBytes?.size}" }
                 scope.launch {
                     try {
-                        openRecentFile(recentFile, page, navigator, password = null)
+                        openRecentFile(recentFile, page, password = null)
                     } finally {
                         isOpeningFile = false
                     }
@@ -275,28 +225,7 @@ fun App() {
         suspend fun openResolvedPickedFile(bytes: ByteArray, fileToOpen: RecentFile, password: String?) {
             try {
                 val factory = PdfDocumentFactory()
-                currentDocument = factory.open(bytes, password)
-                currentDocumentName = fileToOpen.id
-                initialPageToOpen = null
-
-                val navigator = navigatorRef
-                if (navigator != null) {
-                    navigator.push(
-                        AppPdfViewerScreen(
-                            document = currentDocument!!,
-                            documentId = fileToOpen.id,
-                            documentTitle = fileToOpen.name,
-                            initialPage = null,
-                            onClose = {
-                                currentDocument?.close()
-                                currentDocument = null
-                                initialPageToOpen = null
-                                navigator.pop()
-                            },
-                            onExport = { exportFile(bytes, fileToOpen.name) }
-                        )
-                    )
-                }
+                showViewer(OpenDocument(factory.open(bytes, password), fileToOpen.id, fileToOpen.name, null, bytes))
 
                 // Render thumbnail in background
                 val doc = factory.open(bytes, password)
@@ -451,8 +380,23 @@ fun App() {
                     SplashScreen()
                     return@Crossfade
                 }
-                Navigator(
-                    screen = AppHomeScreen(
+                val doc = openDocument
+                if (doc != null) {
+                    // System back (Android) leaves the viewer, as the navigation stack did.
+                    BackHandler(onBack = closeViewer)
+                    key(doc) {
+                        PdfViewer(
+                            document = doc.document,
+                            documentId = doc.id,
+                            documentTitle = doc.title,
+                            initialPage = doc.initialPage,
+                            onClose = closeViewer,
+                            onExport = { exportFile(doc.bytes, doc.title) },
+                            modifier = Modifier.fillMaxSize()
+                        )
+                    }
+                } else {
+                    HomeScreen(
                         recentFiles = recentFiles,
                         sampleFile = sampleFile,
                         onOpenFile = onOpenFile,
@@ -478,11 +422,9 @@ fun App() {
                                 RecentFilesStore.saveRecentFilesList(recentFiles)
                             }
                         },
-                        onTriggerFilePicker = pickFile
+                        onTriggerFilePicker = pickFile,
+                        modifier = Modifier.fillMaxSize()
                     )
-                ) { navigator ->
-                    navigatorRef = navigator
-                    CurrentScreen()
                 }
             }
         }
