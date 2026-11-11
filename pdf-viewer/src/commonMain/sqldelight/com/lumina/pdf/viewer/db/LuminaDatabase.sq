@@ -71,3 +71,10 @@ VALUES (?, ?, ?, ?);
 
 deleteBookmark:
 DELETE FROM PdfBookmark WHERE id = ?;
+
+deleteDocumentData {
+    DELETE FROM PdfViewState WHERE documentId = :documentId;
+    DELETE FROM PdfNote WHERE documentId = :documentId;
+    DELETE FROM PdfHighlight WHERE documentId = :documentId;
+    DELETE FROM PdfBookmark WHERE documentId = :documentId;
+}

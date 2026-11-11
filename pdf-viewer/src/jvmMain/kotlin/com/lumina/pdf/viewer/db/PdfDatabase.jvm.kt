@@ -104,11 +104,16 @@ class JvmPdfDatabase : PdfDatabase {
     override fun deleteBookmark(bookmarkId: String) {
         queries.deleteBookmark(bookmarkId)
     }
+
+    override fun deleteDocumentData(documentId: String) {
+        queries.deleteDocumentData(documentId)
+    }
 }
 
+// One connection for the whole process. Each driver holds its own and nothing closes them.
+private val sharedDatabase by lazy { JvmPdfDatabase() }
+
 @Composable
-actual fun rememberPdfDatabase(): PdfDatabase {
-    return remember { JvmPdfDatabase() }
-}
+actual fun rememberPdfDatabase(): PdfDatabase = sharedDatabase
 
 actual fun getCurrentTimeMillis(): Long = System.currentTimeMillis()

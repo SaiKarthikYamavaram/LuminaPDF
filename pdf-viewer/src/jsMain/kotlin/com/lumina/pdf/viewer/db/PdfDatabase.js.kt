@@ -146,6 +146,11 @@ class JsPdfDatabase : PdfDatabase {
             }
         }
     }
+
+    override fun deleteDocumentData(documentId: String) {
+        val keys = (0 until window.localStorage.length).mapNotNull { window.localStorage.key(it) }
+        keys.filter { it.startsWith("${documentId}_") }.forEach { window.localStorage.removeItem(it) }
+    }
 }
 
 @Composable

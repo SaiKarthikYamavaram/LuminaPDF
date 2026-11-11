@@ -89,12 +89,19 @@ class AndroidPdfDatabase(context: Context) : PdfDatabase {
     override fun deleteBookmark(bookmarkId: String) {
         queries.deleteBookmark(bookmarkId)
     }
+
+    override fun deleteDocumentData(documentId: String) {
+        queries.deleteDocumentData(documentId)
+    }
 }
+
+// One connection for the whole process. Each driver holds its own and nothing closes them.
+private var sharedDatabase: AndroidPdfDatabase? = null
 
 @Composable
 actual fun rememberPdfDatabase(): PdfDatabase {
-    val context = LocalContext.current
-    return remember(context) { AndroidPdfDatabase(context) }
+    val context = LocalContext.current.applicationContext
+    return remember { sharedDatabase ?: AndroidPdfDatabase(context).also { sharedDatabase = it } }
 }
 
 actual fun getCurrentTimeMillis(): Long = System.currentTimeMillis()

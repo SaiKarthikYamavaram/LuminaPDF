@@ -89,11 +89,16 @@ class IosPdfDatabase : PdfDatabase {
     override fun deleteBookmark(bookmarkId: String) {
         queries.deleteBookmark(bookmarkId)
     }
+
+    override fun deleteDocumentData(documentId: String) {
+        queries.deleteDocumentData(documentId)
+    }
 }
 
+// One connection for the whole process. Each driver holds its own and nothing closes them.
+private val sharedDatabase by lazy { IosPdfDatabase() }
+
 @Composable
-actual fun rememberPdfDatabase(): PdfDatabase {
-    return remember { IosPdfDatabase() }
-}
+actual fun rememberPdfDatabase(): PdfDatabase = sharedDatabase
 
 actual fun getCurrentTimeMillis(): Long = (NSDate().timeIntervalSince1970 * 1000).toLong()

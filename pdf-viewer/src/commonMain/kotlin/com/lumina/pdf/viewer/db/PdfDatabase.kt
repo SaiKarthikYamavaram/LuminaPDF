@@ -52,6 +52,9 @@ interface PdfDatabase {
     fun insertBookmark(bookmark: DbBookmark)
     fun getBookmarks(documentId: String): List<DbBookmark>
     fun deleteBookmark(bookmarkId: String)
+
+    // Removes everything saved against a document: reading position, notes, highlights, bookmarks.
+    fun deleteDocumentData(documentId: String)
 }
 
 @Composable
