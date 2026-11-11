@@ -16,10 +16,19 @@ class JvmPdfDocument(private val document: PDDocument) : PdfDocument {
 
     override suspend fun pageCount(): Int = document.numberOfPages
 
-    override suspend fun renderPage(page: Int, width: Int, height: Int): PdfBitmap = withContext(Dispatchers.IO) {
+    override suspend fun pageAspectRatio(page: Int): Float = withContext(Dispatchers.IO) {
         val pdPage = document.getPage(page)
         val cropBox = pdPage.cropBox
-        val scale = width.toFloat() / cropBox.width
+        if (pdPage.rotation % 180 == 0) cropBox.height / cropBox.width else cropBox.width / cropBox.height
+    }
+
+    // PDFBox applies the page's rotation when rendering, so a sideways page's output width comes
+    // from the crop box height.
+    private fun displayedWidth(pdPage: org.apache.pdfbox.pdmodel.PDPage): Float =
+        if (pdPage.rotation % 180 == 0) pdPage.cropBox.width else pdPage.cropBox.height
+
+    override suspend fun renderPage(page: Int, width: Int, height: Int): PdfBitmap = withContext(Dispatchers.IO) {
+        val scale = width.toFloat() / displayedWidth(document.getPage(page))
         val image = renderer.renderImage(page, scale)
         JvmPdfBitmap(image)
     }
@@ -41,9 +50,6 @@ class JvmPdfDocument(private val document: PDDocument) : PdfDocument {
         // parent's backing buffer, so caching one tile kept the entire full-page raster pinned in
         // memory. Drawing into a fresh tile-sized BufferedImage avoids that retention, even though
         // it doesn't avoid the redundant per-tile full-page rendering cost.
-        val pdPage = document.getPage(page)
-        val cropBox = pdPage.cropBox
-
         // region's coordinates are pixels in a fullPageWidthPx-wide rendering of the whole page
         // (the PdfDocument.renderTile contract) - PDFBox's renderImage(page, scale) instead treats
         // scale as native-points-to-pixels, same mismatch renderPage() above already accounts for
@@ -52,7 +58,7 @@ class JvmPdfDocument(private val document: PDDocument) : PdfDocument {
         // tiles. renderImage takes one uniform scale, so this uses the width-based ratio for both
         // axes - same width-driven approximation this app already makes when it estimates page
         // height as width * 1.4 rather than using the PDF's true aspect ratio.
-        val baseScale = fullPageWidthPx / cropBox.width
+        val baseScale = fullPageWidthPx / displayedWidth(document.getPage(page))
         val renderScale = scale * baseScale
 
         val tileWidthPx = (region.width * scale).toInt().coerceAtLeast(1)

@@ -3,6 +3,9 @@ package com.lumina.pdf.core
 interface PdfDocument {
     suspend fun pageCount(): Int
 
+    // Height divided by width as the page is displayed, after its own rotation.
+    suspend fun pageAspectRatio(page: Int): Float = 1.4f
+
     suspend fun renderPage(
         page: Int,
         width: Int,

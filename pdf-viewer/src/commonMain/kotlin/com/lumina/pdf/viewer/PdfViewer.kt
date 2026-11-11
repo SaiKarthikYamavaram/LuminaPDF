@@ -81,14 +81,10 @@ fun clampScrollOffset(
     zoom: Float,
     viewWidth: Float,
     viewHeight: Float,
-    estimatedPageHeight: Float,
-    pageCount: Int,
-    spacingPx: Float,
+    totalHeight: Float,
     topPaddingPx: Float,
-    bottomPaddingPx: Float,
-    marginPx: Float
+    bottomPaddingPx: Float
 ): Offset {
-    val totalHeight = pageCount * estimatedPageHeight + (pageCount - 1) * spacingPx
     val totalHeightScaled = totalHeight * zoom
     
     val pageWidthScaled = viewWidth * zoom
@@ -192,6 +188,18 @@ fun PdfViewer(
     val bottomPaddingPx = with(density) { 24.dp.toPx() }
     val marginPx = with(density) { 16.dp.toPx() }
     val spacingPx = with(density) { maxOf(config.pageSpacing, 24.dp).toPx() }
+
+    // Set before pageCount, so everything keyed on pageCount sees real page sizes.
+    var pageAspects by remember(document) { mutableStateOf(emptyList<Float>()) }
+    // State-backed rather than a plain remember: the pointerInput(Unit) gesture lambdas outlive
+    // individual compositions and must read the current layout, not the first one.
+    val layout by remember(spacingPx) {
+        derivedStateOf { PageLayout(viewSize.width.toFloat(), pageAspects, spacingPx) }
+    }
+
+    fun clamp(offset: Offset, zoom: Float): Offset = clampScrollOffset(
+        offset, zoom, viewSize.width.toFloat(), viewSize.height.toFloat(), layout.totalHeight, topPaddingPx, bottomPaddingPx
+    )
 
     // Outline states
     var isOutlineOpen by remember { mutableStateOf(false) }
@@ -313,28 +321,14 @@ fun PdfViewer(
     // Scroll directly to a selected page
     fun jumpToPage(pageIndex: Int) {
         if (viewSize.width == 0 || viewSize.height == 0) return
-        val estimatedPageHeight = viewSize.width.toFloat() * 1.4f
-        val pageTop = pageIndex * (estimatedPageHeight + spacingPx)
-        
-        val targetScrollY = topPaddingPx - pageTop * state.zoom
+        val targetScrollY = topPaddingPx - layout.top(pageIndex) * state.zoom
         val targetScrollX = if (viewSize.width * state.zoom <= viewSize.width) {
             (viewSize.width - viewSize.width * state.zoom) / 2f
         } else {
             state.scrollOffset.x
         }
-        
-        state.scrollOffset = clampScrollOffset(
-            Offset(targetScrollX, targetScrollY),
-            state.zoom,
-            viewSize.width.toFloat(),
-            viewSize.height.toFloat(),
-            estimatedPageHeight,
-            pageCount,
-            spacingPx,
-            topPaddingPx,
-            bottomPaddingPx,
-            marginPx
-        )
+
+        state.scrollOffset = clamp(Offset(targetScrollX, targetScrollY), state.zoom)
     }
 
     // Search states
@@ -373,11 +367,10 @@ fun PdfViewer(
     // Centering navigation logic
     fun centerMatch(pageIndex: Int, rect: PdfRect) {
         if (viewSize.width == 0 || viewSize.height == 0) return
-        val estimatedPageHeight = viewSize.width.toFloat() * 1.4f
-        val pageTop = pageIndex * (estimatedPageHeight + spacingPx)
-        
-        val matchTopScaled = (pageTop + rect.top * estimatedPageHeight) * state.zoom
-        val matchHeightScaled = (rect.bottom - rect.top) * estimatedPageHeight * state.zoom
+        val pageHeight = layout.height(pageIndex)
+
+        val matchTopScaled = (layout.top(pageIndex) + rect.top * pageHeight) * state.zoom
+        val matchHeightScaled = (rect.bottom - rect.top) * pageHeight * state.zoom
         val matchCenterScaled = matchTopScaled + matchHeightScaled / 2f
         
         val targetScrollY = (viewSize.height / 2f) - matchCenterScaled
@@ -387,19 +380,8 @@ fun PdfViewer(
         val matchWidthScaled = (rect.right - rect.left) * pageWidthScaled
         val matchCenterHorizontalScaled = matchLeftScaled + matchWidthScaled / 2f
         val targetScrollX = (viewSize.width / 2f) - matchCenterHorizontalScaled
-        
-        state.scrollOffset = clampScrollOffset(
-            Offset(targetScrollX, targetScrollY),
-            state.zoom,
-            viewSize.width.toFloat(),
-            viewSize.height.toFloat(),
-            estimatedPageHeight,
-            pageCount,
-            spacingPx,
-            topPaddingPx,
-            bottomPaddingPx,
-            marginPx
-        )
+
+        state.scrollOffset = clamp(Offset(targetScrollX, targetScrollY), state.zoom)
     }
 
     // Scroll to active match when currentMatchIndex changes
@@ -446,7 +428,16 @@ fun PdfViewer(
     }
 
     LaunchedEffect(document) {
-        pageCount = document.pageCount()
+        val count = document.pageCount()
+        pageAspects = try {
+            List(count) { page ->
+                document.pageAspectRatio(page).takeIf { it.isFinite() && it > 0f } ?: DEFAULT_PAGE_ASPECT
+            }
+        } catch (e: Exception) {
+            Logger.e(e) { "Failed to read page sizes" }
+            List(count) { DEFAULT_PAGE_ASPECT }
+        }
+        pageCount = count
         isInitialZoomSet = false
     }
 
@@ -475,9 +466,8 @@ fun PdfViewer(
     // Calculate fit-page zoom helper
     fun getFitZoom(): Float {
         if (viewSize.width == 0 || viewSize.height == 0) return 1f
-        val estimatedPageHeight = viewSize.width.toFloat() * 1.4f
         val fitWidthZoom = (viewSize.width - 2 * marginPx) / viewSize.width
-        val fitHeightZoom = (viewSize.height - topPaddingPx - bottomPaddingPx - 2 * marginPx) / estimatedPageHeight
+        val fitHeightZoom = (viewSize.height - topPaddingPx - bottomPaddingPx - 2 * marginPx) / layout.height(state.currentPage)
         return min(fitWidthZoom, fitHeightZoom).coerceIn(config.minZoom, config.maxZoom)
     }
 
@@ -488,22 +478,9 @@ fun PdfViewer(
             if (initialPage != null) {
                 val fitZoom = getFitZoom()
                 state.zoom = fitZoom
-                val estimatedPageHeight = viewSize.width.toFloat() * 1.4f
-                val pageTop = initialPage * (estimatedPageHeight + spacingPx)
-                val targetScrollY = topPaddingPx - pageTop * fitZoom
+                val targetScrollY = topPaddingPx - layout.top(initialPage) * fitZoom
                 val targetScrollX = (viewSize.width - viewSize.width * fitZoom) / 2f
-                state.scrollOffset = clampScrollOffset(
-                    Offset(targetScrollX, targetScrollY),
-                    fitZoom,
-                    viewSize.width.toFloat(),
-                    viewSize.height.toFloat(),
-                    estimatedPageHeight,
-                    pageCount,
-                    spacingPx,
-                    topPaddingPx,
-                    bottomPaddingPx,
-                    marginPx
-                )
+                state.scrollOffset = clamp(Offset(targetScrollX, targetScrollY), fitZoom)
                 state.currentPage = initialPage
                 restored = true
             } else if (documentId != null) {
@@ -511,28 +488,14 @@ fun PdfViewer(
                 if (saved != null) {
                     state.currentPage = saved.page
                     state.zoom = saved.zoom
-                    state.scrollOffset = clampScrollOffset(
-                        Offset(saved.scrollX, saved.scrollY),
-                        saved.zoom,
-                        viewSize.width.toFloat(),
-                        viewSize.height.toFloat(),
-                        viewSize.width.toFloat() * 1.4f,
-                        pageCount,
-                        spacingPx,
-                        topPaddingPx,
-                        bottomPaddingPx,
-                        marginPx
-                    )
+                    state.scrollOffset = clamp(Offset(saved.scrollX, saved.scrollY), saved.zoom)
                     restored = true
                 }
             }
             if (!restored) {
                 val fitZoom = getFitZoom()
                 state.zoom = fitZoom
-                state.scrollOffset = clampScrollOffset(
-                    Offset.Zero, fitZoom, viewSize.width.toFloat(), viewSize.height.toFloat(),
-                    viewSize.width.toFloat() * 1.4f, pageCount, spacingPx, topPaddingPx, bottomPaddingPx, marginPx
-                )
+                state.scrollOffset = clamp(Offset.Zero, fitZoom)
             }
             isInitialZoomSet = true
         }
@@ -547,18 +510,18 @@ fun PdfViewer(
                 val newWidth = viewSize.width.toFloat()
                 val newHeight = viewSize.height.toFloat()
 
-                val oldEstimatedPageHeight = oldWidth * 1.4f
-                val oldTotalHeight = pageCount * oldEstimatedPageHeight + (pageCount - 1) * spacingPx
+                val oldLayout = PageLayout(oldWidth, pageAspects, spacingPx)
+                val newLayout = PageLayout(newWidth, pageAspects, spacingPx)
+                val oldTotalHeight = oldLayout.totalHeight
 
                 // Calculate old fit zoom
                 val oldFitWidthZoom = (oldWidth - 2 * marginPx) / oldWidth
-                val oldFitHeightZoom = (oldHeight - topPaddingPx - bottomPaddingPx - 2 * marginPx) / oldEstimatedPageHeight
+                val oldFitHeightZoom = (oldHeight - topPaddingPx - bottomPaddingPx - 2 * marginPx) / oldLayout.height(state.currentPage)
                 val oldFitZoom = min(oldFitWidthZoom, oldFitHeightZoom).coerceIn(config.minZoom, config.maxZoom)
 
                 // Calculate new fit zoom
-                val newEstimatedPageHeight = newWidth * 1.4f
                 val newFitWidthZoom = (newWidth - 2 * marginPx) / newWidth
-                val newFitHeightZoom = (newHeight - topPaddingPx - bottomPaddingPx - 2 * marginPx) / newEstimatedPageHeight
+                val newFitHeightZoom = (newHeight - topPaddingPx - bottomPaddingPx - 2 * marginPx) / newLayout.height(state.currentPage)
                 val newFitZoom = min(newFitWidthZoom, newFitHeightZoom).coerceIn(config.minZoom, config.maxZoom)
 
                 // Determine new zoom
@@ -581,7 +544,7 @@ fun PdfViewer(
                 // Calculate new scroll offsets based on the same relative center
                 val newCenterX = newWidth / 2f
                 val newCenterY = newHeight / 2f
-                val newTotalHeight = pageCount * newEstimatedPageHeight + (pageCount - 1) * spacingPx
+                val newTotalHeight = newLayout.totalHeight
 
                 val targetScrollX = newCenterX - (relX * newWidth) * newZoom
                 val targetScrollY = newCenterY - (relY * newTotalHeight) * newZoom
@@ -592,12 +555,9 @@ fun PdfViewer(
                     newZoom,
                     newWidth,
                     newHeight,
-                    newEstimatedPageHeight,
-                    pageCount,
-                    spacingPx,
+                    newTotalHeight,
                     topPaddingPx,
-                    bottomPaddingPx,
-                    marginPx
+                    bottomPaddingPx
                 )
             }
             lastViewSize = viewSize
@@ -637,10 +597,7 @@ fun PdfViewer(
         val newScrollOffset = focus - documentPoint * clampedZoom
         
         state.zoom = clampedZoom
-        state.scrollOffset = clampScrollOffset(
-            newScrollOffset, clampedZoom, viewSize.width.toFloat(), viewSize.height.toFloat(),
-            viewSize.width.toFloat() * 1.4f, pageCount, spacingPx, topPaddingPx, bottomPaddingPx, marginPx
-        )
+        state.scrollOffset = clamp(newScrollOffset, clampedZoom)
     }
 
     // Animated counterpart to changeZoomWithFocus, for discrete/button-triggered zoom actions
@@ -656,10 +613,7 @@ fun PdfViewer(
             zoomAnimatable.snapTo(oldZoom)
             zoomAnimatable.animateTo(clampedZoom, tween(durationMillis = 200)) {
                 state.zoom = value
-                state.scrollOffset = clampScrollOffset(
-                    focus - documentPoint * value, value, viewSize.width.toFloat(), viewSize.height.toFloat(),
-                    viewSize.width.toFloat() * 1.4f, pageCount, spacingPx, topPaddingPx, bottomPaddingPx, marginPx
-                )
+                state.scrollOffset = clamp(focus - documentPoint * value, value)
             }
         }
     }
@@ -669,10 +623,7 @@ fun PdfViewer(
     fun animateScrollByOffset(offsetDelta: Offset) {
         if (viewSize.width == 0 || viewSize.height == 0) return
         val base = if (scrollAnimatable.isRunning) scrollTarget else state.scrollOffset
-        val target = clampScrollOffset(
-            base + offsetDelta, state.zoom, viewSize.width.toFloat(), viewSize.height.toFloat(),
-            viewSize.width.toFloat() * 1.4f, pageCount, spacingPx, topPaddingPx, bottomPaddingPx, marginPx
-        )
+        val target = clamp(base + offsetDelta, state.zoom)
         scrollTarget = target
         coroutineScope.launch {
             if (!scrollAnimatable.isRunning) scrollAnimatable.snapTo(state.scrollOffset)
@@ -690,19 +641,18 @@ fun PdfViewer(
     LaunchedEffect(document, viewSize, state.zoom, state.scrollOffset) {
         if (viewSize.width == 0 || viewSize.height == 0 || pageCount == 0) return@LaunchedEffect
 
-        val estimatedPageHeight = viewSize.width.toFloat() * 1.4f
         val viewportHeight = viewSize.height.toFloat()
         val viewportCenter = viewportHeight / 2f
-        val pageStride = (estimatedPageHeight + spacingPx) * state.zoom
         val scrollY = state.scrollOffset.y
 
-        // Pages sit at a uniform stride, so the visible range can be solved for directly instead
-        // of scanning every page in the document - this used to be an O(pageCount) loop re-run on
-        // every scroll/zoom animation frame, which got expensive for large documents.
-        val lowerBound = kotlin.math.ceil((-scrollY - estimatedPageHeight * state.zoom) / pageStride).toInt()
-        val upperBound = kotlin.math.floor((viewportHeight - scrollY) / pageStride).toInt()
-        val firstPage = maxOf(lowerBound, 0)
-        val lastPage = minOf(upperBound, pageCount - 1)
+        // Binary search instead of scanning every page - this used to be an O(pageCount) loop
+        // re-run on every scroll/zoom animation frame, which got expensive for large documents.
+        val viewTop = -scrollY / state.zoom
+        val viewBottom = (viewportHeight - scrollY) / state.zoom
+        val firstCandidate = layout.pageAt(viewTop)
+        // pageAt lands on the page above when viewTop sits in the gap below that page.
+        val firstPage = if (layout.top(firstCandidate) + layout.height(firstCandidate) < viewTop) firstCandidate + 1 else firstCandidate
+        val lastPage = layout.pageAt(viewBottom)
 
         val visibleList = mutableListOf<Int>()
         var firstVisible = -1
@@ -710,8 +660,8 @@ fun PdfViewer(
         var minDistance = Float.MAX_VALUE
         if (firstPage <= lastPage) {
             for (page in firstPage..lastPage) {
-                val yStart = scrollY + page * pageStride
-                val yEnd = yStart + estimatedPageHeight * state.zoom
+                val yStart = scrollY + layout.top(page) * state.zoom
+                val yEnd = yStart + layout.height(page) * state.zoom
                 visibleList.add(page)
                 if (firstVisible == -1) {
                     firstVisible = page
@@ -744,7 +694,6 @@ fun PdfViewer(
         if (viewSize.width == 0 || viewSize.height == 0 || pageCount == 0) return@LaunchedEffect
         kotlinx.coroutines.delay(config.tileRequestDebounceMs)
 
-        val estimatedPageHeight = viewSize.width.toFloat() * 1.4f
         val visiblePages = state.visiblePages
         val firstVisiblePage = visiblePages.firstOrNull() ?: -1
         val lastVisiblePage = visiblePages.lastOrNull() ?: firstVisiblePage
@@ -775,7 +724,7 @@ fun PdfViewer(
                             // active (zoom <= 1.5, i.e. most normal reading), so a downscaled
                             // source here was visibly blurry text at everyday zoom levels.
                             width = viewSize.width,
-                            height = estimatedPageHeight.toInt(),
+                            height = layout.height(page).toInt(),
                             isPrefetch = page !in visiblePages
                         ) { bitmap ->
                             if (bitmap != null) {
@@ -797,11 +746,17 @@ fun PdfViewer(
             val zoomLevelInt = state.zoom.toInt()
 
             for (page in visiblePages) {
-                val localScrollY = (-state.scrollOffset.y - (page * (estimatedPageHeight + spacingPx) * state.zoom)).coerceAtLeast(0f)
+                val pageHeight = layout.height(page)
+                val localScrollY = (-state.scrollOffset.y - (layout.top(page) * state.zoom)).coerceAtLeast(0f)
                 val startCol = 0
                 val endCol = viewSize.width / tileSize + 1
                 val startRow = (localScrollY / tileSize).toInt()
-                val endRow = ((localScrollY + viewSize.height) / tileSize).toInt() + 1
+                // Capped at the page's last row: a short page would otherwise request rows past
+                // its own bottom edge, which render nothing.
+                val endRow = minOf(
+                    ((localScrollY + viewSize.height) / tileSize).toInt() + 1,
+                    (pageHeight * state.zoom / tileSize).toInt()
+                )
 
                 val requestedKeys = mutableSetOf<TileKey>()
                 for (row in startRow..endRow) {
@@ -821,7 +776,7 @@ fun PdfViewer(
                                     right = ((col + 1) * tileSize).toFloat() / state.zoom,
                                     bottom = ((row + 1) * tileSize).toFloat() / state.zoom
                                 )
-                                renderQueue.submit(RenderRequest.Tile(page, tileRect, state.zoom, viewSize.width, estimatedPageHeight.toInt()) { bitmap ->
+                                renderQueue.submit(RenderRequest.Tile(page, tileRect, state.zoom, viewSize.width, pageHeight.toInt()) { bitmap ->
                                     bitmap?.let {
                                         cache.put(cacheKey, it)
                                         activeTiles[key] = it.asImageBitmap()
@@ -842,12 +797,11 @@ fun PdfViewer(
     // Retry a single page's thumbnail render after a failure (invoked by tapping the failed page).
     fun retryPageRender(page: Int) {
         renderFailed.remove(page)
-        val estimatedPageHeight = viewSize.width.toFloat() * 1.4f
         renderQueue.submit(
             RenderRequest.Thumbnail(
                 pageIndex = page,
                 width = viewSize.width,
-                height = estimatedPageHeight.toInt(),
+                height = layout.height(page).toInt(),
                 isPrefetch = false
             ) { bitmap ->
                 if (bitmap != null) {
@@ -967,12 +921,10 @@ fun PdfViewer(
                         },
                         onTap = { tapOffset ->
                             focusRequester.requestFocus()
-                            val estimatedPageHeight = viewSize.width.toFloat() * 1.4f
                             for (page in state.visiblePages) {
                                 if (renderFailed[page] == true) {
-                                    val pageTop = page * (estimatedPageHeight + spacingPx)
-                                    val screenTop = state.scrollOffset.y + pageTop * state.zoom
-                                    val screenBottom = screenTop + estimatedPageHeight * state.zoom
+                                    val screenTop = state.scrollOffset.y + layout.top(page) * state.zoom
+                                    val screenBottom = screenTop + layout.height(page) * state.zoom
                                     if (tapOffset.y in screenTop..screenBottom) {
                                         retryPageRender(page)
                                         break
@@ -984,10 +936,11 @@ fun PdfViewer(
                             // existing highlight directly (no search needed) removes it.
                             val documentPoint = (tapOffset - state.scrollOffset) / state.zoom
                             for (page in state.visiblePages) {
-                                val pageTop = page * (estimatedPageHeight + spacingPx)
-                                if (documentPoint.y < pageTop || documentPoint.y > pageTop + estimatedPageHeight) continue
+                                val pageTop = layout.top(page)
+                                val pageHeight = layout.height(page)
+                                if (documentPoint.y < pageTop || documentPoint.y > pageTop + pageHeight) continue
                                 val localX = documentPoint.x / viewSize.width.toFloat()
-                                val localY = (documentPoint.y - pageTop) / estimatedPageHeight
+                                val localY = (documentPoint.y - pageTop) / pageHeight
                                 val hit = searchMatches[page]?.firstOrNull { r ->
                                     localX in r.left..r.right && localY in r.top..r.bottom
                                 }
@@ -1019,10 +972,7 @@ fun PdfViewer(
                         val newScrollOffset = centroid - documentPoint * newZoom + pan
 
                         state.zoom = newZoom
-                        state.scrollOffset = clampScrollOffset(
-                            newScrollOffset, newZoom, viewSize.width.toFloat(), viewSize.height.toFloat(),
-                            viewSize.width.toFloat() * 1.4f, pageCount, spacingPx, topPaddingPx, bottomPaddingPx, marginPx
-                        )
+                        state.scrollOffset = clamp(newScrollOffset, newZoom)
                     }
                 }
                 // Runs alongside detectTransformGestures above (purely observational - never
@@ -1057,10 +1007,7 @@ fun PdfViewer(
                                 coroutineScope.launch {
                                     scrollAnimatable.snapTo(state.scrollOffset)
                                     scrollAnimatable.animateDecay(Offset(velocity.x, velocity.y), decay) {
-                                        state.scrollOffset = clampScrollOffset(
-                                            value, state.zoom, viewSize.width.toFloat(), viewSize.height.toFloat(),
-                                            viewSize.width.toFloat() * 1.4f, pageCount, spacingPx, topPaddingPx, bottomPaddingPx, marginPx
-                                        )
+                                        state.scrollOffset = clamp(value, state.zoom)
                                     }
                                 }
                             }
@@ -1085,10 +1032,7 @@ fun PdfViewer(
                                         // Accumulate onto the real target, not onto scrollAnimatable's current
                                         // mid-flight value - see scrollTarget's declaration for why.
                                         val base = if (scrollAnimatable.isRunning) scrollTarget else state.scrollOffset
-                                        val target = clampScrollOffset(
-                                            base + pan, state.zoom, viewSize.width.toFloat(), viewSize.height.toFloat(),
-                                            viewSize.width.toFloat() * 1.4f, pageCount, spacingPx, topPaddingPx, bottomPaddingPx, marginPx
-                                        )
+                                        val target = clamp(base + pan, state.zoom)
                                         scrollTarget = target
                                         coroutineScope.launch {
                                             if (!scrollAnimatable.isRunning) scrollAnimatable.snapTo(state.scrollOffset)
@@ -1109,7 +1053,6 @@ fun PdfViewer(
         ) {
             if (viewSize.width == 0 || viewSize.height == 0) return@Canvas
 
-            val estimatedPageHeight = size.width * 1.4f
             val tileSize = 512
 
             translate(left = state.scrollOffset.x, top = state.scrollOffset.y) {
@@ -1120,15 +1063,16 @@ fun PdfViewer(
                         if (state.zoom > 1.5f) activeTiles.entries.groupBy { it.key.page } else emptyMap()
 
                     for (page in state.visiblePages) {
-                        val pageTop = page * (estimatedPageHeight + spacingPx)
-                        
+                        val pageTop = layout.top(page)
+                        val pageHeight = layout.height(page)
+
                         // Draw Thumbnail
                         val thumb = thumbnails[page]
                         if (thumb != null) {
                             translate(left = 0f, top = pageTop) {
                                 drawImage(
                                     image = thumb,
-                                    dstSize = androidx.compose.ui.unit.IntSize(size.width.toInt(), estimatedPageHeight.toInt()),
+                                    dstSize = androidx.compose.ui.unit.IntSize(size.width.toInt(), pageHeight.toInt()),
                                     colorFilter = colorFilter
                                 )
                             }
@@ -1139,10 +1083,10 @@ fun PdfViewer(
                                     val warningColor = if (localNightMode) LuminaColors.statusDangerDark else LuminaColors.statusDangerLight
                                     drawRect(
                                         color = warningColor.copy(alpha = 0.14f),
-                                        size = androidx.compose.ui.geometry.Size(size.width, estimatedPageHeight)
+                                        size = androidx.compose.ui.geometry.Size(size.width, pageHeight)
                                     )
                                     val cx = size.width / 2f
-                                    val cy = estimatedPageHeight / 2f
+                                    val cy = pageHeight / 2f
                                     val glyphHalf = 14.dp.toPx()
                                     drawLine(
                                         color = warningColor,
@@ -1161,7 +1105,7 @@ fun PdfViewer(
                                     val pulseTint = if (localNightMode) Color.White else Color.Black
                                     drawRect(
                                         color = pulseTint.copy(alpha = loadingPulseAlpha * 0.08f),
-                                        size = androidx.compose.ui.geometry.Size(size.width, estimatedPageHeight)
+                                        size = androidx.compose.ui.geometry.Size(size.width, pageHeight)
                                     )
                                 }
                             }
@@ -1194,11 +1138,11 @@ fun PdfViewer(
                                 color = savedHighlightColor.copy(alpha = 0.45f),
                                 topLeft = Offset(
                                     rect.left * size.width - paddingX,
-                                    pageTop + rect.top * estimatedPageHeight - paddingY
+                                    pageTop + rect.top * pageHeight - paddingY
                                 ),
                                 size = androidx.compose.ui.geometry.Size(
                                     (rect.right - rect.left) * size.width + 2 * paddingX,
-                                    (rect.bottom - rect.top) * estimatedPageHeight + 2 * paddingY
+                                    (rect.bottom - rect.top) * pageHeight + 2 * paddingY
                                 ),
                                 cornerRadius = androidx.compose.ui.geometry.CornerRadius(3.dp.toPx(), 3.dp.toPx())
                             )
@@ -1222,9 +1166,9 @@ fun PdfViewer(
                                 val paddingX = 3.dp.toPx()
                                 val paddingY = 2.dp.toPx()
                                 val x = rect.left * size.width - paddingX
-                                val y = pageTop + rect.top * estimatedPageHeight - paddingY
+                                val y = pageTop + rect.top * pageHeight - paddingY
                                 val w = (rect.right - rect.left) * size.width + 2 * paddingX
-                                val h = (rect.bottom - rect.top) * estimatedPageHeight + 2 * paddingY
+                                val h = (rect.bottom - rect.top) * pageHeight + 2 * paddingY
                                 
                                 drawRoundRect(
                                     color = highlightColor,
@@ -1265,22 +1209,9 @@ fun PdfViewer(
             },
             onFitPage = {
                 val fitZoom = getFitZoom()
-                val estimatedPageHeight = viewSize.width.toFloat() * 1.4f
-                val pageTop = state.currentPage * (estimatedPageHeight + spacingPx)
-                val targetScrollY = topPaddingPx - pageTop * fitZoom
+                val targetScrollY = topPaddingPx - layout.top(state.currentPage) * fitZoom
                 val targetScrollX = (viewSize.width - viewSize.width * fitZoom) / 2f
-                val targetScroll = clampScrollOffset(
-                    Offset(targetScrollX, targetScrollY),
-                    fitZoom,
-                    viewSize.width.toFloat(),
-                    viewSize.height.toFloat(),
-                    estimatedPageHeight,
-                    pageCount,
-                    spacingPx,
-                    topPaddingPx,
-                    bottomPaddingPx,
-                    marginPx
-                )
+                val targetScroll = clamp(Offset(targetScrollX, targetScrollY), fitZoom)
                 val startZoom = state.zoom
                 val startScroll = state.scrollOffset
                 coroutineScope.launch {
@@ -1335,9 +1266,7 @@ fun PdfViewer(
 
         // 3. Custom Interactive Scrollbar & Tooltip
         if (viewSize.height > 0 && pageCount > 0) {
-            val estimatedPageHeight = viewSize.width.toFloat() * 1.4f
-            val totalHeight = pageCount * estimatedPageHeight + (pageCount - 1) * spacingPx
-            val totalHeightScaled = totalHeight * state.zoom
+            val totalHeightScaled = layout.totalHeight * state.zoom
             
             if (totalHeightScaled > viewSize.height.toFloat()) {
                 val trackHeight = viewSize.height.toFloat() - topPaddingPx - bottomPaddingPx
