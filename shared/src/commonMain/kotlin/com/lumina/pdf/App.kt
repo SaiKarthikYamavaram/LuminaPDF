@@ -30,8 +30,10 @@ import com.lumina.pdf.renderer.PdfDocumentFactory
 import com.lumina.pdf.viewer.AppLogoMark
 import com.lumina.pdf.viewer.PdfViewer
 import com.lumina.pdf.viewer.asImageBitmap
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import co.touchlab.kermit.Logger
 import luminapdf.shared.generated.resources.*
 import org.jetbrains.compose.resources.Font
@@ -254,8 +256,7 @@ fun App() {
         suspend fun openPickedFile(bytes: ByteArray, name: String) {
             val sizeFormatted = formatSize(bytes.size)
 
-            // Check if file already exists in recents (same name and size)
-            val existing = recentFiles.find { it.name == name && it.size == sizeFormatted }
+            val existing = findStoredDocument(recentFiles, name, bytes)
             val fileToOpen = if (existing != null) {
                 val updated = existing.copy(
                     lastOpened = "Just now",
@@ -267,7 +268,7 @@ fun App() {
                 updated
             } else {
                 val newFile = RecentFile(
-                    id = name + "_" + bytes.size,
+                    id = newDocumentId(bytes),
                     name = name,
                     lastOpened = "Just now",
                     size = sizeFormatted,
@@ -275,6 +276,10 @@ fun App() {
                 )
                 recentFiles.add(0, newFile)
                 newFile
+            }
+            // An entry that already has bytes is already on disk.
+            if (existing?.fileBytes == null) {
+                withContext(Dispatchers.Default) { FilePersistence.saveRecentFile(fileToOpen.id, bytes) }
             }
             RecentFilesStore.saveRecentFilesList(recentFiles)
 
@@ -413,12 +418,9 @@ fun App() {
                             RecentFilesStore.saveRecentFilesList(recentFiles)
                         },
                         onEditDocument = { recentFile, newName, newFolder ->
-                            // RecentFilesStore's metadata format is "|"-delimited; a typed name could
-                            // otherwise corrupt every row after it.
-                            val sanitize = { text: String -> text.replace("|", " ").replace("\n", " ") }
                             val idx = recentFiles.indexOfFirst { it.id == recentFile.id }
                             if (idx != -1) {
-                                recentFiles[idx] = recentFiles[idx].copy(name = sanitize(newName), folder = sanitize(newFolder))
+                                recentFiles[idx] = recentFiles[idx].copy(name = newName, folder = newFolder)
                                 RecentFilesStore.saveRecentFilesList(recentFiles)
                             }
                         },
@@ -453,6 +455,17 @@ private fun SplashScreen() {
         }
     }
 }
+
+// Same document means same bytes. An entry whose stored copy went missing has nothing to compare
+// against, so it falls back to name and displayed size, which lets a re-pick restore it.
+internal fun findStoredDocument(files: List<RecentFile>, name: String, bytes: ByteArray): RecentFile? =
+    files.find { it.fileBytes?.contentEquals(bytes) == true }
+        ?: files.find { !it.isSample && it.fileBytes == null && it.name == name && it.size == formatSize(bytes.size) }
+
+// Opaque on purpose: the id becomes a filename and a metadata column, so no part of it may come
+// from a user-controlled filename.
+// ponytail: 32-bit hash, two different PDFs of the exact same size could collide. Use SHA-256 if that ever shows up.
+internal fun newDocumentId(bytes: ByteArray): String = "doc_${bytes.size}_${bytes.contentHashCode()}"
 
 internal fun formatSize(bytes: Int): String {
     if (bytes < 1024) return "$bytes B"
