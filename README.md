@@ -1,60 +1,69 @@
-This is a Kotlin Multiplatform project targeting Android, iOS, Web, Desktop (JVM).
+# LuminaPDF
 
-* [/iosApp](./iosApp/iosApp) contains an iOS application. Even if you’re sharing your UI with Compose Multiplatform,
-  you need this entry point for your iOS app. This is also where you should add SwiftUI code for your project.
+A PDF reader built with **Kotlin Multiplatform** and **Compose Multiplatform**. One shared codebase runs on **Android** and **desktop** (Linux, Windows, macOS). iOS and web targets are scaffolded but do not render PDFs yet.
 
-* [/shared](./shared/src) is for code that will be shared across your Compose Multiplatform applications.
-  It contains several subfolders:
-  - [commonMain](./shared/src/commonMain/kotlin) is for code that’s common for all targets.
-  - Other folders are for Kotlin code that will be compiled for only the platform indicated in the folder name.
-    For example, if you want to use Apple’s CoreCrypto for the iOS part of your Kotlin app,
-    the [iosMain](./shared/src/iosMain/kotlin) folder would be the right place for such calls.
-    Similarly, if you want to edit the Desktop (JVM) specific part, the [jvmMain](./shared/src/jvmMain/kotlin)
-    folder is the appropriate location.
+The rendering engine is written as a reusable library, separate from the app: the reader is one host application built on top of it.
 
-### Running the apps
+<!-- Screenshots: add Android and desktop screenshots here, e.g. docs/screenshots/android-viewer.png -->
 
-Use the run configurations provided by the run widget in your IDE's toolbar. You can also use these commands and options:
+## Features
 
-- Android app: `./gradlew :androidApp:assembleDebug`
-- Desktop app:
-  - Hot reload: `./gradlew :desktopApp:hotRun --auto`
-  - Standard run: `./gradlew :desktopApp:run`
-- Web app:
-  - Wasm target (faster, modern browsers): `./gradlew :webApp:wasmJsBrowserDevelopmentRun`
-  - JS target (slower, supports older browsers): `./gradlew :webApp:jsBrowserDevelopmentRun`
-- iOS app: open the [/iosApp](./iosApp) directory in Xcode and run it from there.
+- **Viewer:** continuous scrolling with zoom, pan and fling; tiled rendering at high zoom; page prefetching; auto-hiding toolbar; jump to page
+- **Search and annotations:** full-text search, tap a match to highlight it, tap a highlight to remove it; per-document notes
+- **Navigation:** the PDF's own outline plus user bookmarks
+- **Password-protected PDFs** on Android and desktop
+- **Library:** recent files, stored documents with folders, rename, and storage usage
+- **Export:** save a copy of the open document
+- **Theming and accessibility:** light and dark themes, reading mode, and screen-reader semantics across the home screen and viewer
+- **Monitoring:** crash and session reporting through Kotzilla
 
-### Building release variants
+## Architecture
 
-- Android app:
-  - APK: `./gradlew :androidApp:assembleRelease`
-  - App Bundle (AAB): `./gradlew :androidApp:bundleRelease`
-  - Signed builds need a `keystore.properties` file in `/androidApp` (keys: `keyAlias`, `keyPassword`,
-    `storeFile`, `storePassword`) or the equivalent `KEY_ALIAS`, `KEY_PASSWORD`, `STORE_FILE`,
-    `STORE_PASSWORD` environment variables. Without these the release build is unsigned.
-- Desktop app (native installer for the current OS): `./gradlew :desktopApp:packageReleaseDistributionForCurrentOS`
-  - Or a specific format: `packageDmg` (macOS), `packageMsi` / `packageExe` (Windows), `packageDeb` (Linux)
-- Web app (production bundle):
-  - Wasm target: `./gradlew :webApp:wasmJsBrowserDistribution`
-  - JS target: `./gradlew :webApp:jsBrowserDistribution`
+```
+:pdf-core       Pure Kotlin contracts — no UI, no platform code
+:pdf-renderer   Platform renderers (expect/actual)
+:pdf-viewer     Compose Multiplatform viewer component + persistence
+:shared         The reader app: home screen, DI, file handling
+:androidApp  :desktopApp  :webApp   Platform entry points
+```
 
-### Running tests
+| Module | What it contains |
+|---|---|
+| `pdf-core` | `PdfDocument` and `PdfBitmap` abstractions, a prioritized `RenderQueue` (page, tile, thumbnail), and a two-level cache (`LruMemoryCache` + disk cache) |
+| `pdf-renderer` | Android: `android.graphics.pdf.PdfRenderer`. Desktop: Apache PDFBox. iOS (PDFKit) and web (pdf.js) are planned. |
+| `pdf-viewer` | The `PdfViewer()` composable, `PdfViewerState` (zoom, pan, visible pages), `PdfViewerConfig`, and SQLDelight storage for highlights, notes and bookmarks |
+| `shared` | The reader app built on the modules above: home screen, Koin setup, FileKit file picking |
 
-Use the run button in your IDE's editor gutter, or run tests using Gradle tasks:
+Each layer depends only on the ones below it, so the renderer and viewer can be dropped into another app without bringing the reader's features along.
 
-- Android tests: `./gradlew :shared:testAndroidHostTest`
-- Desktop tests: `./gradlew :shared:jvmTest`
-- Web tests:
-  - Wasm target: `./gradlew :shared:wasmJsTest`
-  - JS target: `./gradlew :shared:jsTest`
-- iOS tests: `./gradlew :shared:iosSimulatorArm64Test`
+## Tech stack
 
----
+Kotlin 2.4 · Compose Multiplatform 1.11 · Coroutines · Koin 4 · SQLDelight 2 · FileKit · Kermit · Apache PDFBox 3 · Kotzilla · Dokka
 
-Learn more about [Kotlin Multiplatform](https://www.jetbrains.com/help/kotlin-multiplatform-dev/get-started.html),
-[Compose Multiplatform](https://github.com/JetBrains/compose-multiplatform/#compose-multiplatform),
-[Kotlin/Wasm](https://kotl.in/wasm/)…
+Android: minSdk 24, targetSdk 36.
 
-We would appreciate your feedback on Compose/Web and Kotlin/Wasm in the public Slack channel [#compose-web](https://slack-chats.kotlinlang.org/c/compose-web).
-If you face any issues, please report them on [YouTrack](https://youtrack.jetbrains.com/newIssue?project=CMP).
+## Running
+
+- **Android:** `./gradlew :androidApp:assembleDebug`
+- **Desktop:** `./gradlew :desktopApp:run` (hot reload: `./gradlew :desktopApp:hotRun --auto`)
+
+## Release builds
+
+- **Android APK / App Bundle:** `./gradlew :androidApp:assembleRelease` / `./gradlew :androidApp:bundleRelease`
+  Signing needs a `keystore.properties` file in `androidApp/` (`keyAlias`, `keyPassword`, `storeFile`, `storePassword`) or the `KEY_ALIAS`, `KEY_PASSWORD`, `STORE_FILE`, `STORE_PASSWORD` environment variables. Without them the build is unsigned.
+- **Desktop installer for the current OS:** `./gradlew :desktopApp:packageReleaseDistributionForCurrentOS`
+  Or a specific format: `packageDmg`, `packageMsi`, `packageExe`, `packageDeb`.
+
+## Tests
+
+- Desktop (JVM), all modules: `./gradlew jvmTest`
+- Android host tests: `./gradlew :shared:testAndroidHostTest`
+
+Covered today: the LRU cache, opening password-protected PDFs, and highlight persistence.
+
+## Roadmap
+
+- iOS renderer on PDFKit
+- Web renderer on pdf.js
+- Text selection
+- Share sheet and native printing

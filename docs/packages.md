@@ -19,8 +19,8 @@ Platform-specific implementations of the `PdfDocument` interface utilizing nativ
 Contains platform rendering engines:
 - Android: `AndroidPdfDocument` using native `android.graphics.pdf.PdfRenderer`.
 - JVM/Desktop: `JvmPdfDocument` using `Apache PDFBox`.
-- iOS: `IosPdfDocument` using `PDFKit`.
-- JS/WasmJS: `JsPdfDocument` using `pdf.js`.
+- iOS: planned, using `PDFKit` (not implemented yet).
+- JS/WasmJS: planned, using `pdf.js` (not implemented yet).
 
 # Module pdf-viewer
 Compose Multiplatform UI components and state handlers for rendering and interacting with PDF files.
