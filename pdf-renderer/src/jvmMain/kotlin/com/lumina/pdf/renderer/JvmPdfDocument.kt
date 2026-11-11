@@ -187,26 +187,16 @@ class PDFTextLocator(
     }
 
     fun findMatches(pageWidth: Float, pageHeight: Float) {
-        val text = characters.map { it.unicode }.joinToString("")
-        var index = text.indexOf(query, ignoreCase = true)
-        while (index != -1) {
-            val matchedPositions = characters.subList(index, index + query.length)
-            if (matchedPositions.isNotEmpty()) {
-                val minX = matchedPositions.minOf { it.xDirAdj }
-                val maxX = matchedPositions.maxOf { it.xDirAdj + it.widthDirAdj }
-                val minY = matchedPositions.minOf { it.yDirAdj - it.heightDir }
-                val maxY = matchedPositions.maxOf { it.yDirAdj }
-                
-                matches.add(
-                    PdfRect(
-                        left = minX / pageWidth,
-                        top = minY / pageHeight,
-                        right = maxX / pageWidth,
-                        bottom = maxY / pageHeight
-                    )
+        findTextMatches(characters.map { it.unicode }, query).forEach { range ->
+            val matchedPositions = characters.subList(range.first, range.last + 1)
+            matches.add(
+                PdfRect(
+                    left = matchedPositions.minOf { it.xDirAdj } / pageWidth,
+                    top = matchedPositions.minOf { it.yDirAdj - it.heightDir } / pageHeight,
+                    right = matchedPositions.maxOf { it.xDirAdj + it.widthDirAdj } / pageWidth,
+                    bottom = matchedPositions.maxOf { it.yDirAdj } / pageHeight
                 )
-            }
-            index = text.indexOf(query, index + 1, ignoreCase = true)
+            )
         }
     }
 }

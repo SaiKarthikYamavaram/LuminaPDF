@@ -72,31 +72,14 @@ private class TextLocator : PDFTextStripper() {
         if (textPositions != null) characters.addAll(textPositions)
     }
 
-    fun findMatches(query: String, pageWidth: Float, pageHeight: Float): List<PdfRect> {
-        // One TextPosition can hold several chars (a ligature's "fi"), so string indices don't
-        // line up with positions without this map.
-        val owners = mutableListOf<TextPosition>()
-        val text = buildString {
-            characters.forEach { position ->
-                append(position.unicode)
-                repeat(position.unicode.length) { owners.add(position) }
-            }
-        }
-
-        val matches = mutableListOf<PdfRect>()
-        var index = text.indexOf(query, ignoreCase = true)
-        while (index != -1) {
-            val matched = owners.subList(index, index + query.length)
-            matches.add(
-                PdfRect(
-                    left = matched.minOf { it.xDirAdj } / pageWidth,
-                    top = matched.minOf { it.yDirAdj - it.heightDir } / pageHeight,
-                    right = matched.maxOf { it.xDirAdj + it.widthDirAdj } / pageWidth,
-                    bottom = matched.maxOf { it.yDirAdj } / pageHeight
-                )
+    fun findMatches(query: String, pageWidth: Float, pageHeight: Float): List<PdfRect> =
+        findTextMatches(characters.map { it.unicode }, query).map { range ->
+            val matched = characters.subList(range.first, range.last + 1)
+            PdfRect(
+                left = matched.minOf { it.xDirAdj } / pageWidth,
+                top = matched.minOf { it.yDirAdj - it.heightDir } / pageHeight,
+                right = matched.maxOf { it.xDirAdj + it.widthDirAdj } / pageWidth,
+                bottom = matched.maxOf { it.yDirAdj } / pageHeight
             )
-            index = text.indexOf(query, index + 1, ignoreCase = true)
         }
-        return matches
-    }
 }
