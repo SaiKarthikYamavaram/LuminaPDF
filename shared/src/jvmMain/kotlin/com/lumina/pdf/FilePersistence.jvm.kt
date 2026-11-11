@@ -1,6 +1,8 @@
 package com.lumina.pdf
 
 import java.io.File
+import java.nio.file.Files
+import java.nio.file.StandardCopyOption
 import co.touchlab.kermit.Logger
 
 actual object FilePersistence {
@@ -50,7 +52,10 @@ actual object FilePersistence {
 
     actual fun saveMetadata(metadata: String) {
         try {
-            metadataFile.writeText(metadata)
+            // Temp file plus rename, so a crash mid-write can't leave a truncated list.
+            val temp = File(metadataFile.path + ".tmp")
+            temp.writeText(metadata)
+            Files.move(temp.toPath(), metadataFile.toPath(), StandardCopyOption.REPLACE_EXISTING, StandardCopyOption.ATOMIC_MOVE)
         } catch (e: Exception) {
             Logger.e(e) { "Failed to save metadata" }
         }

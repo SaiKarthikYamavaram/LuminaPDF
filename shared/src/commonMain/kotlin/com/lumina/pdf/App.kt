@@ -9,7 +9,8 @@ import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
-import androidx.compose.runtime.snapshots.SnapshotStateList
+import androidx.compose.runtime.saveable.rememberSaveableStateHolder
+import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draganddrop.DragAndDropEvent
@@ -39,7 +40,9 @@ import luminapdf.shared.generated.resources.*
 import org.jetbrains.compose.resources.Font
 import org.jetbrains.compose.resources.ExperimentalResourceApi
 import androidx.compose.ui.ExperimentalComposeUiApi
-import androidx.compose.ui.backhandler.BackHandler
+import androidx.navigationevent.NavigationEventInfo
+import androidx.navigationevent.compose.NavigationBackHandler
+import androidx.navigationevent.compose.rememberNavigationEventState
 
 // The document currently shown in the viewer. Two screens (home, viewer) don't need a
 // navigation library: App() shows the viewer while this is non-null, home otherwise.
@@ -91,8 +94,7 @@ fun App() {
         // (PdfDocumentFactory.open, saveRecentFilesList) with no loading indicator in between, so
         // a user tapping again before the first tap's effect is visible was firing onOpenFile
         // dozens of times in a few seconds - each one opening its own PdfDocument and pushing its
-        // own viewer screen, none of which ever got a chance to settle. Confirmed via
-        // [TAP-DEBUG] logging: 21 invocations for one file in 4.5s of tapping.
+        // own viewer screen, none of which ever got a chance to settle.
         var isOpeningFile by remember { mutableStateOf(false) }
 
         // Password-protected PDF handling: when opening a document throws
@@ -113,55 +115,32 @@ fun App() {
         }
 
         LaunchedEffect(Unit) {
-            val sampleBytes = try {
-                Res.readBytes("files/sample.pdf")
-            } catch (e: Exception) {
-                Logger.e(e) { "Failed to load bundled sample PDF" }
-                null
-            }
+            // The bundled sample PDF is an explicit, honestly-labeled "try it" offer — never
+            // injected into recents/lastOpened as if it were something the user opened.
+            sampleFile = RecentFile(
+                id = "sample_project_overview",
+                name = "Sample.pdf",
+                lastOpened = "",
+                size = "1.2 MB",
+                isSample = true
+            )
 
             try {
-                // The sample is never copied to disk, so a sample row in recents gets its bytes here.
-                val loaded = RecentFilesStore.loadRecentFilesList()
-                    .map { if (it.isSample) it.copy(fileBytes = sampleBytes) else it }
+                val loaded = withContext(Dispatchers.Default) { RecentFilesStore.loadRecentFilesList() }
                 recentFiles.clear()
                 recentFiles.addAll(loaded)
-
-                // Asynchronously render thumbnails for all loaded files
-                recentFiles.forEach { file ->
-                    scope.launch {
-                        try {
-                            val bytes = file.fileBytes
-                            if (bytes != null) {
-                                val factory = PdfDocumentFactory()
-                                val doc = factory.open(bytes)
-                                val bitmap = doc.renderPage(0, 180, 240)
-                                val idx = recentFiles.indexOfFirst { it.id == file.id }
-                                if (idx != -1) {
-                                    recentFiles[idx] = recentFiles[idx].copy(thumbnail = bitmap.asImageBitmap())
-                                }
-                                doc.close()
-                            }
-                        } catch (e: Exception) {
-                            Logger.e(e) { "Failed to load background thumbnail for recent file" }
-                        }
-                    }
-                }
             } catch (e: Exception) {
                 Logger.e(e) { "Failed to load recent files list" }
             }
 
-            // Load the bundled sample PDF as an explicit, honestly-labeled "try it" offer —
-            // never injected into recents/lastOpened as if it were something the user opened.
-            if (sampleBytes != null) {
-                sampleFile = RecentFile(
-                    id = "sample_project_overview",
-                    name = "Sample.pdf",
-                    lastOpened = "",
-                    size = "1.2 MB",
-                    isSample = true,
-                    fileBytes = sampleBytes
-                )
+            // One at a time, so at most one PDF is held in memory while thumbnails render.
+            // ponytail: re-rendered on every launch. Cache thumbnails on disk if startup work shows up.
+            recentFiles.toList().forEach { file ->
+                val thumbnail = readDocumentBytes(file)?.let { renderThumbnail(it) } ?: return@forEach
+                val idx = recentFiles.indexOfFirst { it.id == file.id }
+                if (idx != -1) {
+                    recentFiles[idx] = recentFiles[idx].copy(thumbnail = thumbnail)
+                }
             }
         }
 
@@ -183,7 +162,7 @@ fun App() {
 
         suspend fun openRecentFile(recentFile: RecentFile, page: Int?, password: String?) {
             try {
-                val bytesToOpen = recentFile.fileBytes
+                val bytesToOpen = readDocumentBytes(recentFile)
                 if (bytesToOpen == null) {
                     error = "\"${recentFile.name}\" is no longer available. It may not have been saved on this device."
                     return
@@ -216,11 +195,8 @@ fun App() {
         }
 
         val onOpenFile: (RecentFile, Int?) -> Unit = { recentFile, page ->
-            if (isOpeningFile) {
-                Logger.i { "[TAP-DEBUG] onOpenFile ignored (already opening): ${recentFile.name}" }
-            } else {
+            if (!isOpeningFile) {
                 isOpeningFile = true
-                Logger.i { "[TAP-DEBUG] onOpenFile invoked for ${recentFile.name}, bytes=${recentFile.fileBytes?.size}" }
                 scope.launch {
                     try {
                         openRecentFile(recentFile, page, password = null)
@@ -235,17 +211,14 @@ fun App() {
             try {
                 val factory = PdfDocumentFactory()
                 showViewer(OpenDocument(factory.open(bytes, password), fileToOpen.id, fileToOpen.name, null, bytes))
-
-                // Render thumbnail in background
-                val doc = factory.open(bytes, password)
-                val bitmap = doc.renderPage(0, 180, 240)
-                val idx = recentFiles.indexOfFirst { it.id == fileToOpen.id }
-                if (idx != -1) {
-                    recentFiles[idx] = recentFiles[idx].copy(thumbnail = bitmap.asImageBitmap())
-                }
-                doc.close()
                 pendingPasswordRetry = null
                 passwordError = null
+
+                val thumbnail = renderThumbnail(bytes, password)
+                val idx = recentFiles.indexOfFirst { it.id == fileToOpen.id }
+                if (idx != -1 && thumbnail != null) {
+                    recentFiles[idx] = recentFiles[idx].copy(thumbnail = thumbnail)
+                }
             } catch (e: PdfPasswordRequiredException) {
                 passwordInput = ""
                 passwordError = if (e.wrongPasswordTried) e.message else null
@@ -263,11 +236,14 @@ fun App() {
         suspend fun openPickedFile(bytes: ByteArray, name: String) {
             val sizeFormatted = formatSize(bytes.size)
 
-            val existing = findStoredDocument(recentFiles, name, bytes)
+            val snapshot = recentFiles.toList()
+            val existing = withContext(Dispatchers.Default) {
+                findStoredDocument(snapshot, name, bytes, FilePersistence::loadRecentFile)
+            }
             val fileToOpen = if (existing != null) {
                 val updated = existing.copy(
                     lastOpened = "Just now",
-                    fileBytes = bytes,
+                    byteCount = bytes.size,
                     inRecents = true
                 )
                 recentFiles.remove(existing)
@@ -279,15 +255,12 @@ fun App() {
                     name = name,
                     lastOpened = "Just now",
                     size = sizeFormatted,
-                    fileBytes = bytes
+                    byteCount = bytes.size
                 )
                 recentFiles.add(0, newFile)
                 newFile
             }
-            // An entry that already has bytes is already on disk.
-            if (existing?.fileBytes == null) {
-                withContext(Dispatchers.Default) { FilePersistence.saveRecentFile(fileToOpen.id, bytes) }
-            }
+            withContext(Dispatchers.Default) { FilePersistence.saveRecentFile(fileToOpen.id, bytes) }
             RecentFilesStore.saveRecentFilesList(recentFiles)
 
             openResolvedPickedFile(bytes, fileToOpen, password = null)
@@ -382,6 +355,9 @@ fun App() {
             }
         }
 
+        // Keeps the home screen's tab, search, sort and scroll while the viewer replaces it.
+        val homeStateHolder = rememberSaveableStateHolder()
+
         Box(
             modifier = Modifier
                 .fillMaxSize()
@@ -395,7 +371,10 @@ fun App() {
                 val doc = openDocument
                 if (doc != null) {
                     // System back (Android) leaves the viewer, as the navigation stack did.
-                    BackHandler(onBack = closeViewer)
+                    NavigationBackHandler(
+                        state = rememberNavigationEventState(NavigationEventInfo.None),
+                        onBackCompleted = closeViewer
+                    )
                     key(doc) {
                         PdfViewer(
                             document = doc.document,
@@ -407,7 +386,7 @@ fun App() {
                             modifier = Modifier.fillMaxSize()
                         )
                     }
-                } else {
+                } else homeStateHolder.SaveableStateProvider("home") {
                     HomeScreen(
                         recentFiles = recentFiles,
                         sampleFile = sampleFile,
@@ -463,11 +442,40 @@ private fun SplashScreen() {
     }
 }
 
-// Same document means same bytes. An entry whose stored copy went missing has nothing to compare
-// against, so it falls back to name and displayed size, which lets a re-pick restore it.
-internal fun findStoredDocument(files: List<RecentFile>, name: String, bytes: ByteArray): RecentFile? =
-    files.find { it.fileBytes?.contentEquals(bytes) == true }
-        ?: files.find { !it.isSample && it.fileBytes == null && it.name == name && it.size == formatSize(bytes.size) }
+// Same document means same bytes, so only same-sized candidates get read from disk. An entry whose
+// stored copy went missing has nothing to compare against, so it falls back to name and displayed
+// size, which lets a re-pick restore it.
+internal fun findStoredDocument(
+    files: List<RecentFile>,
+    name: String,
+    bytes: ByteArray,
+    loadStored: (id: String) -> ByteArray?
+): RecentFile? {
+    val stored = files.filter { !it.isSample }
+    return stored.find { it.byteCount == bytes.size && loadStored(it.id)?.contentEquals(bytes) == true }
+        ?: stored.find { it.name == name && it.size == formatSize(bytes.size) && loadStored(it.id) == null }
+}
+
+private suspend fun readDocumentBytes(file: RecentFile): ByteArray? = try {
+    if (file.isSample) Res.readBytes("files/sample.pdf")
+    else withContext(Dispatchers.Default) { FilePersistence.loadRecentFile(file.id) }
+} catch (e: Exception) {
+    Logger.e(e) { "Failed to read document: ${file.id}" }
+    null
+}
+
+private suspend fun renderThumbnail(bytes: ByteArray, password: String? = null): ImageBitmap? = try {
+    val doc = PdfDocumentFactory().open(bytes, password)
+    try {
+        val width = 180
+        doc.renderPage(0, width, (width * doc.pageAspectRatio(0)).toInt().coerceAtLeast(1)).asImageBitmap()
+    } finally {
+        doc.close()
+    }
+} catch (e: Exception) {
+    Logger.e(e) { "Failed to render document thumbnail" }
+    null
+}
 
 // Opaque on purpose: the id becomes a filename and a metadata column, so no part of it may come
 // from a user-controlled filename.

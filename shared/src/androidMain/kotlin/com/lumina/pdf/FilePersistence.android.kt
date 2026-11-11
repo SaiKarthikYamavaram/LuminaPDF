@@ -51,7 +51,12 @@ actual object FilePersistence {
 
     actual fun saveMetadata(metadata: String) {
         try {
-            metadataFile?.writeText(metadata)
+            metadataFile?.let { file ->
+                // Temp file plus rename, so a crash mid-write can't leave a truncated list.
+                val temp = File(file.path + ".tmp")
+                temp.writeText(metadata)
+                check(temp.renameTo(file)) { "Could not replace ${file.name}" }
+            }
         } catch (e: Exception) {
             Logger.e(e) { "Failed to save metadata" }
         }

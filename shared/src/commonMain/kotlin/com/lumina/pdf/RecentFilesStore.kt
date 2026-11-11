@@ -4,12 +4,12 @@ package com.lumina.pdf
 // field (a typed name, or a filename from the OS) would shift every column after it.
 private fun String.metadataSafe() = replace('|', ' ').replace('\n', ' ').replace('\r', ' ')
 
-// Format: id|name|lastOpened|size|isSample|inRecents|folder
+// Format: id|name|lastOpened|size|isSample|inRecents|folder|byteCount
 internal fun serializeMetadata(files: List<RecentFile>): String = buildString {
     files.forEach { file ->
         val sampleStr = if (file.isSample) "1" else "0"
         val recentsStr = if (file.inRecents) "1" else "0"
-        append("${file.id}|${file.name.metadataSafe()}|${file.lastOpened}|${file.size}|$sampleStr|$recentsStr|${file.folder.metadataSafe()}\n")
+        append("${file.id}|${file.name.metadataSafe()}|${file.lastOpened}|${file.size}|$sampleStr|$recentsStr|${file.folder.metadataSafe()}|${file.byteCount}\n")
     }
 }
 
@@ -22,6 +22,7 @@ object RecentFilesStore {
     fun loadRecentFilesList(): List<RecentFile> {
         val metadata = FilePersistence.loadMetadata() ?: return emptyList()
         val list = mutableListOf<RecentFile>()
+        var migratedOlderRows = false
         metadata.lineSequence().forEach { line ->
             if (line.isBlank()) return@forEach
             val parts = line.split('|')
@@ -33,14 +34,12 @@ object RecentFilesStore {
                 val isSample = parts[4] == "1"
                 val inRecents = if (parts.size >= 6) parts[5] == "1" else true
                 val folder = if (parts.size >= 7) parts[6] else ""
-                
-                // Load file bytes if not sample
-                val bytes = if (isSample) {
-                    null // sample bytes loaded statically from resources
-                } else {
-                    FilePersistence.loadRecentFile(id)
+                // Rows written before this column existed get their size from the stored file, once.
+                val byteCount = parts.getOrNull(7)?.toIntOrNull() ?: run {
+                    migratedOlderRows = true
+                    if (isSample) 0 else FilePersistence.loadRecentFile(id)?.size ?: 0
                 }
-                
+
                 list.add(
                     RecentFile(
                         id = id,
@@ -48,13 +47,14 @@ object RecentFilesStore {
                         lastOpened = lastOpened,
                         size = size,
                         isSample = isSample,
-                        fileBytes = bytes,
+                        byteCount = byteCount,
                         inRecents = inRecents,
                         folder = folder
                     )
                 )
             }
         }
+        if (migratedOlderRows) saveRecentFilesList(list)
         return list
     }
     

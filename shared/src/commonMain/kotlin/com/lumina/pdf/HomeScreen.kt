@@ -16,6 +16,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -46,7 +47,8 @@ data class RecentFile(
     val lastOpened: String,
     val size: String,
     val isSample: Boolean = false,
-    val fileBytes: ByteArray? = null,
+    // Size of the stored PDF. The bytes stay on disk until the document is opened.
+    val byteCount: Int = 0,
     val thumbnail: ImageBitmap? = null,
     val inRecents: Boolean = true,
     // Single optional folder name; "" = unfiled. One level only - no nesting.
@@ -85,7 +87,7 @@ fun HomeScreen(
     var renamingFile by remember { mutableStateOf<RecentFile?>(null) }
     var renameInput by remember { mutableStateOf("") }
     var folderInput by remember { mutableStateOf("") }
-    var selectedFolder by remember { mutableStateOf<String?>(null) }
+    var selectedFolder by rememberSaveable { mutableStateOf<String?>(null) }
     val folders = recentFiles.map { it.folder }.filter { it.isNotEmpty() }.distinct().sorted()
     // Falls back to "All" once the last document leaves the selected folder, instead of
     // stranding the user on an empty, chip-less filter.
@@ -143,7 +145,7 @@ fun HomeScreen(
             }
         )
     }
-    var activeTab by remember { mutableStateOf("Recents") }
+    var activeTab by rememberSaveable { mutableStateOf("Recents") }
     
     val notesGroupedByFile by produceState<Map<RecentFile, List<com.lumina.pdf.viewer.db.DbNote>>>(
         initialValue = emptyMap(),
@@ -172,10 +174,10 @@ fun HomeScreen(
     val documentIdsWithNotes by produceState(initialValue = emptySet<String>(), key1 = recentFiles) {
         value = db.getDocumentIdsWithNotes()
     }
-    var sortKey by remember { mutableStateOf("Recent") } // Recent, Name, Size
-    var sortAscending by remember { mutableStateOf(false) }
-    var globalSearchQuery by remember { mutableStateOf("") }
-    var viewMode by remember { mutableStateOf("Grid") } // Grid, List
+    var sortKey by rememberSaveable { mutableStateOf("Recent") } // Recent, Name, Size
+    var sortAscending by rememberSaveable { mutableStateOf(false) }
+    var globalSearchQuery by rememberSaveable { mutableStateOf("") }
+    var viewMode by rememberSaveable { mutableStateOf("Grid") } // Grid, List
 
     // Narrows the Notes tab by the same search bar as Recents/Your documents - matches either the
     // owning document's name or a note's own text, so searching a document name surfaces all its
@@ -379,7 +381,7 @@ fun HomeScreen(
                 val storedFiles = recentFiles.filter { !it.isSample }
                 Text(
                     text = "${storedFiles.size} document${if (storedFiles.size == 1) "" else "s"} · " +
-                        "${formatSize(storedFiles.sumOf { it.fileBytes?.size ?: 0 })} stored",
+                        "${formatSize(storedFiles.sumOf { it.byteCount })} stored",
                     color = textSecondary,
                     fontSize = 12.sp,
                     modifier = Modifier.padding(start = 28.dp, end = 28.dp, top = 4.dp)
@@ -561,7 +563,7 @@ fun HomeScreen(
                         GridItemCard(
                             fileItem = fileItem,
                             hasNotes = fileItem.id in documentIdsWithNotes,
-                            onClick = { Logger.i { "[TAP-DEBUG] GridItemCard clicked: ${fileItem.name}" }; onOpenFile(fileItem, null) },
+                            onClick = { onOpenFile(fileItem, null) },
                             onRemove = { if (activeTab == "Recents") onRemoveFromRecents(fileItem) else onDeleteDocument(fileItem) },
                             onRename = { startEditing(fileItem) },
                             textPrimary = textPrimary,
@@ -815,7 +817,7 @@ fun HomeScreen(
                                         fileItem = fileItem,
                                         hasNotes = fileItem.id in documentIdsWithNotes,
                                         showLastOpened = !isCompact,
-                                        onClick = { Logger.i { "[TAP-DEBUG] ListItemRow clicked: ${fileItem.name}" }; onOpenFile(fileItem, null) },
+                                        onClick = { onOpenFile(fileItem, null) },
                                         onRemove = { if (activeTab == "Recents") onRemoveFromRecents(fileItem) else onDeleteDocument(fileItem) },
                                         onRename = { startEditing(fileItem) },
                                         textPrimary = textPrimary,
