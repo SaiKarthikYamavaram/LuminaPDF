@@ -9,8 +9,9 @@ import androidx.compose.ui.window.WindowPosition
 import androidx.compose.ui.window.application
 import androidx.compose.ui.window.rememberWindowState
 
-fun main() {
+fun main(args: Array<String>) {
     initKoin()
+    handleDesktopFileOpen(args)
     application {
         val windowState = rememberWindowState(
             position = WindowPosition(Alignment.Center),

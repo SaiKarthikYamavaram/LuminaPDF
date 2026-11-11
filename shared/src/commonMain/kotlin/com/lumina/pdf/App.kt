@@ -32,7 +32,10 @@ import com.lumina.pdf.viewer.AppLogoMark
 import com.lumina.pdf.viewer.PdfViewer
 import com.lumina.pdf.viewer.asImageBitmap
 import kotlinx.coroutines.Dispatchers
+import com.lumina.pdf.viewer.db.getCurrentTimeMillis
+import com.lumina.pdf.viewer.db.rememberPdfDatabase
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import co.touchlab.kermit.Logger
@@ -89,6 +92,8 @@ fun App() {
         var openDocument by remember { mutableStateOf<OpenDocument?>(null) }
         var error by remember { mutableStateOf<String?>(null) }
         var sampleFile by remember { mutableStateOf<RecentFile?>(null) }
+        var recentsLoaded by remember { mutableStateOf(false) }
+        val db = rememberPdfDatabase()
         val scope = rememberCoroutineScope()
         // Guards onOpenFile against rapid repeat taps: opening involves file I/O
         // (PdfDocumentFactory.open, saveRecentFilesList) with no loading indicator in between, so
@@ -120,7 +125,7 @@ fun App() {
             sampleFile = RecentFile(
                 id = "sample_project_overview",
                 name = "Sample.pdf",
-                lastOpened = "",
+                lastOpened = 0L,
                 size = "1.2 MB",
                 isSample = true
             )
@@ -132,6 +137,7 @@ fun App() {
             } catch (e: Exception) {
                 Logger.e(e) { "Failed to load recent files list" }
             }
+            recentsLoaded = true
 
             // One at a time, so at most one PDF is held in memory while thumbnails render.
             // ponytail: re-rendered on every launch. Cache thumbnails on disk if startup work shows up.
@@ -172,7 +178,7 @@ fun App() {
                 // Move the opened file to the top of the list, update lastOpened, and mark inRecents = true
                 // (also covers the first time the sample file is opened, adding it honestly)
                 val existing = recentFiles.find { it.id == recentFile.id }
-                val updated = (existing ?: recentFile).copy(lastOpened = "Just now", inRecents = true)
+                val updated = (existing ?: recentFile).copy(lastOpened = getCurrentTimeMillis(), inRecents = true)
                 if (existing != null) {
                     recentFiles.remove(existing)
                 }
@@ -234,6 +240,11 @@ fun App() {
         // Shared by the file picker and drag-and-drop: adds/updates a recent entry for the
         // given bytes, opens it in the viewer, and renders its thumbnail in the background.
         suspend fun openPickedFile(bytes: ByteArray, name: String) {
+            // Checked before anything is stored, so a non-PDF never lands in the library.
+            if (!looksLikePdf(bytes)) {
+                error = "\"$name\" is not a valid PDF."
+                return
+            }
             val sizeFormatted = formatSize(bytes.size)
 
             val snapshot = recentFiles.toList()
@@ -242,7 +253,7 @@ fun App() {
             }
             val fileToOpen = if (existing != null) {
                 val updated = existing.copy(
-                    lastOpened = "Just now",
+                    lastOpened = getCurrentTimeMillis(),
                     byteCount = bytes.size,
                     inRecents = true
                 )
@@ -253,7 +264,7 @@ fun App() {
                 val newFile = RecentFile(
                     id = newDocumentId(bytes),
                     name = name,
-                    lastOpened = "Just now",
+                    lastOpened = getCurrentTimeMillis(),
                     size = sizeFormatted,
                     byteCount = bytes.size
                 )
@@ -264,6 +275,21 @@ fun App() {
             RecentFilesStore.saveRecentFilesList(recentFiles)
 
             openResolvedPickedFile(bytes, fileToOpen, password = null)
+        }
+
+        // Waits for the stored list: importing earlier would save a list holding only this file
+        // over everything already on disk.
+        LaunchedEffect(recentsLoaded) {
+            if (!recentsLoaded) return@LaunchedEffect
+            snapshotFlow { ExternalDocument.pending }.filterNotNull().collect { load ->
+                ExternalDocument.pending = null
+                val loaded = withContext(Dispatchers.Default) { load() }
+                if (loaded == null) {
+                    error = "That file could not be opened."
+                } else {
+                    openPickedFile(loaded.second, loaded.first)
+                }
+            }
         }
 
         val pickFileLauncher = io.github.vinceglb.filekit.compose.rememberFilePickerLauncher(
@@ -402,6 +428,7 @@ fun App() {
                             recentFiles.removeAll { it.id == recentFile.id }
                             RecentFilesStore.deleteRecentFile(recentFile.id)
                             RecentFilesStore.saveRecentFilesList(recentFiles)
+                            db.deleteDocumentData(recentFile.id)
                         },
                         onEditDocument = { recentFile, newName, newFolder ->
                             val idx = recentFiles.indexOfFirst { it.id == recentFile.id }
@@ -482,10 +509,14 @@ private suspend fun renderThumbnail(bytes: ByteArray, password: String? = null):
 // ponytail: 32-bit hash, two different PDFs of the exact same size could collide. Use SHA-256 if that ever shows up.
 internal fun newDocumentId(bytes: ByteArray): String = "doc_${bytes.size}_${bytes.contentHashCode()}"
 
+// The spec lets a PDF put a few junk bytes before its header, and readers tolerate up to 1024.
+internal fun looksLikePdf(bytes: ByteArray): Boolean =
+    bytes.copyOf(minOf(bytes.size, 1024)).decodeToString().contains("%PDF-")
+
 internal fun formatSize(bytes: Int): String {
     if (bytes < 1024) return "$bytes B"
     val kb = bytes / 1024
     if (kb < 1024) return "$kb KB"
     val mb = kb / 1024
-    return "${mb}.${(kb % 1024) / 100} MB"
+    return "${mb}.${(kb % 1024) * 10 / 1024} MB"
 }

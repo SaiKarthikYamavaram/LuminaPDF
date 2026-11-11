@@ -29,7 +29,7 @@ object RecentFilesStore {
             if (parts.size >= 5) {
                 val id = parts[0]
                 val name = parts[1]
-                val lastOpened = parts[2]
+                val lastOpened = parts[2].toLongOrNull() ?: 0L
                 val size = parts[3]
                 val isSample = parts[4] == "1"
                 val inRecents = if (parts.size >= 6) parts[5] == "1" else true

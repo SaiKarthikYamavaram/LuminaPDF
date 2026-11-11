@@ -179,7 +179,7 @@ fun GridItemCard(
                 )
                 Spacer(modifier = Modifier.height(4.dp))
                 Text(
-                    text = fileItem.lastOpened,
+                    text = fileItem.lastOpenedLabel(),
                     color = textSecondary,
                     fontSize = 11.sp
                 )
@@ -257,7 +257,7 @@ fun ListItemRow(
             // caller for why.
             if (showLastOpened) {
                 Text(
-                    text = fileItem.lastOpened,
+                    text = fileItem.lastOpenedLabel(),
                     color = textSecondary,
                     fontSize = 12.sp,
                     modifier = Modifier.width(120.dp)

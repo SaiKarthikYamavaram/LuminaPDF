@@ -44,7 +44,8 @@ import kotlin.math.sin
 data class RecentFile(
     val id: String,
     val name: String,
-    val lastOpened: String,
+    // Epoch millis; 0 = unknown (never opened, or a row saved before this was a timestamp).
+    val lastOpened: Long,
     val size: String,
     val isSample: Boolean = false,
     // Size of the stored PDF. The bytes stay on disk until the document is opened.
@@ -69,6 +70,8 @@ fun formatRelativeTime(timestamp: Long): String {
     val days = hours / 24
     return "$days day${if (days > 1) "s" else ""} ago"
 }
+
+fun RecentFile.lastOpenedLabel(): String = if (lastOpened > 0) formatRelativeTime(lastOpened) else ""
 
 // --- Home Screen UI ---
 
@@ -224,18 +227,7 @@ fun HomeScreen(
             if (activeTab != "Recents") {
                 list = when (sortKey) {
                     "Name" -> if (sortAscending) list.sortedBy { it.name.lowercase() } else list.sortedByDescending { it.name.lowercase() }
-                    "Size" -> {
-                        val sizeVal = { f: RecentFile ->
-                            val s = f.size.uppercase()
-                            val numeric = s.replace("[^0-9.]".toRegex(), "").toDoubleOrNull() ?: 0.0
-                            when {
-                                s.contains("GB") -> numeric * 1024 * 1024
-                                s.contains("MB") -> numeric * 1024
-                                else -> numeric
-                            }
-                        }
-                        if (sortAscending) list.sortedBy(sizeVal) else list.sortedByDescending(sizeVal)
-                    }
+                    "Size" -> if (sortAscending) list.sortedBy { it.byteCount } else list.sortedByDescending { it.byteCount }
                     else -> {
                         if (sortAscending) list.reversed() else list
                     }

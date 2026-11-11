@@ -23,6 +23,7 @@ compose.desktop {
             targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb, TargetFormat.Exe)
             packageName = "Lumina"
             packageVersion = "1.0.2"
+            fileAssociation(mimeType = "application/pdf", extension = "pdf", description = "PDF document")
 
             modules("java.sql", "java.naming", "java.instrument", "jdk.unsupported", "jdk.security.auth")
 

@@ -12,7 +12,7 @@ class RecentFilesStoreTest {
     private fun stored(id: String, name: String, byteCount: Int = 4096, isSample: Boolean = false) = RecentFile(
         id = id,
         name = name,
-        lastOpened = "",
+        lastOpened = 0L,
         size = formatSize(4096),
         isSample = isSample,
         byteCount = byteCount
@@ -70,6 +70,20 @@ class RecentFilesStoreTest {
         val metadata = serializeMetadata(listOf(stored("id", "a|b\nc.pdf").copy(folder = "x|y")))
         val rows = metadata.lines().filter { it.isNotBlank() }
         assertEquals(1, rows.size)
-        assertEquals(listOf("id", "a b c.pdf", "", formatSize(4096), "0", "1", "x y", "4096"), rows.single().split('|'))
+        assertEquals(listOf("id", "a b c.pdf", "0", formatSize(4096), "0", "1", "x y", "4096"), rows.single().split('|'))
+    }
+
+    @Test
+    fun formatSizeKeepsTenthsInRange() {
+        assertEquals("1.9 MB", formatSize(2 * 1024 * 1024 - 1024))
+        assertEquals("1.5 MB", formatSize(1024 * 1024 + 512 * 1024))
+    }
+
+    @Test
+    fun looksLikePdfFindsHeaderOnlyNearTheStart() {
+        assertEquals(true, looksLikePdf("%PDF-1.7 rest".encodeToByteArray()))
+        assertEquals(true, looksLikePdf("junk%PDF-1.7".encodeToByteArray()))
+        assertEquals(false, looksLikePdf("<html>not a pdf</html>".encodeToByteArray()))
+        assertEquals(false, looksLikePdf(ByteArray(2048) { 32 } + "%PDF-".encodeToByteArray()))
     }
 }

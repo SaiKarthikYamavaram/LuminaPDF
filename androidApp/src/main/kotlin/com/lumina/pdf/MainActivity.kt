@@ -1,5 +1,6 @@
 package com.lumina.pdf
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -13,10 +14,17 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         AndroidContext.applicationContext = this.applicationContext
         initKoin()
+        // Only on a fresh start: a recreated Activity still carries the intent it already handled.
+        if (savedInstanceState == null) handleViewIntent(this, intent)
 
         setContent {
             App()
         }
+    }
+
+    override fun onNewIntent(intent: Intent) {
+        super.onNewIntent(intent)
+        handleViewIntent(this, intent)
     }
 }
 
