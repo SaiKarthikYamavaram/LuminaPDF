@@ -5,18 +5,23 @@ import android.graphics.Matrix
 import android.graphics.Rect
 import android.graphics.pdf.PdfRenderer
 import android.os.ParcelFileDescriptor
+import android.util.Log
 import com.lumina.pdf.core.OutlineItem
 import com.lumina.pdf.core.PdfBitmap
 import com.lumina.pdf.core.PdfDocument
 import com.lumina.pdf.core.PdfRect
+import com.tom_roush.pdfbox.io.MemoryUsageSetting
+import com.tom_roush.pdfbox.pdmodel.PDDocument
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.io.File
+import kotlin.concurrent.thread
 
 class AndroidPdfDocument(
     private val renderer: PdfRenderer,
     private val pfd: ParcelFileDescriptor,
-    private val tempFile: File
+    private val tempFile: File,
+    private val password: String?
 ) : PdfDocument {
 
     // PdfRenderer allows one open page at a time, and close() throws while a page is open. The UI
@@ -29,7 +34,29 @@ class AndroidPdfDocument(
         renderer.openPage(page).use(block)
     }
 
+    // Parsed on first text use, from the temp file so the PDF isn't loaded onto the heap. A file
+    // PDFBox can't parse still renders; it just has no search or outline.
+    private val textLock = Any()
+    private var textClosed = false
+    private val textDocument: Lazy<PDDocument?> = lazy {
+        try {
+            PDDocument.load(tempFile, password.orEmpty(), MemoryUsageSetting.setupTempFileOnly())
+        } catch (e: Exception) {
+            Log.w("AndroidPdfDocument", "PDFBox could not parse document", e)
+            null
+        }
+    }
+
+    private fun <T> withTextDocument(fallback: T, block: (PDDocument) -> T): T = synchronized(textLock) {
+        if (textClosed) return fallback
+        textDocument.value?.let(block) ?: fallback
+    }
+
     override suspend fun pageCount(): Int = renderer.pageCount
+
+    override suspend fun pageAspectRatio(page: Int): Float = withContext(Dispatchers.IO) {
+        withPage(page) { it.height.toFloat() / it.width }
+    }
 
     override suspend fun renderPage(page: Int, width: Int, height: Int): PdfBitmap = withContext(Dispatchers.IO) {
         val bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
@@ -83,25 +110,33 @@ class AndroidPdfDocument(
         }
     }
 
-    override suspend fun extractText(page: Int): String {
-        // android.graphics.pdf.PdfRenderer does not support text extraction.
-        // Requires third party library on Android, or return empty for MVP.
-        return ""
+    override suspend fun extractText(page: Int): String = withContext(Dispatchers.IO) {
+        withTextDocument("") { extractPageText(it, page) }
     }
 
-    override suspend fun searchText(page: Int, query: String): List<PdfRect> {
-        return emptyList()
+    override suspend fun searchText(page: Int, query: String): List<PdfRect> = withContext(Dispatchers.IO) {
+        if (query.isEmpty()) emptyList() else withTextDocument(emptyList()) { searchPageText(it, page, query) }
     }
 
-    override suspend fun getOutline(): List<OutlineItem> {
-        return emptyList()
+    override suspend fun getOutline(): List<OutlineItem> = withContext(Dispatchers.IO) {
+        withTextDocument(emptyList()) { readOutline(it) }
     }
 
-    override fun close() = synchronized(rendererLock) {
-        renderer.close()
-        pfd.close()
-        if (tempFile.exists()) {
-            tempFile.delete()
+    override fun close() {
+        synchronized(rendererLock) {
+            renderer.close()
+            pfd.close()
+            if (tempFile.exists()) {
+                tempFile.delete()
+            }
+        }
+        // Off the main thread: a first-time PDFBox parse can hold textLock for seconds on a big
+        // file, and PDFBox keeps reading the already-open temp file after the delete above.
+        thread {
+            synchronized(textLock) {
+                textClosed = true
+                if (textDocument.isInitialized()) textDocument.value?.close()
+            }
         }
     }
 }

@@ -5,6 +5,8 @@ import com.lumina.pdf.core.PdfPasswordRequiredException
 import com.lumina.pdf.core.PdfPasswordUnsupportedException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import android.content.Context
+import com.tom_roush.pdfbox.android.PDFBoxResourceLoader
 import android.graphics.pdf.LoadParams
 import android.graphics.pdf.PdfRenderer
 import android.os.Build
@@ -40,6 +42,9 @@ actual class PdfDocumentFactory actual constructor() {
             if (Build.VERSION.SDK_INT < 35) throw PdfPasswordUnsupportedException()
             throw PdfPasswordRequiredException(wrongPasswordTried = password != null)
         }
-        AndroidPdfDocument(renderer, pfd, tempFile)
+        AndroidPdfDocument(renderer, pfd, tempFile, password)
     }
 }
+
+// PDFBox reads its font and character tables from app assets, so it needs a Context first.
+fun initPdfRenderer(context: Context) = PDFBoxResourceLoader.init(context)

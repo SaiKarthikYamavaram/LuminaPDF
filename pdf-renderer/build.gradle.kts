@@ -45,6 +45,11 @@ kotlin {
         jvmMain.dependencies {
             implementation(libs.pdfbox)
         }
+        androidMain.dependencies {
+            // PdfRenderer only rasterizes; its text APIs need API 35. This provides search,
+            // text extraction and the outline back to minSdk.
+            implementation(libs.pdfbox.android)
+        }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
         }

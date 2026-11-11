@@ -17,7 +17,7 @@ Platform-specific implementations of the `PdfDocument` interface utilizing nativ
 
 # Package com.lumina.pdf.renderer
 Contains platform rendering engines:
-- Android: `AndroidPdfDocument` using native `android.graphics.pdf.PdfRenderer`.
+- Android: `AndroidPdfDocument` using native `android.graphics.pdf.PdfRenderer` for rendering and `pdfbox-android` for text, search and outline.
 - JVM/Desktop: `JvmPdfDocument` using `Apache PDFBox`.
 - iOS: planned, using `PDFKit` (not implemented yet).
 - JS/WasmJS: planned, using `pdf.js` (not implemented yet).
