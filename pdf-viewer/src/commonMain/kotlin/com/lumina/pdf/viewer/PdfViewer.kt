@@ -23,6 +23,8 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.gestures.awaitEachGesture
 import androidx.compose.foundation.gestures.awaitFirstDown
+import androidx.compose.foundation.gestures.awaitLongPressOrCancellation
+import androidx.compose.foundation.gestures.awaitTouchSlopOrCancellation
 import androidx.compose.foundation.gestures.detectDragGestures
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.gestures.detectTransformGestures
@@ -51,7 +53,9 @@ import androidx.compose.ui.input.pointer.*
 import androidx.compose.ui.input.pointer.util.VelocityTracker
 import androidx.compose.ui.input.pointer.util.addPointerInputChange
 import androidx.compose.ui.layout.onSizeChanged
+import androidx.compose.ui.platform.LocalClipboardManager
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.font.FontWeight
@@ -275,10 +279,57 @@ fun PdfViewer(
         }
     }
 
-    fun parseHighlightRect(rectsText: String): PdfRect? {
-        val parts = rectsText.split(",").mapNotNull { it.toFloatOrNull() }
-        if (parts.size != 4) return null
-        return PdfRect(left = parts[0], top = parts[1], right = parts[2], bottom = parts[3])
+    // Drag-to-select. Glyphs are kept for the visible pages only, ready before a gesture needs
+    // them, because pointer handlers can't suspend to load them.
+    val pageGlyphs = remember(document) { mutableStateMapOf<Int, List<PdfGlyph>>() }
+    var selection by remember(document) { mutableStateOf<TextSelection?>(null) }
+    // Tells the fling tracker that the gesture it just watched was a selection drag.
+    var selectionGestureActive by remember { mutableStateOf(false) }
+    // ponytail: LocalClipboard needs a platform-specific ClipEntry on every target. Move when one
+    // can be built from common code, since this API is deprecated.
+    @Suppress("DEPRECATION")
+    val clipboard = LocalClipboardManager.current
+
+    LaunchedEffect(document, state.visiblePages) {
+        kotlinx.coroutines.delay(200)
+        val visible = state.visiblePages
+        for (page in visible) {
+            if (page in pageGlyphs) continue
+            pageGlyphs[page] = try {
+                document.pageGlyphs(page)
+            } catch (e: kotlinx.coroutines.CancellationException) {
+                throw e
+            } catch (e: Exception) {
+                Logger.e(e) { "Failed to read text positions for page $page" }
+                emptyList()
+            }
+        }
+        pageGlyphs.keys.filter { it !in visible && it != selection?.page }.forEach { pageGlyphs.remove(it) }
+    }
+
+    fun copySelection() {
+        val current = selection ?: return
+        clipboard.setText(AnnotatedString(selectionText(pageGlyphs[current.page].orEmpty(), current.range)))
+        selection = null
+    }
+
+    fun highlightSelection() {
+        val current = selection ?: return
+        if (documentId == null) return
+        val rects = selectionLineRects(pageGlyphs[current.page].orEmpty(), current.range)
+        if (rects.isNotEmpty()) {
+            val highlight = DbHighlight(
+                id = "hl_${documentId}_${getCurrentTimeMillis()}",
+                documentId = documentId,
+                page = current.page,
+                rectsText = encodeHighlightRects(rects),
+                color = "#FFEB3B",
+                timestamp = getCurrentTimeMillis()
+            )
+            db.insertHighlight(highlight)
+            highlights.add(highlight)
+        }
+        selection = null
     }
 
     // Toggles a saved highlight for a tapped search-match rect: removes it if that exact
@@ -288,7 +339,7 @@ fun PdfViewer(
         val tolerance = 0.005f
         val existing = highlights.find { saved ->
             if (saved.page != page) return@find false
-            val savedRect = parseHighlightRect(saved.rectsText) ?: return@find false
+            val savedRect = parseHighlightRects(saved.rectsText).singleOrNull() ?: return@find false
             kotlin.math.abs(savedRect.left - rect.left) < tolerance &&
                 kotlin.math.abs(savedRect.top - rect.top) < tolerance &&
                 kotlin.math.abs(savedRect.right - rect.right) < tolerance &&
@@ -451,15 +502,19 @@ fun PdfViewer(
     // above, which only tracks whether scrolling is happening at all, not which way.
     var isTopBarVisible by remember { mutableStateOf(true) }
     var lastScrollY by remember { mutableStateOf(state.scrollOffset.y) }
+    var lastScrollZoom by remember { mutableStateOf(state.zoom) }
     LaunchedEffect(state.scrollOffset) {
         // scrollOffset.y decreases as you scroll down (content moves up) and increases scrolling
         // back up - see clampScrollOffset's minScrollY/maxScrollY. A small deadzone avoids
         // flickering on sub-pixel jitter from animation rounding.
         val deltaY = state.scrollOffset.y - lastScrollY
-        if (kotlin.math.abs(deltaY) > 2f) {
+        // A zoom also moves the offset, and hiding the bar then would pull its own + and - buttons
+        // out from under the pointer.
+        if (kotlin.math.abs(deltaY) > 2f && state.zoom == lastScrollZoom) {
             isTopBarVisible = deltaY > 0
         }
         lastScrollY = state.scrollOffset.y
+        lastScrollZoom = state.zoom
 
         isScrolling = true
         kotlinx.coroutines.delay(1500)
@@ -498,7 +553,7 @@ fun PdfViewer(
             if (!restored) {
                 val fitZoom = getFitZoom()
                 state.zoom = fitZoom
-                state.scrollOffset = clamp(Offset.Zero, fitZoom)
+                state.scrollOffset = clamp(Offset(0f, topPaddingPx), fitZoom)
             }
             isInitialZoomSet = true
         }
@@ -878,8 +933,17 @@ fun PdfViewer(
                                 true
                             } else false
                         }
+                        Key.C -> {
+                            if (isCtrl && selection != null) {
+                                copySelection()
+                                true
+                            } else false
+                        }
                         Key.Escape -> {
-                            if (isSearchActive) {
+                            if (selection != null) {
+                                selection = null
+                                true
+                            } else if (isSearchActive) {
                                 isSearchActive = false
                                 searchQuery = ""
                                 true
@@ -934,6 +998,10 @@ fun PdfViewer(
                         },
                         onTap = { tapOffset ->
                             focusRequester.requestFocus()
+                            if (selection != null) {
+                                selection = null
+                                return@detectTapGestures
+                            }
                             for (page in state.visiblePages) {
                                 if (renderFailed[page] == true) {
                                     val screenTop = state.scrollOffset.y + layout.top(page) * state.zoom
@@ -963,8 +1031,9 @@ fun PdfViewer(
                                 }
                                 val existingHighlight = highlights.firstOrNull { saved ->
                                     if (saved.page != page) return@firstOrNull false
-                                    val r = parseHighlightRect(saved.rectsText) ?: return@firstOrNull false
-                                    localX in r.left..r.right && localY in r.top..r.bottom
+                                    parseHighlightRects(saved.rectsText).any { r ->
+                                        localX in r.left..r.right && localY in r.top..r.bottom
+                                    }
                                 }
                                 if (existingHighlight != null) {
                                     db.deleteHighlight(existingHighlight.id)
@@ -1013,7 +1082,7 @@ fun PdfViewer(
 
                         // Pinch-zoom gestures already end wherever the fingers left off; only a
                         // single-finger pan should coast on.
-                        if (!isMultiTouch) {
+                        if (!isMultiTouch && !selectionGestureActive) {
                             val velocity = velocityTracker.calculateVelocity()
                             if (kotlin.math.hypot(velocity.x, velocity.y) > 200f) {
                                 val decay = splineBasedDecay<Offset>(density)
@@ -1061,6 +1130,51 @@ fun PdfViewer(
                                 }
                             }
                         }
+                    }
+                }
+                // Last in the chain so it sees pointer events first: once a selection starts,
+                // consuming them stops the pan and tap detectors above from acting on the drag.
+                .pointerInput(Unit) {
+                    awaitEachGesture {
+                        val down = awaitFirstDown(requireUnconsumed = false)
+                        selectionGestureActive = false
+                        val isMouse = down.type == PointerType.Mouse
+                        if (isMouse && !currentEvent.buttons.isPrimaryPressed) return@awaitEachGesture
+
+                        val page = layout.pageAt((down.position.y - state.scrollOffset.y) / state.zoom)
+                        val glyphs = pageGlyphs[page].orEmpty()
+                        fun glyphAt(position: Offset, tolerance: Float): Int? {
+                            val point = (position - state.scrollOffset) / state.zoom
+                            return glyphIndexAt(
+                                glyphs,
+                                x = point.x / viewSize.width.toFloat(),
+                                y = (point.y - layout.top(page)) / layout.height(page),
+                                tolerance = tolerance
+                            )
+                        }
+
+                        // Mouse: drag starting on text selects it, anywhere else still pans.
+                        // Touch: a drag has to pan, so selecting starts with a long press.
+                        val tolerance = if (isMouse) 0.005f else 0.03f
+                        val anchor = glyphAt(down.position, tolerance) ?: return@awaitEachGesture
+                        if (isMouse) {
+                            awaitTouchSlopOrCancellation(down.id) { change, _ -> change.consume() } ?: return@awaitEachGesture
+                        } else {
+                            awaitLongPressOrCancellation(down.id) ?: return@awaitEachGesture
+                        }
+
+                        focusRequester.requestFocus() // So Ctrl+C and Escape reach this viewer.
+                        selection = TextSelection(page, anchor, anchor)
+                        selectionGestureActive = true
+                        do {
+                            val change = awaitPointerEvent().changes.firstOrNull { it.id == down.id } ?: break
+                            if (change.positionChanged()) {
+                                glyphAt(change.position, Float.MAX_VALUE)?.let { focus ->
+                                    selection = selection?.copy(focus = focus)
+                                }
+                            }
+                            change.consume()
+                        } while (change.pressed)
                     }
                 }
         ) {
@@ -1145,9 +1259,7 @@ fun PdfViewer(
                         }
 
                         // Draw saved highlights (persisted, drawn under any live search match)
-                        for (saved in highlights) {
-                            if (saved.page != page) continue
-                            val rect = parseHighlightRect(saved.rectsText) ?: continue
+                        for (rect in highlights.filter { it.page == page }.flatMap { parseHighlightRects(it.rectsText) }) {
                             val paddingX = 3.dp.toPx()
                             val paddingY = 2.dp.toPx()
                             drawRoundRect(
@@ -1162,6 +1274,17 @@ fun PdfViewer(
                                 ),
                                 cornerRadius = androidx.compose.ui.geometry.CornerRadius(3.dp.toPx(), 3.dp.toPx())
                             )
+                        }
+
+                        // Draw the text selection
+                        selection?.takeIf { it.page == page }?.let { current ->
+                            for (rect in selectionLineRects(pageGlyphs[page].orEmpty(), current.range)) {
+                                drawRect(
+                                    color = Color(0xFF2F80ED).copy(alpha = 0.35f),
+                                    topLeft = Offset(rect.left * size.width, pageTop + rect.top * pageHeight),
+                                    size = androidx.compose.ui.geometry.Size(rect.width * size.width, rect.height * pageHeight)
+                                )
+                            }
                         }
 
                         // Draw highlights
@@ -1196,6 +1319,24 @@ fun PdfViewer(
                         }
                     }
                 }
+            }
+        }
+
+        // Actions for the current text selection
+        if (selection != null) {
+            Row(
+                modifier = Modifier
+                    .align(Alignment.BottomCenter)
+                    .navigationBarsPadding()
+                    .padding(bottom = 16.dp)
+                    .background(MaterialTheme.colorScheme.surfaceContainerHigh, RoundedCornerShape(24.dp))
+                    .padding(horizontal = 8.dp)
+            ) {
+                if (documentId != null) {
+                    TextButton(onClick = { highlightSelection() }) { Text("Highlight") }
+                }
+                TextButton(onClick = { copySelection() }) { Text("Copy") }
+                TextButton(onClick = { selection = null }) { Text("Cancel") }
             }
         }
 

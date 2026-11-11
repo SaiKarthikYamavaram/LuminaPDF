@@ -10,6 +10,7 @@ import android.util.Log
 import com.lumina.pdf.core.OutlineItem
 import com.lumina.pdf.core.PdfBitmap
 import com.lumina.pdf.core.PdfDocument
+import com.lumina.pdf.core.PdfGlyph
 import com.lumina.pdf.core.PdfRect
 import com.tom_roush.pdfbox.io.MemoryUsageSetting
 import com.tom_roush.pdfbox.pdmodel.PDDocument
@@ -122,6 +123,10 @@ class AndroidPdfDocument(
 
     override suspend fun searchText(page: Int, query: String): List<PdfRect> = withContext(Dispatchers.IO) {
         if (query.isEmpty()) emptyList() else withTextDocument(emptyList()) { searchPageText(it, page, query) }
+    }
+
+    override suspend fun pageGlyphs(page: Int): List<PdfGlyph> = withContext(Dispatchers.IO) {
+        withTextDocument(emptyList()) { readPageGlyphs(it, page) }
     }
 
     override suspend fun getOutline(): List<OutlineItem> = withContext(Dispatchers.IO) {

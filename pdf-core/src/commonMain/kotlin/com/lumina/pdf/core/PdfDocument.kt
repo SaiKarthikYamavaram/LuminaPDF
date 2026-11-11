@@ -39,5 +39,9 @@ interface PdfDocument {
 
     suspend fun getOutline(): List<OutlineItem>
 
+    // Each drawn character with its 0..1 page-fraction bounds, in reading order. Empty means the
+    // page has no text layer to select from.
+    suspend fun pageGlyphs(page: Int): List<PdfGlyph> = emptyList()
+
     fun close()
 }

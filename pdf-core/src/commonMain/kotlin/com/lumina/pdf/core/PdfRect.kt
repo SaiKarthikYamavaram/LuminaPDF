@@ -9,3 +9,5 @@ data class PdfRect(
     val width: Float get() = right - left
     val height: Float get() = bottom - top
 }
+
+data class PdfGlyph(val text: String, val rect: PdfRect)

@@ -3,6 +3,7 @@ package com.lumina.pdf.renderer
 import com.lumina.pdf.core.OutlineItem
 import com.lumina.pdf.core.PdfBitmap
 import com.lumina.pdf.core.PdfDocument
+import com.lumina.pdf.core.PdfGlyph
 import com.lumina.pdf.core.PdfRect
 import org.apache.pdfbox.pdmodel.PDDocument
 import org.apache.pdfbox.rendering.PDFRenderer
@@ -96,6 +97,15 @@ class JvmPdfDocument(private val document: PDDocument) : PdfDocument {
         locator.matches
     }
 
+    override suspend fun pageGlyphs(page: Int): List<PdfGlyph> = withContext(Dispatchers.IO) {
+        val cropBox = document.getPage(page).cropBox
+        val locator = PDFTextLocator("")
+        locator.startPage = page + 1
+        locator.endPage = page + 1
+        locator.getText(document)
+        locator.glyphs(cropBox.width, cropBox.height)
+    }
+
     override suspend fun getOutline(): List<OutlineItem> = withContext(Dispatchers.IO) {
         val outline = document.documentCatalog.documentOutline ?: return@withContext emptyList()
         val result = mutableListOf<OutlineItem>()
@@ -184,6 +194,18 @@ class PDFTextLocator(
         if (text != null && textPositions != null) {
             characters.addAll(textPositions)
         }
+    }
+
+    fun glyphs(pageWidth: Float, pageHeight: Float): List<PdfGlyph> = characters.map { position ->
+        PdfGlyph(
+            text = position.unicode,
+            rect = PdfRect(
+                left = position.xDirAdj / pageWidth,
+                top = (position.yDirAdj - position.heightDir) / pageHeight,
+                right = (position.xDirAdj + position.widthDirAdj) / pageWidth,
+                bottom = position.yDirAdj / pageHeight
+            )
+        )
     }
 
     fun findMatches(pageWidth: Float, pageHeight: Float) {

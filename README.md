@@ -1,6 +1,6 @@
 # LuminaPDF
 
-A PDF reader built with **Kotlin Multiplatform** and **Compose Multiplatform**. One shared codebase runs on **Android** and **desktop** (Linux, Windows, macOS). iOS and web targets are scaffolded but do not render PDFs yet.
+A PDF reader built with **Kotlin Multiplatform** and **Compose Multiplatform**. One shared codebase runs on **Android**, **desktop** (Linux, Windows, macOS) and the **web**, where the library lasts for the browser session. An iOS renderer on PDFKit is written but has not been built or run yet.
 
 The rendering engine is written as a reusable library, separate from the app: the reader is one host application built on top of it.
 
@@ -30,7 +30,7 @@ The rendering engine is written as a reusable library, separate from the app: th
 | Module | What it contains |
 |---|---|
 | `pdf-core` | `PdfDocument` and `PdfBitmap` abstractions, a prioritized `RenderQueue` (page, tile, thumbnail), and a two-level cache (`LruMemoryCache` + disk cache) |
-| `pdf-renderer` | Android: `android.graphics.pdf.PdfRenderer`. Desktop: Apache PDFBox. iOS (PDFKit) and web (pdf.js) are planned. |
+| `pdf-renderer` | Android: `android.graphics.pdf.PdfRenderer`, with PDFBox-Android for text. Desktop: Apache PDFBox. Web: bundled pdf.js. iOS: PDFKit. |
 | `pdf-viewer` | The `PdfViewer()` composable, `PdfViewerState` (zoom, pan, visible pages), `PdfViewerConfig`, and SQLDelight storage for highlights, notes and bookmarks |
 | `shared` | The reader app built on the modules above: home screen, Koin setup, FileKit file picking |
 
@@ -63,7 +63,6 @@ Covered today: the LRU cache, opening password-protected PDFs, and highlight per
 
 ## Roadmap
 
-- iOS renderer on PDFKit
-- Web renderer on pdf.js
-- Text selection
+- Verify the iOS renderer on a device
+- Persistent web library (IndexedDB)
 - Share sheet and native printing

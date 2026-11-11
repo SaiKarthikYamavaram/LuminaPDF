@@ -1,6 +1,7 @@
 package com.lumina.pdf.renderer
 
 import com.lumina.pdf.core.OutlineItem
+import com.lumina.pdf.core.PdfGlyph
 import com.lumina.pdf.core.PdfRect
 import com.tom_roush.pdfbox.pdmodel.PDDocument
 import com.tom_roush.pdfbox.pdmodel.interactive.action.PDActionGoTo
@@ -27,6 +28,15 @@ internal fun searchPageText(document: PDDocument, page: Int, query: String): Lis
     locator.endPage = page + 1
     locator.getText(document)
     return locator.findMatches(query, cropBox.width, cropBox.height)
+}
+
+internal fun readPageGlyphs(document: PDDocument, page: Int): List<PdfGlyph> {
+    val cropBox = document.getPage(page).cropBox
+    val locator = TextLocator()
+    locator.startPage = page + 1
+    locator.endPage = page + 1
+    locator.getText(document)
+    return locator.glyphs(cropBox.width, cropBox.height)
 }
 
 internal fun readOutline(document: PDDocument): List<OutlineItem> {
@@ -70,6 +80,18 @@ private class TextLocator : PDFTextStripper() {
 
     override fun writeString(text: String?, textPositions: MutableList<TextPosition>?) {
         if (textPositions != null) characters.addAll(textPositions)
+    }
+
+    fun glyphs(pageWidth: Float, pageHeight: Float): List<PdfGlyph> = characters.map { position ->
+        PdfGlyph(
+            text = position.unicode,
+            rect = PdfRect(
+                left = position.xDirAdj / pageWidth,
+                top = (position.yDirAdj - position.heightDir) / pageHeight,
+                right = (position.xDirAdj + position.widthDirAdj) / pageWidth,
+                bottom = position.yDirAdj / pageHeight
+            )
+        )
     }
 
     fun findMatches(query: String, pageWidth: Float, pageHeight: Float): List<PdfRect> =
