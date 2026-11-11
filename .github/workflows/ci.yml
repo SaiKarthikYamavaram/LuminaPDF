@@ -1,0 +1,42 @@
+name: CI
+
+on:
+  push:
+    branches: [main, phase-1]
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - &java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 21
+      - &gradle
+        uses: gradle/actions/setup-gradle@v4
+      # shared/kotzilla.json is gitignored because it holds API keys, but the build generates
+      # code from it. Placeholder values compile fine; only a shipped app needs real ones.
+      - &kotzilla
+        name: Write placeholder Kotzilla config
+        run: >
+          echo '{"keys":[{"appId":"00000000-0000-0000-0000-000000000000",
+          "applicationPackageName":"com.lumina.pdf",
+          "keyId":"00000000-0000-0000-0000-000000000000",
+          "apiKey":"00000000-0000-0000-0000-000000000000",
+          "isDefault":true}]}' > shared/kotzilla.json
+      - name: Compile Android, JS and wasm, and run JVM tests
+        run: ./gradlew --continue :shared:compileAndroidMain :shared:compileKotlinJs :shared:compileKotlinWasmJs jvmTest
+
+  ios:
+    # Kotlin/Native iOS targets only build on macOS.
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      - *java
+      - *gradle
+      - *kotzilla
+      - name: Compile iOS
+        run: ./gradlew :shared:compileKotlinIosSimulatorArm64
