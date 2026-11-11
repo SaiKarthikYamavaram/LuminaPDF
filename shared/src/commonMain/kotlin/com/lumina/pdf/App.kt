@@ -113,8 +113,17 @@ fun App() {
         }
 
         LaunchedEffect(Unit) {
+            val sampleBytes = try {
+                Res.readBytes("files/sample.pdf")
+            } catch (e: Exception) {
+                Logger.e(e) { "Failed to load bundled sample PDF" }
+                null
+            }
+
             try {
+                // The sample is never copied to disk, so a sample row in recents gets its bytes here.
                 val loaded = RecentFilesStore.loadRecentFilesList()
+                    .map { if (it.isSample) it.copy(fileBytes = sampleBytes) else it }
                 recentFiles.clear()
                 recentFiles.addAll(loaded)
 
@@ -144,17 +153,15 @@ fun App() {
 
             // Load the bundled sample PDF as an explicit, honestly-labeled "try it" offer —
             // never injected into recents/lastOpened as if it were something the user opened.
-            try {
+            if (sampleBytes != null) {
                 sampleFile = RecentFile(
                     id = "sample_project_overview",
                     name = "Sample.pdf",
                     lastOpened = "",
                     size = "1.2 MB",
                     isSample = true,
-                    fileBytes = Res.readBytes("files/sample.pdf")
+                    fileBytes = sampleBytes
                 )
-            } catch (e: Exception) {
-                Logger.e(e) { "Failed to load bundled sample PDF" }
             }
         }
 
